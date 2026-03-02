@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmaAdmin — Inventario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link active"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-search position-relative">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" class="form-control" placeholder="Buscar medicamento, código...">
+  </div>
+  <div class="topbar-right">
+    <select class="topbar-branch-select d-none d-md-block">
+      <option>Todas las sucursales</option>
+      <option>Central</option><option>Norte</option><option>Sur</option>
+      <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+      <option>Universitaria</option><option>Industrial</option>
+    </select>
+    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="login.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Inventario</li></ol></nav>
+      <h1 class="page-title">Gestión de Inventario</h1>
+      <p class="page-subtitle">Control de stock, fechas de vencimiento y alertas de medicamentos</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-outline-secondary"><i class="fa-solid fa-file-import me-2"></i>Importar</button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProductModal">
+        <i class="fa-solid fa-plus me-2"></i>Nuevo Medicamento
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total Productos</div>
+          <div class="kpi-value">1,847</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-boxes-stacked"></i> en 8 sucursales</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-pills"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Stock Crítico</div>
+          <div class="kpi-value text-danger">28</div>
+          <div class="kpi-change down"><i class="fa-solid fa-triangle-exclamation"></i> Menos de 10 uds.</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-box-open"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Por Vencer (7 días)</div>
+          <div class="kpi-value text-warning">47</div>
+          <div class="kpi-change down"><i class="fa-solid fa-clock"></i> Acción requerida</div>
+        </div>
+        <div class="kpi-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Agotados</div>
+          <div class="kpi-value text-danger">12</div>
+          <div class="kpi-change down"><i class="fa-solid fa-ban"></i> Sin existencia</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-ban"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock by Branch mini cards -->
+  <div class="card mb-4">
+    <div class="card-header"><h6 class="card-title"><i class="fa-solid fa-building me-2 text-primary"></i>Stock Global por Sucursal</h6></div>
+    <div class="card-body">
+      <div class="row g-3" id="branchStockCards"></div>
+    </div>
+  </div>
+
+  <!-- Tabs + Filters -->
+  <div class="table-card">
+    <div class="table-card-header flex-column align-items-start gap-3">
+      <ul class="nav nav-tabs w-100" id="invTabs">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabAll">Todo el Inventario <span class="badge bg-secondary ms-1">1,847</span></button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExpiring">Por Vencer <span class="badge bg-warning text-dark ms-1">47</span></button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabLow">Stock Bajo <span class="badge bg-danger ms-1">28</span></button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOut">Agotados <span class="badge bg-dark ms-1">12</span></button></li>
+      </ul>
+      <div class="d-flex gap-2 flex-wrap w-100">
+        <input type="text" class="form-control form-control-sm" placeholder="Buscar medicamento o código..." style="max-width:260px">
+        <select class="form-select form-select-sm" style="width:160px">
+          <option>Todas las sucursales</option>
+          <option>Central</option><option>Norte</option><option>Sur</option>
+          <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+          <option>Universitaria</option><option>Industrial</option>
+        </select>
+        <select class="form-select form-select-sm" style="width:150px">
+          <option>Todas las categorías</option>
+          <option>Antibióticos</option>
+          <option>Analgésicos</option>
+          <option>Antiinflamatorios</option>
+          <option>Vitaminas</option>
+          <option>Insulinas</option>
+          <option>Antiácidos</option>
+        </select>
+        <button class="btn btn-sm btn-outline-secondary ms-auto"><i class="fa-solid fa-sliders me-1"></i>Filtros avanzados</button>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <!-- Tab All -->
+      <div class="tab-pane fade show active" id="tabAll">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>Código</th>
+                <th>Medicamento</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>Vencimiento</th>
+                <th>Sucursal</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Tab Expiring -->
+      <div class="tab-pane fade" id="tabExpiring">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Código</th><th>Medicamento</th><th>Stock</th>
+                <th>Vencimiento</th><th>Días Restantes</th><th>Sucursal</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MED-00142</td><td><strong>Amoxicilina 500mg</strong></td><td>120</td>
+                <td class="text-danger fw-bold">15/03/2026</td>
+                <td><span class="badge-status badge-danger">13 días</span></td>
+                <td>Norte</td>
+                <td><div class="table-actions">
+                  <button class="btn-icon warning" title="Mover a otra sucursal"><i class="fa-solid fa-arrows-left-right"></i></button>
+                  <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td>MED-00287</td><td><strong>Ibuprofeno 400mg</strong></td><td>80</td>
+                <td class="text-danger fw-bold">20/03/2026</td>
+                <td><span class="badge-status badge-warning">18 días</span></td>
+                <td>Este</td>
+                <td><div class="table-actions">
+                  <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
+                  <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td>MED-00391</td><td><strong>Loratadina 10mg</strong></td><td>45</td>
+                <td class="text-warning fw-bold">28/03/2026</td>
+                <td><span class="badge-status badge-warning">26 días</span></td>
+                <td>Sur</td>
+                <td><div class="table-actions">
+                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+                  <button class="btn-icon"><i class="fa-solid fa-eye"></i></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Tab Low Stock -->
+      <div class="tab-pane fade" id="tabLow">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>Código</th><th>Medicamento</th><th>Stock Actual</th><th>Stock Mínimo</th><th>Sucursal</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MED-00512</td><td><strong>Paracetamol 1g</strong></td>
+                <td><span class="badge-status badge-warning">15 uds</span></td>
+                <td>50 uds</td><td>Sur</td>
+                <td><div class="table-actions">
+                  <button class="btn-icon success" title="Solicitar reposición"><i class="fa-solid fa-rotate"></i></button>
+                  <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td>MED-00634</td><td><strong>Insulina Glargina</strong></td>
+                <td><span class="badge-status badge-danger">3 uds</span></td>
+                <td>20 uds</td><td>Industrial</td>
+                <td><div class="table-actions">
+                  <button class="btn-icon success"><i class="fa-solid fa-rotate"></i></button>
+                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Tab Out of stock -->
+      <div class="tab-pane fade" id="tabOut">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>Código</th><th>Medicamento</th><th>Categoría</th><th>Sucursal</th><th>Último Stock</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MED-00741</td><td><strong>Metformina 850mg</strong></td><td>Antidiabéticos</td>
+                <td>Universitaria</td><td><small class="text-muted">hace 2 días</small></td>
+                <td><div class="table-actions">
+                  <button class="btn-icon success" title="Solicitar reposición"><i class="fa-solid fa-plus"></i></button>
+                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td>MED-00852</td><td><strong>Enalapril 20mg</strong></td><td>Antihipertensivos</td>
+                <td>Oeste</td><td><small class="text-muted">hace 1 día</small></td>
+                <td><div class="table-actions">
+                  <button class="btn-icon success"><i class="fa-solid fa-plus"></i></button>
+                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
+      <small class="text-muted">Mostrando 1–15 de 1,847 productos</small>
+      <nav><ul class="pagination pagination-sm mb-0">
+        <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul></nav>
+    </div>
+  </div>
+</main>
+
+<!-- Modal Ajuste de Stock -->
+<div class="modal fade" id="adjustStockModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-sliders me-2 text-primary"></i>Ajuste de Stock</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 p-3 rounded-3" style="background:#f0f4f8">
+          <strong>Amoxicilina 500mg</strong> — Sucursal Norte<br>
+          <small class="text-muted">Código: MED-00142 &nbsp;·&nbsp; Stock actual: <strong class="text-danger">15 uds</strong></small>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tipo de ajuste</label>
+          <select class="form-select">
+            <option>Entrada (agregar stock)</option>
+            <option>Salida (reducir stock)</option>
+            <option>Corrección manual</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cantidad</label>
+          <input type="number" class="form-control" placeholder="0" min="1">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Motivo del ajuste</label>
+          <select class="form-select">
+            <option>Compra a proveedor</option>
+            <option>Transferencia recibida</option>
+            <option>Devolución de cliente</option>
+            <option>Medicamento dañado</option>
+            <option>Inventario físico</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Observaciones</label>
+          <textarea class="form-control" rows="2" placeholder="Detalles adicionales..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary">Guardar Ajuste</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuevo Medicamento -->
+<div class="modal fade" id="newProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus-circle me-2 text-primary"></i>Nuevo Medicamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">Nombre del medicamento</label>
+            <input type="text" class="form-control" placeholder="Ej: Amoxicilina 500mg">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Código / SKU</label>
+            <input type="text" class="form-control" placeholder="MED-00000">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Categoría</label>
+            <select class="form-select">
+              <option>Antibióticos</option><option>Analgésicos</option>
+              <option>Antiinflamatorios</option><option>Vitaminas</option>
+              <option>Insulinas</option><option>Antiácidos</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Precio de venta</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control" placeholder="0.00">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Stock inicial</label>
+            <input type="number" class="form-control" placeholder="0">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Stock mínimo (alerta)</label>
+            <input type="number" class="form-control" placeholder="0">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Fecha de vencimiento</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Sucursal</label>
+            <select class="form-select">
+              <option>Central</option><option>Norte</option><option>Sur</option>
+              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+              <option>Universitaria</option><option>Industrial</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Descripción / Composición</label>
+            <textarea class="form-control" rows="2" placeholder="Descripción del medicamento..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary">Guardar Medicamento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('show');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// Branch stock cards
+const branches = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
+const stocks = [342, 285, 198, 256, 143, 187, 124, 112];
+const colors = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
+const container = document.getElementById('branchStockCards');
+branches.forEach((b, i) => {
+  const pct = Math.round(stocks[i] / 342 * 100);
+  container.innerHTML += `
+    <div class="col-6 col-md-4 col-xl-3">
+      <div class="p-3 rounded-3 border h-100" style="background:#fff">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span style="font-size:13px;font-weight:600;color:#475569">${b}</span>
+          <span style="font-size:16px;font-weight:700;color:${colors[i]}">${stocks[i]}</span>
+        </div>
+        <div class="progress mb-1" style="height:4px">
+          <div class="progress-bar" style="width:${pct}%;background:${colors[i]}"></div>
+        </div>
+        <small style="font-size:11px;color:#94a3b8">productos en stock</small>
+      </div>
+    </div>`;
+});
+
+// Inventory table body
+const meds = [
+  { code:'MED-00100', name:'Amoxicilina 500mg', cat:'Antibióticos', stock:342, exp:'2027-06-15', suc:'Central', status:'ok' },
+  { code:'MED-00142', name:'Amoxicilina 500mg', cat:'Antibióticos', stock:120, exp:'2026-03-15', suc:'Norte', status:'expiring' },
+  { code:'MED-00287', name:'Ibuprofeno 400mg', cat:'Antiinflamatorios', stock:80, exp:'2026-03-20', suc:'Este', status:'expiring' },
+  { code:'MED-00391', name:'Loratadina 10mg', cat:'Antihistamínicos', stock:200, exp:'2026-03-28', suc:'Sur', status:'ok' },
+  { code:'MED-00512', name:'Paracetamol 1g', cat:'Analgésicos', stock:15, exp:'2027-08-10', suc:'Sur', status:'low' },
+  { code:'MED-00634', name:'Insulina Glargina', cat:'Insulinas', stock:3, exp:'2026-05-01', suc:'Industrial', status:'low' },
+  { code:'MED-00741', name:'Metformina 850mg', cat:'Antidiabéticos', stock:0, exp:'2027-11-20', suc:'Universitaria', status:'out' },
+  { code:'MED-00852', name:'Enalapril 20mg', cat:'Antihipertensivos', stock:0, exp:'2027-09-14', suc:'Oeste', status:'out' },
+  { code:'MED-00963', name:'Omeprazol 20mg', cat:'Antiácidos', stock:456, exp:'2027-12-01', suc:'Central', status:'ok' },
+  { code:'MED-01074', name:'Vitamina C 1000mg', cat:'Vitaminas', stock:892, exp:'2027-07-30', suc:'Plaza Mayor', status:'ok' },
+];
+const tbody = document.getElementById('inventoryTableBody');
+const statusMap = {
+  ok: { cls: 'badge-success', label: 'OK' },
+  expiring: { cls: 'badge-danger', label: 'Por Vencer' },
+  low: { cls: 'badge-warning', label: 'Stock Bajo' },
+  out: { cls: 'badge-danger', label: 'Agotado' }
+};
+meds.forEach(m => {
+  const s = statusMap[m.status];
+  const stockColor = m.status === 'out' ? 'text-danger' : m.status === 'low' ? 'text-warning' : '';
+  tbody.innerHTML += `
+    <tr>
+      <td><input type="checkbox"></td>
+      <td><small class="text-muted">${m.code}</small></td>
+      <td><strong>${m.name}</strong></td>
+      <td><span class="badge bg-light text-muted">${m.cat}</span></td>
+      <td><strong class="${stockColor}">${m.stock}</strong></td>
+      <td><small class="${m.status === 'expiring' ? 'text-danger fw-bold' : 'text-muted'}">${m.exp}</small></td>
+      <td>${m.suc}</td>
+      <td><span class="badge-status ${s.cls}">${s.label}</span></td>
+      <td>
+        <div class="table-actions">
+          <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" title="Ajuste de stock" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
+          <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
+          <button class="btn-icon danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+});
+</script>
+</body>
+</html>

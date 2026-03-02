@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmaAdmin — Usuarios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link active"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-search position-relative">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" class="form-control" placeholder="Buscar usuario, email...">
+  </div>
+  <div class="topbar-right">
+    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="login.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Usuarios</li></ol></nav>
+      <h1 class="page-title">Gestión de Usuarios</h1>
+      <p class="page-subtitle">Administra accesos, roles y permisos del sistema</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
+      <i class="fa-solid fa-user-plus me-2"></i>Nuevo Usuario
+    </button>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total Usuarios</div>
+          <div class="kpi-value">32</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-users"></i> en el sistema</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-users"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Activos</div>
+          <div class="kpi-value text-success">28</div>
+          <div class="kpi-change up"><i class="fa-solid fa-circle-check"></i> Con acceso</div>
+        </div>
+        <div class="kpi-icon green"><i class="fa-solid fa-user-check"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Inactivos</div>
+          <div class="kpi-value text-muted">4</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-user-xmark"></i> Sin acceso</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-user-slash"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Conectados Ahora</div>
+          <div class="kpi-value text-primary">7</div>
+          <div class="kpi-change up"><i class="fa-solid fa-circle" style="color:#22c55e"></i> En línea</div>
+        </div>
+        <div class="kpi-icon teal"><i class="fa-solid fa-wifi"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles Summary + Filters -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-header"><h6 class="card-title"><i class="fa-solid fa-id-badge me-2 text-primary"></i>Distribución por Rol</h6></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-6 col-sm-3">
+              <div class="p-3 text-center rounded-3" style="background:#fee2e2">
+                <div style="font-size:28px;font-weight:800;color:#b91c1c">2</div>
+                <div class="role-badge role-admin mt-1">Admins</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="p-3 text-center rounded-3" style="background:#dbeafe">
+                <div style="font-size:28px;font-weight:800;color:#1d4ed8">8</div>
+                <div class="role-badge role-gerente mt-1">Gerentes</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="p-3 text-center rounded-3" style="background:#dcfce7">
+                <div style="font-size:28px;font-weight:800;color:#15803d">16</div>
+                <div class="role-badge role-cajero mt-1">Cajeros</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="p-3 text-center rounded-3" style="background:#e0f2fe">
+                <div style="font-size:28px;font-weight:800;color:#0369a1">6</div>
+                <div class="role-badge role-farmaceutico mt-1">Farmacéuticos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header"><h6 class="card-title"><i class="fa-solid fa-filter me-2 text-primary"></i>Filtrar Usuarios</h6></div>
+        <div class="card-body d-flex flex-column gap-2">
+          <input type="text" class="form-control form-control-sm" placeholder="Buscar por nombre o email...">
+          <select class="form-select form-select-sm">
+            <option>Todos los roles</option>
+            <option>Admin</option><option>Gerente</option>
+            <option>Cajero</option><option>Farmacéutico</option>
+          </select>
+          <select class="form-select form-select-sm">
+            <option>Todas las sucursales</option>
+            <option>Central</option><option>Norte</option><option>Sur</option>
+            <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+            <option>Universitaria</option><option>Industrial</option>
+          </select>
+          <select class="form-select form-select-sm">
+            <option>Todos los estados</option>
+            <option>Activo</option><option>Inactivo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-table me-2 text-primary"></i>Lista de Usuarios</h6>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-download me-1"></i>Exportar</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><input type="checkbox"></th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Sucursal</th>
+            <th>Rol</th>
+            <th>Último Acceso</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
+      <small class="text-muted">Mostrando 1–10 de 32 usuarios</small>
+      <nav><ul class="pagination pagination-sm mb-0">
+        <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul></nav>
+    </div>
+  </div>
+
+</main>
+
+<!-- Modal Nuevo Usuario -->
+<div class="modal fade" id="newUserModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-user-plus me-2 text-primary"></i>Nuevo Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" placeholder="Nombre Apellido">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Nombre de usuario</label>
+            <input type="text" class="form-control" placeholder="usuario123">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" placeholder="correo@farmacia.com">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" placeholder="555-0000">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Rol</label>
+            <select class="form-select">
+              <option>Cajero</option>
+              <option>Farmacéutico</option>
+              <option>Gerente</option>
+              <option>Admin</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Sucursal asignada</label>
+            <select class="form-select">
+              <option>Central</option><option>Norte</option><option>Sur</option>
+              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+              <option>Universitaria</option><option>Industrial</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" placeholder="••••••••">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Confirmar contraseña</label>
+            <input type="password" class="form-control" placeholder="••••••••">
+          </div>
+        </div>
+        <hr>
+        <h6 class="mb-3"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Permisos del Módulo</h6>
+        <div class="row g-2">
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Dashboard</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Ventas</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Inventario</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Transferencias</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Reportes</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Usuarios</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Punto de Venta</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Sucursales</label></div></div>
+          <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Configuración</label></div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal">Crear Usuario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Editar Usuario -->
+<div class="modal fade" id="editUserModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-user-pen me-2 text-primary"></i>Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-sm-6"><label class="form-label">Nombre</label><input type="text" class="form-control" value="María García"></div>
+          <div class="col-sm-6"><label class="form-label">Email</label><input type="email" class="form-control" value="m.garcia@farmacia.com"></div>
+          <div class="col-sm-6"><label class="form-label">Rol</label><select class="form-select"><option selected>Cajero</option><option>Farmacéutico</option><option>Gerente</option><option>Admin</option></select></div>
+          <div class="col-sm-6"><label class="form-label">Sucursal</label><select class="form-select"><option selected>Central</option><option>Norte</option><option>Sur</option></select></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Permisos -->
+<div class="modal fade" id="permissionsModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Gestionar Permisos — <span id="permUserName">María García</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 rounded-3 mb-4" style="background:#f0f4f8">
+          <div class="d-flex align-items-center gap-3">
+            <div class="user-avatar-table" style="width:44px;height:44px;font-size:16px">MG</div>
+            <div>
+              <div style="font-weight:700">María García</div>
+              <span class="role-badge role-cajero">Cajero</span>
+              <span class="ms-2" style="font-size:12px;color:#64748b">· Sucursal Central</span>
+            </div>
+          </div>
+        </div>
+        <h6 style="font-size:13px;font-weight:700;color:#374151;margin-bottom:12px">Módulos del Sistema</h6>
+        <div class="d-flex flex-column gap-2" id="permissionsChecklist">
+          <!-- JS rendered -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal">Guardar Permisos</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eliminar Usuario -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center p-4">
+        <div style="width:60px;height:60px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          <i class="fa-solid fa-trash" style="font-size:24px;color:#dc2626"></i>
+        </div>
+        <h5 style="font-weight:700">Eliminar usuario</h5>
+        <p class="text-muted" style="font-size:13px">¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.</p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary flex-fill" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-danger flex-fill" data-bs-dismiss="modal">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('show');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+const modules = ['Dashboard','Ventas','Inventario','Transferencias','Punto de Venta','Reportes','Usuarios','Sucursales','Configuración'];
+const permChecklist = document.getElementById('permissionsChecklist');
+modules.forEach((m, i) => {
+  const checked = i < 5;
+  permChecklist.innerHTML += `
+    <div class="d-flex align-items-center justify-content-between p-2 rounded-2" style="background:${checked ? '#f0fdf4' : '#f8fafc'}">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa-solid fa-${['chart-pie','receipt','boxes-stacked','truck-fast','cash-register','chart-line','users','building-columns','gear'][i]}"
+           style="width:18px;color:#64748b;font-size:13px"></i>
+        <span style="font-size:13px;font-weight:500">${m}</span>
+      </div>
+      <div class="form-check form-switch mb-0">
+        <input class="form-check-input" type="checkbox" ${checked ? 'checked' : ''}>
+      </div>
+    </div>`;
+});
+
+// Users data
+const users = [
+  { name:'Administrador Principal', initials:'AD', email:'admin@farmachain.com', branch:'Todas', role:'admin', lastAccess:'hace 5 min', active:true },
+  { name:'Carlos Méndez', initials:'CM', email:'c.mendez@farmachain.com', branch:'Central', role:'gerente', lastAccess:'hace 1h', active:true },
+  { name:'María García', initials:'MG', email:'m.garcia@farmachain.com', branch:'Central', role:'cajero', lastAccess:'hace 30 min', active:true },
+  { name:'José Rodríguez', initials:'JR', email:'j.rodriguez@farmachain.com', branch:'Norte', role:'cajero', lastAccess:'hace 2h', active:true },
+  { name:'Ana Pacheco', initials:'AP', email:'a.pacheco@farmachain.com', branch:'Sur', role:'farmaceutico', lastAccess:'hace 1h', active:true },
+  { name:'Laura Flores', initials:'LF', email:'l.flores@farmachain.com', branch:'Este', role:'cajero', lastAccess:'hace 3h', active:true },
+  { name:'Pedro López', initials:'PL', email:'p.lopez@farmachain.com', branch:'Industrial', role:'gerente', lastAccess:'hace 4h', active:true },
+  { name:'Rosa Torres', initials:'RT', email:'r.torres@farmachain.com', branch:'Oeste', role:'cajero', lastAccess:'hace 6h', active:false },
+  { name:'Miguel Santos', initials:'MS', email:'m.santos@farmachain.com', branch:'Universitaria', role:'farmaceutico', lastAccess:'Ayer 15:30', active:true },
+  { name:'Claudia Reyes', initials:'CR', email:'c.reyes@farmachain.com', branch:'Plaza Mayor', role:'cajero', lastAccess:'Ayer 12:00', active:false },
+];
+const roleMap = {
+  admin: { cls: 'role-admin', label: 'Admin' },
+  gerente: { cls: 'role-gerente', label: 'Gerente' },
+  cajero: { cls: 'role-cajero', label: 'Cajero' },
+  farmaceutico: { cls: 'role-farmaceutico', label: 'Farmacéutico' }
+};
+const gradients = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d','#dc2626','#84cc16'];
+const tbody = document.getElementById('usersTableBody');
+users.forEach((u, i) => {
+  const r = roleMap[u.role];
+  tbody.innerHTML += `
+    <tr>
+      <td><input type="checkbox"></td>
+      <td>
+        <div class="d-flex align-items-center">
+          <span class="user-avatar-table" style="background:linear-gradient(135deg,${gradients[i]},${gradients[(i+3)%gradients.length]})">${u.initials}</span>
+          <div>
+            <div style="font-weight:600;font-size:13px">${u.name}</div>
+            ${u.active && i < 3 ? '<small style="color:#22c55e;font-size:11px"><i class="fa-solid fa-circle" style="font-size:7px"></i> En línea</small>' : ''}
+          </div>
+        </div>
+      </td>
+      <td><small class="text-muted">${u.email}</small></td>
+      <td><span style="font-size:13px">${u.branch}</span></td>
+      <td><span class="role-badge ${r.cls}">${r.label}</span></td>
+      <td><small class="text-muted">${u.lastAccess}</small></td>
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <div class="form-check form-switch mb-0">
+            <input class="form-check-input" type="checkbox" ${u.active ? 'checked' : ''}>
+          </div>
+          <small class="${u.active ? 'text-success' : 'text-muted'}">${u.active ? 'Activo' : 'Inactivo'}</small>
+        </div>
+      </td>
+      <td>
+        <div class="table-actions">
+          <button class="btn-icon" title="Editar" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon" title="Permisos" data-bs-toggle="modal" data-bs-target="#permissionsModal"><i class="fa-solid fa-shield-halved"></i></button>
+          <button class="btn-icon danger" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+});
+</script>
+</body>
+</html>
