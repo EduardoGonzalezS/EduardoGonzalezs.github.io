@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmaAdmin — Configuración</title>
+  <title>Farmacéutico MK — Configuración</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 <nav class="sidebar" id="sidebar">
   <a href="dashboard.html" class="sidebar-brand">
     <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
-    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
   </a>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Principal</div>
@@ -35,6 +35,7 @@
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link active"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -231,25 +232,27 @@
           </div>
         </div>
         <div class="settings-section-body">
-          <div class="settings-row settings-disabled">
+          <div class="settings-row">
             <div class="settings-row-info">
-              <div class="settings-label">Modo oscuro <span class="coming-soon-badge">Próximamente</span></div>
+              <div class="settings-label">Modo oscuro</div>
               <div class="settings-desc">Cambiar tema de la interfaz a modo oscuro</div>
             </div>
             <div class="form-check form-switch mb-0">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" type="checkbox" id="darkModeToggle" onchange="toggleDarkMode(this.checked)">
+              <label class="form-check-label text-muted" for="darkModeToggle" id="darkModeLabel">Desactivado</label>
             </div>
           </div>
-          <div class="settings-row settings-disabled">
+          <div class="settings-row">
             <div class="settings-row-info">
-              <div class="settings-label">Color de acento <span class="coming-soon-badge">Próximamente</span></div>
+              <div class="settings-label">Color de acento</div>
               <div class="settings-desc">Personalizar el color principal del sistema</div>
             </div>
-            <div class="d-flex gap-2">
-              <div style="width:24px;height:24px;border-radius:50%;background:#2563eb;border:2px solid #fff;box-shadow:0 0 0 2px #2563eb"></div>
-              <div style="width:24px;height:24px;border-radius:50%;background:#0891b2;opacity:.4"></div>
-              <div style="width:24px;height:24px;border-radius:50%;background:#16a34a;opacity:.4"></div>
-              <div style="width:24px;height:24px;border-radius:50%;background:#7c3aed;opacity:.4"></div>
+            <div class="d-flex gap-2 align-items-center">
+              <div class="accent-dot" data-color="#2563eb" style="background:#2563eb" onclick="selectAccent('#2563eb')"></div>
+              <div class="accent-dot" data-color="#0891b2" style="background:#0891b2" onclick="selectAccent('#0891b2')"></div>
+              <div class="accent-dot" data-color="#16a34a" style="background:#16a34a" onclick="selectAccent('#16a34a')"></div>
+              <div class="accent-dot" data-color="#7c3aed" style="background:#7c3aed" onclick="selectAccent('#7c3aed')"></div>
+              <div class="accent-dot" data-color="#db2777" style="background:#db2777" onclick="selectAccent('#db2777')"></div>
             </div>
           </div>
         </div>
@@ -269,7 +272,7 @@
         <div class="settings-section-body">
           <div class="d-flex justify-content-between py-2 border-bottom">
             <small class="text-muted">Versión</small>
-            <small class="fw-semibold">FarmaAdmin v2.1.0</small>
+            <small class="fw-semibold">Farmacéutico MK v2.1.0</small>
           </div>
           <div class="d-flex justify-content-between py-2 border-bottom">
             <small class="text-muted">Sucursales activas</small>
@@ -355,6 +358,38 @@ let inactivityTimer = null;
 let countdownTimer = null;
 let countdownVal = 30;
 
+// ===== APPEARANCE =====
+function shadeColor(hex, pct) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, Math.max(0, (n >> 16) + pct * 2.55 | 0));
+  const g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + pct * 2.55 | 0));
+  const b = Math.min(255, Math.max(0, (n & 0xff) + pct * 2.55 | 0));
+  return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+
+function applyAppearance() {
+  const dark = localStorage.getItem('darkMode') === 'true';
+  document.body.classList.toggle('dark-mode', dark);
+  const accent = localStorage.getItem('accentColor');
+  if (accent) {
+    document.documentElement.style.setProperty('--primary', accent);
+    document.documentElement.style.setProperty('--primary-dark', shadeColor(accent, -15));
+  }
+}
+
+function toggleDarkMode(enabled) {
+  document.body.classList.toggle('dark-mode', enabled);
+  document.getElementById('darkModeLabel').textContent = enabled ? 'Activado' : 'Desactivado';
+}
+
+function selectAccent(color) {
+  document.documentElement.style.setProperty('--primary', color);
+  document.documentElement.style.setProperty('--primary-dark', shadeColor(color, -15));
+  document.querySelectorAll('.accent-dot').forEach(d => d.classList.remove('active-accent'));
+  const dot = document.querySelector(`.accent-dot[data-color="${color}"]`);
+  if (dot) dot.classList.add('active-accent');
+}
+
 // Load saved settings
 function loadSettings() {
   // Inactivity time
@@ -378,6 +413,13 @@ function loadSettings() {
   document.getElementById('alertExpiry').checked = localStorage.getItem('alertExpiry') !== 'false';
   const ed = localStorage.getItem('expiryDays');
   if (ed) document.getElementById('expiryDays').value = ed;
+
+  // Appearance
+  const dark = localStorage.getItem('darkMode') === 'true';
+  document.getElementById('darkModeToggle').checked = dark;
+  document.getElementById('darkModeLabel').textContent = dark ? 'Activado' : 'Desactivado';
+  const accent = localStorage.getItem('accentColor') || '#2563eb';
+  selectAccent(accent);
 }
 
 function toggleInactivity(checked) {
@@ -408,6 +450,13 @@ function saveAllSettings() {
   localStorage.setItem('alertStock',  document.getElementById('alertStock').checked);
   localStorage.setItem('alertExpiry', document.getElementById('alertExpiry').checked);
   localStorage.setItem('expiryDays',  document.getElementById('expiryDays').value);
+
+  // Appearance
+  const darkEnabled = document.getElementById('darkModeToggle').checked;
+  localStorage.setItem('darkMode', darkEnabled);
+  const activeAccent = document.querySelector('.accent-dot.active-accent')?.dataset.color || '#2563eb';
+  localStorage.setItem('accentColor', activeAccent);
+  applyAppearance();
 
   // Update running timer
   inactivityMinutes = mins;
@@ -477,6 +526,7 @@ function closeSidebar() {
 // ===== INIT =====
 loadSettings();
 resetInactivityTimer();
+applyAppearance();
 </script>
 </body>
 </html>

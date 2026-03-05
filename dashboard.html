@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmaAdmin — Dashboard</title>
+  <title>Farmacéutico MK — Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
   <a href="dashboard.html" class="sidebar-brand">
     <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
     <div>
-      <div class="brand-name">FarmaAdmin</div>
+      <div class="brand-name">Farmacéutico MK</div>
       <div class="brand-sub">Cadena de Farmacias</div>
     </div>
   </a>
@@ -56,8 +56,11 @@
       <a href="sucursales.html" class="nav-link">
         <i class="fa-solid fa-building-columns"></i> Sucursales
       </a>
-      <a href="#" class="nav-link">
+      <a href="reportes.html" class="nav-link">
         <i class="fa-solid fa-chart-line"></i> Reportes
+      </a>
+      <a href="estimacion.html" class="nav-link">
+        <i class="fa-solid fa-file-invoice-dollar"></i> Estimación
       </a>
       <a href="configuracion.html" class="nav-link">
         <i class="fa-solid fa-gear"></i> Configuración
@@ -241,7 +244,7 @@
                 <th>Estado</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="recentSalesBody">
               <tr>
                 <td><span style="font-weight:600;color:#2563eb">#V-20482</span></td>
                 <td>Central</td><td>María G.</td>
@@ -295,9 +298,9 @@
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between">
           <h6 class="card-title"><i class="fa-solid fa-triangle-exclamation me-2 text-warning"></i>Alertas del Sistema</h6>
-          <span class="badge bg-danger rounded-pill">8</span>
+          <span class="badge bg-danger rounded-pill" id="alertCountBadge">8</span>
         </div>
-        <div class="card-body p-3">
+        <div class="card-body p-3" id="alertsCardBody">
 
           <div class="alert-item">
             <div class="alert-icon" style="background:#fee2e2;color:#dc2626">
@@ -367,7 +370,7 @@
     <div class="col-12 mt-3">
       <div class="card">
         <div class="card-header">
-          <h6 class="card-title"><i class="fa-solid fa-building me-2 text-primary"></i>Desempeño por Sucursal — Hoy</h6>
+          <h6 class="card-title"><i class="fa-solid fa-building me-2 text-primary"></i>Desempeño por Sucursal — <span id="branchPeriodLabel">Hoy</span></h6>
         </div>
         <div class="card-body">
           <div class="row g-3">
@@ -399,32 +402,157 @@ function closeSidebar() {
   document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
-// Period pills
-document.querySelectorAll('.period-pill').forEach(pill => {
-  pill.addEventListener('click', function() {
-    this.closest('.period-pills, .d-flex').querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+// ===================== Branch / Color constants =====================
+const branches = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
+const branchColors = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
+
+// ===================== Period Data =====================
+const _days30 = Array.from({length:30},(_,i)=>{ const d=new Date(2026,1,1); d.setDate(d.getDate()+i); return d.toLocaleDateString('es-MX',{day:'numeric',month:'short'}); });
+
+const periodData = {
+  hoy: {
+    labels: ['Hoy','Esta Semana','Este Mes','Med. por Vencer'],
+    kpis: ['$48,320','$284,150','$1.2M','47'],
+    changes: [
+      { text:'+12.4% vs ayer', dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'+8.1% vs semana ant.', dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'+5.3% vs mes ant.', dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'Requieren atención', dir:'down', icon:'fa-triangle-exclamation', danger:true },
+    ],
+    chartTitle: 'Ventas — Últimos 30 días',
+    lineLabels: _days30,
+    lineData: [42000,38000,45000,51000,47000,53000,49000,56000,44000,61000,58000,52000,67000,63000,71000,68000,75000,72000,80000,77000,85000,82000,79000,88000,91000,86000,94000,89000,97000,48320],
+    doughnut: [24,18,12,15,8,10,7,6],
+    branchSales: [12400,8900,6200,7800,4100,5300,3600,3100],
+    branchMeta: 'meta diaria',
+    branchPeriod: 'Hoy',
+    alertCount: 8,
+    recentSales: [
+      { folio:'#V-20482', suc:'Central',     cajero:'María G.',  total:'$340.00',   hora:'10:42 AM', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20481', suc:'Norte',       cajero:'José R.',   total:'$215.50',   hora:'10:38 AM', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20480', suc:'Sur',         cajero:'Ana P.',    total:'$128.00',   hora:'10:31 AM', cls:'badge-danger',  label:'Cancelado'  },
+      { folio:'#V-20479', suc:'Plaza Mayor', cajero:'Carlos M.', total:'$892.00',   hora:'10:18 AM', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20478', suc:'Este',        cajero:'Laura F.',  total:'$560.75',   hora:'10:05 AM', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20477', suc:'Industrial',  cajero:'Pedro L.',  total:'$1,240.00', hora:'09:55 AM', cls:'badge-success', label:'Completado' },
+    ],
+    alerts: [
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Amoxicilina 500mg — por vencer', desc:'Sucursal Norte · 120 unidades · Vence: 15 Mar', time:'hace 2h' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Paracetamol 1g — stock bajo',     desc:'Sucursal Sur · Solo 15 unidades restantes',   time:'hace 3h' },
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Ibuprofeno 400mg — por vencer',   desc:'Sucursal Este · 80 unidades · Vence: 20 Mar',  time:'hace 4h' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Insulina Glargina — stock crítico',desc:'Sucursal Industrial · 3 unidades restantes',   time:'hace 5h' },
+      { icon:'fa-ban',               bg:'#fee2e2', color:'#dc2626', title:'Metformina 850mg — agotado',       desc:'Sucursal Universitaria · 0 unidades',          time:'hace 6h' },
+    ],
+  },
+  semana: {
+    labels: ['Ventas Semana','Ventas Mes','Mejor Día','Med. por Vencer'],
+    kpis: ['$284,150','$1.2M','Viernes','47'],
+    changes: [
+      { text:'+8.1% vs semana ant.', dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'+5.3% vs mes ant.',    dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'$52,300 en ventas',    dir:'up', icon:'fa-star' },
+      { text:'Requieren atención',   dir:'down', icon:'fa-triangle-exclamation', danger:true },
+    ],
+    chartTitle: 'Ventas — Esta semana',
+    lineLabels: ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],
+    lineData:   [38200, 44100, 41800, 46500, 52300, 38900, 22350],
+    doughnut: [22,19,13,14,9,11,7,5],
+    branchSales: [76400,61900,46200,55800,34100,43300,26600,20100],
+    branchMeta: 'meta semanal',
+    branchPeriod: 'Esta semana',
+    alertCount: 8,
+    recentSales: [
+      { folio:'#V-20469', suc:'Central',     cajero:'María G.',  total:'$1,820.00', hora:'Mar 10:30', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20455', suc:'Norte',       cajero:'José R.',   total:'$980.50',   hora:'Lun 15:20', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20442', suc:'Sur',         cajero:'Ana P.',    total:'$2,340.00', hora:'Mié 09:45', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20430', suc:'Este',        cajero:'Laura F.',  total:'$560.75',   hora:'Jue 11:00', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20418', suc:'Plaza Mayor', cajero:'Carlos M.', total:'$3,120.00', hora:'Vie 14:30', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20405', suc:'Industrial',  cajero:'Pedro L.',  total:'$890.00',   hora:'Sáb 08:50', cls:'badge-danger',  label:'Cancelado'  },
+    ],
+    alerts: [
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Amoxicilina 500mg — por vencer', desc:'Sucursal Norte · 120 unidades · Vence: 15 Mar', time:'Lun' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Paracetamol 1g — stock bajo',     desc:'Sucursal Sur · Solo 15 unidades restantes',   time:'Mar' },
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Ibuprofeno 400mg — por vencer',   desc:'Sucursal Este · 80 unidades · Vence: 20 Mar',  time:'Mié' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Insulina Glargina — stock crítico',desc:'Sucursal Industrial · 3 unidades restantes',   time:'Jue' },
+      { icon:'fa-ban',               bg:'#fee2e2', color:'#dc2626', title:'Metformina 850mg — agotado',       desc:'Sucursal Universitaria · 0 unidades',          time:'Vie' },
+    ],
+  },
+  mes: {
+    labels: ['Ventas Mes','Ventas Trimestre','Ticket Promedio','Med. por Vencer'],
+    kpis: ['$1.2M','$3.6M','$287.50','47'],
+    changes: [
+      { text:'+5.3% vs mes ant.',    dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'+4.1% vs trim. ant.',  dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'+$12 vs mes ant.',     dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'Requieren atención',   dir:'down', icon:'fa-triangle-exclamation', danger:true },
+    ],
+    chartTitle: 'Ventas — Semanas del mes',
+    lineLabels: ['Sem 1 (1–7)','Sem 2 (8–14)','Sem 3 (15–21)','Sem 4 (22–28)','Sem 5 (29–31)'],
+    lineData:   [285000, 312000, 298000, 267000, 38320],
+    doughnut: [23,18,12,15,8,10,8,6],
+    branchSales: [276000,216000,144000,180000,96000,120000,96000,72000],
+    branchMeta: 'meta mensual',
+    branchPeriod: 'Este mes',
+    alertCount: 12,
+    recentSales: [
+      { folio:'#V-20480', suc:'Central',     cajero:'María G.',  total:'$8,450.00', hora:'1 Mar',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-20350', suc:'Norte',       cajero:'José R.',   total:'$5,280.00', hora:'12 Feb', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20280', suc:'Sur',         cajero:'Ana P.',    total:'$3,920.00', hora:'20 Feb', cls:'badge-success', label:'Completado' },
+      { folio:'#V-20210', suc:'Este',        cajero:'Laura F.',  total:'$2,640.00', hora:'8 Feb',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-20140', suc:'Plaza Mayor', cajero:'Carlos M.', total:'$6,100.00', hora:'15 Feb', cls:'badge-danger',  label:'Cancelado'  },
+      { folio:'#V-20060', suc:'Oeste',       cajero:'Diana R.',  total:'$1,890.00', hora:'5 Feb',  cls:'badge-success', label:'Completado' },
+    ],
+    alerts: [
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Amoxicilina 500mg — por vencer',  desc:'Sucursal Norte · 120 unidades · Vence: 15 Mar',  time:'Sem 1' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Paracetamol 1g — stock bajo',      desc:'Sucursal Sur · Solo 15 unidades restantes',      time:'Sem 1' },
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Ibuprofeno 400mg — por vencer',    desc:'Sucursal Este · 80 unidades · Vence: 20 Mar',    time:'Sem 1' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Vitamina D3 — stock bajo',         desc:'Sucursal Oeste · Solo 8 unidades restantes',     time:'Sem 2' },
+      { icon:'fa-ban',               bg:'#fee2e2', color:'#dc2626', title:'Metformina 850mg — agotado',        desc:'Sucursal Universitaria · 0 unidades',            time:'Sem 3' },
+    ],
+  },
+  anio: {
+    labels: ['Ventas Año','Proyección','Crecimiento','Med. por Vencer'],
+    kpis: ['$14.4M','$17.2M','+8.3%','47'],
+    changes: [
+      { text:'+8.3% vs año ant.',    dir:'up', icon:'fa-arrow-trend-up' },
+      { text:'Meta 2026: $18M',      dir:'up', icon:'fa-flag' },
+      { text:'YTD enero-marzo',      dir:'neutral', icon:'fa-chart-line' },
+      { text:'Requieren atención',   dir:'down', icon:'fa-triangle-exclamation', danger:true },
+    ],
+    chartTitle: 'Ventas — Por mes del año',
+    lineLabels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    lineData:   [1140000,1180000,1200000,null,null,null,null,null,null,null,null,null],
+    doughnut: [24,18,12,15,8,10,7,6],
+    branchSales: [3456000,2592000,1728000,2160000,1152000,1440000,1152000,864000],
+    branchMeta: 'meta anual',
+    branchPeriod: 'Este año',
+    alertCount: 8,
+    recentSales: [
+      { folio:'#V-18920', suc:'Central',     cajero:'María G.',  total:'$12,400.00', hora:'Ene',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-16540', suc:'Norte',       cajero:'José R.',   total:'$9,800.00',  hora:'Ene',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-14100', suc:'Plaza Mayor', cajero:'Carlos M.', total:'$8,200.00',  hora:'Feb',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-12890', suc:'Este',        cajero:'Laura F.',  total:'$7,650.00',  hora:'Feb',  cls:'badge-success', label:'Completado' },
+      { folio:'#V-11200', suc:'Sur',         cajero:'Ana P.',    total:'$5,430.00',  hora:'Mar',  cls:'badge-danger',  label:'Cancelado'  },
+      { folio:'#V-09800', suc:'Industrial',  cajero:'Pedro L.',  total:'$4,290.00',  hora:'Mar',  cls:'badge-success', label:'Completado' },
+    ],
+    alerts: [
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Amoxicilina 500mg — por vencer',  desc:'Sucursal Norte · 120 unidades · Vence: 15 Mar',  time:'Mar' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Paracetamol 1g — stock bajo',      desc:'Sucursal Sur · Solo 15 unidades restantes',      time:'Mar' },
+      { icon:'fa-clock-rotate-left', bg:'#fee2e2', color:'#dc2626', title:'Ibuprofeno 400mg — por vencer',    desc:'Sucursal Este · 80 unidades · Vence: 20 Mar',    time:'Feb' },
+      { icon:'fa-box-open',          bg:'#fef3c7', color:'#d97706', title:'Insulina Glargina — stock crítico', desc:'Sucursal Industrial · 3 unidades restantes',    time:'Feb' },
+      { icon:'fa-ban',               bg:'#fee2e2', color:'#dc2626', title:'Metformina 850mg — agotado',        desc:'Sucursal Universitaria · 0 unidades',           time:'Ene' },
+    ],
+  },
+};
 
 // ===================== Line Chart =====================
 const ctx = document.getElementById('salesLineChart').getContext('2d');
-const labels = Array.from({length: 30}, (_, i) => {
-  const d = new Date(2026, 1, 1);
-  d.setDate(d.getDate() + i);
-  return d.toLocaleDateString('es-MX', {day:'numeric', month:'short'});
-});
-const salesData = [42000,38000,45000,51000,47000,53000,49000,56000,44000,
-  61000,58000,52000,67000,63000,71000,68000,75000,72000,80000,77000,
-  85000,82000,79000,88000,91000,86000,94000,89000,97000,48320];
-
 const lineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels,
+    labels: periodData.hoy.lineLabels,
     datasets: [{
       label: 'Ventas ($)',
-      data: salesData,
+      data: periodData.hoy.lineData,
       borderColor: '#2563eb',
       backgroundColor: 'rgba(37,99,235,.08)',
       borderWidth: 2.5,
@@ -443,36 +571,21 @@ const lineChart = new Chart(ctx, {
       y: {
         beginAtZero: false,
         grid: { color: '#f1f5f9' },
-        ticks: {
-          callback: v => '$' + (v/1000).toFixed(0) + 'k',
-          font: { size: 11 }
-        }
+        ticks: { callback: v => v >= 1000000 ? '$' + (v/1000000).toFixed(1) + 'M' : '$' + (v/1000).toFixed(0) + 'k', font: { size: 11 } }
       },
-      x: {
-        grid: { display: false },
-        ticks: { font: { size: 11 }, maxTicksLimit: 10 }
-      }
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, maxTicksLimit: 10 } }
     }
   }
 });
 new ResizeObserver(() => lineChart.resize()).observe(document.getElementById('salesLineChart').parentElement);
 
 // ===================== Doughnut Chart =====================
-const branches = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
-const branchValues = [24, 18, 12, 15, 8, 10, 7, 6];
-const branchColors = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
-
 const ctx2 = document.getElementById('branchDoughnut').getContext('2d');
 const doughnutChart = new Chart(ctx2, {
   type: 'doughnut',
   data: {
     labels: branches,
-    datasets: [{
-      data: branchValues,
-      backgroundColor: branchColors,
-      borderWidth: 0,
-      hoverOffset: 8
-    }]
+    datasets: [{ data: periodData.hoy.doughnut, backgroundColor: branchColors, borderWidth: 0, hoverOffset: 8 }]
   },
   options: {
     responsive: true,
@@ -480,52 +593,160 @@ const doughnutChart = new Chart(ctx2, {
     cutout: '72%',
     plugins: {
       legend: { display: false },
-      tooltip: {
-        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
-      }
+      tooltip: { callbacks: { label: c => ` ${c.label}: ${c.parsed}%` } }
     }
   }
 });
 new ResizeObserver(() => doughnutChart.resize()).observe(document.getElementById('branchDoughnut').parentElement);
 
-// Legend
-const legend = document.getElementById('doughnutLegend');
-branches.forEach((b, i) => {
-  legend.innerHTML += `
-    <div class="d-flex align-items-center justify-content-between mb-1">
-      <div class="d-flex align-items-center gap-2">
-        <span style="width:10px;height:10px;border-radius:3px;background:${branchColors[i]};flex-shrink:0;display:inline-block"></span>
-        <span style="font-size:12px;color:#475569">${b}</span>
-      </div>
-      <span style="font-size:12px;font-weight:600;color:#1e293b">${branchValues[i]}%</span>
-    </div>`;
+// ===================== updateDashboard =====================
+function renderLegend(values) {
+  const legend = document.getElementById('doughnutLegend');
+  legend.innerHTML = '';
+  branches.forEach((b, i) => {
+    legend.innerHTML += `
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <div class="d-flex align-items-center gap-2">
+          <span style="width:10px;height:10px;border-radius:3px;background:${branchColors[i]};flex-shrink:0;display:inline-block"></span>
+          <span style="font-size:12px;color:#475569">${b}</span>
+        </div>
+        <span style="font-size:12px;font-weight:600;color:#1e293b">${values[i]}%</span>
+      </div>`;
+  });
+}
+
+function renderBranchCards(sales, meta) {
+  const maxSale = Math.max(...sales);
+  const container = document.getElementById('branchCardsContainer');
+  container.innerHTML = '';
+  branches.forEach((b, i) => {
+    const pct = maxSale > 0 ? Math.round(sales[i] / maxSale * 100) : 0;
+    const color = branchColors[i];
+    container.innerHTML += `
+      <div class="col-sm-6 col-lg-3">
+        <div class="p-3 rounded-3 border" style="background:#fff">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#475569">${b}</div>
+              <div style="font-size:18px;font-weight:700;color:#1e293b">$${sales[i].toLocaleString()}</div>
+            </div>
+            <div style="width:36px;height:36px;border-radius:10px;background:${color}20;display:flex;align-items:center;justify-content:center">
+              <i class="fa-solid fa-store" style="color:${color};font-size:14px"></i>
+            </div>
+          </div>
+          <div class="progress" style="height:5px">
+            <div class="progress-bar" style="width:${pct}%;background:${color}"></div>
+          </div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px">${pct}% de la ${meta}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderRecentSales(sales) {
+  const tbody = document.getElementById('recentSalesBody');
+  tbody.innerHTML = '';
+  sales.forEach(r => {
+    tbody.innerHTML += `
+      <tr>
+        <td><span style="font-weight:600;color:#2563eb">${r.folio}</span></td>
+        <td>${r.suc}</td><td>${r.cajero}</td>
+        <td><strong>${r.total}</strong></td>
+        <td><small class="text-muted">${r.hora}</small></td>
+        <td><span class="badge-status ${r.cls}">${r.label}</span></td>
+      </tr>`;
+  });
+}
+
+function renderAlerts(alerts, count) {
+  const body = document.getElementById('alertsCardBody');
+  const viewBtn = body.querySelector('a.btn');
+  body.innerHTML = '';
+  alerts.forEach(a => {
+    body.innerHTML += `
+      <div class="alert-item">
+        <div class="alert-icon" style="background:${a.bg};color:${a.color}"><i class="fa-solid ${a.icon}"></i></div>
+        <div class="alert-text">
+          <div class="alert-title">${a.title}</div>
+          <div class="alert-desc">${a.desc}</div>
+        </div>
+        <div class="alert-time">${a.time}</div>
+      </div>`;
+  });
+  document.getElementById('alertCountBadge').textContent = count;
+  if (viewBtn) body.appendChild(viewBtn);
+  else body.insertAdjacentHTML('beforeend', `<a href="inventario.html" class="btn btn-sm btn-outline-warning w-100 mt-2"><i class="fa-solid fa-eye me-1"></i>Ver todo el inventario</a>`);
+}
+
+const kpiValueEls  = document.querySelectorAll('.kpi-value');
+const kpiChangeEls = document.querySelectorAll('.kpi-change');
+const kpiLabelEls  = document.querySelectorAll('.kpi-label');
+
+function updateDashboard(period) {
+  const d = periodData[period];
+
+  // KPIs
+  d.kpis.forEach((val, i) => {
+    kpiValueEls[i].innerHTML = val;
+    kpiValueEls[i].className = 'kpi-value' + (d.changes[i].danger ? ' text-danger' : '');
+    kpiLabelEls[i].textContent = d.labels[i];
+    const c = d.changes[i];
+    kpiChangeEls[i].className = `kpi-change ${c.dir}`;
+    kpiChangeEls[i].innerHTML = `<i class="fa-solid ${c.icon}"></i> ${c.text}`;
+  });
+
+  // Charts
+  lineChart.data.labels = d.lineLabels;
+  lineChart.data.datasets[0].data = d.lineData;
+  lineChart.update('active');
+  document.querySelector('#salesLineChart').closest('.card').querySelector('.card-title').innerHTML =
+    `<i class="fa-solid fa-chart-line me-2 text-primary"></i>${d.chartTitle}`;
+
+  doughnutChart.data.datasets[0].data = d.doughnut;
+  doughnutChart.update('active');
+  renderLegend(d.doughnut);
+
+  // Branch cards
+  document.getElementById('branchPeriodLabel').textContent = d.branchPeriod;
+  renderBranchCards(d.branchSales, d.branchMeta);
+
+  // Recent sales
+  renderRecentSales(d.recentSales);
+
+  // Alerts
+  renderAlerts(d.alerts, d.alertCount);
+}
+
+// ===================== Period Pills =====================
+// Page-level pills (Hoy / Semana / Mes / Año)
+const pagePills = document.querySelectorAll('.period-pills .period-pill');
+const periodKeys = ['hoy','semana','mes','anio'];
+pagePills.forEach((pill, idx) => {
+  pill.addEventListener('click', function() {
+    pagePills.forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    updateDashboard(periodKeys[idx]);
+  });
 });
 
-// ===================== Branch Cards =====================
-const branchSales = [12400, 8900, 6200, 7800, 4100, 5300, 3600, 3100];
-const container = document.getElementById('branchCardsContainer');
-branches.forEach((b, i) => {
-  const pct = Math.round((branchSales[i] / 12400) * 100);
-  const color = branchColors[i];
-  container.innerHTML += `
-    <div class="col-sm-6 col-lg-3">
-      <div class="p-3 rounded-3 border" style="background:#fff">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#475569">${b}</div>
-            <div style="font-size:18px;font-weight:700;color:#1e293b">$${branchSales[i].toLocaleString()}</div>
-          </div>
-          <div style="width:36px;height:36px;border-radius:10px;background:${color}20;display:flex;align-items:center;justify-content:center">
-            <i class="fa-solid fa-store" style="color:${color};font-size:14px"></i>
-          </div>
-        </div>
-        <div class="progress" style="height:5px">
-          <div class="progress-bar" style="width:${pct}%;background:${color}"></div>
-        </div>
-        <div style="font-size:11px;color:#94a3b8;margin-top:4px">${pct}% de la meta diaria</div>
-      </div>
-    </div>`;
+// Chart-level pills (Todas / Central / Norte)
+document.querySelectorAll('.card-header .d-flex .period-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    this.closest('.d-flex').querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+  });
 });
+
+// ===================== Init =====================
+renderLegend(periodData.hoy.doughnut);
+renderBranchCards(periodData.hoy.branchSales, periodData.hoy.branchMeta);
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
 </script>
 </body>
 </html>

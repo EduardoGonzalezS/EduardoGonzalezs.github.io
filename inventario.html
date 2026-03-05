@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmaAdmin — Inventario</title>
+  <title>Farmacéutico MK — Inventario</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 <nav class="sidebar" id="sidebar">
   <a href="dashboard.html" class="sidebar-brand">
     <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
-    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
   </a>
   <div class="sidebar-section">
     <div class="sidebar-section-title">Principal</div>
@@ -35,6 +35,7 @@
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -79,13 +80,96 @@
       <p class="page-subtitle">Control de stock, vencimientos y alertas de productos</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-outline-primary" onclick="openNewInventory()">
+      <button class="btn btn-outline-primary" id="btnOpenNewInv" onclick="openNewInventory()">
         <i class="fa-solid fa-clipboard-list me-2"></i>Nuevo Inventario
       </button>
       <a href="alta-masiva.html" class="btn btn-outline-secondary"><i class="fa-solid fa-file-import me-2"></i>Alta Masiva</a>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProductModal">
         <i class="fa-solid fa-plus me-2"></i>Nuevo Producto
       </button>
+    </div>
+  </div>
+
+  <!-- ===== PANEL INLINE: Nuevo / Editar Inventario Físico ===== -->
+  <div id="newInventoryPanel" class="d-none mb-4">
+    <div class="card border-primary" style="border-width:2px !important">
+      <div class="card-header d-flex align-items-center justify-content-between"
+           style="background:linear-gradient(135deg,#eff6ff,#f0f4f8)">
+        <h6 class="card-title mb-0" id="invPanelTitle">
+          <i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico
+        </h6>
+        <button class="btn btn-sm btn-outline-secondary" onclick="closeInventoryPanel()">
+          <i class="fa-solid fa-xmark me-1"></i>Cerrar
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 mb-4">
+          <div class="col-sm-4">
+            <label class="form-label fw-semibold">Sucursal <span class="text-danger">*</span></label>
+            <select class="form-select" id="invFormBranch" onchange="loadBranchProducts(this.value)">
+              <option value="">Seleccionar sucursal...</option>
+              <option>Central</option><option>Norte</option><option>Sur</option>
+              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+              <option>Universitaria</option><option>Industrial</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label class="form-label fw-semibold">Fecha</label>
+            <input type="date" class="form-control" id="invFormDate">
+          </div>
+          <div class="col-sm-5">
+            <label class="form-label fw-semibold">Responsable</label>
+            <input type="text" class="form-control" id="invFormResponsible" placeholder="Nombre del responsable del conteo">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Notas u observaciones</label>
+            <textarea class="form-control" id="invFormNotes" rows="2" placeholder="Ej: Conteo mensual de rutina, cierre de quincena..."></textarea>
+          </div>
+        </div>
+        <!-- Product count table -->
+        <div id="invProductSection" class="d-none">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0" id="invProductSectionTitle" style="color:#1e293b"><i class="fa-solid fa-list-check me-2 text-primary"></i>Productos a contar</h6>
+            <small class="text-muted" id="invProductCount"></small>
+          </div>
+          <div class="table-responsive" style="max-height:380px;overflow-y:auto">
+            <table class="table table-sm" style="font-size:13px">
+              <thead style="position:sticky;top:0;background:#fff;z-index:1">
+                <tr style="background:#f8fafc">
+                  <th style="min-width:100px">Código</th>
+                  <th>Tipo</th>
+                  <th style="min-width:180px">Producto</th>
+                  <th class="col-secondary">Categoría</th>
+                  <th class="text-center" style="min-width:90px">Stock Sistema</th>
+                  <th class="text-center" style="min-width:110px">Cantidad Contada</th>
+                  <th class="text-center" style="min-width:80px">Diferencia</th>
+                </tr>
+              </thead>
+              <tbody id="invCountTableBody"></tbody>
+            </table>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-3 p-3 rounded-3" style="background:#f8fafc;font-size:13px" id="invSummaryBar">
+            <span><strong id="invSumTotal">0</strong> productos</span>
+            <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i><strong id="invSumOk">0</strong> sin diferencias</span>
+            <span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i><strong id="invSumDiff">0</strong> con diferencias</span>
+            <span class="text-danger"><i class="fa-solid fa-arrow-down me-1"></i>Faltantes: <strong id="invSumMissing">0</strong> uds</span>
+            <span class="text-success"><i class="fa-solid fa-arrow-up me-1"></i>Sobrantes: <strong id="invSumExtra">0</strong> uds</span>
+          </div>
+        </div>
+        <div id="invEmptyState" class="text-center py-5 text-muted">
+          <i class="fa-solid fa-building-circle-arrow-right fa-3x mb-3" style="opacity:.3"></i>
+          <p>Selecciona una sucursal para cargar los productos a contar</p>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end gap-2" style="background:#f8fafc">
+        <button class="btn btn-outline-secondary" onclick="closeInventoryPanel()">Cancelar</button>
+        <button class="btn btn-outline-primary" onclick="saveInventoryDraft()" id="btnSaveDraft">
+          <i class="fa-solid fa-floppy-disk me-1"></i>Guardar Borrador
+        </button>
+        <button class="btn btn-primary" onclick="saveAndSubmitInventory()" id="btnSubmitInv">
+          <i class="fa-solid fa-paper-plane me-1"></i>Enviar para Aprobación
+        </button>
+      </div>
     </div>
   </div>
 
@@ -352,25 +436,27 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
+        <input type="hidden" id="_adjCode">
+        <div id="adjError" class="alert alert-warning py-2 d-none mb-2" role="alert"></div>
         <div class="mb-3 p-3 rounded-3" style="background:#f0f4f8">
-          <strong>Amoxicilina 500mg</strong> — Sucursal Norte<br>
-          <small class="text-muted">Código: MED-00142 &nbsp;·&nbsp; Stock actual: <strong class="text-danger">15 uds</strong></small>
+          <strong id="adjProductName">—</strong><br>
+          <small class="text-muted">Stock actual: <strong class="text-primary" id="adjCurrentStock">0</strong> uds</small>
         </div>
         <div class="mb-3">
           <label class="form-label">Tipo de ajuste</label>
-          <select class="form-select">
-            <option>Entrada (agregar stock)</option>
-            <option>Salida (reducir stock)</option>
-            <option>Corrección manual</option>
+          <select class="form-select" id="adjStockType">
+            <option value="entrada">Entrada (agregar stock)</option>
+            <option value="salida">Salida (reducir stock)</option>
+            <option value="correccion">Corrección manual</option>
           </select>
         </div>
         <div class="mb-3">
           <label class="form-label">Cantidad</label>
-          <input type="number" class="form-control" placeholder="0" min="1">
+          <input type="number" class="form-control" id="adjStockQty" placeholder="0" min="1">
         </div>
         <div class="mb-3">
           <label class="form-label">Motivo del ajuste</label>
-          <select class="form-select">
+          <select class="form-select" id="adjStockReason">
             <option>Compra a proveedor</option>
             <option>Transferencia recibida</option>
             <option>Devolución de cliente</option>
@@ -385,7 +471,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary">Guardar Ajuste</button>
+        <button class="btn btn-primary" onclick="saveAdjustStock()">Guardar Ajuste</button>
       </div>
     </div>
   </div>
@@ -416,7 +502,13 @@
           </div>
           <div class="col-sm-3">
             <label class="form-label">Código / SKU *</label>
-            <input type="text" class="form-control" placeholder="MED-00000">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="MED-00000" id="newProductCode">
+              <button class="btn btn-outline-secondary" type="button"
+                      onclick="openBarcodeScanner()" title="Escanear código de barras">
+                <i class="fa-solid fa-barcode"></i>
+              </button>
+            </div>
           </div>
           <div class="col-sm-4">
             <label class="form-label">Categoría</label>
@@ -474,90 +566,67 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary"><i class="fa-solid fa-floppy-disk me-1"></i>Guardar Producto</button>
+        <button class="btn btn-primary" onclick="saveNewProduct()"><i class="fa-solid fa-floppy-disk me-1"></i>Guardar Producto</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Nuevo / Editar Inventario Físico -->
-<div class="modal fade" id="newInventoryModal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
+<!-- Modal Ver Producto -->
+<div class="modal fade" id="viewProductModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newInvModalTitle"><i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico</h5>
+        <h5 class="modal-title">
+          <i class="fa-solid fa-eye me-2 text-primary"></i>
+          <span id="vpTitle">Detalle del Producto</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="vpBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Transferir Producto -->
+<div class="modal fade" id="transferProductModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" data-modal-type="warning">
+    <div class="modal-content" data-modal-type="warning">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-arrows-left-right me-2 text-warning"></i>Transferir Producto
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <!-- Form header -->
-        <div class="row g-3 mb-4">
-          <div class="col-sm-4">
-            <label class="form-label fw-semibold">Sucursal <span class="text-danger">*</span></label>
-            <select class="form-select" id="invFormBranch" onchange="loadBranchProducts(this.value)">
-              <option value="">Seleccionar sucursal...</option>
-              <option>Central</option><option>Norte</option><option>Sur</option>
-              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
-              <option>Universitaria</option><option>Industrial</option>
+        <input type="hidden" id="_tpCode">
+        <div id="tpError" class="alert alert-warning py-2 d-none mb-2" role="alert"></div>
+        <div class="p-3 rounded-3 mb-3" style="background:#f0f4f8" id="tpProductInfo"></div>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="flex-grow-1 p-2 rounded-3 border text-center">
+            <div style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px">ORIGEN</div>
+            <strong id="tpOrigin">—</strong>
+          </div>
+          <i class="fa-solid fa-arrow-right text-primary fa-lg"></i>
+          <div class="flex-grow-1">
+            <select class="form-select" id="tpDestination">
+              <option value="">Seleccionar destino...</option>
             </select>
           </div>
-          <div class="col-sm-3">
-            <label class="form-label fw-semibold">Fecha</label>
-            <input type="date" class="form-control" id="invFormDate">
-          </div>
-          <div class="col-sm-5">
-            <label class="form-label fw-semibold">Responsable</label>
-            <input type="text" class="form-control" id="invFormResponsible" placeholder="Nombre del responsable del conteo">
-          </div>
-          <div class="col-12">
-            <label class="form-label fw-semibold">Notas u observaciones</label>
-            <textarea class="form-control" id="invFormNotes" rows="2" placeholder="Ej: Conteo mensual de rutina, cierre de quincena..."></textarea>
-          </div>
         </div>
-
-        <!-- Product count table -->
-        <div id="invProductSection" class="d-none">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <h6 class="mb-0" id="invProductSectionTitle" style="color:#1e293b"><i class="fa-solid fa-list-check me-2 text-primary"></i>Productos a contar</h6>
-            <small class="text-muted" id="invProductCount"></small>
-          </div>
-          <div class="table-responsive" style="max-height:380px;overflow-y:auto">
-            <table class="table table-sm" style="font-size:13px">
-              <thead style="position:sticky;top:0;background:#fff;z-index:1">
-                <tr style="background:#f8fafc">
-                  <th style="min-width:100px">Código</th>
-                  <th>Tipo</th>
-                  <th style="min-width:180px">Producto</th>
-                  <th class="col-secondary">Categoría</th>
-                  <th class="text-center" style="min-width:90px">Stock Sistema</th>
-                  <th class="text-center" style="min-width:110px">Cantidad Contada</th>
-                  <th class="text-center" style="min-width:80px">Diferencia</th>
-                </tr>
-              </thead>
-              <tbody id="invCountTableBody"></tbody>
-            </table>
-          </div>
-          <!-- Summary bar -->
-          <div class="d-flex flex-wrap gap-3 mt-3 p-3 rounded-3" style="background:#f8fafc;font-size:13px" id="invSummaryBar">
-            <span><strong id="invSumTotal">0</strong> productos</span>
-            <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i><strong id="invSumOk">0</strong> sin diferencias</span>
-            <span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i><strong id="invSumDiff">0</strong> con diferencias</span>
-            <span class="text-danger"><i class="fa-solid fa-arrow-down me-1"></i>Faltantes: <strong id="invSumMissing">0</strong> uds</span>
-            <span class="text-success"><i class="fa-solid fa-arrow-up me-1"></i>Sobrantes: <strong id="invSumExtra">0</strong> uds</span>
-          </div>
-        </div>
-        <!-- Empty state when no branch selected -->
-        <div id="invEmptyState" class="text-center py-5 text-muted">
-          <i class="fa-solid fa-building-circle-arrow-right fa-3x mb-3" style="opacity:.3"></i>
-          <p>Selecciona una sucursal para cargar los productos a contar</p>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Cantidad a transferir</label>
+          <input type="number" class="form-control" id="tpQty" min="1" placeholder="0">
+          <div class="form-text" id="tpStockHint"></div>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-outline-primary" onclick="saveInventoryDraft()" id="btnSaveDraft">
-          <i class="fa-solid fa-floppy-disk me-1"></i>Guardar Borrador
-        </button>
-        <button class="btn btn-primary" onclick="saveAndSubmitInventory()" id="btnSubmitInv">
-          <i class="fa-solid fa-paper-plane me-1"></i>Enviar para Aprobación
+        <button class="btn btn-warning" onclick="confirmTransferProduct()">
+          <i class="fa-solid fa-paper-plane me-1"></i>Confirmar Transferencia
         </button>
       </div>
     </div>
@@ -607,6 +676,7 @@
         <div id="rejectForm" class="mt-3 d-none">
           <div class="p-3 rounded-3 border border-danger" style="background:#fef2f2">
             <label class="form-label fw-semibold text-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Motivo del rechazo</label>
+            <div id="rejectError" class="alert alert-warning py-2 d-none mb-2" role="alert"></div>
             <textarea class="form-control" id="rejectReasonInput" rows="2" placeholder="Describe el motivo del rechazo..."></textarea>
             <div class="d-flex gap-2 mt-2">
               <button class="btn btn-sm btn-danger" onclick="confirmRejectInventory()">Confirmar Rechazo</button>
@@ -623,7 +693,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ===== DATA =====
-const meds = [
+let meds = [
   // Medicamentos
   { code:'MED-00100', name:'Amoxicilina 500mg',     cat:'Antibióticos',      stock:342, exp:'2027-06-15', suc:'Central',      status:'ok',       priceBuy:42.00,  priceSell:85.00,   type:'medicamento' },
   { code:'MED-00142', name:'Amoxicilina 500mg',     cat:'Antibióticos',      stock:120, exp:'2026-03-15', suc:'Norte',        status:'expiring', priceBuy:42.00,  priceSell:85.00,   type:'medicamento' },
@@ -821,10 +891,10 @@ function renderMainTable(data) {
       <td><span class="badge-status ${s.cls}">${s.label}</span></td>
       <td>
         <div class="table-actions">
-          <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon success" title="Ajuste de stock" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
-          <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
-          <button class="btn-icon danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-icon" title="Ver detalle" onclick="viewProduct('${m.code}')"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" title="Ajuste de stock" onclick="openAdjustStock('${m.code}')" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
+          <button class="btn-icon warning" title="Transferir" onclick="openTransferProduct('${m.code}')"><i class="fa-solid fa-arrows-left-right"></i></button>
+          <button class="btn-icon danger" title="Eliminar" onclick="deleteProduct('${m.code}')"><i class="fa-solid fa-trash"></i></button>
           <button class="btn-icon expand-row-btn" onclick="toggleRow(this)" title="Más info"><i class="fa-solid fa-chevron-down"></i></button>
         </div>
       </td>
@@ -840,10 +910,10 @@ function renderMainTable(data) {
           <div class="row-detail-item"><span class="rd-label">Margen</span><span class="rd-value">${margin}%</span></div>
         </div>
         <div class="table-actions mt-2">
-          <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon success" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
-          <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-icon" title="Ver detalle" onclick="viewProduct('${m.code}')"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" onclick="openAdjustStock('${m.code}')" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
+          <button class="btn-icon warning" onclick="openTransferProduct('${m.code}')"><i class="fa-solid fa-arrows-left-right"></i></button>
+          <button class="btn-icon danger" onclick="deleteProduct('${m.code}')"><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
     </tr>`;
@@ -1043,10 +1113,16 @@ function formatDate(dateStr) {
   return `${d}/${m}/${y}`;
 }
 
-// ===== NUEVO INVENTARIO MODAL =====
+// ===== NUEVO INVENTARIO PANEL =====
 function openNewInventory() {
+  const panel = document.getElementById('newInventoryPanel');
+  const btn   = document.getElementById('btnOpenNewInv');
+  if (!panel.classList.contains('d-none')) {
+    closeInventoryPanel();
+    return;
+  }
   currentInvId = null;
-  document.getElementById('newInvModalTitle').innerHTML = '<i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico';
+  document.getElementById('invPanelTitle').innerHTML = '<i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico';
   document.getElementById('invFormBranch').value = '';
   document.getElementById('invFormDate').value = new Date().toISOString().split('T')[0];
   document.getElementById('invFormResponsible').value = '';
@@ -1054,20 +1130,30 @@ function openNewInventory() {
   document.getElementById('invProductSection').classList.add('d-none');
   document.getElementById('invEmptyState').classList.remove('d-none');
   document.getElementById('invCountTableBody').innerHTML = '';
-  new bootstrap.Modal(document.getElementById('newInventoryModal')).show();
+  panel.classList.remove('d-none');
+  btn.innerHTML = '<i class="fa-solid fa-xmark me-2"></i>Cerrar';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeInventoryPanel() {
+  document.getElementById('newInventoryPanel').classList.add('d-none');
+  document.getElementById('btnOpenNewInv').innerHTML = '<i class="fa-solid fa-clipboard-list me-2"></i>Nuevo Inventario';
 }
 
 function editInventory(id) {
   const inv = inventories.find(i => i.id === id);
   if (!inv) return;
   currentInvId = id;
-  document.getElementById('newInvModalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square me-2 text-warning"></i>Editar Inventario — ${inv.id}`;
+  const panel = document.getElementById('newInventoryPanel');
+  document.getElementById('invPanelTitle').innerHTML = `<i class="fa-solid fa-pen-to-square me-2 text-warning"></i>Editar Inventario — ${inv.id}`;
   document.getElementById('invFormBranch').value = inv.branch;
   document.getElementById('invFormDate').value = inv.date;
   document.getElementById('invFormResponsible').value = inv.createdBy;
   document.getElementById('invFormNotes').value = inv.notes;
   loadBranchProducts(inv.branch, inv.products);
-  new bootstrap.Modal(document.getElementById('newInventoryModal')).show();
+  panel.classList.remove('d-none');
+  document.getElementById('btnOpenNewInv').innerHTML = '<i class="fa-solid fa-xmark me-2"></i>Cerrar';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function loadBranchProducts(branch, existingProducts) {
@@ -1199,16 +1285,16 @@ function saveInventoryDraft() {
   const data = collectInventoryForm('borrador');
   if (!data) return;
   persistInventory(data);
-  bootstrap.Modal.getInstance(document.getElementById('newInventoryModal')).hide();
-  // Switch to Inventarios tab
+  closeInventoryPanel();
   document.getElementById('tabInvBtn').click();
   renderInventoriesTab();
+  showToast('Borrador guardado correctamente');
 }
 
 function saveAndSubmitInventory() {
   const data = collectInventoryForm('pendiente');
   if (!data) return;
-  bootstrap.Modal.getInstance(document.getElementById('newInventoryModal')).hide();
+  closeInventoryPanel();
   setTimeout(() => {
     showConfirm(`¿Enviar el inventario de ${data.branch} para aprobación? Una vez enviado no podrás editarlo.`, {
       title: 'Enviar para aprobación',
@@ -1219,6 +1305,7 @@ function saveAndSubmitInventory() {
         persistInventory(data);
         document.getElementById('tabInvBtn').click();
         renderInventoriesTab();
+        showToast('Inventario enviado para aprobación', 'info');
       }
     });
   }, 300);
@@ -1400,7 +1487,7 @@ function cancelReject() {
 function confirmRejectInventory() {
   const id = document.getElementById('rejectForm').dataset.invId;
   const reason = document.getElementById('rejectReasonInput').value.trim();
-  if (!reason) { showAlert('Escribe el motivo del rechazo para continuar.', { title: 'Campo requerido', type: 'warning' }); return; }
+  if (!reason) { showModalError('rejectError', 'Escribe el motivo del rechazo para continuar.'); return; }
   const inv = inventories.find(i => i.id === id);
   if (!inv) return;
   inv.status = 'rechazado';
@@ -1416,6 +1503,14 @@ const _dialogCfg = {
   danger:  { color: '#dc2626', icon: 'fa-circle-exclamation' },
   success: { color: '#16a34a', icon: 'fa-circle-check' },
 };
+function showModalError(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove('d-none');
+  setTimeout(() => el.classList.add('d-none'), 3000);
+}
+
 function showAlert(message, { title = 'Aviso', type = 'info' } = {}) {
   const cfg = _dialogCfg[type] || _dialogCfg.info;
   document.getElementById('gAlertIcon').style.color = cfg.color;
@@ -1441,6 +1536,135 @@ function showConfirm(message, { title = 'Confirmar acción', type = 'warning', c
   (bootstrap.Modal.getInstance(document.getElementById('globalConfirmModal')) || new bootstrap.Modal(document.getElementById('globalConfirmModal'))).show();
 }
 
+// ===== PRODUCT ACTIONS =====
+function getProductByCode(code) {
+  return meds.find(m => m.code === code);
+}
+
+function viewProduct(code) {
+  const m = getProductByCode(code);
+  if (!m) return;
+  const tb = typeBadge[m.type] || typeBadge.general;
+  const margin = m.priceSell > 0 ? (((m.priceSell - m.priceBuy) / m.priceSell) * 100).toFixed(1) : '0.0';
+  const expDate = m.exp ? new Date(m.exp).toLocaleDateString('es-MX', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+  const statusMap = { ok:'<span class="badge-status badge-success">Normal</span>', low:'<span class="badge-status badge-warning">Stock Bajo</span>', expired:'<span class="badge-status badge-danger">Por Vencer</span>', out:'<span class="badge-status badge-danger">Agotado</span>' };
+
+  document.getElementById('vpTitle').innerHTML = `<i class="fa-solid fa-box-open me-2 text-primary"></i>${m.name}`;
+  document.getElementById('vpBody').innerHTML = `
+    <div class="row g-3">
+      <div class="col-6"><div class="rd-label">Código</div><div class="rd-value">${m.code}</div></div>
+      <div class="col-6"><div class="rd-label">Tipo</div><div class="rd-value"><span class="type-badge ${tb.cls}">${tb.label}</span></div></div>
+      <div class="col-6"><div class="rd-label">Categoría</div><div class="rd-value">${m.cat}</div></div>
+      <div class="col-6"><div class="rd-label">Sucursal</div><div class="rd-value">${m.suc}</div></div>
+      <div class="col-6"><div class="rd-label">P. Compra</div><div class="rd-value">$${m.priceBuy.toFixed(2)}</div></div>
+      <div class="col-6"><div class="rd-label">P. Venta</div><div class="rd-value">$${m.priceSell.toFixed(2)}</div></div>
+      <div class="col-6"><div class="rd-label">Margen</div><div class="rd-value">${margin}%</div></div>
+      <div class="col-6"><div class="rd-label">Stock</div><div class="rd-value"><strong>${m.stock}</strong> uds</div></div>
+      <div class="col-6"><div class="rd-label">Vencimiento</div><div class="rd-value">${expDate}</div></div>
+      <div class="col-6"><div class="rd-label">Estado</div><div class="rd-value">${statusMap[m.status] || '—'}</div></div>
+    </div>`;
+  (bootstrap.Modal.getInstance(document.getElementById('viewProductModal')) || new bootstrap.Modal(document.getElementById('viewProductModal'))).show();
+}
+
+function openAdjustStock(code) {
+  const m = getProductByCode(code);
+  if (!m) return;
+  document.getElementById('adjProductName').textContent = m.name;
+  document.getElementById('adjCurrentStock').textContent = m.stock;
+  document.getElementById('adjStockQty').value = '';
+  document.getElementById('adjStockType').value = 'entrada';
+  document.getElementById('adjStockReason').value = '';
+  document.getElementById('_adjCode').value = code;
+}
+
+function saveAdjustStock() {
+  const code = document.getElementById('_adjCode').value;
+  const m = getProductByCode(code);
+  if (!m) return;
+  const qty = parseInt(document.getElementById('adjStockQty').value) || 0;
+  const type = document.getElementById('adjStockType').value;
+  if (qty <= 0) { showModalError('adjError', 'Ingresa una cantidad válida mayor a 0.'); return; }
+  if (type === 'entrada') m.stock += qty;
+  else if (type === 'salida') m.stock = Math.max(0, m.stock - qty);
+  else m.stock = qty; // corrección
+  bootstrap.Modal.getInstance(document.getElementById('adjustStockModal')).hide();
+  applyFilters();
+  showToast('Ajuste de stock guardado correctamente');
+}
+
+function openTransferProduct(code) {
+  const m = getProductByCode(code);
+  if (!m) return;
+  const tb = typeBadge[m.type] || typeBadge.general;
+  document.getElementById('_tpCode').value = code;
+  document.getElementById('tpProductInfo').innerHTML = `
+    <span class="type-badge ${tb.cls} me-2">${tb.label}</span>
+    <strong>${m.name}</strong> <span class="text-muted ms-2">${m.code}</span>`;
+  document.getElementById('tpOrigin').textContent = m.suc;
+  document.getElementById('tpQty').value = '';
+  document.getElementById('tpQty').max = m.stock;
+  document.getElementById('tpStockHint').textContent = `Disponible: ${m.stock} uds`;
+
+  const branches = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
+  const sel = document.getElementById('tpDestination');
+  sel.innerHTML = '<option value="">Seleccionar sucursal destino</option>' +
+    branches.filter(b => b !== m.suc).map(b => `<option value="${b}">${b}</option>`).join('');
+
+  (bootstrap.Modal.getInstance(document.getElementById('transferProductModal')) || new bootstrap.Modal(document.getElementById('transferProductModal'))).show();
+}
+
+function confirmTransferProduct() {
+  const code = document.getElementById('_tpCode').value;
+  const dest = document.getElementById('tpDestination').value;
+  const qty  = parseInt(document.getElementById('tpQty').value) || 0;
+  const m = getProductByCode(code);
+  if (!m) return;
+  if (!dest) { showModalError('tpError', 'Selecciona la sucursal destino.'); return; }
+  if (qty <= 0 || qty > m.stock) { showModalError('tpError', `Cantidad inválida. Stock disponible: ${m.stock} uds.`); return; }
+  m.stock -= qty;
+  bootstrap.Modal.getInstance(document.getElementById('transferProductModal')).hide();
+  applyFilters();
+  showToast(`Transferencia de ${qty} uds a ${dest} registrada`, 'info');
+}
+
+function deleteProduct(code) {
+  const m = getProductByCode(code);
+  if (!m) return;
+  showConfirm(`¿Eliminar "${m.name}" del inventario? Esta acción no se puede deshacer.`, {
+    title: 'Eliminar producto',
+    type: 'danger',
+    confirmText: 'Sí, eliminar',
+    confirmClass: 'btn-danger',
+    onConfirm: () => {
+      meds = meds.filter(x => x.code !== code);
+      applyFilters();
+      showToast(`"${m.name}" eliminado del inventario`, 'danger');
+    }
+  });
+}
+
+function saveNewProduct() {
+  bootstrap.Modal.getInstance(document.getElementById('newProductModal')).hide();
+  showToast('Producto guardado correctamente');
+}
+
+// ===== TOAST =====
+function showToast(message, type = 'success', duration = 3000) {
+  const icons = { success:'fa-circle-check', danger:'fa-circle-exclamation', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
+  const container = document.getElementById('toastContainerGlobal');
+  const t = document.createElement('div');
+  t.className = `toast-notif ${type}`;
+  t.innerHTML = `<i class="fa-solid ${icons[type]} toast-icon"></i>
+    <span class="toast-msg">${message}</span>
+    <button class="toast-close" onclick="this.closest('.toast-notif').remove()"><i class="fa-solid fa-xmark"></i></button>`;
+  container.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => {
+    t.classList.add('hide');
+    t.addEventListener('transitionend', () => t.remove(), { once: true });
+  }, duration);
+}
+
 // Sidebar
 function toggleSidebar() {
   if (window.innerWidth >= 992) {
@@ -1458,6 +1682,70 @@ function closeSidebar() {
 // Init
 applyFilters();
 updateInventoryTabBadge();
+</script>
+<div id="toastContainerGlobal" class="toast-container-global"></div>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+
+<!-- Modal: Escáner de código de barras -->
+<div class="modal fade" id="barcodeScannerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-camera me-2 text-primary"></i>Escanear Código de Barras
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="barcode-reader" style="width:100%"></div>
+        <p class="text-muted text-center py-2 mb-0" style="font-size:12px">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          Apunta la cámara al código de barras del producto
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<script>
+let _html5QrCode = null;
+
+function openBarcodeScanner() {
+  const scannerModal = new bootstrap.Modal(document.getElementById('barcodeScannerModal'));
+  scannerModal.show();
+  document.getElementById('barcodeScannerModal').addEventListener('shown.bs.modal', () => {
+    _html5QrCode = new Html5Qrcode('barcode-reader');
+    _html5QrCode.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 120 } },
+      (decodedText) => {
+        document.getElementById('newProductCode').value = decodedText;
+        stopBarcodeScanner();
+        bootstrap.Modal.getInstance(document.getElementById('barcodeScannerModal')).hide();
+        showToast('Código escaneado: ' + decodedText, 'success');
+      },
+      () => {}
+    ).catch(() => showToast('No se pudo acceder a la cámara', 'danger'));
+  }, { once: true });
+}
+
+function stopBarcodeScanner() {
+  if (_html5QrCode && _html5QrCode.isScanning) {
+    _html5QrCode.stop().catch(() => {});
+  }
+}
+
+document.getElementById('barcodeScannerModal').addEventListener('hidden.bs.modal', stopBarcodeScanner);
 </script>
 </body>
 </html>
