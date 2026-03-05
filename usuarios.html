@@ -33,9 +33,9 @@
     <div class="sidebar-section-title">Administración</div>
     <nav class="nav flex-column">
       <a href="usuarios.html" class="nav-link active"><i class="fa-solid fa-users"></i> Usuarios</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
   <div class="sidebar-branch">
@@ -58,7 +58,7 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
-      <li><a class="dropdown-item text-danger" href="login.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
 </header>
@@ -194,12 +194,12 @@
         <thead>
           <tr>
             <th><input type="checkbox"></th>
-            <th>Usuario</th>
-            <th>Email</th>
-            <th>Sucursal</th>
-            <th>Rol</th>
-            <th>Último Acceso</th>
-            <th>Estado</th>
+            <th data-sort="name" onclick="sortUsers('name')">Usuario <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th class="col-secondary">Email</th>
+            <th data-sort="branch" onclick="sortUsers('branch')" class="col-secondary">Sucursal <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="role" onclick="sortUsers('role')">Rol <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="lastAccess" onclick="sortUsers('lastAccess')" class="col-secondary">Último Acceso <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="active" onclick="sortUsers('active')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -372,8 +372,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('show');
-  document.getElementById('sidebarOverlay').classList.toggle('show');
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
 }
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('show');
@@ -417,25 +421,62 @@ const roleMap = {
   farmaceutico: { cls: 'role-farmaceutico', label: 'Farmacéutico' }
 };
 const gradients = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d','#dc2626','#84cc16'];
-const tbody = document.getElementById('usersTableBody');
-users.forEach((u, i) => {
-  const r = roleMap[u.role];
-  tbody.innerHTML += `
+let uSortCol = null, uSortDir = 1;
+
+function sortUsers(col) {
+  if (uSortCol === col) uSortDir *= -1;
+  else { uSortCol = col; uSortDir = 1; }
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (!icon) return;
+    icon.className = th.dataset.sort === col
+      ? `sort-icon fa-solid fa-sort-${uSortDir === 1 ? 'up' : 'down'} text-primary`
+      : 'sort-icon fa-solid fa-sort text-muted';
+  });
+  renderUsers();
+}
+
+function toggleRow(btn) {
+  const row = btn.closest('tr');
+  const detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('row-detail')) {
+    detail.classList.toggle('open');
+    const icon = btn.querySelector('i');
+    icon.classList.toggle('fa-chevron-down');
+    icon.classList.toggle('fa-chevron-up');
+  }
+}
+
+function renderUsers() {
+  let data = [...users];
+  if (uSortCol) {
+    data.sort((a, b) => {
+      const va = a[uSortCol], vb = b[uSortCol];
+      if (typeof va === 'boolean') return (va === vb ? 0 : va ? -1 : 1) * uSortDir;
+      return String(va).localeCompare(String(vb)) * uSortDir;
+    });
+  }
+  const tbody = document.getElementById('usersTableBody');
+  tbody.innerHTML = '';
+  data.forEach(u => {
+    const i = users.indexOf(u);
+    const r = roleMap[u.role];
+    tbody.innerHTML += `
     <tr>
       <td><input type="checkbox"></td>
       <td>
         <div class="d-flex align-items-center">
           <span class="user-avatar-table" style="background:linear-gradient(135deg,${gradients[i]},${gradients[(i+3)%gradients.length]})">${u.initials}</span>
           <div>
-            <div style="font-weight:600;font-size:13px">${u.name}</div>
+            <div style="font-weight:600;font-size:13px" class="text-truncate" style="max-width:150px">${u.name}</div>
             ${u.active && i < 3 ? '<small style="color:#22c55e;font-size:11px"><i class="fa-solid fa-circle" style="font-size:7px"></i> En línea</small>' : ''}
           </div>
         </div>
       </td>
-      <td><small class="text-muted">${u.email}</small></td>
-      <td><span style="font-size:13px">${u.branch}</span></td>
+      <td class="col-secondary"><small class="text-muted">${u.email}</small></td>
+      <td class="col-secondary"><span style="font-size:13px">${u.branch}</span></td>
       <td><span class="role-badge ${r.cls}">${r.label}</span></td>
-      <td><small class="text-muted">${u.lastAccess}</small></td>
+      <td class="col-secondary"><small class="text-muted">${u.lastAccess}</small></td>
       <td>
         <div class="d-flex align-items-center gap-2">
           <div class="form-check form-switch mb-0">
@@ -449,10 +490,27 @@ users.forEach((u, i) => {
           <button class="btn-icon" title="Editar" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="fa-solid fa-pen"></i></button>
           <button class="btn-icon" title="Permisos" data-bs-toggle="modal" data-bs-target="#permissionsModal"><i class="fa-solid fa-shield-halved"></i></button>
           <button class="btn-icon danger" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </td>
+    </tr>
+    <tr class="row-detail">
+      <td colspan="8">
+        <div class="row-detail-grid">
+          <div class="row-detail-item"><span class="rd-label">Email</span><span class="rd-value" style="font-size:12px">${u.email}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Sucursal</span><span class="rd-value">${u.branch}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Último acceso</span><span class="rd-value">${u.lastAccess}</span></div>
+        </div>
+        <div class="table-actions mt-2">
+          <button class="btn-icon" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon" data-bs-toggle="modal" data-bs-target="#permissionsModal"><i class="fa-solid fa-shield-halved"></i></button>
+          <button class="btn-icon danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
     </tr>`;
-});
+  });
+}
+renderUsers();
 </script>
 </body>
 </html>

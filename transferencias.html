@@ -33,9 +33,9 @@
     <div class="sidebar-section-title">Administración</div>
     <nav class="nav flex-column">
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
   <div class="sidebar-branch">
@@ -64,7 +64,7 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
-      <li><a class="dropdown-item text-danger" href="login.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
 </header>
@@ -230,13 +230,13 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Folio</th>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Medicamento</th>
-                <th>Cant.</th>
-                <th>Fecha</th>
-                <th>Estado</th>
+                <th data-sort="folio" onclick="sortTransfers('folio')">Folio <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="from" onclick="sortTransfers('from')">Origen <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="to" onclick="sortTransfers('to')">Destino <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="med" onclick="sortTransfers('med')" class="col-secondary">Producto <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="qty" onclick="sortTransfers('qty')" class="col-secondary">Cant. <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="date" onclick="sortTransfers('date')" class="col-secondary">Fecha <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="status" onclick="sortTransfers('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -310,8 +310,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('show');
-  document.getElementById('sidebarOverlay').classList.toggle('show');
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
 }
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('show');
@@ -359,9 +363,45 @@ const transfers = [
   { folio:'#TR-0403', from:'Sur', to:'Universitaria', med:'Azitromicina 500mg', qty:25, date:'27/02 16:00', status:'Recibido' },
 ];
 const statusCls = { 'Pendiente': 'badge-warning', 'En Tránsito': 'badge-info', 'Recibido': 'badge-success' };
-const tbody = document.getElementById('transferTableBody');
-transfers.forEach(t => {
-  tbody.innerHTML += `
+let trSortCol = null, trSortDir = 1;
+
+function sortTransfers(col) {
+  if (trSortCol === col) trSortDir *= -1;
+  else { trSortCol = col; trSortDir = 1; }
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (!icon) return;
+    icon.className = th.dataset.sort === col
+      ? `sort-icon fa-solid fa-sort-${trSortDir === 1 ? 'up' : 'down'} text-primary`
+      : 'sort-icon fa-solid fa-sort text-muted';
+  });
+  renderTransfers();
+}
+
+function toggleRow(btn) {
+  const row = btn.closest('tr');
+  const detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('row-detail')) {
+    detail.classList.toggle('open');
+    const icon = btn.querySelector('i');
+    icon.classList.toggle('fa-chevron-down');
+    icon.classList.toggle('fa-chevron-up');
+  }
+}
+
+function renderTransfers() {
+  let data = [...transfers];
+  if (trSortCol) {
+    data.sort((a, b) => {
+      const va = a[trSortCol], vb = b[trSortCol];
+      if (typeof va === 'number') return (va - vb) * trSortDir;
+      return String(va).localeCompare(String(vb)) * trSortDir;
+    });
+  }
+  const tbody = document.getElementById('transferTableBody');
+  tbody.innerHTML = '';
+  data.forEach(t => {
+    tbody.innerHTML += `
     <tr>
       <td><span style="font-weight:600;color:#2563eb">${t.folio}</span></td>
       <td><span style="font-size:12px;font-weight:600">${t.from}</span></td>
@@ -371,19 +411,35 @@ transfers.forEach(t => {
           <span style="font-size:12px;font-weight:600">${t.to}</span>
         </div>
       </td>
-      <td><strong style="font-size:13px">${t.med}</strong></td>
-      <td><span class="badge bg-light text-dark">${t.qty}</span></td>
-      <td><small class="text-muted">${t.date}</small></td>
+      <td class="col-secondary"><strong style="font-size:13px">${t.med}</strong></td>
+      <td class="col-secondary"><span class="badge bg-light text-dark">${t.qty}</span></td>
+      <td class="col-secondary"><small class="text-muted">${t.date}</small></td>
       <td><span class="badge-status ${statusCls[t.status]}">${t.status}</span></td>
       <td>
         <div class="table-actions">
           <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
           ${t.status === 'En Tránsito' ? `<button class="btn-icon success" title="Marcar recibido"><i class="fa-solid fa-check"></i></button>` : ''}
           ${t.status === 'Pendiente' ? `<button class="btn-icon danger" title="Cancelar"><i class="fa-solid fa-ban"></i></button>` : ''}
+          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </td>
+    </tr>
+    <tr class="row-detail">
+      <td colspan="8">
+        <div class="row-detail-grid">
+          <div class="row-detail-item"><span class="rd-label">Producto</span><span class="rd-value">${t.med}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Cantidad</span><span class="rd-value">${t.qty} uds</span></div>
+          <div class="row-detail-item"><span class="rd-label">Fecha</span><span class="rd-value">${t.date}</span></div>
+        </div>
+        <div class="table-actions mt-2">
+          <button class="btn-icon"><i class="fa-solid fa-eye"></i></button>
+          ${t.status === 'En Tránsito' ? `<button class="btn-icon success"><i class="fa-solid fa-check"></i></button>` : ''}
         </div>
       </td>
     </tr>`;
-});
+  });
+}
+renderTransfers();
 </script>
 </body>
 </html>

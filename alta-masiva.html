@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmaAdmin — Alta Masiva</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link active"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-search position-relative">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" class="form-control" placeholder="Alta masiva de productos">
+  </div>
+  <div class="topbar-right">
+    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="inventario.html">Inventario</a></li>
+        <li class="breadcrumb-item active">Alta Masiva</li>
+      </ol></nav>
+      <h1 class="page-title">Alta Masiva de Productos</h1>
+      <p class="page-subtitle">Registra múltiples productos en el inventario de forma rápida</p>
+    </div>
+    <a href="inventario.html" class="btn btn-outline-secondary">
+      <i class="fa-solid fa-arrow-left me-2"></i>Volver al Inventario
+    </a>
+  </div>
+
+  <!-- Wizard Steps -->
+  <div class="wizard-steps mb-4">
+    <div class="wizard-step active" id="ws1">
+      <div class="step-num">1</div>
+      <div class="step-label">Captura de datos</div>
+    </div>
+    <div class="wizard-connector" id="wc1"></div>
+    <div class="wizard-step" id="ws2">
+      <div class="step-num">2</div>
+      <div class="step-label">Validación</div>
+    </div>
+    <div class="wizard-connector" id="wc2"></div>
+    <div class="wizard-step" id="ws3">
+      <div class="step-num">3</div>
+      <div class="step-label">Confirmación</div>
+    </div>
+  </div>
+
+  <!-- ===== PASO 1: CAPTURA ===== -->
+  <div id="step1">
+    <div class="table-card mb-3">
+      <div class="table-card-header">
+        <h6 class="card-title"><i class="fa-solid fa-table-list me-2 text-primary"></i>Datos de productos a registrar</h6>
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn btn-sm btn-outline-primary" onclick="addRow()">
+            <i class="fa-solid fa-plus me-1"></i>Agregar fila
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="downloadTemplate()">
+            <i class="fa-solid fa-download me-1"></i>Plantilla
+          </button>
+          <button class="btn btn-sm btn-outline-danger" onclick="clearRows()">
+            <i class="fa-solid fa-trash me-1"></i>Limpiar
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table bulk-table" id="bulkTable">
+          <thead>
+            <tr style="background:#f8fafc">
+              <th style="width:30px">#</th>
+              <th style="min-width:200px">Nombre *</th>
+              <th style="width:130px">Tipo *</th>
+              <th style="width:120px">Código *</th>
+              <th style="width:130px">Categoría</th>
+              <th style="width:100px">P. Compra</th>
+              <th style="width:100px">P. Venta *</th>
+              <th style="width:80px">Stock</th>
+              <th style="width:130px">Vencimiento</th>
+              <th style="width:140px">Sucursal</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="bulkTableBody"></tbody>
+        </table>
+      </div>
+      <div class="px-3 py-2 border-top d-flex align-items-center justify-content-between" style="background:#f8fafc">
+        <small class="text-muted" id="rowCount">0 filas</small>
+        <small class="text-muted">Los campos marcados con * son obligatorios</small>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary" onclick="goToStep2()">
+        Siguiente: Validar <i class="fa-solid fa-arrow-right ms-2"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== PASO 2: VALIDACIÓN ===== -->
+  <div id="step2" class="d-none">
+    <div class="table-card mb-3">
+      <div class="table-card-header">
+        <h6 class="card-title"><i class="fa-solid fa-clipboard-check me-2 text-primary"></i>Resultado de validación</h6>
+        <div id="validationSummary"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table bulk-table">
+          <thead>
+            <tr style="background:#f8fafc">
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Código</th>
+              <th>P. Venta</th>
+              <th>Stock</th>
+              <th>Sucursal</th>
+              <th style="width:80px; text-align:center">Estado</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="validationTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-outline-secondary" onclick="goToStep1()">
+        <i class="fa-solid fa-arrow-left me-2"></i>Corregir datos
+      </button>
+      <button class="btn btn-primary" id="confirmBtn" onclick="goToStep3()">
+        <i class="fa-solid fa-floppy-disk me-2"></i>Guardar productos
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== PASO 3: CONFIRMACIÓN ===== -->
+  <div id="step3" class="d-none">
+    <div class="text-center py-5">
+      <div style="width:80px;height:80px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#16a34a">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 class="fw-bold mb-2">¡Productos registrados!</h3>
+      <p class="text-muted mb-1">Se registraron <strong id="savedCount">0</strong> productos en el inventario.</p>
+      <p class="text-muted mb-4" style="font-size:13px">Los productos ya están disponibles en el sistema.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="inventario.html" class="btn btn-primary">
+          <i class="fa-solid fa-boxes-stacked me-2"></i>Ir al Inventario
+        </a>
+        <button class="btn btn-outline-secondary" onclick="resetWizard()">
+          <i class="fa-solid fa-plus me-2"></i>Cargar más productos
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const TYPES  = ['medicamento','general','suplemento','equipo'];
+const CATS   = ['Antibióticos','Analgésicos','Antiinflamatorios','Vitaminas','Insulinas','Antiácidos','Antisépticos','Cosméticos','Suplementos','Equipo Médico','Curaciones','Inyectables'];
+const BRANCHES = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
+
+let rows = [];
+
+function createRowData(idx) {
+  return { id: idx + 1, name: '', type: 'medicamento', code: '', cat: 'Antibióticos', priceBuy: '', priceSell: '', stock: '0', exp: '', branch: 'Central' };
+}
+
+function addRow() {
+  rows.push(createRowData(rows.length));
+  renderBulkTable();
+}
+
+function removeRow(i) {
+  rows.splice(i, 1);
+  renderBulkTable();
+}
+
+function clearRows() {
+  rows = [];
+  renderBulkTable();
+}
+
+function renderBulkTable() {
+  const tbody = document.getElementById('bulkTableBody');
+  tbody.innerHTML = '';
+  rows.forEach((r, i) => {
+    tbody.innerHTML += `
+    <tr>
+      <td style="color:#94a3b8;font-size:12px">${i+1}</td>
+      <td><input type="text" value="${r.name}" oninput="rows[${i}].name=this.value" placeholder="Nombre del producto" style="min-width:180px"></td>
+      <td>
+        <select onchange="rows[${i}].type=this.value">
+          ${TYPES.map(t => `<option value="${t}"${r.type===t?' selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="text" value="${r.code}" oninput="rows[${i}].code=this.value" placeholder="MED-00000"></td>
+      <td>
+        <select onchange="rows[${i}].cat=this.value">
+          ${CATS.map(c => `<option${r.cat===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="number" value="${r.priceBuy}" oninput="rows[${i}].priceBuy=this.value" placeholder="0.00" min="0" step="0.01"></td>
+      <td><input type="number" value="${r.priceSell}" oninput="rows[${i}].priceSell=this.value" placeholder="0.00" min="0" step="0.01"></td>
+      <td><input type="number" value="${r.stock}" oninput="rows[${i}].stock=this.value" placeholder="0" min="0"></td>
+      <td><input type="date" value="${r.exp}" oninput="rows[${i}].exp=this.value"></td>
+      <td>
+        <select onchange="rows[${i}].branch=this.value">
+          ${BRANCHES.map(b => `<option${r.branch===b?' selected':''}>${b}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <button onclick="removeRow(${i})" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:14px;padding:2px 6px">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </td>
+    </tr>`;
+  });
+  document.getElementById('rowCount').textContent = rows.length + (rows.length === 1 ? ' fila' : ' filas');
+}
+
+function validateRow(r) {
+  const errors = [];
+  if (!r.name.trim()) errors.push('Nombre requerido');
+  if (!r.code.trim()) errors.push('Código requerido');
+  if (!r.priceSell || parseFloat(r.priceSell) <= 0) errors.push('P. Venta debe ser > 0');
+  if (r.stock !== '' && parseFloat(r.stock) < 0) errors.push('Stock no puede ser negativo');
+  return errors;
+}
+
+function goToStep2() {
+  if (rows.length === 0) { alert('Agrega al menos una fila para continuar.'); return; }
+  // Build validation table
+  const tbody = document.getElementById('validationTableBody');
+  tbody.innerHTML = '';
+  let ok = 0, errors = 0;
+  rows.forEach((r, i) => {
+    const errs = validateRow(r);
+    const isOk = errs.length === 0;
+    if (isOk) ok++; else errors++;
+    tbody.innerHTML += `
+    <tr style="${isOk ? '' : 'background:#fff8f8'}">
+      <td style="color:#94a3b8">${i+1}</td>
+      <td>${r.name || '<span class="text-danger">—</span>'}</td>
+      <td><span class="type-badge type-${r.type}">${r.type}</span></td>
+      <td><small class="text-muted">${r.code || '<span class="text-danger">—</span>'}</small></td>
+      <td>${r.priceSell ? '$'+parseFloat(r.priceSell).toFixed(2) : '<span class="text-danger">—</span>'}</td>
+      <td>${r.stock || 0}</td>
+      <td>${r.branch}</td>
+      <td class="bulk-row-status">${isOk ? '✅' : '❌'}</td>
+      <td><small class="text-danger">${errs.join(', ')}</small></td>
+    </tr>`;
+  });
+  const summaryEl = document.getElementById('validationSummary');
+  summaryEl.innerHTML = `
+    <div class="d-flex gap-3">
+      <span class="badge-status badge-success">${ok} listos</span>
+      ${errors > 0 ? `<span class="badge-status badge-danger">${errors} con errores</span>` : ''}
+    </div>`;
+  document.getElementById('confirmBtn').disabled = errors > 0;
+  setStep(2);
+}
+
+function goToStep1() { setStep(1); }
+
+function goToStep3() {
+  const validCount = rows.filter(r => validateRow(r).length === 0).length;
+  document.getElementById('savedCount').textContent = validCount;
+  setStep(3);
+}
+
+function resetWizard() {
+  rows = [];
+  renderBulkTable();
+  setStep(1);
+}
+
+function setStep(n) {
+  document.getElementById('step1').classList.toggle('d-none', n !== 1);
+  document.getElementById('step2').classList.toggle('d-none', n !== 2);
+  document.getElementById('step3').classList.toggle('d-none', n !== 3);
+  [1,2,3].forEach(s => {
+    const el = document.getElementById('ws'+s);
+    el.classList.remove('active','done');
+    if (s < n) el.classList.add('done');
+    else if (s === n) el.classList.add('active');
+    if (s < 3) {
+      const conn = document.getElementById('wc'+s);
+      conn.classList.remove('done','active');
+      if (s < n) conn.classList.add('done');
+      else if (s === n) conn.classList.add('active');
+    }
+  });
+  // Update step-num for done steps to checkmark icon
+  [1,2,3].forEach(s => {
+    const numEl = document.getElementById('ws'+s).querySelector('.step-num');
+    if (s < n) numEl.innerHTML = '<i class="fa-solid fa-check" style="font-size:14px"></i>';
+    else numEl.textContent = s;
+  });
+}
+
+function downloadTemplate() {
+  const headers = 'Nombre,Tipo,Código,Categoría,Precio Compra,Precio Venta,Stock,Vencimiento,Sucursal\n';
+  const example = 'Amoxicilina 500mg,medicamento,MED-00001,Antibióticos,42.00,85.00,100,2027-06-15,Central\n';
+  const blob = new Blob([headers + example], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'plantilla_productos.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// Sidebar
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// Init: start with 3 blank rows
+addRow(); addRow(); addRow();
+</script>
+</body>
+</html>

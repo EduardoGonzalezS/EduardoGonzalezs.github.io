@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmaAdmin — Sucursales</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">FarmaAdmin</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link active"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-search position-relative">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" class="form-control" placeholder="Buscar sucursal, ciudad..." id="topbarSearch" oninput="filterBySearch(this.value)">
+  </div>
+  <div class="topbar-right">
+    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Sucursales</li></ol></nav>
+      <h1 class="page-title">Gestión de Sucursales</h1>
+      <p class="page-subtitle">Administra las 8 sucursales de la cadena</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newBranchModal">
+      <i class="fa-solid fa-building-circle-arrow-right me-2"></i>Nueva Sucursal
+    </button>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total Sucursales</div>
+          <div class="kpi-value">8</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-building-columns"></i> Cadena completa</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-building-columns"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Activas</div>
+          <div class="kpi-value">7</div>
+          <div class="kpi-change up"><i class="fa-solid fa-circle-check"></i> Operando</div>
+        </div>
+        <div class="kpi-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Inactivas</div>
+          <div class="kpi-value">1</div>
+          <div class="kpi-change down"><i class="fa-solid fa-triangle-exclamation"></i> Requiere atención</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-circle-xmark"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Top Sucursal</div>
+          <div class="kpi-value" style="font-size:18px">Central</div>
+          <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> $12,400 / día</div>
+        </div>
+        <div class="kpi-icon purple"><i class="fa-solid fa-trophy"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title"><i class="fa-solid fa-building-columns me-2 text-primary"></i>Todas las Sucursales</h6>
+      <div class="d-flex gap-2 flex-wrap">
+        <select class="form-select form-select-sm" style="width:130px" id="statusFilter" onchange="renderTable()">
+          <option value="">Todos</option>
+          <option value="true">Activas</option>
+          <option value="false">Inactivas</option>
+        </select>
+        <button class="btn btn-sm btn-outline-secondary" onclick="renderTable()">
+          <i class="fa-solid fa-rotate-right me-1"></i>Actualizar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-sort="id" onclick="sortTable('id')">
+              # <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="name" onclick="sortTable('name')">
+              Nombre <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="city" onclick="sortTable('city')" class="col-secondary">
+              Ciudad <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="manager" onclick="sortTable('manager')" class="col-secondary">
+              Gerente <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="employees" onclick="sortTable('employees')" class="col-secondary">
+              Empleados <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="sales" onclick="sortTable('sales')" class="col-secondary">
+              Ventas/Día <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th data-sort="active" onclick="sortTable('active')">
+              Estado <i class="sort-icon fa-solid fa-sort text-muted"></i>
+            </th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="branchTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top">
+      <small class="text-muted" id="tableCount">Mostrando 8 sucursales</small>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== MODAL: VER DETALLE ===== -->
+<div class="modal fade" id="detailBranchModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-building-columns me-2 text-primary"></i>Detalle de Sucursal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="detailModalBody">
+        <!-- rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button class="btn btn-primary" id="detailEditBtn"><i class="fa-solid fa-pen me-1"></i>Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: EDITAR ===== -->
+<div class="modal fade" id="editBranchModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-pen me-2 text-warning"></i>Editar Sucursal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editBranchId">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">Nombre de la sucursal</label>
+            <input type="text" class="form-control" id="editName">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Ciudad</label>
+            <input type="text" class="form-control" id="editCity">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="editAddress">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="editPhone">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Gerente asignado</label>
+            <select class="form-select" id="editManager">
+              <option>Carlos Méndez</option>
+              <option>Sandra Vega</option>
+              <option>Roberto Torres</option>
+              <option>Ana Jiménez</option>
+              <option>Luis Ramírez</option>
+              <option>Patricia Flores</option>
+              <option>Miguel Ángel Cruz</option>
+              <option>Isabel Moreno</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Horario de atención</label>
+            <input type="text" class="form-control" id="editSchedule" placeholder="07:00–22:00">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Número de empleados</label>
+            <input type="number" class="form-control" id="editEmployees" min="1">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Color identificador</label>
+            <select class="form-select" id="editColor">
+              <option value="#2563eb">Azul</option>
+              <option value="#0ea5e9">Celeste</option>
+              <option value="#16a34a">Verde</option>
+              <option value="#d97706">Naranja</option>
+              <option value="#7c3aed">Morado</option>
+              <option value="#db2777">Rosa</option>
+              <option value="#0891b2">Teal</option>
+              <option value="#65a30d">Lima</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Estado</label>
+            <div class="form-check form-switch mt-1">
+              <input class="form-check-input" type="checkbox" id="editActive" checked>
+              <label class="form-check-label" for="editActive">Sucursal activa</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveEdit()"><i class="fa-solid fa-floppy-disk me-1"></i>Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: NUEVA SUCURSAL ===== -->
+<div class="modal fade" id="newBranchModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-building-circle-arrow-right me-2 text-primary"></i>Nueva Sucursal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">Nombre de la sucursal *</label>
+            <input type="text" class="form-control" id="newName" placeholder="Ej: Sucursal Sur Oriente">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Ciudad *</label>
+            <input type="text" class="form-control" id="newCity" placeholder="CDMX">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Dirección completa *</label>
+            <input type="text" class="form-control" id="newAddress" placeholder="Av. Principal 123, Col. Centro">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="newPhone" placeholder="555-0000">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Gerente asignado</label>
+            <select class="form-select" id="newManager">
+              <option value="">— Seleccionar —</option>
+              <option>Carlos Méndez</option>
+              <option>Sandra Vega</option>
+              <option>Roberto Torres</option>
+              <option>Ana Jiménez</option>
+              <option>Luis Ramírez</option>
+              <option>Patricia Flores</option>
+              <option>Miguel Ángel Cruz</option>
+              <option>Isabel Moreno</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Horario de atención</label>
+            <input type="text" class="form-control" id="newSchedule" placeholder="08:00–21:00">
+          </div>
+          <div class="col-sm-3">
+            <label class="form-label">Empleados iniciales</label>
+            <input type="number" class="form-control" id="newEmployees" value="5" min="1">
+          </div>
+          <div class="col-sm-3">
+            <label class="form-label">Color identificador</label>
+            <select class="form-select" id="newColor">
+              <option value="#2563eb">Azul</option>
+              <option value="#0ea5e9">Celeste</option>
+              <option value="#16a34a">Verde</option>
+              <option value="#d97706">Naranja</option>
+              <option value="#7c3aed">Morado</option>
+              <option value="#db2777">Rosa</option>
+              <option value="#0891b2">Teal</option>
+              <option value="#65a30d">Lima</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Notas adicionales</label>
+            <textarea class="form-control" rows="2" id="newNotes" placeholder="Descripción u observaciones de la sucursal..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveNewBranch()"><i class="fa-solid fa-building-circle-arrow-right me-1"></i>Crear Sucursal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===== DATA =====
+const branches = [
+  { id:1, name:'Central',       address:'Av. Reforma 450, Col. Juárez',       city:'CDMX',   phone:'555-0100', manager:'Carlos Méndez',    schedule:'07:00–22:00', active:true,  employees:12, sales:12400, color:'#2563eb' },
+  { id:2, name:'Norte',         address:'Blvd. Insurgentes 1200, Col. Lindavista', city:'CDMX', phone:'555-0201', manager:'Sandra Vega',    schedule:'08:00–21:00', active:true,  employees:8,  sales:8900,  color:'#0ea5e9' },
+  { id:3, name:'Sur',           address:'Calzada de Tlalpan 890, Col. Portales', city:'CDMX', phone:'555-0302', manager:'Roberto Torres',  schedule:'08:00–21:00', active:true,  employees:6,  sales:6200,  color:'#16a34a' },
+  { id:4, name:'Este',          address:'Av. Ignacio Zaragoza 540, Col. El Parque', city:'CDMX', phone:'555-0403', manager:'Ana Jiménez', schedule:'08:00–21:00', active:true,  employees:7,  sales:7800,  color:'#d97706' },
+  { id:5, name:'Oeste',         address:'Av. Constituyentes 310, Col. Miguel Hidalgo', city:'CDMX', phone:'555-0504', manager:'Luis Ramírez', schedule:'09:00–20:00', active:true, employees:5,  sales:4100,  color:'#7c3aed' },
+  { id:6, name:'Plaza Mayor',   address:'Plaza Mayor Local 45, Centro Comercial', city:'CDMX', phone:'555-0605', manager:'Patricia Flores', schedule:'10:00–21:00', active:true,  employees:6,  sales:5300,  color:'#db2777' },
+  { id:7, name:'Universitaria', address:'Av. Universidad 3000, Ciudad Universitaria', city:'CDMX', phone:'555-0706', manager:'Miguel Ángel Cruz', schedule:'08:00–20:00', active:true, employees:4, sales:3600, color:'#0891b2' },
+  { id:8, name:'Industrial',    address:'Blvd. Puerto Aéreo 120, Zona Industrial', city:'CDMX', phone:'555-0807', manager:'Isabel Moreno', schedule:'07:00–18:00', active:false, employees:3,  sales:0,     color:'#65a30d' },
+];
+const maxSales = Math.max(...branches.map(b => b.sales));
+
+let sortCol = null, sortDir = 1;
+let searchText = '';
+
+// ===== SORT =====
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  updateSortIcons();
+  renderTable();
+}
+function updateSortIcons() {
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (th.dataset.sort === sortCol) {
+      icon.className = `sort-icon fa-solid fa-sort-${sortDir === 1 ? 'up' : 'down'} text-primary`;
+    } else {
+      icon.className = 'sort-icon fa-solid fa-sort text-muted';
+    }
+  });
+}
+
+// ===== FILTER =====
+function filterBySearch(val) {
+  searchText = val.toLowerCase();
+  renderTable();
+}
+
+// ===== RENDER =====
+function renderTable() {
+  const statusVal = document.getElementById('statusFilter').value;
+  let data = branches.filter(b => {
+    const matchStatus = statusVal === '' || String(b.active) === statusVal;
+    const matchSearch = !searchText || b.name.toLowerCase().includes(searchText) || b.city.toLowerCase().includes(searchText) || b.manager.toLowerCase().includes(searchText);
+    return matchStatus && matchSearch;
+  });
+
+  if (sortCol) {
+    data = [...data].sort((a, b) => {
+      const va = a[sortCol], vb = b[sortCol];
+      if (typeof va === 'boolean') return (va === vb ? 0 : va ? -1 : 1) * sortDir;
+      if (typeof va === 'number') return (va - vb) * sortDir;
+      return String(va).localeCompare(String(vb)) * sortDir;
+    });
+  }
+
+  const tbody = document.getElementById('branchTableBody');
+  tbody.innerHTML = '';
+  data.forEach(b => {
+    const statusBadge = b.active
+      ? `<span class="badge-status badge-success">Activa</span>`
+      : `<span class="badge-status badge-danger">Inactiva</span>`;
+    const salesPct = maxSales > 0 ? Math.round(b.sales / maxSales * 100) : 0;
+
+    tbody.innerHTML += `
+    <tr>
+      <td>${b.id}</td>
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:10px;height:10px;border-radius:50%;background:${b.color};flex-shrink:0"></div>
+          <strong>${b.name}</strong>
+        </div>
+      </td>
+      <td class="col-secondary">${b.city}</td>
+      <td class="col-secondary">${b.manager}</td>
+      <td class="col-secondary">${b.employees}</td>
+      <td class="col-secondary">
+        <div class="d-flex align-items-center gap-2">
+          <span style="font-weight:600">${b.active ? '$'+b.sales.toLocaleString() : '—'}</span>
+          ${b.active ? `<div class="progress flex-grow-1" style="min-width:50px"><div class="progress-bar" style="width:${salesPct}%;background:${b.color}"></div></div>` : ''}
+        </div>
+      </td>
+      <td>${statusBadge}</td>
+      <td>
+        <div class="table-actions">
+          <button class="btn-icon" title="Ver detalle" onclick="openDetail(${b.id})"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" title="Editar" onclick="openEdit(${b.id})"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)" title="Más info"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </td>
+    </tr>
+    <tr class="row-detail">
+      <td colspan="8">
+        <div class="row-detail-grid">
+          <div class="row-detail-item"><span class="rd-label">Ciudad</span><span class="rd-value">${b.city}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Dirección</span><span class="rd-value" style="font-size:12px">${b.address}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Teléfono</span><span class="rd-value">${b.phone}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Gerente</span><span class="rd-value">${b.manager}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Horario</span><span class="rd-value">${b.schedule}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Empleados</span><span class="rd-value">${b.employees}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Ventas/Día</span><span class="rd-value">${b.active ? '$'+b.sales.toLocaleString() : '—'}</span></div>
+        </div>
+        <div class="table-actions mt-2">
+          <button class="btn-icon" title="Ver detalle" onclick="openDetail(${b.id})"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" title="Editar" onclick="openEdit(${b.id})"><i class="fa-solid fa-pen"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  document.getElementById('tableCount').textContent = `Mostrando ${data.length} de ${branches.length} sucursales`;
+}
+
+// ===== TOGGLE ROW =====
+function toggleRow(btn) {
+  const row = btn.closest('tr');
+  const detail = row.nextElementSibling;
+  detail.classList.toggle('open');
+  const icon = btn.querySelector('i');
+  icon.classList.toggle('fa-chevron-down');
+  icon.classList.toggle('fa-chevron-up');
+}
+
+// ===== DETAIL MODAL =====
+function openDetail(id) {
+  const b = branches.find(x => x.id === id);
+  if (!b) return;
+  const salesPct = maxSales > 0 ? Math.round(b.sales / maxSales * 100) : 0;
+  document.getElementById('detailModalBody').innerHTML = `
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div style="width:52px;height:52px;border-radius:14px;background:${b.color}20;display:flex;align-items:center;justify-content:center;font-size:22px;color:${b.color}">
+        <i class="fa-solid fa-building-columns"></i>
+      </div>
+      <div>
+        <h5 class="mb-0 fw-bold">${b.name}</h5>
+        <small class="text-muted">${b.address}</small>
+      </div>
+      <div class="ms-auto">${b.active ? '<span class="badge-status badge-success">Activa</span>' : '<span class="badge-status badge-danger">Inactiva</span>'}</div>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-sm-6">
+        <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid #e2e8f0">
+          <div class="row g-2">
+            <div class="col-6"><small class="text-muted d-block">Ciudad</small><strong>${b.city}</strong></div>
+            <div class="col-6"><small class="text-muted d-block">Teléfono</small><strong>${b.phone}</strong></div>
+            <div class="col-6"><small class="text-muted d-block">Horario</small><strong>${b.schedule}</strong></div>
+            <div class="col-6"><small class="text-muted d-block">Empleados</small><strong>${b.employees}</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid #e2e8f0">
+          <small class="text-muted d-block mb-1">Gerente</small>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="user-avatar-table">${b.manager.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+            <strong>${b.manager}</strong>
+          </div>
+          <small class="text-muted d-block mb-1">Ventas del día</small>
+          <div class="d-flex align-items-center gap-2">
+            <strong style="font-size:18px;color:${b.color}">${b.active ? '$'+b.sales.toLocaleString() : '—'}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <small class="text-muted d-block mb-2">Meta de ventas mensual</small>
+      <div class="d-flex justify-content-between mb-1">
+        <small>$${(b.sales * 30).toLocaleString()} / $${(maxSales * 30).toLocaleString()}</small>
+        <small class="fw-bold" style="color:${b.color}">${salesPct}%</small>
+      </div>
+      <div class="progress" style="height:8px"><div class="progress-bar" style="width:${salesPct}%;background:${b.color}"></div></div>
+    </div>`;
+  document.getElementById('detailEditBtn').onclick = () => {
+    bootstrap.Modal.getInstance(document.getElementById('detailBranchModal')).hide();
+    openEdit(id);
+  };
+  new bootstrap.Modal(document.getElementById('detailBranchModal')).show();
+}
+
+// ===== EDIT MODAL =====
+function openEdit(id) {
+  const b = branches.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('editBranchId').value = b.id;
+  document.getElementById('editName').value = b.name;
+  document.getElementById('editCity').value = b.city;
+  document.getElementById('editAddress').value = b.address;
+  document.getElementById('editPhone').value = b.phone;
+  document.getElementById('editSchedule').value = b.schedule;
+  document.getElementById('editEmployees').value = b.employees;
+  document.getElementById('editActive').checked = b.active;
+  const managerSel = document.getElementById('editManager');
+  [...managerSel.options].forEach(o => { o.selected = o.text === b.manager; });
+  const colorSel = document.getElementById('editColor');
+  [...colorSel.options].forEach(o => { o.selected = o.value === b.color; });
+  new bootstrap.Modal(document.getElementById('editBranchModal')).show();
+}
+
+function saveEdit() {
+  const id = parseInt(document.getElementById('editBranchId').value);
+  const b = branches.find(x => x.id === id);
+  if (!b) return;
+  b.name     = document.getElementById('editName').value;
+  b.city     = document.getElementById('editCity').value;
+  b.address  = document.getElementById('editAddress').value;
+  b.phone    = document.getElementById('editPhone').value;
+  b.manager  = document.getElementById('editManager').value;
+  b.schedule = document.getElementById('editSchedule').value;
+  b.employees= parseInt(document.getElementById('editEmployees').value);
+  b.active   = document.getElementById('editActive').checked;
+  b.color    = document.getElementById('editColor').value;
+  bootstrap.Modal.getInstance(document.getElementById('editBranchModal')).hide();
+  renderTable();
+}
+
+// ===== NEW BRANCH =====
+function saveNewBranch() {
+  const name = document.getElementById('newName').value.trim();
+  if (!name) { alert('El nombre es requerido.'); return; }
+  const newId = Math.max(...branches.map(b=>b.id)) + 1;
+  branches.push({
+    id: newId,
+    name,
+    city:      document.getElementById('newCity').value || 'CDMX',
+    address:   document.getElementById('newAddress').value || '—',
+    phone:     document.getElementById('newPhone').value || '—',
+    manager:   document.getElementById('newManager').value || '—',
+    schedule:  document.getElementById('newSchedule').value || '08:00–21:00',
+    active:    true,
+    employees: parseInt(document.getElementById('newEmployees').value) || 5,
+    sales:     0,
+    color:     document.getElementById('newColor').value,
+  });
+  bootstrap.Modal.getInstance(document.getElementById('newBranchModal')).hide();
+  renderTable();
+}
+
+// ===== SIDEBAR =====
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===== INIT =====
+renderTable();
+</script>
+</body>
+</html>

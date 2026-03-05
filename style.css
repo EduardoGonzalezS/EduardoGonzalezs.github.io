@@ -304,6 +304,7 @@ body {
   margin-top: var(--topbar-height);
   padding: 28px 28px 40px;
   min-height: calc(100vh - var(--topbar-height));
+  transition: margin-left .3s ease;
 }
 
 .page-header {
@@ -863,3 +864,267 @@ body {
   z-index: 1039;
 }
 .sidebar-overlay.show { display: block; }
+
+/* =========================================================
+   CHART CONTAINERS — fixed height prevents chart shrinking
+   ========================================================= */
+.chart-container {
+  position: relative;
+  height: 280px;
+}
+.chart-container-sm {
+  position: relative;
+  height: 240px;
+}
+@media (max-width: 575.98px) {
+  .chart-container  { height: 200px; }
+  .chart-container-sm { height: 180px; }
+}
+
+/* =========================================================
+   SORTABLE TABLE HEADERS
+   ========================================================= */
+th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+th[data-sort]:hover { background: #f1f5f9 !important; }
+.sort-icon { font-size: 10px; margin-left: 4px; opacity: .6; }
+th[data-sort]:hover .sort-icon { opacity: 1; }
+
+/* =========================================================
+   EXPANDABLE SUB-ROWS (mobile)
+   ========================================================= */
+.row-detail {
+  display: none !important;
+  background: #f8fafc;
+}
+.row-detail.open {
+  display: table-row !important;
+}
+.row-detail td {
+  padding: 12px 20px 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+.row-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px 16px;
+  margin-bottom: 10px;
+}
+.row-detail-item .rd-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 2px;
+}
+.row-detail-item .rd-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+.expand-row-btn { display: none !important; }
+
+@media (max-width: 767.98px) {
+  .col-secondary { display: none !important; }
+  .expand-row-btn { display: inline-flex !important; }
+}
+@media (min-width: 768px) {
+  .row-detail { display: none !important; }
+  .row-detail.open { display: none !important; }
+}
+
+/* =========================================================
+   PRODUCT TYPE BADGES
+   ========================================================= */
+.type-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.type-medicamento { background: #dbeafe; color: #1d4ed8; }
+.type-general     { background: #f1f5f9; color: #475569; }
+.type-suplemento  { background: #d1fae5; color: #065f46; }
+.type-equipo      { background: #fef3c7; color: #92400e; }
+
+/* =========================================================
+   WIZARD STEPS (alta-masiva)
+   ========================================================= */
+.wizard-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 32px;
+}
+.wizard-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.wizard-step:last-child { flex: 0; }
+.wizard-step .step-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all .2s;
+}
+.wizard-step .step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.wizard-step.active .step-num {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.wizard-step.active .step-label { color: var(--primary); }
+.wizard-step.done .step-num {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.wizard-step.done .step-label { color: var(--green); }
+.wizard-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 8px;
+  transition: background .2s;
+}
+.wizard-connector.done { background: var(--green); }
+.wizard-connector.active { background: var(--primary); }
+
+/* Editable bulk table */
+.bulk-table th, .bulk-table td {
+  padding: 8px 10px !important;
+  font-size: 13px;
+}
+.bulk-table input, .bulk-table select {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  width: 100%;
+  background: #fff;
+}
+.bulk-table input:focus, .bulk-table select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37,99,235,.1);
+}
+.bulk-row-status { font-size: 16px; text-align: center; }
+
+/* =========================================================
+   SETTINGS PAGE (configuracion)
+   ========================================================= */
+.settings-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.settings-section-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.settings-section-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.settings-section-body { padding: 20px 24px; }
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-row-info .settings-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+.settings-row-info .settings-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.settings-disabled { opacity: .45; pointer-events: none; }
+.coming-soon-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 10px;
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   RESPONSIVE — 768px breakpoint (tablet)
+   ========================================================= */
+@media (max-width: 767.98px) {
+  .kpi-card .kpi-label { font-size: 10px; }
+  .kpi-card .kpi-value { font-size: 20px; }
+  .kpi-card { padding: 16px; }
+  .kpi-icon { width: 46px; height: 46px; font-size: 18px; }
+
+  .table-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .table-card-header .d-flex { flex-wrap: wrap; }
+
+  .modal-dialog { margin: 8px; }
+  .modal-body { padding: 16px; }
+  .modal-header { padding: 14px 16px; }
+  .modal-footer { padding: 10px 16px; }
+
+  .period-pills { flex-wrap: wrap; }
+
+  .page-header .d-flex { flex-direction: column; align-items: flex-start !important; gap: 10px; }
+
+  /* Transfer form vertical stacking */
+  .transfer-route { flex-direction: column !important; }
+  .transfer-arrow { transform: rotate(90deg); }
+}
+
+/* =========================================================
+   SIDEBAR COLLAPSE — desktop toggle (≥992px)
+   ========================================================= */
+@media (min-width: 992px) {
+  body.sidebar-collapsed .sidebar {
+    transform: translateX(-100%);
+  }
+  body.sidebar-collapsed .topbar {
+    left: 0;
+    width: 100%;
+  }
+  body.sidebar-collapsed .main-content {
+    margin-left: 0;
+  }
+}

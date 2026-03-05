@@ -33,9 +33,9 @@
     <div class="sidebar-section-title">Administración</div>
     <nav class="nav flex-column">
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
   <div class="sidebar-branch">
@@ -49,11 +49,11 @@
   <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
   <div class="topbar-search position-relative">
     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-    <input type="text" class="form-control" placeholder="Buscar medicamento, código...">
+    <input type="text" class="form-control" placeholder="Buscar producto, código..." id="topbarSearch" oninput="applyFilters()">
   </div>
   <div class="topbar-right">
-    <select class="topbar-branch-select d-none d-md-block">
-      <option>Todas las sucursales</option>
+    <select class="topbar-branch-select d-none d-md-block" id="topbarBranch" onchange="applyFilters()">
+      <option value="">Todas las sucursales</option>
       <option>Central</option><option>Norte</option><option>Sur</option>
       <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
       <option>Universitaria</option><option>Industrial</option>
@@ -64,7 +64,7 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
-      <li><a class="dropdown-item text-danger" href="login.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
 </header>
@@ -76,12 +76,15 @@
     <div>
       <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Inventario</li></ol></nav>
       <h1 class="page-title">Gestión de Inventario</h1>
-      <p class="page-subtitle">Control de stock, fechas de vencimiento y alertas de medicamentos</p>
+      <p class="page-subtitle">Control de stock, vencimientos y alertas de productos</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-outline-secondary"><i class="fa-solid fa-file-import me-2"></i>Importar</button>
+      <button class="btn btn-outline-primary" onclick="openNewInventory()">
+        <i class="fa-solid fa-clipboard-list me-2"></i>Nuevo Inventario
+      </button>
+      <a href="alta-masiva.html" class="btn btn-outline-secondary"><i class="fa-solid fa-file-import me-2"></i>Alta Masiva</a>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProductModal">
-        <i class="fa-solid fa-plus me-2"></i>Nuevo Medicamento
+        <i class="fa-solid fa-plus me-2"></i>Nuevo Producto
       </button>
     </div>
   </div>
@@ -92,7 +95,7 @@
       <div class="kpi-card">
         <div class="kpi-info">
           <div class="kpi-label">Total Productos</div>
-          <div class="kpi-value">1,847</div>
+          <div class="kpi-value" id="kpiTotal">—</div>
           <div class="kpi-change neutral"><i class="fa-solid fa-boxes-stacked"></i> en 8 sucursales</div>
         </div>
         <div class="kpi-icon blue"><i class="fa-solid fa-pills"></i></div>
@@ -102,7 +105,7 @@
       <div class="kpi-card">
         <div class="kpi-info">
           <div class="kpi-label">Stock Crítico</div>
-          <div class="kpi-value text-danger">28</div>
+          <div class="kpi-value text-danger" id="kpiLow">—</div>
           <div class="kpi-change down"><i class="fa-solid fa-triangle-exclamation"></i> Menos de 10 uds.</div>
         </div>
         <div class="kpi-icon red"><i class="fa-solid fa-box-open"></i></div>
@@ -111,8 +114,8 @@
     <div class="col-6 col-lg-3">
       <div class="kpi-card">
         <div class="kpi-info">
-          <div class="kpi-label">Por Vencer (7 días)</div>
-          <div class="kpi-value text-warning">47</div>
+          <div class="kpi-label">Por Vencer (30 días)</div>
+          <div class="kpi-value text-warning" id="kpiExpiring">—</div>
           <div class="kpi-change down"><i class="fa-solid fa-clock"></i> Acción requerida</div>
         </div>
         <div class="kpi-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
@@ -122,7 +125,7 @@
       <div class="kpi-card">
         <div class="kpi-info">
           <div class="kpi-label">Agotados</div>
-          <div class="kpi-value text-danger">12</div>
+          <div class="kpi-value text-danger" id="kpiOut">—</div>
           <div class="kpi-change down"><i class="fa-solid fa-ban"></i> Sin existencia</div>
         </div>
         <div class="kpi-icon red"><i class="fa-solid fa-ban"></i></div>
@@ -141,30 +144,52 @@
   <!-- Tabs + Filters -->
   <div class="table-card">
     <div class="table-card-header flex-column align-items-start gap-3">
-      <ul class="nav nav-tabs w-100" id="invTabs">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabAll">Todo el Inventario <span class="badge bg-secondary ms-1">1,847</span></button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExpiring">Por Vencer <span class="badge bg-warning text-dark ms-1">47</span></button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabLow">Stock Bajo <span class="badge bg-danger ms-1">28</span></button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOut">Agotados <span class="badge bg-dark ms-1">12</span></button></li>
+      <ul class="nav nav-tabs w-100" id="invTabs" style="overflow-x:auto;flex-wrap:nowrap">
+        <li class="nav-item flex-shrink-0"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabAll">Todo <span class="badge bg-secondary ms-1" id="tabAllBadge">0</span></button></li>
+        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExpiring">Por Vencer <span class="badge bg-warning text-dark ms-1" id="tabExpBadge">0</span></button></li>
+        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabLow">Stock Bajo <span class="badge bg-danger ms-1" id="tabLowBadge">0</span></button></li>
+        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOut">Agotados <span class="badge bg-dark ms-1" id="tabOutBadge">0</span></button></li>
+        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabInv" id="tabInvBtn">Inventarios Físicos <span class="badge bg-warning text-dark ms-1" id="tabInvBadge">0</span></button></li>
       </ul>
-      <div class="d-flex gap-2 flex-wrap w-100">
-        <input type="text" class="form-control form-control-sm" placeholder="Buscar medicamento o código..." style="max-width:260px">
-        <select class="form-select form-select-sm" style="width:160px">
-          <option>Todas las sucursales</option>
+      <div class="d-flex gap-2 flex-wrap w-100" id="stockFilters">
+        <input type="text" class="form-control form-control-sm" placeholder="Buscar producto o código..." style="max-width:240px" id="searchFilter" oninput="applyFilters()">
+        <select class="form-select form-select-sm" style="width:150px" id="branchFilter" onchange="applyFilters()">
+          <option value="">Todas las sucursales</option>
           <option>Central</option><option>Norte</option><option>Sur</option>
           <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
           <option>Universitaria</option><option>Industrial</option>
         </select>
-        <select class="form-select form-select-sm" style="width:150px">
-          <option>Todas las categorías</option>
-          <option>Antibióticos</option>
-          <option>Analgésicos</option>
-          <option>Antiinflamatorios</option>
-          <option>Vitaminas</option>
-          <option>Insulinas</option>
-          <option>Antiácidos</option>
+        <select class="form-select form-select-sm" style="width:140px" id="catFilter" onchange="applyFilters()">
+          <option value="">Todas las categorías</option>
+          <option>Antibióticos</option><option>Analgésicos</option>
+          <option>Antiinflamatorios</option><option>Vitaminas</option>
+          <option>Insulinas</option><option>Antiácidos</option>
+          <option>Antisépticos</option><option>Cosméticos</option>
+          <option>Suplementos</option><option>Equipo Médico</option>
         </select>
-        <button class="btn btn-sm btn-outline-secondary ms-auto"><i class="fa-solid fa-sliders me-1"></i>Filtros avanzados</button>
+        <select class="form-select form-select-sm" style="width:140px" id="typeFilter" onchange="applyFilters()">
+          <option value="">Todos los tipos</option>
+          <option value="medicamento">Medicamento</option>
+          <option value="general">General</option>
+          <option value="suplemento">Suplemento</option>
+          <option value="equipo">Equipo Médico</option>
+        </select>
+      </div>
+      <!-- Filters for inventories tab -->
+      <div class="d-flex gap-2 flex-wrap w-100 d-none" id="invFilters">
+        <select class="form-select form-select-sm" style="width:160px" id="invBranchFilter" onchange="renderInventoriesTab()">
+          <option value="">Todas las sucursales</option>
+          <option>Central</option><option>Norte</option><option>Sur</option>
+          <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+          <option>Universitaria</option><option>Industrial</option>
+        </select>
+        <select class="form-select form-select-sm" style="width:160px" id="invStatusFilter" onchange="renderInventoriesTab()">
+          <option value="">Todos los estados</option>
+          <option value="borrador">Borrador</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="aprobado">Aprobado</option>
+          <option value="rechazado">Rechazado</option>
+        </select>
       </div>
     </div>
 
@@ -176,13 +201,15 @@
             <thead>
               <tr>
                 <th><input type="checkbox"></th>
-                <th>Código</th>
-                <th>Medicamento</th>
-                <th>Categoría</th>
-                <th>Stock</th>
-                <th>Vencimiento</th>
-                <th>Sucursal</th>
-                <th>Estado</th>
+                <th data-sort="code" onclick="sortTable('code')">Código <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="name" onclick="sortTable('name')">Producto <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="cat" onclick="sortTable('cat')" class="col-secondary">Categoría <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="priceBuy" onclick="sortTable('priceBuy')" class="col-secondary">P. Compra <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="priceSell" onclick="sortTable('priceSell')" class="col-secondary">P. Venta <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="stock" onclick="sortTable('stock')">Stock <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="exp" onclick="sortTable('exp')" class="col-secondary">Vencimiento <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="suc" onclick="sortTable('suc')" class="col-secondary">Sucursal <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+                <th data-sort="status" onclick="sortTable('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -194,44 +221,8 @@
       <div class="tab-pane fade" id="tabExpiring">
         <div class="table-responsive">
           <table class="table">
-            <thead>
-              <tr>
-                <th>Código</th><th>Medicamento</th><th>Stock</th>
-                <th>Vencimiento</th><th>Días Restantes</th><th>Sucursal</th><th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>MED-00142</td><td><strong>Amoxicilina 500mg</strong></td><td>120</td>
-                <td class="text-danger fw-bold">15/03/2026</td>
-                <td><span class="badge-status badge-danger">13 días</span></td>
-                <td>Norte</td>
-                <td><div class="table-actions">
-                  <button class="btn-icon warning" title="Mover a otra sucursal"><i class="fa-solid fa-arrows-left-right"></i></button>
-                  <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-                </div></td>
-              </tr>
-              <tr>
-                <td>MED-00287</td><td><strong>Ibuprofeno 400mg</strong></td><td>80</td>
-                <td class="text-danger fw-bold">20/03/2026</td>
-                <td><span class="badge-status badge-warning">18 días</span></td>
-                <td>Este</td>
-                <td><div class="table-actions">
-                  <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
-                  <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-                </div></td>
-              </tr>
-              <tr>
-                <td>MED-00391</td><td><strong>Loratadina 10mg</strong></td><td>45</td>
-                <td class="text-warning fw-bold">28/03/2026</td>
-                <td><span class="badge-status badge-warning">26 días</span></td>
-                <td>Sur</td>
-                <td><div class="table-actions">
-                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-                  <button class="btn-icon"><i class="fa-solid fa-eye"></i></button>
-                </div></td>
-              </tr>
-            </tbody>
+            <thead><tr><th>Código</th><th>Producto</th><th>Stock</th><th>Vencimiento</th><th>Días Rest.</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <tbody id="expiringTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -239,29 +230,8 @@
       <div class="tab-pane fade" id="tabLow">
         <div class="table-responsive">
           <table class="table">
-            <thead>
-              <tr><th>Código</th><th>Medicamento</th><th>Stock Actual</th><th>Stock Mínimo</th><th>Sucursal</th><th>Acciones</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>MED-00512</td><td><strong>Paracetamol 1g</strong></td>
-                <td><span class="badge-status badge-warning">15 uds</span></td>
-                <td>50 uds</td><td>Sur</td>
-                <td><div class="table-actions">
-                  <button class="btn-icon success" title="Solicitar reposición"><i class="fa-solid fa-rotate"></i></button>
-                  <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
-                </div></td>
-              </tr>
-              <tr>
-                <td>MED-00634</td><td><strong>Insulina Glargina</strong></td>
-                <td><span class="badge-status badge-danger">3 uds</span></td>
-                <td>20 uds</td><td>Industrial</td>
-                <td><div class="table-actions">
-                  <button class="btn-icon success"><i class="fa-solid fa-rotate"></i></button>
-                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-                </div></td>
-              </tr>
-            </tbody>
+            <thead><tr><th>Código</th><th>Producto</th><th>Stock Actual</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <tbody id="lowTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -269,44 +239,109 @@
       <div class="tab-pane fade" id="tabOut">
         <div class="table-responsive">
           <table class="table">
+            <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <tbody id="outTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Tab Inventarios Físicos -->
+      <div class="tab-pane fade" id="tabInv">
+        <!-- Mini KPIs -->
+        <div class="row g-3 p-3 pb-0" id="invKpiRow">
+          <div class="col-6 col-md-3">
+            <div class="p-3 rounded-3 border text-center" style="background:#fffbeb">
+              <div style="font-size:22px;font-weight:700;color:#d97706" id="invKpiBorrador">0</div>
+              <div style="font-size:12px;color:#92400e;font-weight:500"><i class="fa-solid fa-file-pen me-1"></i>Borradores</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 rounded-3 border text-center" style="background:#eff6ff">
+              <div style="font-size:22px;font-weight:700;color:#2563eb" id="invKpiPendiente">0</div>
+              <div style="font-size:12px;color:#1e40af;font-weight:500"><i class="fa-solid fa-clock me-1"></i>Pendientes</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 rounded-3 border text-center" style="background:#f0fdf4">
+              <div style="font-size:22px;font-weight:700;color:#16a34a" id="invKpiAprobado">0</div>
+              <div style="font-size:12px;color:#166534;font-weight:500"><i class="fa-solid fa-circle-check me-1"></i>Aprobados</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="p-3 rounded-3 border text-center" style="background:#fef2f2">
+              <div style="font-size:22px;font-weight:700;color:#dc2626" id="invKpiRechazado">0</div>
+              <div style="font-size:12px;color:#991b1b;font-weight:500"><i class="fa-solid fa-circle-xmark me-1"></i>Rechazados</div>
+            </div>
+          </div>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive mt-2">
+          <table class="table">
             <thead>
-              <tr><th>Código</th><th>Medicamento</th><th>Categoría</th><th>Sucursal</th><th>Último Stock</th><th>Acciones</th></tr>
+              <tr>
+                <th>Folio</th>
+                <th>Sucursal</th>
+                <th class="col-secondary">Fecha</th>
+                <th class="col-secondary">Responsable</th>
+                <th>Productos</th>
+                <th>Diferencias</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>MED-00741</td><td><strong>Metformina 850mg</strong></td><td>Antidiabéticos</td>
-                <td>Universitaria</td><td><small class="text-muted">hace 2 días</small></td>
-                <td><div class="table-actions">
-                  <button class="btn-icon success" title="Solicitar reposición"><i class="fa-solid fa-plus"></i></button>
-                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-                </div></td>
-              </tr>
-              <tr>
-                <td>MED-00852</td><td><strong>Enalapril 20mg</strong></td><td>Antihipertensivos</td>
-                <td>Oeste</td><td><small class="text-muted">hace 1 día</small></td>
-                <td><div class="table-actions">
-                  <button class="btn-icon success"><i class="fa-solid fa-plus"></i></button>
-                  <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-                </div></td>
-              </tr>
-            </tbody>
+            <tbody id="inventoriesTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
     <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
-      <small class="text-muted">Mostrando 1–15 de 1,847 productos</small>
+      <small class="text-muted" id="tableCountLabel">Mostrando todos los productos</small>
       <nav><ul class="pagination pagination-sm mb-0">
         <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
         <li class="page-item active"><a class="page-link" href="#">1</a></li>
         <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
         <li class="page-item"><a class="page-link" href="#">»</a></li>
       </ul></nav>
     </div>
   </div>
 </main>
+
+<!-- Modal de Alerta Global -->
+<div class="modal fade" id="globalAlertModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:380px">
+    <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden">
+      <div class="modal-body text-center px-4 py-5 position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+        <div class="mb-3" style="font-size:56px;line-height:1">
+          <i id="gAlertIcon" class="fa-solid fa-circle-info" style="color:#2563eb"></i>
+        </div>
+        <h5 id="gAlertTitle" class="fw-bold mb-2" style="color:#1e293b;font-size:18px">Aviso</h5>
+        <p id="gAlertMsg" class="mb-4" style="color:#64748b;font-size:14px;line-height:1.6"></p>
+        <button class="btn btn-primary px-5 rounded-pill" data-bs-dismiss="modal" style="font-weight:600">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmación Global -->
+<div class="modal fade" id="globalConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
+    <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden">
+      <div class="modal-body text-center px-4 py-5 position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+        <div class="mb-3" style="font-size:56px;line-height:1">
+          <i id="gConfirmIcon" class="fa-solid fa-triangle-exclamation" style="color:#d97706"></i>
+        </div>
+        <h5 id="gConfirmTitle" class="fw-bold mb-2" style="color:#1e293b;font-size:18px">Confirmar acción</h5>
+        <p id="gConfirmMsg" class="mb-4" style="color:#64748b;font-size:14px;line-height:1.6"></p>
+        <div class="d-flex gap-3 justify-content-center">
+          <button class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal" style="font-weight:500">Cancelar</button>
+          <button id="gConfirmOkBtn" class="btn btn-warning px-4 rounded-pill" style="font-weight:600">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal Ajuste de Stock -->
 <div class="modal fade" id="adjustStockModal" tabindex="-1">
@@ -339,7 +374,7 @@
             <option>Compra a proveedor</option>
             <option>Transferencia recibida</option>
             <option>Devolución de cliente</option>
-            <option>Medicamento dañado</option>
+            <option>Producto dañado</option>
             <option>Inventario físico</option>
           </select>
         </div>
@@ -356,48 +391,66 @@
   </div>
 </div>
 
-<!-- Modal Nuevo Medicamento -->
+<!-- Modal Nuevo Producto -->
 <div class="modal fade" id="newProductModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="fa-solid fa-plus-circle me-2 text-primary"></i>Nuevo Medicamento</h5>
+        <h5 class="modal-title"><i class="fa-solid fa-plus-circle me-2 text-primary"></i>Nuevo Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <div class="row g-3">
-          <div class="col-sm-6">
-            <label class="form-label">Nombre del medicamento</label>
+          <div class="col-sm-4">
+            <label class="form-label">Tipo de producto *</label>
+            <select class="form-select">
+              <option value="medicamento">Medicamento</option>
+              <option value="general">Producto General</option>
+              <option value="suplemento">Suplemento / Nutrición</option>
+              <option value="equipo">Equipo Médico</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <label class="form-label">Nombre del producto *</label>
             <input type="text" class="form-control" placeholder="Ej: Amoxicilina 500mg">
           </div>
-          <div class="col-sm-6">
-            <label class="form-label">Código / SKU</label>
+          <div class="col-sm-3">
+            <label class="form-label">Código / SKU *</label>
             <input type="text" class="form-control" placeholder="MED-00000">
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <label class="form-label">Categoría</label>
             <select class="form-select">
               <option>Antibióticos</option><option>Analgésicos</option>
               <option>Antiinflamatorios</option><option>Vitaminas</option>
               <option>Insulinas</option><option>Antiácidos</option>
+              <option>Antisépticos</option><option>Cosméticos</option>
+              <option>Suplementos</option><option>Equipo Médico</option>
             </select>
           </div>
-          <div class="col-sm-6">
-            <label class="form-label">Precio de venta</label>
+          <div class="col-sm-4">
+            <label class="form-label">Precio de compra</label>
             <div class="input-group">
               <span class="input-group-text">$</span>
-              <input type="number" class="form-control" placeholder="0.00">
+              <input type="number" class="form-control" placeholder="0.00" step="0.01">
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
+            <label class="form-label">Precio de venta *</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control" placeholder="0.00" step="0.01">
+            </div>
+          </div>
+          <div class="col-sm-4">
             <label class="form-label">Stock inicial</label>
             <input type="number" class="form-control" placeholder="0">
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <label class="form-label">Stock mínimo (alerta)</label>
-            <input type="number" class="form-control" placeholder="0">
+            <input type="number" class="form-control" placeholder="10">
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <label class="form-label">Fecha de vencimiento</label>
             <input type="date" class="form-control">
           </div>
@@ -409,85 +462,362 @@
               <option>Universitaria</option><option>Industrial</option>
             </select>
           </div>
+          <div class="col-sm-6">
+            <label class="form-label">Proveedor</label>
+            <input type="text" class="form-control" placeholder="Nombre del proveedor">
+          </div>
           <div class="col-12">
             <label class="form-label">Descripción / Composición</label>
-            <textarea class="form-control" rows="2" placeholder="Descripción del medicamento..."></textarea>
+            <textarea class="form-control" rows="2" placeholder="Descripción del producto..."></textarea>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary">Guardar Medicamento</button>
+        <button class="btn btn-primary"><i class="fa-solid fa-floppy-disk me-1"></i>Guardar Producto</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuevo / Editar Inventario Físico -->
+<div class="modal fade" id="newInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newInvModalTitle"><i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form header -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-4">
+            <label class="form-label fw-semibold">Sucursal <span class="text-danger">*</span></label>
+            <select class="form-select" id="invFormBranch" onchange="loadBranchProducts(this.value)">
+              <option value="">Seleccionar sucursal...</option>
+              <option>Central</option><option>Norte</option><option>Sur</option>
+              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+              <option>Universitaria</option><option>Industrial</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label class="form-label fw-semibold">Fecha</label>
+            <input type="date" class="form-control" id="invFormDate">
+          </div>
+          <div class="col-sm-5">
+            <label class="form-label fw-semibold">Responsable</label>
+            <input type="text" class="form-control" id="invFormResponsible" placeholder="Nombre del responsable del conteo">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Notas u observaciones</label>
+            <textarea class="form-control" id="invFormNotes" rows="2" placeholder="Ej: Conteo mensual de rutina, cierre de quincena..."></textarea>
+          </div>
+        </div>
+
+        <!-- Product count table -->
+        <div id="invProductSection" class="d-none">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0" id="invProductSectionTitle" style="color:#1e293b"><i class="fa-solid fa-list-check me-2 text-primary"></i>Productos a contar</h6>
+            <small class="text-muted" id="invProductCount"></small>
+          </div>
+          <div class="table-responsive" style="max-height:380px;overflow-y:auto">
+            <table class="table table-sm" style="font-size:13px">
+              <thead style="position:sticky;top:0;background:#fff;z-index:1">
+                <tr style="background:#f8fafc">
+                  <th style="min-width:100px">Código</th>
+                  <th>Tipo</th>
+                  <th style="min-width:180px">Producto</th>
+                  <th class="col-secondary">Categoría</th>
+                  <th class="text-center" style="min-width:90px">Stock Sistema</th>
+                  <th class="text-center" style="min-width:110px">Cantidad Contada</th>
+                  <th class="text-center" style="min-width:80px">Diferencia</th>
+                </tr>
+              </thead>
+              <tbody id="invCountTableBody"></tbody>
+            </table>
+          </div>
+          <!-- Summary bar -->
+          <div class="d-flex flex-wrap gap-3 mt-3 p-3 rounded-3" style="background:#f8fafc;font-size:13px" id="invSummaryBar">
+            <span><strong id="invSumTotal">0</strong> productos</span>
+            <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i><strong id="invSumOk">0</strong> sin diferencias</span>
+            <span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i><strong id="invSumDiff">0</strong> con diferencias</span>
+            <span class="text-danger"><i class="fa-solid fa-arrow-down me-1"></i>Faltantes: <strong id="invSumMissing">0</strong> uds</span>
+            <span class="text-success"><i class="fa-solid fa-arrow-up me-1"></i>Sobrantes: <strong id="invSumExtra">0</strong> uds</span>
+          </div>
+        </div>
+        <!-- Empty state when no branch selected -->
+        <div id="invEmptyState" class="text-center py-5 text-muted">
+          <i class="fa-solid fa-building-circle-arrow-right fa-3x mb-3" style="opacity:.3"></i>
+          <p>Selecciona una sucursal para cargar los productos a contar</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-outline-primary" onclick="saveInventoryDraft()" id="btnSaveDraft">
+          <i class="fa-solid fa-floppy-disk me-1"></i>Guardar Borrador
+        </button>
+        <button class="btn btn-primary" onclick="saveAndSubmitInventory()" id="btnSubmitInv">
+          <i class="fa-solid fa-paper-plane me-1"></i>Enviar para Aprobación
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ver / Aprobar Inventario -->
+<div class="modal fade" id="viewInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="viewInvTitle"><i class="fa-solid fa-clipboard-check me-2 text-primary"></i>Detalle de Inventario</h5>
+          <div id="viewInvStatusBadge" class="mt-1"></div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Info row -->
+        <div class="row g-3 mb-4" id="viewInvInfo"></div>
+
+        <!-- Summary -->
+        <div class="d-flex flex-wrap gap-3 mb-3 p-3 rounded-3" style="background:#f8fafc;font-size:13px" id="viewInvSummary"></div>
+
+        <!-- Approval note -->
+        <div id="viewInvApprovalNote" class="mb-3 d-none"></div>
+
+        <!-- Product table -->
+        <div class="table-responsive" style="max-height:320px;overflow-y:auto">
+          <table class="table table-sm" style="font-size:13px">
+            <thead style="position:sticky;top:0;background:#fff;z-index:1">
+              <tr style="background:#f8fafc">
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Producto</th>
+                <th class="col-secondary">Categoría</th>
+                <th class="text-center">Stock Sistema</th>
+                <th class="text-center">Contado</th>
+                <th class="text-center">Diferencia</th>
+              </tr>
+            </thead>
+            <tbody id="viewInvTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Reject form (shown inline when rejecting) -->
+        <div id="rejectForm" class="mt-3 d-none">
+          <div class="p-3 rounded-3 border border-danger" style="background:#fef2f2">
+            <label class="form-label fw-semibold text-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Motivo del rechazo</label>
+            <textarea class="form-control" id="rejectReasonInput" rows="2" placeholder="Describe el motivo del rechazo..."></textarea>
+            <div class="d-flex gap-2 mt-2">
+              <button class="btn btn-sm btn-danger" onclick="confirmRejectInventory()">Confirmar Rechazo</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="cancelReject()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" id="viewInvFooter"></div>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('show');
-  document.getElementById('sidebarOverlay').classList.toggle('show');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('show');
-  document.getElementById('sidebarOverlay').classList.remove('show');
-}
-
-// Branch stock cards
-const branches = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
-const stocks = [342, 285, 198, 256, 143, 187, 124, 112];
-const colors = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
-const container = document.getElementById('branchStockCards');
-branches.forEach((b, i) => {
-  const pct = Math.round(stocks[i] / 342 * 100);
-  container.innerHTML += `
-    <div class="col-6 col-md-4 col-xl-3">
-      <div class="p-3 rounded-3 border h-100" style="background:#fff">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <span style="font-size:13px;font-weight:600;color:#475569">${b}</span>
-          <span style="font-size:16px;font-weight:700;color:${colors[i]}">${stocks[i]}</span>
-        </div>
-        <div class="progress mb-1" style="height:4px">
-          <div class="progress-bar" style="width:${pct}%;background:${colors[i]}"></div>
-        </div>
-        <small style="font-size:11px;color:#94a3b8">productos en stock</small>
-      </div>
-    </div>`;
-});
-
-// Inventory table body
+// ===== DATA =====
 const meds = [
-  { code:'MED-00100', name:'Amoxicilina 500mg', cat:'Antibióticos', stock:342, exp:'2027-06-15', suc:'Central', status:'ok' },
-  { code:'MED-00142', name:'Amoxicilina 500mg', cat:'Antibióticos', stock:120, exp:'2026-03-15', suc:'Norte', status:'expiring' },
-  { code:'MED-00287', name:'Ibuprofeno 400mg', cat:'Antiinflamatorios', stock:80, exp:'2026-03-20', suc:'Este', status:'expiring' },
-  { code:'MED-00391', name:'Loratadina 10mg', cat:'Antihistamínicos', stock:200, exp:'2026-03-28', suc:'Sur', status:'ok' },
-  { code:'MED-00512', name:'Paracetamol 1g', cat:'Analgésicos', stock:15, exp:'2027-08-10', suc:'Sur', status:'low' },
-  { code:'MED-00634', name:'Insulina Glargina', cat:'Insulinas', stock:3, exp:'2026-05-01', suc:'Industrial', status:'low' },
-  { code:'MED-00741', name:'Metformina 850mg', cat:'Antidiabéticos', stock:0, exp:'2027-11-20', suc:'Universitaria', status:'out' },
-  { code:'MED-00852', name:'Enalapril 20mg', cat:'Antihipertensivos', stock:0, exp:'2027-09-14', suc:'Oeste', status:'out' },
-  { code:'MED-00963', name:'Omeprazol 20mg', cat:'Antiácidos', stock:456, exp:'2027-12-01', suc:'Central', status:'ok' },
-  { code:'MED-01074', name:'Vitamina C 1000mg', cat:'Vitaminas', stock:892, exp:'2027-07-30', suc:'Plaza Mayor', status:'ok' },
+  // Medicamentos
+  { code:'MED-00100', name:'Amoxicilina 500mg',     cat:'Antibióticos',      stock:342, exp:'2027-06-15', suc:'Central',      status:'ok',       priceBuy:42.00,  priceSell:85.00,   type:'medicamento' },
+  { code:'MED-00142', name:'Amoxicilina 500mg',     cat:'Antibióticos',      stock:120, exp:'2026-03-15', suc:'Norte',        status:'expiring', priceBuy:42.00,  priceSell:85.00,   type:'medicamento' },
+  { code:'MED-00287', name:'Ibuprofeno 400mg',      cat:'Antiinflamatorios', stock:80,  exp:'2026-03-20', suc:'Este',         status:'expiring', priceBuy:18.00,  priceSell:38.00,   type:'medicamento' },
+  { code:'MED-00391', name:'Loratadina 10mg',       cat:'Antihistamínicos',  stock:200, exp:'2026-03-28', suc:'Sur',          status:'ok',       priceBuy:12.00,  priceSell:28.00,   type:'medicamento' },
+  { code:'MED-00512', name:'Paracetamol 1g',        cat:'Analgésicos',       stock:15,  exp:'2027-08-10', suc:'Sur',          status:'low',      priceBuy:8.00,   priceSell:20.00,   type:'medicamento' },
+  { code:'MED-00634', name:'Insulina Glargina',     cat:'Insulinas',         stock:3,   exp:'2026-05-01', suc:'Industrial',   status:'low',      priceBuy:180.00, priceSell:420.00,  type:'medicamento' },
+  { code:'MED-00741', name:'Metformina 850mg',      cat:'Antidiabéticos',    stock:0,   exp:'2027-11-20', suc:'Universitaria',status:'out',      priceBuy:15.00,  priceSell:35.00,   type:'medicamento' },
+  { code:'MED-00852', name:'Enalapril 20mg',        cat:'Antihipertensivos', stock:0,   exp:'2027-09-14', suc:'Oeste',        status:'out',      priceBuy:22.00,  priceSell:48.00,   type:'medicamento' },
+  { code:'MED-00963', name:'Omeprazol 20mg',        cat:'Antiácidos',        stock:456, exp:'2027-12-01', suc:'Central',      status:'ok',       priceBuy:14.00,  priceSell:32.00,   type:'medicamento' },
+  { code:'MED-01074', name:'Vitamina C 1000mg',     cat:'Vitaminas',         stock:892, exp:'2027-07-30', suc:'Plaza Mayor',  status:'ok',       priceBuy:9.00,   priceSell:22.00,   type:'medicamento' },
+  // Productos generales
+  { code:'GEN-00001', name:'Alcohol Isopropílico 70%', cat:'Antisépticos',   stock:85,  exp:'2028-01-01', suc:'Central',      status:'ok',       priceBuy:18.00,  priceSell:35.00,   type:'general' },
+  { code:'GEN-00002', name:'Venda Elástica 10cm',   cat:'Curaciones',        stock:120, exp:'2029-06-01', suc:'Norte',        status:'ok',       priceBuy:8.00,   priceSell:18.00,   type:'general' },
+  { code:'GEN-00003', name:'Jeringas Desechables x10', cat:'Inyectables',    stock:8,   exp:'2028-12-01', suc:'Sur',          status:'low',      priceBuy:25.00,  priceSell:55.00,   type:'general' },
+  // Suplementos
+  { code:'SUP-00001', name:'Proteína de Suero 30 serv.', cat:'Suplementos',  stock:28,  exp:'2026-12-01', suc:'Plaza Mayor',  status:'ok',       priceBuy:180.00, priceSell:380.00,  type:'suplemento' },
+  { code:'SUP-00002', name:'Omega-3 120 cápsulas',  cat:'Suplementos',       stock:45,  exp:'2027-03-01', suc:'Central',      status:'ok',       priceBuy:85.00,  priceSell:190.00,  type:'suplemento' },
+  { code:'SUP-00003', name:'Magnesio 400mg x60',    cat:'Suplementos',       stock:0,   exp:'2027-08-15', suc:'Este',         status:'out',      priceBuy:55.00,  priceSell:120.00,  type:'suplemento' },
+  // Equipo médico
+  { code:'EQP-00001', name:'Glucómetro Digital',    cat:'Equipo Médico',     stock:12,  exp:'2030-01-01', suc:'Central',      status:'ok',       priceBuy:320.00, priceSell:680.00,  type:'equipo' },
+  { code:'EQP-00002', name:'Tensiómetro de Muñeca', cat:'Equipo Médico',     stock:6,   exp:'2030-01-01', suc:'Norte',        status:'low',      priceBuy:420.00, priceSell:890.00,  type:'equipo' },
+  { code:'EQP-00003', name:'Termómetro Digital',    cat:'Equipo Médico',     stock:22,  exp:'2030-01-01', suc:'Sur',          status:'ok',       priceBuy:65.00,  priceSell:145.00,  type:'equipo' },
 ];
-const tbody = document.getElementById('inventoryTableBody');
+
 const statusMap = {
-  ok: { cls: 'badge-success', label: 'OK' },
-  expiring: { cls: 'badge-danger', label: 'Por Vencer' },
-  low: { cls: 'badge-warning', label: 'Stock Bajo' },
-  out: { cls: 'badge-danger', label: 'Agotado' }
+  ok:       { cls: 'badge-success',   label: 'OK' },
+  expiring: { cls: 'badge-danger',    label: 'Por Vencer' },
+  low:      { cls: 'badge-warning',   label: 'Stock Bajo' },
+  out:      { cls: 'badge-danger',    label: 'Agotado' }
 };
-meds.forEach(m => {
-  const s = statusMap[m.status];
-  const stockColor = m.status === 'out' ? 'text-danger' : m.status === 'low' ? 'text-warning' : '';
-  tbody.innerHTML += `
+const typeBadge = {
+  medicamento: { cls:'type-medicamento', label:'Med.' },
+  general:     { cls:'type-general',     label:'Gral.' },
+  suplemento:  { cls:'type-suplemento',  label:'Supl.' },
+  equipo:      { cls:'type-equipo',      label:'Equipo' },
+};
+
+// ===== INVENTARIOS FÍSICOS DATA =====
+let inventories = [
+  {
+    id: 'INV-001',
+    branch: 'Central',
+    date: '2026-03-01',
+    createdBy: 'Juan Torres',
+    notes: 'Conteo mensual de rutina',
+    status: 'pendiente',
+    rejectReason: '',
+    approvedBy: '',
+    products: [
+      { code:'MED-00100', name:'Amoxicilina 500mg',      type:'medicamento', cat:'Antibióticos',  systemStock:342, counted:340 },
+      { code:'MED-00963', name:'Omeprazol 20mg',         type:'medicamento', cat:'Antiácidos',    systemStock:456, counted:460 },
+      { code:'GEN-00001', name:'Alcohol Isopropílico 70%', type:'general', cat:'Antisépticos',   systemStock:85,  counted:82  },
+      { code:'SUP-00002', name:'Omega-3 120 cápsulas',   type:'suplemento',  cat:'Suplementos',   systemStock:45,  counted:45  },
+      { code:'EQP-00001', name:'Glucómetro Digital',     type:'equipo',      cat:'Equipo Médico', systemStock:12,  counted:11  },
+    ]
+  },
+  {
+    id: 'INV-002',
+    branch: 'Norte',
+    date: '2026-02-28',
+    createdBy: 'María Rodríguez',
+    notes: '',
+    status: 'borrador',
+    rejectReason: '',
+    approvedBy: '',
+    products: [
+      { code:'MED-00142', name:'Amoxicilina 500mg',      type:'medicamento', cat:'Antibióticos',  systemStock:120, counted:118 },
+      { code:'GEN-00002', name:'Venda Elástica 10cm',    type:'general',     cat:'Curaciones',    systemStock:120, counted:122 },
+      { code:'EQP-00002', name:'Tensiómetro de Muñeca',  type:'equipo',      cat:'Equipo Médico', systemStock:6,   counted:6   },
+    ]
+  },
+  {
+    id: 'INV-003',
+    branch: 'Sur',
+    date: '2026-02-20',
+    createdBy: 'Pedro Morales',
+    notes: 'Cierre de quincena',
+    status: 'aprobado',
+    rejectReason: '',
+    approvedBy: 'Carlos Méndez (Gerente)',
+    products: [
+      { code:'MED-00391', name:'Loratadina 10mg',        type:'medicamento', cat:'Antihistamínicos', systemStock:200, counted:200 },
+      { code:'MED-00512', name:'Paracetamol 1g',         type:'medicamento', cat:'Analgésicos',      systemStock:15,  counted:14  },
+      { code:'GEN-00003', name:'Jeringas Desechables x10', type:'general',   cat:'Inyectables',      systemStock:8,   counted:8   },
+      { code:'EQP-00003', name:'Termómetro Digital',     type:'equipo',      cat:'Equipo Médico',    systemStock:22,  counted:20  },
+    ]
+  },
+  {
+    id: 'INV-004',
+    branch: 'Este',
+    date: '2026-02-15',
+    createdBy: 'Ana López',
+    notes: '',
+    status: 'rechazado',
+    rejectReason: 'Las cantidades no coinciden con el sistema. Se encontraron errores en el conteo de Ibuprofeno. Repetir el conteo.',
+    approvedBy: '',
+    products: [
+      { code:'MED-00287', name:'Ibuprofeno 400mg',       type:'medicamento', cat:'Antiinflamatorios', systemStock:80, counted:65 },
+      { code:'SUP-00003', name:'Magnesio 400mg x60',     type:'suplemento',  cat:'Suplementos',       systemStock:0,  counted:2  },
+    ]
+  }
+];
+
+let currentInvId = null; // ID del inventario en edición
+
+// ===== SORT (stock tabs) =====
+let sortCol = null, sortDir = 1;
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  updateSortIcons();
+  applyFilters();
+}
+function updateSortIcons() {
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (!icon) return;
+    if (th.dataset.sort === sortCol) {
+      icon.className = `sort-icon fa-solid fa-sort-${sortDir === 1 ? 'up' : 'down'} text-primary`;
+    } else {
+      icon.className = 'sort-icon fa-solid fa-sort text-muted';
+    }
+  });
+}
+
+// ===== TOGGLE ROW =====
+function toggleRow(btn) {
+  const row = btn.closest('tr');
+  const detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('row-detail')) {
+    detail.classList.toggle('open');
+    const icon = btn.querySelector('i');
+    icon.classList.toggle('fa-chevron-down');
+    icon.classList.toggle('fa-chevron-up');
+  }
+}
+
+// ===== FILTER & RENDER =====
+function applyFilters() {
+  const search  = (document.getElementById('searchFilter')?.value || document.getElementById('topbarSearch')?.value || '').toLowerCase();
+  const branch  = document.getElementById('branchFilter')?.value || document.getElementById('topbarBranch')?.value || '';
+  const cat     = document.getElementById('catFilter')?.value || '';
+  const type    = document.getElementById('typeFilter')?.value || '';
+
+  let filtered = meds.filter(m => {
+    const matchSearch = !search || m.name.toLowerCase().includes(search) || m.code.toLowerCase().includes(search);
+    const matchBranch = !branch || m.suc === branch;
+    const matchCat    = !cat    || m.cat === cat;
+    const matchType   = !type   || m.type === type;
+    return matchSearch && matchBranch && matchCat && matchType;
+  });
+
+  if (sortCol) {
+    filtered = [...filtered].sort((a, b) => {
+      const va = a[sortCol], vb = b[sortCol];
+      if (typeof va === 'number') return (va - vb) * sortDir;
+      return String(va).localeCompare(String(vb)) * sortDir;
+    });
+  }
+
+  renderMainTable(filtered);
+  renderSubTabs(filtered);
+  updateKPIs(filtered);
+  document.getElementById('tableCountLabel').textContent = `Mostrando ${filtered.length} de ${meds.length} productos`;
+}
+
+function renderMainTable(data) {
+  const tbody = document.getElementById('inventoryTableBody');
+  tbody.innerHTML = '';
+  data.forEach(m => {
+    const s   = statusMap[m.status];
+    const tb  = typeBadge[m.type] || typeBadge.general;
+    const stockColor = m.status === 'out' ? 'text-danger' : m.status === 'low' ? 'text-warning' : '';
+    const expColor   = m.status === 'expiring' ? 'text-danger fw-bold' : 'text-muted';
+    const margin = m.priceSell > 0 ? Math.round((m.priceSell - m.priceBuy) / m.priceSell * 100) : 0;
+
+    tbody.innerHTML += `
     <tr>
       <td><input type="checkbox"></td>
       <td><small class="text-muted">${m.code}</small></td>
-      <td><strong>${m.name}</strong></td>
-      <td><span class="badge bg-light text-muted">${m.cat}</span></td>
+      <td>
+        <strong>${m.name}</strong><br>
+        <span class="type-badge ${tb.cls}">${tb.label}</span>
+      </td>
+      <td class="col-secondary"><span class="badge bg-light text-muted">${m.cat}</span></td>
+      <td class="col-secondary"><small>$${m.priceBuy.toFixed(2)}</small></td>
+      <td class="col-secondary">
+        <div>$${m.priceSell.toFixed(2)}</div>
+        <small class="text-muted" style="font-size:10px">Margen: ${margin}%</small>
+      </td>
       <td><strong class="${stockColor}">${m.stock}</strong></td>
-      <td><small class="${m.status === 'expiring' ? 'text-danger fw-bold' : 'text-muted'}">${m.exp}</small></td>
-      <td>${m.suc}</td>
+      <td class="col-secondary"><small class="${expColor}">${m.exp !== '2030-01-01' ? m.exp : '—'}</small></td>
+      <td class="col-secondary">${m.suc}</td>
       <td><span class="badge-status ${s.cls}">${s.label}</span></td>
       <td>
         <div class="table-actions">
@@ -495,10 +825,639 @@ meds.forEach(m => {
           <button class="btn-icon success" title="Ajuste de stock" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
           <button class="btn-icon warning" title="Transferir"><i class="fa-solid fa-arrows-left-right"></i></button>
           <button class="btn-icon danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)" title="Más info"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </td>
+    </tr>
+    <tr class="row-detail">
+      <td colspan="11">
+        <div class="row-detail-grid">
+          <div class="row-detail-item"><span class="rd-label">Categoría</span><span class="rd-value">${m.cat}</span></div>
+          <div class="row-detail-item"><span class="rd-label">P. Compra</span><span class="rd-value">$${m.priceBuy.toFixed(2)}</span></div>
+          <div class="row-detail-item"><span class="rd-label">P. Venta</span><span class="rd-value">$${m.priceSell.toFixed(2)}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Vencimiento</span><span class="rd-value">${m.exp !== '2030-01-01' ? m.exp : '—'}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Sucursal</span><span class="rd-value">${m.suc}</span></div>
+          <div class="row-detail-item"><span class="rd-label">Margen</span><span class="rd-value">${margin}%</span></div>
+        </div>
+        <div class="table-actions mt-2">
+          <button class="btn-icon" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon success" data-bs-toggle="modal" data-bs-target="#adjustStockModal"><i class="fa-solid fa-sliders"></i></button>
+          <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
     </tr>`;
+  });
+}
+
+function renderSubTabs(data) {
+  const today = new Date();
+  const expTh = 30 * 24 * 3600 * 1000;
+
+  // Expiring
+  const expiring = data.filter(m => m.status === 'expiring' || (m.exp && m.exp !== '2030-01-01' && (new Date(m.exp) - today) < expTh && (new Date(m.exp) - today) > 0));
+  document.getElementById('tabExpBadge').textContent = expiring.length;
+  const exTbody = document.getElementById('expiringTableBody');
+  exTbody.innerHTML = '';
+  expiring.forEach(m => {
+    const days = Math.ceil((new Date(m.exp) - today) / (24*3600*1000));
+    const cls = days <= 14 ? 'badge-danger' : 'badge-warning';
+    exTbody.innerHTML += `<tr>
+      <td><small class="text-muted">${m.code}</small></td>
+      <td><strong>${m.name}</strong></td>
+      <td>${m.stock}</td>
+      <td class="text-danger fw-bold">${m.exp}</td>
+      <td><span class="badge-status ${cls}">${days} días</span></td>
+      <td>${m.suc}</td>
+      <td><div class="table-actions">
+        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+        <button class="btn-icon"><i class="fa-solid fa-eye"></i></button>
+      </div></td>
+    </tr>`;
+  });
+
+  // Low stock
+  const low = data.filter(m => m.status === 'low');
+  document.getElementById('tabLowBadge').textContent = low.length;
+  const lowTbody = document.getElementById('lowTableBody');
+  lowTbody.innerHTML = '';
+  low.forEach(m => {
+    lowTbody.innerHTML += `<tr>
+      <td><small class="text-muted">${m.code}</small></td>
+      <td><strong>${m.name}</strong></td>
+      <td><span class="badge-status badge-warning">${m.stock} uds</span></td>
+      <td>${m.suc}</td>
+      <td><div class="table-actions">
+        <button class="btn-icon success"><i class="fa-solid fa-rotate"></i></button>
+        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+      </div></td>
+    </tr>`;
+  });
+
+  // Out
+  const out = data.filter(m => m.status === 'out');
+  document.getElementById('tabOutBadge').textContent = out.length;
+  const outTbody = document.getElementById('outTableBody');
+  outTbody.innerHTML = '';
+  out.forEach(m => {
+    outTbody.innerHTML += `<tr>
+      <td><small class="text-muted">${m.code}</small></td>
+      <td><strong>${m.name}</strong></td>
+      <td>${m.cat}</td>
+      <td>${m.suc}</td>
+      <td><div class="table-actions">
+        <button class="btn-icon success"><i class="fa-solid fa-plus"></i></button>
+        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
+      </div></td>
+    </tr>`;
+  });
+}
+
+function updateKPIs(data) {
+  document.getElementById('kpiTotal').textContent    = data.length;
+  document.getElementById('tabAllBadge').textContent = data.length;
+  document.getElementById('kpiLow').textContent      = data.filter(m => m.status === 'low').length;
+  document.getElementById('kpiOut').textContent      = data.filter(m => m.status === 'out').length;
+  const today = new Date(), expTh = 30*24*3600*1000;
+  document.getElementById('kpiExpiring').textContent = data.filter(m => m.exp && m.exp !== '2030-01-01' && (new Date(m.exp) - today) < expTh && (new Date(m.exp) - today) > 0).length;
+}
+
+// Branch stock cards
+const branchNames  = ['Central','Norte','Sur','Este','Oeste','Plaza Mayor','Universitaria','Industrial'];
+const branchStocks = [342, 285, 198, 256, 143, 187, 124, 112];
+const branchColors = ['#2563eb','#0ea5e9','#16a34a','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
+const container = document.getElementById('branchStockCards');
+branchNames.forEach((b, i) => {
+  const pct = Math.round(branchStocks[i] / 342 * 100);
+  container.innerHTML += `
+    <div class="col-6 col-md-4 col-xl-3">
+      <div class="p-3 rounded-3 border h-100" style="background:#fff">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span style="font-size:13px;font-weight:600;color:#475569">${b}</span>
+          <span style="font-size:16px;font-weight:700;color:${branchColors[i]}">${branchStocks[i]}</span>
+        </div>
+        <div class="progress mb-1" style="height:4px">
+          <div class="progress-bar" style="width:${pct}%;background:${branchColors[i]}"></div>
+        </div>
+        <small style="font-size:11px;color:#94a3b8">productos en stock</small>
+      </div>
+    </div>`;
 });
+
+// ===== INVENTARIOS FÍSICOS =====
+
+// Show/hide filters when switching tabs
+document.querySelectorAll('#invTabs button[data-bs-toggle="tab"]').forEach(btn => {
+  btn.addEventListener('shown.bs.tab', e => {
+    const isInvTab = e.target.dataset.bsTarget === '#tabInv';
+    document.getElementById('stockFilters').classList.toggle('d-none', isInvTab);
+    document.getElementById('invFilters').classList.toggle('d-none', !isInvTab);
+    if (isInvTab) renderInventoriesTab();
+  });
+});
+
+const invStatusConfig = {
+  borrador:  { cls: 'badge-warning',  label: 'Borrador',   icon: 'fa-file-pen' },
+  pendiente: { cls: 'badge-info',     label: 'Pendiente',  icon: 'fa-clock' },
+  aprobado:  { cls: 'badge-success',  label: 'Aprobado',   icon: 'fa-circle-check' },
+  rechazado: { cls: 'badge-danger',   label: 'Rechazado',  icon: 'fa-circle-xmark' },
+};
+
+function getInvDiffStats(products) {
+  let withDiff = 0, missing = 0, extra = 0;
+  products.forEach(p => {
+    const diff = p.counted - p.systemStock;
+    if (diff !== 0) withDiff++;
+    if (diff < 0) missing += Math.abs(diff);
+    if (diff > 0) extra += diff;
+  });
+  return { withDiff, missing, extra };
+}
+
+function renderInventoriesTab() {
+  const branchF = document.getElementById('invBranchFilter')?.value || '';
+  const statusF = document.getElementById('invStatusFilter')?.value || '';
+
+  let filtered = inventories.filter(inv => {
+    return (!branchF || inv.branch === branchF) && (!statusF || inv.status === statusF);
+  });
+
+  // Mini KPIs
+  document.getElementById('invKpiBorrador').textContent  = inventories.filter(i => i.status === 'borrador').length;
+  document.getElementById('invKpiPendiente').textContent = inventories.filter(i => i.status === 'pendiente').length;
+  document.getElementById('invKpiAprobado').textContent  = inventories.filter(i => i.status === 'aprobado').length;
+  document.getElementById('invKpiRechazado').textContent = inventories.filter(i => i.status === 'rechazado').length;
+  updateInventoryTabBadge();
+
+  const tbody = document.getElementById('inventoriesTableBody');
+  tbody.innerHTML = '';
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-clipboard-list fa-2x mb-2 d-block" style="opacity:.3"></i>No hay inventarios registrados</td></tr>`;
+    return;
+  }
+
+  filtered.forEach(inv => {
+    const sc = invStatusConfig[inv.status];
+    const stats = getInvDiffStats(inv.products);
+    const diffText = stats.withDiff > 0
+      ? `<span class="text-danger fw-semibold">${stats.withDiff} prod.</span>`
+      : `<span class="text-success">Sin diferencias</span>`;
+
+    const actionBtns = buildInvActionButtons(inv);
+
+    tbody.innerHTML += `
+    <tr>
+      <td><strong style="color:#2563eb">${inv.id}</strong></td>
+      <td>${inv.branch}</td>
+      <td class="col-secondary"><small class="text-muted">${formatDate(inv.date)}</small></td>
+      <td class="col-secondary"><small>${inv.createdBy || '—'}</small></td>
+      <td><span class="text-muted">${inv.products.length} productos</span></td>
+      <td>${diffText}</td>
+      <td><span class="badge-status ${sc.cls}"><i class="fa-solid ${sc.icon} me-1"></i>${sc.label}</span></td>
+      <td>
+        <div class="table-actions">${actionBtns}</div>
+      </td>
+    </tr>`;
+  });
+}
+
+function buildInvActionButtons(inv) {
+  let btns = `<button class="btn-icon" title="Ver detalle" onclick="viewInventory('${inv.id}')"><i class="fa-solid fa-eye"></i></button>`;
+  if (inv.status === 'borrador') {
+    btns += `<button class="btn-icon warning" title="Editar borrador" onclick="editInventory('${inv.id}')"><i class="fa-solid fa-pen-to-square"></i></button>`;
+    btns += `<button class="btn-icon success" title="Enviar para aprobación" onclick="submitInventoryForApproval('${inv.id}')"><i class="fa-solid fa-paper-plane"></i></button>`;
+    btns += `<button class="btn-icon danger" title="Eliminar borrador" onclick="deleteInventory('${inv.id}')"><i class="fa-solid fa-trash"></i></button>`;
+  }
+  return btns;
+}
+
+function updateInventoryTabBadge() {
+  const pending = inventories.filter(i => i.status === 'pendiente').length;
+  document.getElementById('tabInvBadge').textContent = pending;
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const [y, m, d] = dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ===== NUEVO INVENTARIO MODAL =====
+function openNewInventory() {
+  currentInvId = null;
+  document.getElementById('newInvModalTitle').innerHTML = '<i class="fa-solid fa-clipboard-list me-2 text-primary"></i>Nuevo Inventario Físico';
+  document.getElementById('invFormBranch').value = '';
+  document.getElementById('invFormDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('invFormResponsible').value = '';
+  document.getElementById('invFormNotes').value = '';
+  document.getElementById('invProductSection').classList.add('d-none');
+  document.getElementById('invEmptyState').classList.remove('d-none');
+  document.getElementById('invCountTableBody').innerHTML = '';
+  new bootstrap.Modal(document.getElementById('newInventoryModal')).show();
+}
+
+function editInventory(id) {
+  const inv = inventories.find(i => i.id === id);
+  if (!inv) return;
+  currentInvId = id;
+  document.getElementById('newInvModalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square me-2 text-warning"></i>Editar Inventario — ${inv.id}`;
+  document.getElementById('invFormBranch').value = inv.branch;
+  document.getElementById('invFormDate').value = inv.date;
+  document.getElementById('invFormResponsible').value = inv.createdBy;
+  document.getElementById('invFormNotes').value = inv.notes;
+  loadBranchProducts(inv.branch, inv.products);
+  new bootstrap.Modal(document.getElementById('newInventoryModal')).show();
+}
+
+function loadBranchProducts(branch, existingProducts) {
+  if (!branch) {
+    document.getElementById('invProductSection').classList.add('d-none');
+    document.getElementById('invEmptyState').classList.remove('d-none');
+    return;
+  }
+
+  const branchMeds = meds.filter(m => m.suc === branch);
+  document.getElementById('invProductSection').classList.remove('d-none');
+  document.getElementById('invEmptyState').classList.add('d-none');
+  document.getElementById('invProductSectionTitle').innerHTML = `<i class="fa-solid fa-list-check me-2 text-primary"></i>Productos a contar — Sucursal ${branch}`;
+  document.getElementById('invProductCount').textContent = `${branchMeds.length} productos encontrados`;
+
+  const tbody = document.getElementById('invCountTableBody');
+  tbody.innerHTML = '';
+
+  branchMeds.forEach(m => {
+    const tb = typeBadge[m.type] || typeBadge.general;
+    // If editing, prefill counted value
+    const prefill = existingProducts ? (existingProducts.find(p => p.code === m.code)?.counted ?? '') : '';
+
+    tbody.innerHTML += `
+    <tr id="invrow-${m.code.replace('-','')}">
+      <td><small class="text-muted">${m.code}</small></td>
+      <td><span class="type-badge ${tb.cls}">${tb.label}</span></td>
+      <td>${m.name}</td>
+      <td class="col-secondary"><small class="text-muted">${m.cat}</small></td>
+      <td class="text-center"><strong>${m.stock}</strong></td>
+      <td class="text-center">
+        <input type="number" class="form-control form-control-sm text-center inv-count-input"
+          style="width:90px;margin:auto"
+          data-code="${m.code}" data-system="${m.stock}"
+          value="${prefill}" min="0"
+          oninput="calcDiff(this)">
+      </td>
+      <td class="text-center" id="diff-${m.code.replace(/[^a-zA-Z0-9]/g,'')}">
+        <span class="text-muted">—</span>
+      </td>
+    </tr>`;
+
+    // If prefill exists, compute diff immediately
+    if (prefill !== '') {
+      setTimeout(() => {
+        const inp = tbody.querySelector(`input[data-code="${m.code}"]`);
+        if (inp) calcDiff(inp);
+      }, 0);
+    }
+  });
+
+  updateInvSummary();
+}
+
+function calcDiff(input) {
+  const systemStock = parseInt(input.dataset.system) || 0;
+  const counted = input.value !== '' ? parseInt(input.value) : null;
+  const diffId = 'diff-' + input.dataset.code.replace(/[^a-zA-Z0-9]/g, '');
+  const diffCell = document.getElementById(diffId);
+  if (!diffCell) return;
+
+  if (counted === null || isNaN(counted)) {
+    diffCell.innerHTML = '<span class="text-muted">—</span>';
+  } else {
+    const diff = counted - systemStock;
+    if (diff === 0) {
+      diffCell.innerHTML = '<span class="text-success fw-semibold">0</span>';
+    } else if (diff > 0) {
+      diffCell.innerHTML = `<span class="text-success fw-bold">+${diff}</span>`;
+    } else {
+      diffCell.innerHTML = `<span class="text-danger fw-bold">${diff}</span>`;
+    }
+  }
+  updateInvSummary();
+}
+
+function updateInvSummary() {
+  const inputs = document.querySelectorAll('.inv-count-input');
+  let total = inputs.length, ok = 0, withDiff = 0, missing = 0, extra = 0;
+  inputs.forEach(inp => {
+    if (inp.value === '') return;
+    const sys = parseInt(inp.dataset.system) || 0;
+    const cnt = parseInt(inp.value) || 0;
+    const diff = cnt - sys;
+    if (diff === 0) ok++;
+    else { withDiff++; if (diff < 0) missing += Math.abs(diff); else extra += diff; }
+  });
+  document.getElementById('invSumTotal').textContent   = total;
+  document.getElementById('invSumOk').textContent      = ok;
+  document.getElementById('invSumDiff').textContent    = withDiff;
+  document.getElementById('invSumMissing').textContent = missing;
+  document.getElementById('invSumExtra').textContent   = extra;
+}
+
+function collectInventoryForm(targetStatus) {
+  const branch = document.getElementById('invFormBranch').value;
+  if (!branch) { showAlert('Selecciona una sucursal para continuar.', { title: 'Campo requerido', type: 'warning' }); return null; }
+
+  const inputs = document.querySelectorAll('.inv-count-input');
+  if (inputs.length === 0) { showAlert('Selecciona una sucursal para cargar los productos.', { title: 'Campo requerido', type: 'warning' }); return null; }
+
+  const products = [];
+  inputs.forEach(inp => {
+    const m = meds.find(x => x.code === inp.dataset.code);
+    if (!m) return;
+    products.push({
+      code: m.code,
+      name: m.name,
+      type: m.type,
+      cat: m.cat,
+      systemStock: m.stock,
+      counted: inp.value !== '' ? parseInt(inp.value) : m.stock, // default to system if not entered
+    });
+  });
+
+  return {
+    branch,
+    date: document.getElementById('invFormDate').value || new Date().toISOString().split('T')[0],
+    createdBy: document.getElementById('invFormResponsible').value,
+    notes: document.getElementById('invFormNotes').value,
+    status: targetStatus,
+    products,
+    rejectReason: '',
+    approvedBy: '',
+  };
+}
+
+function saveInventoryDraft() {
+  const data = collectInventoryForm('borrador');
+  if (!data) return;
+  persistInventory(data);
+  bootstrap.Modal.getInstance(document.getElementById('newInventoryModal')).hide();
+  // Switch to Inventarios tab
+  document.getElementById('tabInvBtn').click();
+  renderInventoriesTab();
+}
+
+function saveAndSubmitInventory() {
+  const data = collectInventoryForm('pendiente');
+  if (!data) return;
+  bootstrap.Modal.getInstance(document.getElementById('newInventoryModal')).hide();
+  setTimeout(() => {
+    showConfirm(`¿Enviar el inventario de ${data.branch} para aprobación? Una vez enviado no podrás editarlo.`, {
+      title: 'Enviar para aprobación',
+      type: 'info',
+      confirmText: 'Sí, enviar',
+      confirmClass: 'btn-primary',
+      onConfirm: () => {
+        persistInventory(data);
+        document.getElementById('tabInvBtn').click();
+        renderInventoriesTab();
+      }
+    });
+  }, 300);
+}
+
+function persistInventory(data) {
+  if (currentInvId) {
+    const idx = inventories.findIndex(i => i.id === currentInvId);
+    if (idx > -1) {
+      inventories[idx] = { ...inventories[idx], ...data };
+      return;
+    }
+  }
+  // New inventory
+  const newId = 'INV-' + String(inventories.length + 1).padStart(3, '0');
+  inventories.push({ id: newId, ...data });
+}
+
+function submitInventoryForApproval(id) {
+  const inv = inventories.find(i => i.id === id);
+  if (!inv) return;
+  showConfirm(`¿Enviar el inventario ${id} de ${inv.branch} para aprobación?`, {
+    title: 'Enviar para aprobación',
+    type: 'info',
+    confirmText: 'Sí, enviar',
+    confirmClass: 'btn-primary',
+    onConfirm: () => { inv.status = 'pendiente'; renderInventoriesTab(); }
+  });
+}
+
+function deleteInventory(id) {
+  const inv = inventories.find(i => i.id === id);
+  if (!inv || inv.status !== 'borrador') return;
+  showConfirm(`¿Eliminar el borrador ${id}? Esta acción no se puede deshacer.`, {
+    title: 'Eliminar borrador',
+    type: 'danger',
+    confirmText: 'Sí, eliminar',
+    confirmClass: 'btn-danger',
+    onConfirm: () => { inventories = inventories.filter(i => i.id !== id); renderInventoriesTab(); }
+  });
+}
+
+// ===== VIEW / APPROVE MODAL =====
+function viewInventory(id) {
+  const inv = inventories.find(i => i.id === id);
+  if (!inv) return;
+
+  const sc = invStatusConfig[inv.status];
+  const stats = getInvDiffStats(inv.products);
+
+  // Title
+  document.getElementById('viewInvTitle').innerHTML =
+    `<i class="fa-solid fa-clipboard-check me-2 text-primary"></i>${inv.id} — ${inv.branch}`;
+  document.getElementById('viewInvStatusBadge').innerHTML =
+    `<span class="badge-status ${sc.cls}"><i class="fa-solid ${sc.icon} me-1"></i>${sc.label}</span>`;
+
+  // Info cards
+  const infoItems = [
+    { label:'Sucursal', value: inv.branch, icon:'fa-building' },
+    { label:'Fecha', value: formatDate(inv.date), icon:'fa-calendar' },
+    { label:'Responsable', value: inv.createdBy || '—', icon:'fa-user' },
+    { label:'Notas', value: inv.notes || '—', icon:'fa-note-sticky' },
+  ];
+  document.getElementById('viewInvInfo').innerHTML = infoItems.map(it => `
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded-3 border h-100" style="background:#f8fafc">
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px">
+          <i class="fa-solid ${it.icon} me-1"></i>${it.label}
+        </div>
+        <div style="font-size:14px;font-weight:600;color:#1e293b;margin-top:4px">${it.value}</div>
+      </div>
+    </div>`).join('');
+
+  // Summary
+  document.getElementById('viewInvSummary').innerHTML = `
+    <span><strong>${inv.products.length}</strong> productos</span>
+    <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i><strong>${inv.products.length - stats.withDiff}</strong> sin diferencias</span>
+    <span class="${stats.withDiff > 0 ? 'text-danger' : 'text-muted'}"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>${stats.withDiff}</strong> con diferencias</span>
+    <span class="text-danger"><i class="fa-solid fa-arrow-down me-1"></i>Faltantes: <strong>${stats.missing}</strong> uds</span>
+    <span class="text-success"><i class="fa-solid fa-arrow-up me-1"></i>Sobrantes: <strong>${stats.extra}</strong> uds</span>`;
+
+  // Approval/rejection note
+  const noteEl = document.getElementById('viewInvApprovalNote');
+  if (inv.status === 'aprobado') {
+    noteEl.className = 'mb-3 p-3 rounded-3 border border-success';
+    noteEl.style.background = '#f0fdf4';
+    noteEl.innerHTML = `<i class="fa-solid fa-circle-check text-success me-2"></i><strong>Aprobado por:</strong> ${inv.approvedBy}`;
+    noteEl.classList.remove('d-none');
+  } else if (inv.status === 'rechazado') {
+    noteEl.className = 'mb-3 p-3 rounded-3 border border-danger';
+    noteEl.style.background = '#fef2f2';
+    noteEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-danger me-2"></i><strong>Rechazado — Motivo:</strong> ${inv.rejectReason || 'Sin motivo registrado'}`;
+    noteEl.classList.remove('d-none');
+  } else if (inv.status === 'pendiente') {
+    noteEl.className = 'mb-3 p-3 rounded-3 border border-warning';
+    noteEl.style.background = '#fffbeb';
+    noteEl.innerHTML = `<i class="fa-solid fa-clock text-warning me-2"></i><strong>Pendiente de revisión por Gerente.</strong> El inventario ha sido enviado para aprobación.`;
+    noteEl.classList.remove('d-none');
+  } else {
+    noteEl.classList.add('d-none');
+  }
+
+  // Product table
+  const tbody = document.getElementById('viewInvTableBody');
+  tbody.innerHTML = '';
+  inv.products.forEach(p => {
+    const tb = typeBadge[p.type] || typeBadge.general;
+    const diff = p.counted - p.systemStock;
+    let diffHtml;
+    if (diff === 0)       diffHtml = '<span class="text-success fw-semibold">0</span>';
+    else if (diff > 0)    diffHtml = `<span class="text-success fw-bold">+${diff}</span>`;
+    else                  diffHtml = `<span class="text-danger fw-bold">${diff}</span>`;
+
+    tbody.innerHTML += `<tr>
+      <td><small class="text-muted">${p.code}</small></td>
+      <td><span class="type-badge ${tb.cls}">${tb.label}</span></td>
+      <td>${p.name}</td>
+      <td class="col-secondary"><small class="text-muted">${p.cat}</small></td>
+      <td class="text-center">${p.systemStock}</td>
+      <td class="text-center"><strong>${p.counted}</strong></td>
+      <td class="text-center">${diffHtml}</td>
+    </tr>`;
+  });
+
+  // Reset reject form
+  document.getElementById('rejectForm').classList.add('d-none');
+  document.getElementById('rejectReasonInput').value = '';
+
+  // Footer buttons
+  const footer = document.getElementById('viewInvFooter');
+  footer.innerHTML = '';
+  if (inv.status === 'borrador') {
+    footer.innerHTML = `
+      <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <button class="btn btn-outline-warning" onclick="editFromView('${inv.id}')"><i class="fa-solid fa-pen-to-square me-1"></i>Editar</button>
+      <button class="btn btn-primary" onclick="submitFromView('${inv.id}')"><i class="fa-solid fa-paper-plane me-1"></i>Enviar para Aprobación</button>`;
+  } else if (inv.status === 'pendiente') {
+    footer.innerHTML = `
+      <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <button class="btn btn-outline-danger" onclick="showRejectForm('${inv.id}')"><i class="fa-solid fa-circle-xmark me-1"></i>Rechazar</button>
+      <button class="btn btn-success" onclick="approveInventory('${inv.id}')"><i class="fa-solid fa-circle-check me-1"></i>Aprobar</button>`;
+  } else {
+    footer.innerHTML = `<button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>`;
+  }
+
+  new bootstrap.Modal(document.getElementById('viewInventoryModal')).show();
+}
+
+function editFromView(id) {
+  bootstrap.Modal.getInstance(document.getElementById('viewInventoryModal')).hide();
+  setTimeout(() => editInventory(id), 300);
+}
+
+function submitFromView(id) {
+  bootstrap.Modal.getInstance(document.getElementById('viewInventoryModal')).hide();
+  setTimeout(() => submitInventoryForApproval(id), 300);
+}
+
+function approveInventory(id) {
+  const inv = inventories.find(i => i.id === id);
+  if (!inv) return;
+  inv.status = 'aprobado';
+  inv.approvedBy = 'Carlos Méndez (Gerente)'; // simulated current gerente
+  bootstrap.Modal.getInstance(document.getElementById('viewInventoryModal')).hide();
+  renderInventoriesTab();
+}
+
+function showRejectForm(id) {
+  document.getElementById('rejectForm').classList.remove('d-none');
+  document.getElementById('rejectForm').dataset.invId = id;
+  document.getElementById('rejectReasonInput').focus();
+}
+
+function cancelReject() {
+  document.getElementById('rejectForm').classList.add('d-none');
+  document.getElementById('rejectReasonInput').value = '';
+}
+
+function confirmRejectInventory() {
+  const id = document.getElementById('rejectForm').dataset.invId;
+  const reason = document.getElementById('rejectReasonInput').value.trim();
+  if (!reason) { showAlert('Escribe el motivo del rechazo para continuar.', { title: 'Campo requerido', type: 'warning' }); return; }
+  const inv = inventories.find(i => i.id === id);
+  if (!inv) return;
+  inv.status = 'rechazado';
+  inv.rejectReason = reason;
+  bootstrap.Modal.getInstance(document.getElementById('viewInventoryModal')).hide();
+  renderInventoriesTab();
+}
+
+// ===== GLOBAL DIALOGS =====
+const _dialogCfg = {
+  info:    { color: '#2563eb', icon: 'fa-circle-info' },
+  warning: { color: '#d97706', icon: 'fa-triangle-exclamation' },
+  danger:  { color: '#dc2626', icon: 'fa-circle-exclamation' },
+  success: { color: '#16a34a', icon: 'fa-circle-check' },
+};
+function showAlert(message, { title = 'Aviso', type = 'info' } = {}) {
+  const cfg = _dialogCfg[type] || _dialogCfg.info;
+  document.getElementById('gAlertIcon').style.color = cfg.color;
+  document.getElementById('gAlertIcon').className = `fa-solid ${cfg.icon}`;
+  document.getElementById('gAlertTitle').textContent = title;
+  document.getElementById('gAlertMsg').textContent = message;
+  (bootstrap.Modal.getInstance(document.getElementById('globalAlertModal')) || new bootstrap.Modal(document.getElementById('globalAlertModal'))).show();
+}
+function showConfirm(message, { title = 'Confirmar acción', type = 'warning', confirmText = 'Confirmar', confirmClass = 'btn-warning', onConfirm = () => {} } = {}) {
+  const cfg = _dialogCfg[type] || _dialogCfg.warning;
+  document.getElementById('gConfirmIcon').style.color = cfg.color;
+  document.getElementById('gConfirmIcon').className = `fa-solid ${cfg.icon}`;
+  document.getElementById('gConfirmTitle').textContent = title;
+  document.getElementById('gConfirmMsg').textContent = message;
+  const btn = document.getElementById('gConfirmOkBtn');
+  btn.textContent = confirmText;
+  btn.className = `btn ${confirmClass} px-4 rounded-pill`;
+  btn.style.fontWeight = '600';
+  btn.onclick = () => {
+    bootstrap.Modal.getInstance(document.getElementById('globalConfirmModal')).hide();
+    onConfirm();
+  };
+  (bootstrap.Modal.getInstance(document.getElementById('globalConfirmModal')) || new bootstrap.Modal(document.getElementById('globalConfirmModal'))).show();
+}
+
+// Sidebar
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// Init
+applyFilters();
+updateInventoryTabBadge();
 </script>
 </body>
 </html>

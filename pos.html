@@ -545,17 +545,20 @@ updateClock();
 
 // ======================== Categories ========================
 const categories = [
-  { icon: 'fa-pills', label: 'Todos', color: '#2563eb' },
-  { icon: 'fa-capsules', label: 'Antibióticos', color: '#dc2626' },
-  { icon: 'fa-tablets', label: 'Analgésicos', color: '#d97706' },
-  { icon: 'fa-vials', label: 'Inyectables', color: '#7c3aed' },
-  { icon: 'fa-bottle-droplet', label: 'Jarabes', color: '#0891b2' },
-  { icon: 'fa-heart-pulse', label: 'Cardiología', color: '#db2777' },
-  { icon: 'fa-leaf', label: 'Vitaminas', color: '#16a34a' },
-  { icon: 'fa-eye', label: 'Oftálmicos', color: '#0ea5e9' },
-  { icon: 'fa-lungs', label: 'Respiratorio', color: '#65a30d' },
+  { icon: 'fa-pills',          label: 'Todos',            color: '#2563eb', type: '' },
+  { icon: 'fa-capsules',       label: 'Antibióticos',     color: '#dc2626', type: 'medicamento' },
+  { icon: 'fa-tablets',        label: 'Analgésicos',      color: '#d97706', type: 'medicamento' },
+  { icon: 'fa-vials',          label: 'Inyectables',      color: '#7c3aed', type: 'medicamento' },
+  { icon: 'fa-bottle-droplet', label: 'Jarabes',          color: '#0891b2', type: 'medicamento' },
+  { icon: 'fa-heart-pulse',    label: 'Cardiología',      color: '#db2777', type: 'medicamento' },
+  { icon: 'fa-leaf',           label: 'Vitaminas',        color: '#16a34a', type: 'medicamento' },
+  { icon: 'fa-lungs',          label: 'Respiratorio',     color: '#65a30d', type: 'medicamento' },
+  { icon: 'fa-box',            label: 'Gral.',            color: '#475569', type: 'general' },
+  { icon: 'fa-dumbbell',       label: 'Suplementos',      color: '#065f46', type: 'suplemento' },
+  { icon: 'fa-stethoscope',    label: 'Equipo Médico',    color: '#92400e', type: 'equipo' },
 ];
 const catRow = document.getElementById('categoriesRow');
+let activeType = '';
 categories.forEach((c, i) => {
   const chip = document.createElement('button');
   chip.className = 'category-chip' + (i === 0 ? ' active' : '');
@@ -563,24 +566,39 @@ categories.forEach((c, i) => {
   chip.addEventListener('click', () => {
     document.querySelectorAll('.category-chip').forEach(x => x.classList.remove('active'));
     chip.classList.add('active');
+    activeType = c.type;
+    filterProducts(document.getElementById('posSearch')?.value || '');
   });
   catRow.appendChild(chip);
 });
 
 // ======================== Products ========================
 const products = [
-  { name: 'Amoxicilina 500mg', price: 85.00, stock: 342, icon: 'fa-capsules', color: '#dc2626' },
-  { name: 'Paracetamol 500mg', price: 45.00, stock: 528, icon: 'fa-tablets', color: '#d97706' },
-  { name: 'Ibuprofeno 400mg', price: 72.00, stock: 215, icon: 'fa-tablets', color: '#7c3aed' },
-  { name: 'Omeprazol 20mg', price: 62.50, stock: 183, icon: 'fa-capsules', color: '#0891b2' },
-  { name: 'Loratadina 10mg', price: 38.00, stock: 294, icon: 'fa-pills', color: '#16a34a' },
-  { name: 'Metformina 850mg', price: 54.00, stock: 0, icon: 'fa-tablets', color: '#64748b' },
-  { name: 'Vitamina C 1000mg', price: 95.00, stock: 892, icon: 'fa-leaf', color: '#22c55e' },
-  { name: 'Azitromicina 500mg', price: 120.00, stock: 87, icon: 'fa-capsules', color: '#dc2626' },
-  { name: 'Enalapril 20mg', price: 48.00, stock: 156, icon: 'fa-heart-pulse', color: '#db2777' },
-  { name: 'Insulina Glargina', price: 385.00, stock: 3, icon: 'fa-syringe', color: '#7c3aed' },
-  { name: 'Atorvastatina 20mg', price: 89.00, stock: 201, icon: 'fa-tablets', color: '#0ea5e9' },
-  { name: 'Losartan 50mg', price: 67.00, stock: 178, icon: 'fa-heart-pulse', color: '#db2777' },
+  // Medicamentos
+  { code:'MED-00100', name:'Amoxicilina 500mg',     price:85.00,  priceBuy:42.00,  stock:342, icon:'fa-capsules',    color:'#dc2626', type:'medicamento' },
+  { code:'MED-00200', name:'Paracetamol 500mg',     price:45.00,  priceBuy:18.00,  stock:528, icon:'fa-tablets',     color:'#d97706', type:'medicamento' },
+  { code:'MED-00287', name:'Ibuprofeno 400mg',      price:72.00,  priceBuy:28.00,  stock:215, icon:'fa-tablets',     color:'#7c3aed', type:'medicamento' },
+  { code:'MED-00963', name:'Omeprazol 20mg',        price:62.50,  priceBuy:24.00,  stock:183, icon:'fa-capsules',    color:'#0891b2', type:'medicamento' },
+  { code:'MED-00391', name:'Loratadina 10mg',       price:38.00,  priceBuy:14.00,  stock:294, icon:'fa-pills',       color:'#16a34a', type:'medicamento' },
+  { code:'MED-00741', name:'Metformina 850mg',      price:54.00,  priceBuy:21.00,  stock:0,   icon:'fa-tablets',     color:'#64748b', type:'medicamento' },
+  { code:'MED-01074', name:'Vitamina C 1000mg',     price:95.00,  priceBuy:38.00,  stock:892, icon:'fa-leaf',        color:'#22c55e', type:'medicamento' },
+  { code:'MED-01100', name:'Azitromicina 500mg',    price:120.00, priceBuy:52.00,  stock:87,  icon:'fa-capsules',    color:'#dc2626', type:'medicamento' },
+  { code:'MED-00852', name:'Enalapril 20mg',        price:48.00,  priceBuy:19.00,  stock:156, icon:'fa-heart-pulse', color:'#db2777', type:'medicamento' },
+  { code:'MED-00634', name:'Insulina Glargina',     price:385.00, priceBuy:160.00, stock:3,   icon:'fa-syringe',     color:'#7c3aed', type:'medicamento' },
+  { code:'MED-01200', name:'Atorvastatina 20mg',    price:89.00,  priceBuy:36.00,  stock:201, icon:'fa-tablets',     color:'#0ea5e9', type:'medicamento' },
+  { code:'MED-01300', name:'Losartan 50mg',         price:67.00,  priceBuy:27.00,  stock:178, icon:'fa-heart-pulse', color:'#db2777', type:'medicamento' },
+  // Productos generales
+  { code:'GEN-00001', name:'Alcohol Isopropílico',  price:35.00,  priceBuy:18.00,  stock:85,  icon:'fa-flask',       color:'#475569', type:'general' },
+  { code:'GEN-00002', name:'Venda Elástica 10cm',   price:18.00,  priceBuy:8.00,   stock:120, icon:'fa-bandage',     color:'#475569', type:'general' },
+  { code:'GEN-00003', name:'Jeringas x10',          price:55.00,  priceBuy:25.00,  stock:8,   icon:'fa-syringe',     color:'#475569', type:'general' },
+  { code:'GEN-00004', name:'Guantes Látex x100',    price:85.00,  priceBuy:40.00,  stock:42,  icon:'fa-hand',        color:'#475569', type:'general' },
+  // Suplementos
+  { code:'SUP-00001', name:'Proteína de Suero 30s', price:380.00, priceBuy:180.00, stock:28,  icon:'fa-dumbbell',    color:'#065f46', type:'suplemento' },
+  { code:'SUP-00002', name:'Omega-3 120 cáps.',     price:190.00, priceBuy:85.00,  stock:45,  icon:'fa-fish',        color:'#065f46', type:'suplemento' },
+  { code:'SUP-00003', name:'Magnesio 400mg x60',    price:120.00, priceBuy:55.00,  stock:0,   icon:'fa-circle',      color:'#65a30d', type:'suplemento' },
+  // Equipo médico
+  { code:'EQP-00001', name:'Glucómetro Digital',    price:680.00, priceBuy:320.00, stock:12,  icon:'fa-droplet',     color:'#92400e', type:'equipo' },
+  { code:'EQP-00003', name:'Termómetro Digital',    price:145.00, priceBuy:65.00,  stock:22,  icon:'fa-thermometer', color:'#92400e', type:'equipo' },
 ];
 
 let cart = [];
@@ -588,7 +606,8 @@ let cart = [];
 function renderProducts(list) {
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = '';
-  list.forEach((p, i) => {
+  list.forEach(p => {
+    const realIdx = products.indexOf(p);
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
@@ -601,7 +620,7 @@ function renderProducts(list) {
         ${p.stock === 0 ? '⚠ Agotado' : `${p.stock} disponibles`}
       </div>
       <button class="btn-add" ${p.stock === 0 ? 'disabled style="opacity:.5;cursor:not-allowed"' : ''}
-              onclick="addToCart(${i})">
+              onclick="addToCart(${realIdx})">
         <i class="fa-solid fa-plus me-1"></i>Agregar
       </button>`;
     grid.appendChild(card);
@@ -610,8 +629,13 @@ function renderProducts(list) {
 renderProducts(products);
 
 function filterProducts(val) {
-  if (!val) { renderProducts(products); return; }
-  renderProducts(products.filter(p => p.name.toLowerCase().includes(val.toLowerCase())));
+  const search = (val || '').toLowerCase();
+  const filtered = products.filter(p => {
+    const matchSearch = !search || p.name.toLowerCase().includes(search) || p.code.toLowerCase().includes(search);
+    const matchType   = !activeType || p.type === activeType;
+    return matchSearch && matchType;
+  });
+  renderProducts(filtered);
 }
 
 // ======================== Cart ========================
@@ -682,10 +706,13 @@ function removeItem(idx) {
 }
 function clearCart() {
   if (!cart.length) return;
-  if (confirm('¿Cancelar la venta actual? Se perderá el ticket.')) {
-    cart = [];
-    renderCart();
-  }
+  showConfirm('¿Cancelar la venta actual? Se perderá el carrito y el ticket.', {
+    title: 'Cancelar venta',
+    type: 'danger',
+    confirmText: 'Sí, cancelar',
+    confirmClass: 'btn-danger',
+    onConfirm: () => { cart = []; renderCart(); }
+  });
 }
 
 function updateTotals() {
@@ -743,6 +770,75 @@ function completeSale() {
   renderCart();
   setTimeout(() => new bootstrap.Modal(document.getElementById('successModal')).show(), 400);
 }
+
+// ===== GLOBAL DIALOGS =====
+const _dialogCfg = {
+  info:    { color: '#2563eb', icon: 'fa-circle-info' },
+  warning: { color: '#d97706', icon: 'fa-triangle-exclamation' },
+  danger:  { color: '#dc2626', icon: 'fa-circle-exclamation' },
+  success: { color: '#16a34a', icon: 'fa-circle-check' },
+};
+function showAlert(message, { title = 'Aviso', type = 'info' } = {}) {
+  const cfg = _dialogCfg[type] || _dialogCfg.info;
+  document.getElementById('gAlertIcon').style.color = cfg.color;
+  document.getElementById('gAlertIcon').className = `fa-solid ${cfg.icon}`;
+  document.getElementById('gAlertTitle').textContent = title;
+  document.getElementById('gAlertMsg').textContent = message;
+  bootstrap.Modal.getOrCreate(document.getElementById('globalAlertModal')).show();
+}
+function showConfirm(message, { title = 'Confirmar acción', type = 'warning', confirmText = 'Confirmar', confirmClass = 'btn-warning', onConfirm = () => {} } = {}) {
+  const cfg = _dialogCfg[type] || _dialogCfg.warning;
+  document.getElementById('gConfirmIcon').style.color = cfg.color;
+  document.getElementById('gConfirmIcon').className = `fa-solid ${cfg.icon}`;
+  document.getElementById('gConfirmTitle').textContent = title;
+  document.getElementById('gConfirmMsg').textContent = message;
+  const btn = document.getElementById('gConfirmOkBtn');
+  btn.textContent = confirmText;
+  btn.className = `btn ${confirmClass} px-4 rounded-pill`;
+  btn.style.fontWeight = '600';
+  btn.onclick = () => {
+    bootstrap.Modal.getInstance(document.getElementById('globalConfirmModal')).hide();
+    onConfirm();
+  };
+  bootstrap.Modal.getOrCreate(document.getElementById('globalConfirmModal')).show();
+}
 </script>
+
+<!-- Modal de Alerta Global -->
+<div class="modal fade" id="globalAlertModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:380px">
+    <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden">
+      <div class="modal-body text-center px-4 py-5 position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+        <div class="mb-3" style="font-size:56px;line-height:1">
+          <i id="gAlertIcon" class="fa-solid fa-circle-info" style="color:#2563eb"></i>
+        </div>
+        <h5 id="gAlertTitle" class="fw-bold mb-2" style="color:#1e293b;font-size:18px">Aviso</h5>
+        <p id="gAlertMsg" class="mb-4" style="color:#64748b;font-size:14px;line-height:1.6"></p>
+        <button class="btn btn-primary px-5 rounded-pill" data-bs-dismiss="modal" style="font-weight:600">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmación Global -->
+<div class="modal fade" id="globalConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
+    <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden">
+      <div class="modal-body text-center px-4 py-5 position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+        <div class="mb-3" style="font-size:56px;line-height:1">
+          <i id="gConfirmIcon" class="fa-solid fa-triangle-exclamation" style="color:#d97706"></i>
+        </div>
+        <h5 id="gConfirmTitle" class="fw-bold mb-2" style="color:#1e293b;font-size:18px">Confirmar acción</h5>
+        <p id="gConfirmMsg" class="mb-4" style="color:#64748b;font-size:14px;line-height:1.6"></p>
+        <div class="d-flex gap-3 justify-content-center">
+          <button class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal" style="font-weight:500">Cancelar</button>
+          <button id="gConfirmOkBtn" class="btn btn-warning px-4 rounded-pill" style="font-weight:600">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
