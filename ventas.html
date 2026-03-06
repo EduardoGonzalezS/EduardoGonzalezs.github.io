@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>#cancelConfirmModal { z-index: 1065 !important; }</style>
 </head>
 <body>
 
@@ -42,7 +43,6 @@
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -75,6 +75,8 @@
       </div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
@@ -91,10 +93,6 @@
       </nav>
       <h1 class="page-title">Reporte de Ventas</h1>
       <p class="page-subtitle">Consulta y análisis de ventas por sucursal y período</p>
-    </div>
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-outline-secondary"><i class="fa-solid fa-filter me-2"></i>Filtros</button>
-      <button class="btn btn-primary"><i class="fa-solid fa-download me-2"></i>Exportar Excel</button>
     </div>
   </div>
 
@@ -229,7 +227,7 @@
             <th data-sort="totalNum" onclick="sortSales('totalNum')">Total <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
             <th data-sort="fecha" onclick="sortSales('fecha')" class="col-secondary">Fecha/Hora <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
             <th data-sort="estado" onclick="sortSales('estado')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-            <th>Acciones</th>
+            <th class="d-md-none"></th>
           </tr>
         </thead>
         <tbody id="salesTableBody"></tbody>
@@ -613,7 +611,7 @@ function renderSalesTable() {
   pageData.forEach(r => {
     const stClass = r.estado === 'Completado' ? 'badge-success' : r.estado === 'En Proceso' || r.estado === 'Pendiente Cancelación' ? 'badge-warning' : 'badge-danger';
     tbody.innerHTML += `
-    <tr>
+    <tr onclick="viewSale('${r.folio}')" style="cursor:pointer">
       <td><span style="font-weight:600;color:#2563eb">${r.folio}</span></td>
       <td>${r.suc}</td>
       <td class="col-secondary">${r.cajero}</td>
@@ -621,12 +619,8 @@ function renderSalesTable() {
       <td><strong>${r.total}</strong></td>
       <td class="col-secondary"><small class="text-muted">${r.fecha}</small></td>
       <td><span class="badge-status ${stClass}">${r.estado}</span></td>
-      <td>
-        <div class="table-actions">
-          <button class="btn-icon" title="Ver detalle" onclick="viewSale('${r.folio}')"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon danger" title="Cancelar" onclick="viewSale('${r.folio}')"><i class="fa-solid fa-ban"></i></button>
-          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
-        </div>
+      <td class="d-md-none text-center" onclick="event.stopPropagation()">
+        <button class="expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
       </td>
     </tr>
     <tr class="row-detail">
@@ -700,7 +694,12 @@ function viewSale(folio) {
 }
 
 function confirmCancelSale() {
-  bootstrap.Modal.getOrCreateInstance(document.getElementById('cancelConfirmModal')).show();
+  const m = bootstrap.Modal.getOrCreateInstance(document.getElementById('cancelConfirmModal'));
+  m.show();
+  document.getElementById('cancelConfirmModal').addEventListener('shown.bs.modal', function () {
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    if (backdrops.length > 1) backdrops[backdrops.length - 1].style.zIndex = '1064';
+  }, { once: true });
 }
 
 function executeCancelSale() {
@@ -766,5 +765,6 @@ initDatePickers();
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

@@ -39,7 +39,6 @@
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -66,6 +65,8 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
@@ -231,9 +232,6 @@
     <div class="table-card-header flex-column align-items-start gap-3">
       <ul class="nav nav-tabs w-100" id="invTabs" style="overflow-x:auto;flex-wrap:nowrap">
         <li class="nav-item flex-shrink-0"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabAll">Todo <span class="badge bg-secondary ms-1" id="tabAllBadge">0</span></button></li>
-        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExpiring">Por Vencer <span class="badge bg-warning text-dark ms-1" id="tabExpBadge">0</span></button></li>
-        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabLow">Stock Bajo <span class="badge bg-danger ms-1" id="tabLowBadge">0</span></button></li>
-        <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOut">Agotados <span class="badge bg-dark ms-1" id="tabOutBadge">0</span></button></li>
         <li class="nav-item flex-shrink-0"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabInv" id="tabInvBtn">Inventarios Físicos <span class="badge bg-warning text-dark ms-1" id="tabInvBadge">0</span></button></li>
       </ul>
       <div class="d-flex gap-2 flex-wrap w-100" id="stockFilters">
@@ -259,6 +257,29 @@
           <option value="suplemento">Suplemento</option>
           <option value="equipo">Equipo Médico</option>
         </select>
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                  data-bs-toggle="dropdown" data-bs-auto-close="outside" id="statusFilterBtn">
+            Estado stock
+          </button>
+          <ul class="dropdown-menu p-2" style="min-width:170px">
+            <li>
+              <label class="d-flex align-items-center gap-2 px-1 py-1 rounded" style="cursor:pointer;font-size:13px">
+                <input type="checkbox" id="filterExpiring" onchange="applyFilters()"> Por Vencer
+              </label>
+            </li>
+            <li>
+              <label class="d-flex align-items-center gap-2 px-1 py-1 rounded" style="cursor:pointer;font-size:13px">
+                <input type="checkbox" id="filterLow" onchange="applyFilters()"> Stock Bajo
+              </label>
+            </li>
+            <li>
+              <label class="d-flex align-items-center gap-2 px-1 py-1 rounded" style="cursor:pointer;font-size:13px">
+                <input type="checkbox" id="filterOut" onchange="applyFilters()"> Agotados
+              </label>
+            </li>
+          </ul>
+        </div>
       </div>
       <!-- Filters for inventories tab -->
       <div class="d-flex gap-2 flex-wrap w-100 d-none" id="invFilters">
@@ -298,33 +319,6 @@
               </tr>
             </thead>
             <tbody id="inventoryTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Tab Expiring -->
-      <div class="tab-pane fade" id="tabExpiring">
-        <div class="table-responsive">
-          <table class="table">
-            <thead><tr><th>Producto</th><th>Stock</th><th>Vencimiento</th><th>Días Rest.</th><th>Sucursal</th><th>Acciones</th></tr></thead>
-            <tbody id="expiringTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Tab Low Stock -->
-      <div class="tab-pane fade" id="tabLow">
-        <div class="table-responsive">
-          <table class="table">
-            <thead><tr><th>Producto</th><th>Stock Actual</th><th>Sucursal</th><th>Acciones</th></tr></thead>
-            <tbody id="lowTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Tab Out of stock -->
-      <div class="tab-pane fade" id="tabOut">
-        <div class="table-responsive">
-          <table class="table">
-            <thead><tr><th>Producto</th><th>Categoría</th><th>Sucursal</th><th>Acciones</th></tr></thead>
-            <tbody id="outTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -844,6 +838,25 @@ function applyFilters() {
     return matchSearch && matchBranch && matchCat && matchType;
   });
 
+  const fExp = document.getElementById('filterExpiring')?.checked;
+  const fLow = document.getElementById('filterLow')?.checked;
+  const fOut = document.getElementById('filterOut')?.checked;
+  if (fExp || fLow || fOut) {
+    const now = new Date();
+    filtered = filtered.filter(m => {
+      const isExp = m.status === 'expiring' || (m.exp && m.exp !== '2030-01-01' && (new Date(m.exp) - now) / 864e5 <= 30 && (new Date(m.exp) - now) > 0);
+      const isLow = m.status === 'low';
+      const isOut = m.status === 'out';
+      return (fExp && isExp) || (fLow && isLow) || (fOut && isOut);
+    });
+  }
+  // Update status filter button label
+  const activeStatuses = [fExp && 'Por Vencer', fLow && 'Stock Bajo', fOut && 'Agotados'].filter(Boolean);
+  const btn = document.getElementById('statusFilterBtn');
+  if (btn) btn.textContent = activeStatuses.length ? activeStatuses.join(', ') : 'Estado stock';
+  if (btn) btn.classList.toggle('btn-secondary', activeStatuses.length > 0);
+  if (btn) btn.classList.toggle('btn-outline-secondary', activeStatuses.length === 0);
+
   if (sortCol) {
     filtered = [...filtered].sort((a, b) => {
       const va = a[sortCol], vb = b[sortCol];
@@ -917,63 +930,7 @@ function renderMainTable(data) {
 }
 
 function renderSubTabs(data) {
-  const today = new Date();
-  const expTh = 30 * 24 * 3600 * 1000;
-
-  // Expiring
-  const expiring = data.filter(m => m.status === 'expiring' || (m.exp && m.exp !== '2030-01-01' && (new Date(m.exp) - today) < expTh && (new Date(m.exp) - today) > 0));
-  document.getElementById('tabExpBadge').textContent = expiring.length;
-  const exTbody = document.getElementById('expiringTableBody');
-  exTbody.innerHTML = '';
-  expiring.forEach(m => {
-    const days = Math.ceil((new Date(m.exp) - today) / (24*3600*1000));
-    const cls = days <= 14 ? 'badge-danger' : 'badge-warning';
-    exTbody.innerHTML += `<tr>
-      <td><strong>${m.name}</strong></td>
-      <td>${m.stock}</td>
-      <td class="text-danger fw-bold">${m.exp}</td>
-      <td><span class="badge-status ${cls}">${days} días</span></td>
-      <td>${m.suc}</td>
-      <td><div class="table-actions">
-        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-        <button class="btn-icon"><i class="fa-solid fa-eye"></i></button>
-      </div></td>
-    </tr>`;
-  });
-
-  // Low stock
-  const low = data.filter(m => m.status === 'low');
-  document.getElementById('tabLowBadge').textContent = low.length;
-  const lowTbody = document.getElementById('lowTableBody');
-  lowTbody.innerHTML = '';
-  low.forEach(m => {
-    lowTbody.innerHTML += `<tr>
-      <td><strong>${m.name}</strong></td>
-      <td><span class="badge-status badge-warning">${m.stock} uds</span></td>
-      <td>${m.suc}</td>
-      <td><div class="table-actions">
-        <button class="btn-icon success"><i class="fa-solid fa-rotate"></i></button>
-        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-      </div></td>
-    </tr>`;
-  });
-
-  // Out
-  const out = data.filter(m => m.status === 'out');
-  document.getElementById('tabOutBadge').textContent = out.length;
-  const outTbody = document.getElementById('outTableBody');
-  outTbody.innerHTML = '';
-  out.forEach(m => {
-    outTbody.innerHTML += `<tr>
-      <td><strong>${m.name}</strong></td>
-      <td>${m.cat}</td>
-      <td>${m.suc}</td>
-      <td><div class="table-actions">
-        <button class="btn-icon success"><i class="fa-solid fa-plus"></i></button>
-        <button class="btn-icon warning"><i class="fa-solid fa-arrows-left-right"></i></button>
-      </div></td>
-    </tr>`;
-  });
+  // Tab counts are now informational only (tabs removed)
 }
 
 function updateKPIs(data) {
@@ -1756,5 +1713,6 @@ function stopBarcodeScanner() {
 
 document.getElementById('barcodeScannerModal').addEventListener('hidden.bs.modal', stopBarcodeScanner);
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

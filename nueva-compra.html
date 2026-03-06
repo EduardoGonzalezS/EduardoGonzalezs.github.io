@@ -39,7 +39,6 @@
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -60,6 +59,8 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
@@ -242,7 +243,7 @@ function closeSidebar() {
 let purchaseProducts = [];
 
 function addProductRow() {
-  purchaseProducts.push({ type: '', category: '', name: '', code: '', qty: 1, expiry: '', priceBuy: 0 });
+  purchaseProducts.push({ type: '', category: 'Antibióticos', name: '', code: '', qty: 1, expiry: '', priceBuy: 0 });
   renderProductsTable();
 }
 
@@ -280,7 +281,15 @@ function renderProductsTable() {
           <option value="equipo" ${pr.type==='equipo'?'selected':''}>Equipo</option>
         </select>
       </td>
-      <td><input type="text" class="form-control form-control-sm" style="min-width:110px" placeholder="Categoría" value="${pr.category}" oninput="updateRow(${i},'category',this.value)"></td>
+      <td>
+        <select class="form-select form-select-sm" style="min-width:130px" onchange="updateRow(${i},'category',this.value)">
+          <option value="">— Categoría —</option>
+          ${['Antibióticos','Analgésicos','Antiinflamatorios','Vitaminas','Insulinas',
+             'Antiácidos','Antisépticos','Cosméticos','Suplementos','Equipo Médico',
+             'Curaciones','Inyectables']
+            .map(c => `<option value="${c}" ${pr.category===c?'selected':''}>${c}</option>`).join('')}
+        </select>
+      </td>
       <td><input type="text" class="form-control form-control-sm" style="min-width:150px" placeholder="Nombre del producto" value="${pr.name}" oninput="updateRow(${i},'name',this.value)"></td>
       <td>
         <div class="input-group input-group-sm" style="min-width:120px">
@@ -411,5 +420,6 @@ document.getElementById('newPurchaseBarcodeScannerModal')
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

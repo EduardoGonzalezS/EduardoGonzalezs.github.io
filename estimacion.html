@@ -524,7 +524,7 @@
               <span class="info-pill pill-purple"><i class="fa-solid fa-code me-1"></i>Código revisado y optimizado</span>
               <span class="info-pill pill-purple"><i class="fa-solid fa-clock me-1"></i>Disponible 24/7</span>
             </div>
-            <div class="d-flex flex-wrap align-items-center gap-3" style="font-size:13px">
+            <!-- <div class="d-flex flex-wrap align-items-center gap-3" style="font-size:13px">
               <div>
                 <span class="text-muted">Precio oficial:</span>
                 <strong class="ms-1" style="color:#4c1d95">$100 USD / mes</strong>
@@ -538,7 +538,7 @@
                 <span class="text-muted">Anual:</span>
                 <strong class="ms-1" style="color:#7c3aed">~$20,400 MXN</strong>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-4">
             <div class="p-3 rounded-3 text-center" style="background:rgba(124,58,237,.07);border:1px solid #ddd6fe">
@@ -554,11 +554,11 @@
           </div>
         </div>
       </div>
-      <div class="mt-3 p-3 rounded-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px;color:#6d28d9">
+      <!-- <div class="mt-3 p-3 rounded-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px;color:#6d28d9">
         <i class="fa-solid fa-circle-info me-2"></i>
         <strong>Nota:</strong> Este costo corresponde al desarrollador, no al cliente. Se incluye en la propuesta para total transparencia.
         Gracias a esta herramienta, el costo de desarrollo por módulo se reduce hasta un <strong>60%</strong> vs. desarrollo tradicional.
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -814,12 +814,135 @@
     </div>
   </div>
 
-  <!-- ── SECCIÓN 6: RESUMEN TOTAL ────────────────────── -->
+  <!-- ── SECCIÓN 7: MIGRACIÓN A .NET + CLOUD RUN ─────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#0d9488"><i class="fa-brands fa-microsoft"></i></div>
+    <div>
+      <div class="section-title">7. Migración a .NET + Cloud Run</div>
+      <div class="section-desc">Inversión opcional para evolucionar de HTML estático a sistema productivo con backend real</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <!-- Callout intro -->
+      <div class="p-3 rounded-3 mb-4 d-flex align-items-start gap-3" style="background:#f0fdfa;border:1px solid #99f6e4;font-size:13px">
+        <i class="fa-brands fa-microsoft mt-1" style="color:#0d9488;font-size:18px"></i>
+        <div style="color:#134e4a">
+          <strong>¿Qué es la migración?</strong> Consiste en reescribir el sistema desde HTML/CSS estático a <strong>.NET 9 Razor Pages</strong> con autenticación real (ASP.NET Identity), base de datos PostgreSQL en Cloud SQL y despliegue en Google Cloud Run.
+          El resultado es un sistema productivo completo, con datos reales persistentes y roles de acceso funcionales.
+          <a href="plan-migracion.html" style="color:#0d9488;font-weight:600;margin-left:8px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver plan completo de migración</a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="est-table">
+          <thead>
+            <tr>
+              <th style="width:26%">Concepto</th>
+              <th style="width:30%">Descripción</th>
+              <th style="width:16%">Tipo</th>
+              <th class="price-col" style="width:28%">Costo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="fw-semibold">Desarrollo migración</div><small class="text-muted">16 semanas, 4 fases</small></td>
+              <td>ASP.NET Core Razor Pages, EF Core 9, Identity, Docker, CI/CD con Cloud Build.</td>
+              <td><span class="info-pill pill-amber">Pago único</span></td>
+              <td class="price-col price-amber">$45,000–$64,800</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Cloud Run hosting</div><small class="text-muted">Reemplaza VPS</small></td>
+              <td>Serverless, autoescalado, pago por uso. Sin administración de servidor.</td>
+              <td><span class="info-pill pill-blue">Recurrente</span></td>
+              <td class="price-col price-blue">~$800 / mes</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Cloud SQL PostgreSQL</div><small class="text-muted">Reemplaza BD actual</small></td>
+              <td>PostgreSQL 16 administrado en GCP. Backups automáticos, alta disponibilidad.</td>
+              <td><span class="info-pill pill-blue">Recurrente</span></td>
+              <td class="price-col price-blue">~$500 / mes</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Licencias .NET</div></td>
+              <td>.NET 9, EF Core, ASP.NET Identity — todos MIT / open source.</td>
+              <td><span class="info-pill pill-green">Open Source</span></td>
+              <td class="price-col zero-price">$0</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Secret Manager + IAM</div></td>
+              <td>Gestión segura de credenciales en GCP. Dentro del free tier.</td>
+              <td><span class="info-pill pill-green">GCP Free Tier</span></td>
+              <td class="price-col zero-price">$0</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td colspan="3"><i class="fa-solid fa-circle-arrow-right me-2"></i>Subtotal nueva infraestructura</td>
+              <td class="price-col">~$1,300 / mes</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <i class="fa-solid fa-arrow-trend-down me-2 text-success"></i>
+                <strong class="price-green">Ahorro vs. VPS actual</strong>
+                <small class="text-muted ms-2">($1,521 − $1,300)</small>
+              </td>
+              <td class="price-col price-green">~$221 / mes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Comparativa visual -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded-3 text-center" style="background:#fef2f2;border:1.5px solid #fca5a5">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#b91c1c;margin-bottom:8px">
+              <i class="fa-solid fa-server me-1"></i>Infraestructura Actual (VPS)
+            </div>
+            <div style="font-size:12px;color:#7f1d1d;line-height:1.9;text-align:left">
+              <div class="d-flex justify-content-between"><span>Servidor VPS</span><strong>$800</strong></div>
+              <div class="d-flex justify-content-between"><span>Base de datos</span><strong>$500</strong></div>
+              <div class="d-flex justify-content-between"><span>Almacenamiento</span><strong>$200</strong></div>
+              <div class="d-flex justify-content-between"><span>Dominio</span><strong>$21</strong></div>
+              <hr style="border-color:#fca5a5;margin:6px 0">
+              <div class="d-flex justify-content-between"><span><strong>Total / mes</strong></span><strong style="font-size:16px;color:#dc2626">$1,521 MXN</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded-3 text-center" style="background:#f0fdf4;border:1.5px solid #86efac">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#15803d;margin-bottom:8px">
+              <i class="fa-solid fa-cloud me-1"></i>Infraestructura Objetivo (Cloud Run)
+            </div>
+            <div style="font-size:12px;color:#14532d;line-height:1.9;text-align:left">
+              <div class="d-flex justify-content-between"><span>Cloud Run</span><strong>~$800</strong></div>
+              <div class="d-flex justify-content-between"><span>Cloud SQL</span><strong>~$500</strong></div>
+              <div class="d-flex justify-content-between"><span>Dominio</span><strong>$21</strong></div>
+              <div class="d-flex justify-content-between"><span>Almacenamiento / CDN</span><strong>~$0</strong></div>
+              <hr style="border-color:#86efac;margin:6px 0">
+              <div class="d-flex justify-content-between"><span><strong>Total / mes</strong></span><strong style="font-size:16px;color:#16a34a">~$1,300 MXN</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info box -->
+      <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px">
+        <i class="fa-solid fa-circle-info mt-1" style="color:#7c3aed"></i>
+        <div style="color:#4c1d95">
+          <strong>Roadmap completo disponible:</strong> El plan de migración detalla 4 fases, stack tecnológico, modelos de datos EF Core, MCP tools para asistir la migración y cronograma semana a semana.
+          <a href="plan-migracion.html" style="color:#7c3aed;font-weight:600;margin-left:6px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver Plan de Migración completo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 8: RESUMEN TOTAL ────────────────────── -->
   <div class="section-header">
     <div class="section-num" style="background:#0f172a"><i class="fa-solid fa-calculator"></i></div>
     <div>
-      <div class="section-title">6. Resumen de Inversión — Primer Año</div>
-      <div class="section-desc">Costo total estimado para la implementación y operación durante los primeros 12 meses</div>
+      <div class="section-title">8. Resumen de Inversión — Primer Año</div>
+      <div class="section-desc">Costo total estimado para la implementación y operación durante los primeros 12 meses · <em style="color:#64748b">Ver escenario con migración al pie.</em></div>
     </div>
   </div>
 
@@ -868,16 +991,36 @@
           <td><span class="type-pill">Variable</span></td>
           <td class="amount" style="opacity:.7">Según requerimiento</td>
         </tr>
+        <tr style="opacity:.7">
+          <td>
+            <i class="fa-brands fa-microsoft me-2" style="opacity:.6"></i>
+            Migración a .NET + Cloud Run <em style="font-size:11px;opacity:.8">(opcional)</em>
+          </td>
+          <td><span class="type-pill">Pago único</span></td>
+          <td class="amount">$45,000–$64,800 MXN</td>
+        </tr>
       </tbody>
     </table>
     <div class="summary-total">
       <div>
         <div class="summary-total-label">Total estimado primer año</div>
-        <div class="summary-note">Sin incluir desarrollo de nuevas funcionalidades</div>
+        <div class="summary-note">Sin incluir desarrollo de nuevas funcionalidades ni migración</div>
       </div>
       <div class="text-end">
         <div class="summary-total-amount">$117,652</div>
         <div style="font-size:14px;opacity:.75">MXN · IVA no incluido</div>
+      </div>
+    </div>
+
+    <!-- Bloque escenario migración -->
+    <div class="mt-4 p-3 rounded-3" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);font-size:13px;color:rgba(255,255,255,.9)">
+      <div class="d-flex align-items-start gap-2">
+        <i class="fa-brands fa-microsoft mt-1" style="opacity:.8"></i>
+        <div>
+          <strong>Escenario con migración:</strong> Primer año ~$162,652–$177,652 MXN (incluye desarrollo de migración + infra Cloud Run + soporte).
+          Desde el año 2, ahorro neto en infraestructura de <strong>~$2,652 MXN/año</strong> vs. VPS actual.
+          <a href="plan-migracion.html" style="color:rgba(255,255,255,.9);font-weight:600;margin-left:6px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver Plan de Migración</a>
+        </div>
       </div>
     </div>
   </div>
@@ -962,5 +1105,6 @@
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

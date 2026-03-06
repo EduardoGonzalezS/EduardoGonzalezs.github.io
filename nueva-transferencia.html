@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Nueva Transferencia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    .product-grid-table td { vertical-align: middle; }
+    .qty-input { width: 90px; text-align: center; }
+    .selection-bar {
+      background: #f0f4f8;
+      border-top: 1px solid #e2e8f0;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+      color: #475569;
+    }
+    .selection-bar strong { color: #1e293b; }
+    .route-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f0f4f8;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+    }
+    .route-node { flex: 1; text-align: center; }
+    .route-node-label { font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+    .route-node-value { font-size: 14px; font-weight: 700; color: #1e293b; }
+    .route-arrow { width: 36px; height: 36px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link active"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-right">
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="transferencias.html">Transferencias</a></li>
+          <li class="breadcrumb-item active">Nueva Transferencia</li>
+        </ol>
+      </nav>
+      <h1 class="page-title">Nueva Transferencia</h1>
+      <p class="page-subtitle">Selecciona origen, destino y los productos a transferir</p>
+    </div>
+    <a href="transferencias.html" class="btn btn-outline-secondary">
+      <i class="fa-solid fa-arrow-left me-2"></i>Volver
+    </a>
+  </div>
+
+  <!-- Route selector -->
+  <div class="table-card mb-4">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-route me-2 text-primary"></i>Ruta de Transferencia</h6>
+    </div>
+    <div class="p-4">
+      <div class="route-indicator">
+        <div class="route-node">
+          <div class="route-node-label">Origen</div>
+          <div class="route-node-value" id="originLabel">Bodega</div>
+        </div>
+        <div class="route-arrow">
+          <i class="fa-solid fa-arrow-right" style="color:#fff;font-size:14px"></i>
+        </div>
+        <div class="route-node">
+          <div class="route-node-label">Destino</div>
+          <div class="route-node-value" id="destLabel" style="color:#94a3b8">— Seleccionar —</div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label class="form-label fw-semibold">Sucursal Origen</label>
+          <select class="form-select" id="originSelect" onchange="onOriginChange()">
+            <option value="Bodega">Bodega Central</option>
+            <option disabled>──────────</option>
+            <option value="Central">Central</option>
+            <option value="Norte">Norte</option>
+            <option value="Sur">Sur</option>
+            <option value="Este">Este</option>
+            <option value="Oeste">Oeste</option>
+            <option value="Plaza Mayor">Plaza Mayor</option>
+            <option value="Universitaria">Universitaria</option>
+            <option value="Industrial">Industrial</option>
+          </select>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label fw-semibold">Sucursal Destino</label>
+          <select class="form-select" id="destSelect" onchange="onDestChange()">
+            <option value="">— Seleccionar destino —</option>
+            <option value="Central">Central</option>
+            <option value="Norte">Norte</option>
+            <option value="Sur">Sur</option>
+            <option value="Este">Este</option>
+            <option value="Oeste">Oeste</option>
+            <option value="Plaza Mayor">Plaza Mayor</option>
+            <option value="Universitaria">Universitaria</option>
+            <option value="Industrial">Industrial</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="table-card mb-4">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0" id="productGridTitle">
+        <i class="fa-solid fa-boxes-stacked me-2 text-primary"></i>Productos disponibles en <span id="originNameDisplay">Bodega Central</span>
+      </h6>
+      <div>
+        <input type="text" class="form-control form-control-sm" style="width:200px" placeholder="Buscar producto..." oninput="filterGrid(this.value)" id="productSearch">
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table product-grid-table">
+        <thead>
+          <tr>
+            <th style="width:40px">
+              <input type="checkbox" class="form-check-input" id="checkAll" onchange="toggleAll(this.checked)" title="Seleccionar todos">
+            </th>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Tipo</th>
+            <th class="text-center">Stock disp.</th>
+            <th class="text-center" style="width:140px">Cant. a transferir</th>
+          </tr>
+        </thead>
+        <tbody id="productGridBody"></tbody>
+      </table>
+    </div>
+    <div class="selection-bar">
+      <span id="selectionCount"><strong>0</strong> productos seleccionados · <strong>0</strong> unidades en total</span>
+      <span class="text-muted" style="font-size:12px"><i class="fa-solid fa-circle-info me-1"></i>Selecciona un producto y ajusta la cantidad</span>
+    </div>
+  </div>
+
+  <!-- Action Bar -->
+  <div class="d-flex gap-3 justify-content-end flex-wrap">
+    <button class="btn btn-outline-secondary" onclick="location.href='transferencias.html'">
+      <i class="fa-solid fa-xmark me-2"></i>Cancelar
+    </button>
+    <button class="btn btn-outline-primary" onclick="saveDraft()">
+      <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Borrador
+    </button>
+    <button class="btn btn-primary" onclick="confirmTransfer()">
+      <i class="fa-solid fa-paper-plane me-2"></i>Confirmar Transferencia
+    </button>
+  </div>
+
+</main>
+
+<!-- Toast container -->
+<div id="toastContainerGlobal" class="toast-container-global"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===================== Sidebar =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Branch Products Data =====================
+const branchProducts = {
+  'Bodega': [
+    {code:'BOD-001', name:'Amoxicilina 500mg',   type:'medicamento', stock:500, unit:'Tabletas'},
+    {code:'BOD-002', name:'Amoxicilina 875mg',   type:'medicamento', stock:300, unit:'Tabletas'},
+    {code:'BOD-003', name:'Paracetamol 1g',      type:'medicamento', stock:800, unit:'Tabletas'},
+    {code:'BOD-004', name:'Ibuprofeno 400mg',    type:'medicamento', stock:600, unit:'Tabletas'},
+    {code:'BOD-005', name:'Metformina 850mg',    type:'medicamento', stock:400, unit:'Tabletas'},
+    {code:'BOD-006', name:'Insulina Glargina',   type:'medicamento', stock:120, unit:'Frascos'},
+    {code:'BOD-007', name:'Omeprazol 20mg',      type:'medicamento', stock:350, unit:'Cápsulas'},
+    {code:'BOD-008', name:'Losartán 50mg',       type:'medicamento', stock:250, unit:'Tabletas'},
+    {code:'BOD-009', name:'Vitamina C 500mg',    type:'suplemento',  stock:1000, unit:'Tabletas'},
+    {code:'BOD-010', name:'Omega-3',             type:'suplemento',  stock:200,  unit:'Cápsulas'},
+  ],
+  'Central': [
+    {code:'CEN-001', name:'Amoxicilina 500mg',   type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'CEN-002', name:'Paracetamol 500mg',   type:'medicamento', stock:300, unit:'Tabletas'},
+    {code:'CEN-003', name:'Ibuprofeno 600mg',    type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'CEN-004', name:'Loratadina 10mg',     type:'medicamento', stock:180, unit:'Tabletas'},
+    {code:'CEN-005', name:'Omeprazol 20mg',      type:'medicamento', stock:120, unit:'Cápsulas'},
+    {code:'CEN-006', name:'Enalapril 20mg',      type:'medicamento', stock:90,  unit:'Tabletas'},
+    {code:'CEN-007', name:'Vitamina C 1000mg',   type:'suplemento',  stock:250, unit:'Tabletas'},
+    {code:'CEN-008', name:'Glucómetro Accu-Check',type:'equipo',     stock:5,   unit:'Unidades'},
+  ],
+  'Norte': [
+    {code:'NOR-001', name:'Metformina 850mg',    type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'NOR-002', name:'Insulina Glargina',   type:'medicamento', stock:40,  unit:'Frascos'},
+    {code:'NOR-003', name:'Azitromicina 500mg',  type:'medicamento', stock:80,  unit:'Cápsulas'},
+    {code:'NOR-004', name:'Cetirizina 10mg',     type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'NOR-005', name:'Atorvastatina 20mg',  type:'medicamento', stock:100, unit:'Tabletas'},
+    {code:'NOR-006', name:'Proteína Whey',       type:'suplemento',  stock:30,  unit:'Unidades'},
+    {code:'NOR-007', name:'Vitamina D3',         type:'suplemento',  stock:120, unit:'Cápsulas'},
+    {code:'NOR-008', name:'Tensiómetro Digital', type:'equipo',      stock:3,   unit:'Unidades'},
+  ],
+  'Sur': [
+    {code:'SUR-001', name:'Diclofenaco 50mg',    type:'medicamento', stock:300, unit:'Tabletas'},
+    {code:'SUR-002', name:'Omeprazol 20mg',      type:'medicamento', stock:180, unit:'Cápsulas'},
+    {code:'SUR-003', name:'Losartán 50mg',       type:'medicamento', stock:120, unit:'Tabletas'},
+    {code:'SUR-004', name:'Paracetamol 1g',      type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'SUR-005', name:'Ibuprofeno 400mg',    type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'SUR-006', name:'Alcohol Isopropílico',type:'general',     stock:40,  unit:'Frascos'},
+    {code:'SUR-007', name:'Vendas 4"',           type:'general',     stock:80,  unit:'Unidades'},
+    {code:'SUR-008', name:'Vitamina C 500mg',    type:'suplemento',  stock:100, unit:'Tabletas'},
+  ],
+  'Este': [
+    {code:'EST-001', name:'Jeringas 5ml',        type:'general',     stock:500, unit:'Unidades'},
+    {code:'EST-002', name:'Guantes nitrilo',     type:'general',     stock:800, unit:'Unidades'},
+    {code:'EST-003', name:'Ibuprofeno 400mg',    type:'medicamento', stock:90,  unit:'Tabletas'},
+    {code:'EST-004', name:'Loratadina 10mg',     type:'medicamento', stock:60,  unit:'Tabletas'},
+    {code:'EST-005', name:'Paracetamol 500mg',   type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'EST-006', name:'Vitamina C 1000mg',   type:'suplemento',  stock:80,  unit:'Tabletas'},
+    {code:'EST-007', name:'Omega-3',             type:'suplemento',  stock:50,  unit:'Cápsulas'},
+    {code:'EST-008', name:'Termómetro Digital',  type:'equipo',      stock:8,   unit:'Unidades'},
+  ],
+  'Oeste': [
+    {code:'OES-001', name:'Insulina Regular',    type:'medicamento', stock:20,  unit:'Frascos'},
+    {code:'OES-002', name:'Metformina 500mg',    type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'OES-003', name:'Amoxicilina 500mg',   type:'medicamento', stock:80,  unit:'Tabletas'},
+    {code:'OES-004', name:'Ciprofloxacino 500mg',type:'medicamento', stock:60,  unit:'Tabletas'},
+    {code:'OES-005', name:'Omeprazol 20mg',      type:'medicamento', stock:100, unit:'Cápsulas'},
+    {code:'OES-006', name:'Alcohol Isopropílico',type:'general',     stock:30,  unit:'Frascos'},
+    {code:'OES-007', name:'Proteína Whey',       type:'suplemento',  stock:15,  unit:'Unidades'},
+    {code:'OES-008', name:'Vitamina D3',         type:'suplemento',  stock:80,  unit:'Cápsulas'},
+  ],
+  'Plaza Mayor': [
+    {code:'PLZ-001', name:'Atorvastatina 20mg',  type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'PLZ-002', name:'Losartán 50mg',       type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'PLZ-003', name:'Paracetamol 1g',      type:'medicamento', stock:300, unit:'Tabletas'},
+    {code:'PLZ-004', name:'Ibuprofeno 400mg',    type:'medicamento', stock:120, unit:'Tabletas'},
+    {code:'PLZ-005', name:'Glucómetro Accu-Check',type:'equipo',     stock:3,   unit:'Unidades'},
+    {code:'PLZ-006', name:'Tensiómetro Digital', type:'equipo',      stock:4,   unit:'Unidades'},
+    {code:'PLZ-007', name:'Vitamina C 500mg',    type:'suplemento',  stock:150, unit:'Tabletas'},
+    {code:'PLZ-008', name:'Omega-3',             type:'suplemento',  stock:60,  unit:'Cápsulas'},
+  ],
+  'Universitaria': [
+    {code:'UNI-001', name:'Amoxicilina 500mg',   type:'medicamento', stock:120, unit:'Tabletas'},
+    {code:'UNI-002', name:'Azitromicina 500mg',  type:'medicamento', stock:50,  unit:'Cápsulas'},
+    {code:'UNI-003', name:'Paracetamol 500mg',   type:'medicamento', stock:200, unit:'Tabletas'},
+    {code:'UNI-004', name:'Ibuprofeno 400mg',    type:'medicamento', stock:80,  unit:'Tabletas'},
+    {code:'UNI-005', name:'Cetirizina 10mg',     type:'medicamento', stock:100, unit:'Tabletas'},
+    {code:'UNI-006', name:'Vitamina C 1000mg',   type:'suplemento',  stock:120, unit:'Tabletas'},
+    {code:'UNI-007', name:'Proteína Whey',       type:'suplemento',  stock:20,  unit:'Unidades'},
+    {code:'UNI-008', name:'Jeringas 5ml',        type:'general',     stock:200, unit:'Unidades'},
+  ],
+  'Industrial': [
+    {code:'IND-001', name:'Paracetamol 500mg',   type:'medicamento', stock:400, unit:'Tabletas'},
+    {code:'IND-002', name:'Ibuprofeno 600mg',    type:'medicamento', stock:300, unit:'Tabletas'},
+    {code:'IND-003', name:'Metformina 850mg',    type:'medicamento', stock:100, unit:'Tabletas'},
+    {code:'IND-004', name:'Ciprofloxacino 500mg',type:'medicamento', stock:80,  unit:'Tabletas'},
+    {code:'IND-005', name:'Diclofenaco 50mg',    type:'medicamento', stock:150, unit:'Tabletas'},
+    {code:'IND-006', name:'Alcohol Isopropílico',type:'general',     stock:60,  unit:'Frascos'},
+    {code:'IND-007', name:'Guantes nitrilo',     type:'general',     stock:400, unit:'Unidades'},
+    {code:'IND-008', name:'Vendas 4"',           type:'general',     stock:100, unit:'Unidades'},
+  ],
+};
+
+const typeLabelMap = {
+  'medicamento': '<span class="type-badge type-medicamento">Medicamento</span>',
+  'general':     '<span class="type-badge type-general">General</span>',
+  'suplemento':  '<span class="type-badge type-suplemento">Suplemento</span>',
+  'equipo':      '<span class="type-badge type-equipo">Equipo</span>',
+};
+
+const originNames = {
+  'Bodega': 'Bodega Central',
+  'Central': 'Central', 'Norte': 'Norte', 'Sur': 'Sur',
+  'Este': 'Este', 'Oeste': 'Oeste', 'Plaza Mayor': 'Plaza Mayor',
+  'Universitaria': 'Universitaria', 'Industrial': 'Industrial',
+};
+
+let currentProducts = [];
+let draftFolio = null; // if editing an existing draft
+
+// ===================== Route Changes =====================
+function onOriginChange() {
+  const sel = document.getElementById('originSelect');
+  const val = sel.value;
+  document.getElementById('originLabel').textContent = originNames[val] || val;
+  document.getElementById('originNameDisplay').textContent = originNames[val] || val;
+  loadProductGrid(val);
+}
+
+function onDestChange() {
+  const val = document.getElementById('destSelect').value;
+  const label = document.getElementById('destLabel');
+  label.textContent = val || '— Seleccionar —';
+  label.style.color = val ? '#1e293b' : '#94a3b8';
+}
+
+// ===================== Product Grid =====================
+function loadProductGrid(origin, preSelected = []) {
+  currentProducts = (branchProducts[origin] || []).map(p => ({
+    ...p,
+    selected: false,
+    transferQty: 0,
+  }));
+  // Pre-populate from draft
+  if (preSelected.length) {
+    preSelected.forEach(pr => {
+      const match = currentProducts.find(p => p.name === pr.name);
+      if (match) { match.selected = true; match.transferQty = pr.qty; }
+    });
+  }
+  document.getElementById('productSearch').value = '';
+  document.getElementById('checkAll').checked = false;
+  renderGrid(currentProducts);
+  updateSelectionCount();
+}
+
+function renderGrid(products) {
+  const tbody = document.getElementById('productGridBody');
+  tbody.innerHTML = '';
+  if (!products.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">No hay productos disponibles</td></tr>';
+    return;
+  }
+  products.forEach((p, idx) => {
+    const globalIdx = currentProducts.indexOf(p);
+    tbody.innerHTML += `
+      <tr id="row-${globalIdx}" class="${p.selected ? 'table-primary' : ''}">
+        <td>
+          <input type="checkbox" class="form-check-input" id="chk-${globalIdx}"
+            ${p.selected ? 'checked' : ''}
+            onchange="onCheckChange(${globalIdx}, this.checked)">
+        </td>
+        <td><code style="font-size:12px;color:#475569">${p.code}</code></td>
+        <td><strong style="font-size:13px">${p.name}</strong></td>
+        <td>${typeLabelMap[p.type] || p.type}</td>
+        <td class="text-center">
+          <span class="badge ${p.stock < 50 ? 'bg-danger' : p.stock < 150 ? 'bg-warning text-dark' : 'bg-success'} bg-opacity-10 text-dark border" style="font-size:12px">
+            ${p.stock.toLocaleString()} ${p.unit}
+          </span>
+        </td>
+        <td class="text-center">
+          <input type="number" class="form-control form-control-sm qty-input" id="qty-${globalIdx}"
+            value="${p.transferQty || ''}" min="0" max="${p.stock}" placeholder="0"
+            ${p.selected ? '' : 'disabled'}
+            onchange="onQtyChange(${globalIdx}, this.value)"
+            oninput="onQtyChange(${globalIdx}, this.value)">
+        </td>
+      </tr>`;
+  });
+}
+
+function onCheckChange(idx, checked) {
+  currentProducts[idx].selected = checked;
+  if (!checked) currentProducts[idx].transferQty = 0;
+  const qtyInput = document.getElementById(`qty-${idx}`);
+  if (qtyInput) qtyInput.disabled = !checked;
+  document.getElementById(`row-${idx}`).className = checked ? 'table-primary' : '';
+  updateSelectionCount();
+  syncCheckAll();
+}
+
+function onQtyChange(idx, val) {
+  const p = currentProducts[idx];
+  let qty = parseInt(val) || 0;
+  if (qty < 0) qty = 0;
+  if (qty > p.stock) { qty = p.stock; document.getElementById(`qty-${idx}`).value = qty; }
+  p.transferQty = qty;
+  updateSelectionCount();
+}
+
+function toggleAll(checked) {
+  currentProducts.forEach((p, idx) => {
+    p.selected = checked;
+    if (!checked) p.transferQty = 0;
+    const chk = document.getElementById(`chk-${idx}`);
+    const qtyEl = document.getElementById(`qty-${idx}`);
+    const rowEl = document.getElementById(`row-${idx}`);
+    if (chk) chk.checked = checked;
+    if (qtyEl) qtyEl.disabled = !checked;
+    if (rowEl) rowEl.className = checked ? 'table-primary' : '';
+  });
+  updateSelectionCount();
+}
+
+function syncCheckAll() {
+  const allChecked = currentProducts.length > 0 && currentProducts.every(p => p.selected);
+  document.getElementById('checkAll').checked = allChecked;
+}
+
+function filterGrid(query) {
+  const q = query.toLowerCase();
+  const filtered = q ? currentProducts.filter(p => p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)) : currentProducts;
+  renderGrid(filtered);
+}
+
+function updateSelectionCount() {
+  const selected = currentProducts.filter(p => p.selected && p.transferQty > 0);
+  const totalQty = selected.reduce((s, p) => s + p.transferQty, 0);
+  document.getElementById('selectionCount').innerHTML =
+    `<strong>${selected.length}</strong> producto(s) seleccionado(s) · <strong>${totalQty.toLocaleString()}</strong> unidades en total`;
+}
+
+// ===================== Build Transfer Object =====================
+function buildTransferObject(status) {
+  const origin = document.getElementById('originSelect').value;
+  const dest   = document.getElementById('destSelect').value;
+  const products = currentProducts
+    .filter(p => p.selected && p.transferQty > 0)
+    .map(p => ({ name: p.name, qty: p.transferQty, unit: p.unit }));
+  const now = new Date();
+  const date = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  return {
+    folio: draftFolio || ('#TR-' + String(Date.now()).slice(-4)),
+    from: origin,
+    to: dest,
+    products,
+    date,
+    status,
+  };
+}
+
+function validate() {
+  const dest = document.getElementById('destSelect').value;
+  const origin = document.getElementById('originSelect').value;
+  if (!dest) { showToast('Selecciona una sucursal de destino.', 'warning'); return false; }
+  if (origin === dest) { showToast('Origen y destino no pueden ser iguales.', 'warning'); return false; }
+  const selected = currentProducts.filter(p => p.selected && p.transferQty > 0);
+  if (!selected.length) { showToast('Selecciona al menos un producto con cantidad mayor a 0.', 'warning'); return false; }
+  return true;
+}
+
+// ===================== Actions =====================
+function saveDraft() {
+  if (!validate()) return;
+  const transfer = buildTransferObject('Borrador');
+  localStorage.setItem('newTransferDraft', JSON.stringify(transfer));
+  showToast('Borrador guardado correctamente.', 'success');
+  setTimeout(() => location.href = 'transferencias.html', 1300);
+}
+
+function confirmTransfer() {
+  if (!validate()) return;
+  const transfer = buildTransferObject('En Tránsito');
+  localStorage.setItem('newTransfer', JSON.stringify(transfer));
+  showToast('Transferencia registrada correctamente.', 'success');
+  setTimeout(() => location.href = 'transferencias.html', 1300);
+}
+
+// ===================== Toast =====================
+function showToast(message, type = 'success', duration = 3000) {
+  const icons = { success:'fa-circle-check', danger:'fa-circle-exclamation', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
+  const container = document.getElementById('toastContainerGlobal');
+  const t = document.createElement('div');
+  t.className = `toast-notif ${type}`;
+  t.innerHTML = `<i class="fa-solid ${icons[type]} toast-icon"></i>
+    <span class="toast-msg">${message}</span>
+    <button class="toast-close" onclick="this.closest('.toast-notif').remove()"><i class="fa-solid fa-xmark"></i></button>`;
+  container.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => {
+    t.classList.add('hide');
+    t.addEventListener('transitionend', () => t.remove(), { once: true });
+  }, duration);
+}
+
+// ===================== Init =====================
+(function() {
+  const draft = JSON.parse(localStorage.getItem('editTransferDraft') || 'null');
+  localStorage.removeItem('editTransferDraft');
+
+  if (draft) {
+    draftFolio = draft.folio;
+    // Set origin
+    const originSel = document.getElementById('originSelect');
+    originSel.value = draft.from;
+    document.getElementById('originLabel').textContent = originNames[draft.from] || draft.from;
+    document.getElementById('originNameDisplay').textContent = originNames[draft.from] || draft.from;
+    // Set destination
+    const destSel = document.getElementById('destSelect');
+    destSel.value = draft.to;
+    document.getElementById('destLabel').textContent = draft.to;
+    document.getElementById('destLabel').style.color = '#1e293b';
+    // Load grid with pre-selected products
+    loadProductGrid(draft.from, draft.products);
+  } else {
+    loadProductGrid('Bodega');
+  }
+})();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+<script src="sidebar-compact.js"></script>
+</body>
+</html>

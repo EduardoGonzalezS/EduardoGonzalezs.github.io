@@ -8,7 +8,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -39,33 +38,27 @@
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
   <div class="sidebar-branch">
     <div class="branch-label">Sucursal activa</div>
-    <div class="branch-name"><span class="branch-status"></span>Sucursal Central</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
   </div>
 </nav>
 
 <!-- TOPBAR -->
 <header class="topbar">
   <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
-
   <div class="topbar-right">
-    <select class="topbar-branch-select d-none d-md-block">
-      <option>Todas las sucursales</option>
-      <option>Central</option><option>Norte</option><option>Sur</option>
-      <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
-      <option>Universitaria</option><option>Industrial</option>
-    </select>
     <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
     <div class="topbar-user dropdown" data-bs-toggle="dropdown">
       <div class="user-avatar">AD</div>
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
@@ -78,8 +71,11 @@
     <div>
       <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Transferencias</li></ol></nav>
       <h1 class="page-title">Transferencias entre Sucursales</h1>
-      <p class="page-subtitle">Registra y da seguimiento a movimientos de medicamentos entre farmacias</p>
+      <p class="page-subtitle">Registra y da seguimiento a movimientos de productos entre farmacias</p>
     </div>
+    <a href="nueva-transferencia.html" class="btn btn-primary">
+      <i class="fa-solid fa-arrows-left-right me-2"></i>Transferir productos
+    </a>
   </div>
 
   <!-- KPI Summary -->
@@ -126,193 +122,79 @@
     </div>
   </div>
 
-  <div class="row g-4">
-    <!-- Transfer Form -->
-    <div class="col-12 col-xl-4">
-      <div class="transfer-form-card">
-        <h6 style="font-weight:700;margin-bottom:20px;color:#1e293b">
-          <i class="fa-solid fa-plus-circle me-2 text-primary"></i>Nueva Transferencia
-        </h6>
-
-        <!-- Visual route indicator -->
-        <div class="d-flex align-items-center gap-2 mb-4 p-3 rounded-3" style="background:#f0f4f8">
-          <div class="text-center" style="flex:1">
-            <div style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px">ORIGEN</div>
-            <div style="font-size:13px;font-weight:700;color:#1e293b" id="originLabel">Central</div>
-          </div>
-          <div class="text-center px-2">
-            <div style="width:36px;height:36px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center">
-              <i class="fa-solid fa-arrow-right" style="color:#fff;font-size:14px"></i>
-            </div>
-          </div>
-          <div class="text-center" style="flex:1">
-            <div style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px">DESTINO</div>
-            <div style="font-size:13px;font-weight:700;color:#1e293b" id="destLabel">Seleccionar</div>
-          </div>
-        </div>
-
-        <form id="transferForm">
-          <div class="mb-3">
-            <label class="form-label">Sucursal Origen</label>
-            <select class="form-select" id="originSelect" onchange="document.getElementById('originLabel').textContent=this.value">
-              <option>Central</option><option>Norte</option><option>Sur</option>
-              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
-              <option>Universitaria</option><option>Industrial</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Sucursal Destino</label>
-            <select class="form-select" id="destSelect" onchange="document.getElementById('destLabel').textContent=this.value">
-              <option value="">— Seleccionar destino —</option>
-              <option>Norte</option><option>Sur</option>
-              <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
-              <option>Universitaria</option><option>Industrial</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Medicamento</label>
-            <div class="position-relative">
-              <input type="text" class="form-control" id="medSearch"
-                     placeholder="Buscar medicamento..." autocomplete="off"
-                     oninput="showMedSuggestions(this.value)">
-              <ul class="list-group position-absolute w-100 shadow-sm" id="medSuggestions"
-                  style="z-index:100;display:none;top:100%;left:0;max-height:160px;overflow-y:auto"></ul>
-            </div>
-          </div>
-          <div class="row g-2 mb-3">
-            <div class="col-6">
-              <label class="form-label">Cantidad</label>
-              <input type="number" class="form-control" placeholder="0" min="1">
-            </div>
-            <div class="col-6">
-              <label class="form-label">Unidad</label>
-              <select class="form-select">
-                <option>Tabletas</option><option>Cajas</option>
-                <option>Frascos</option><option>Ampollas</option>
-              </select>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Prioridad</label>
-            <select class="form-select">
-              <option>Normal</option>
-              <option>Alta — Stock crítico</option>
-              <option>Urgente</option>
-            </select>
-          </div>
-          <div class="mb-4">
-            <label class="form-label">Observaciones</label>
-            <textarea class="form-control" rows="2"
-                      placeholder="Notas adicionales sobre la transferencia..."></textarea>
-          </div>
-          <button type="button" class="btn btn-primary w-100"
-                  data-bs-toggle="modal" data-bs-target="#confirmTransferModal">
-            <i class="fa-solid fa-paper-plane me-2"></i>Registrar Transferencia
-          </button>
-        </form>
+  <!-- Transfer History (full width) -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Historial de Transferencias</h6>
+      <div class="d-flex gap-2">
+        <select class="form-select form-select-sm" style="width:160px" id="filterStatus" onchange="renderTransfers()">
+          <option value="">Todos los estados</option>
+          <option value="Borrador">Borrador</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En Tránsito">En Tránsito</option>
+          <option value="Recibido">Recibido</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
       </div>
     </div>
-
-    <!-- Transfer History -->
-    <div class="col-12 col-xl-8">
-      <div class="table-card h-100">
-        <div class="table-card-header">
-          <h6 class="card-title mb-0"><i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Historial de Transferencias</h6>
-          <div class="d-flex gap-2">
-            <input type="date" class="form-control form-control-sm date-es" value="2026-03-01" style="width:140px">
-            <select class="form-select form-select-sm" style="width:140px">
-              <option>Todos los estados</option>
-              <option>Pendiente</option>
-              <option>En Tránsito</option>
-              <option>Recibido</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th data-sort="folio" onclick="sortTransfers('folio')">Folio <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="from" onclick="sortTransfers('from')">Origen <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="to" onclick="sortTransfers('to')">Destino <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="med" onclick="sortTransfers('med')" class="col-secondary">Producto <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="qty" onclick="sortTransfers('qty')" class="col-secondary">Cant. <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="date" onclick="sortTransfers('date')" class="col-secondary">Fecha <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th data-sort="status" onclick="sortTransfers('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="transferTableBody"></tbody>
-          </table>
-        </div>
-        <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
-          <small class="text-muted">Mostrando 1–10 de 148 transferencias</small>
-          <nav><ul class="pagination pagination-sm mb-0">
-            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-          </ul></nav>
-        </div>
-      </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-sort="folio" onclick="sortTransfers('folio')">Folio <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="from" onclick="sortTransfers('from')">Origen <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="to" onclick="sortTransfers('to')">Destino <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th>N° Productos</th>
+            <th data-sort="date" onclick="sortTransfers('date')" class="col-secondary">Fecha <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="status" onclick="sortTransfers('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th class="d-md-none"></th>
+          </tr>
+        </thead>
+        <tbody id="transferTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
+      <small class="text-muted" id="transfersFooter">Mostrando 0 transferencias</small>
     </div>
   </div>
+
 </main>
 
-<!-- Modal Confirm Transfer -->
-<div class="modal fade" id="confirmTransferModal" tabindex="-1">
-  <div class="modal-dialog">
+<!-- Modal Transfer Detail -->
+<div class="modal fade" id="transferDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="fa-solid fa-circle-check me-2 text-success"></i>Confirmar Transferencia</h5>
+        <h5 class="modal-title"><i class="fa-solid fa-truck-fast me-2 text-primary"></i><span id="trDetailFolio"></span> <span id="trDetailBadge"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="text-center mb-4">
-          <div style="width:64px;height:64px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-            <i class="fa-solid fa-truck-fast" style="font-size:26px;color:#16a34a"></i>
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6">
+            <div id="trDetailInfo" class="p-3 rounded-3" style="background:#f0f4f8"></div>
           </div>
-          <h6 style="font-weight:700">¿Confirmar la transferencia?</h6>
-          <p class="text-muted" style="font-size:13px">Esta acción registrará el movimiento en el sistema</p>
-        </div>
-        <div class="p-3 rounded-3 mb-3" style="background:#f0f4f8">
-          <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted" style="font-size:13px">Medicamento:</span>
-            <strong style="font-size:13px">Amoxicilina 500mg</strong>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted" style="font-size:13px">Cantidad:</span>
-            <strong style="font-size:13px">50 tabletas</strong>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted" style="font-size:13px">Origen:</span>
-            <strong style="font-size:13px">Sucursal Central</strong>
-          </div>
-          <div class="d-flex justify-content-between">
-            <span class="text-muted" style="font-size:13px">Destino:</span>
-            <strong style="font-size:13px">Sucursal Norte</strong>
+          <div class="col-sm-6">
+            <div id="trDetailRoute" class="p-3 rounded-3" style="background:#f0f4f8"></div>
           </div>
         </div>
-        <div class="alert alert-warning py-2">
-          <i class="fa-solid fa-triangle-exclamation me-2"></i>
-          <small>Se descontará el stock de la sucursal origen inmediatamente.</small>
-        </div>
+        <table class="table table-sm">
+          <thead><tr><th>Producto</th><th class="text-center">Cantidad</th><th>Unidad</th></tr></thead>
+          <tbody id="trDetailBody"></tbody>
+        </table>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-success" data-bs-dismiss="modal" onclick="showToast('Transferencia registrada correctamente', 'success')">
-          <i class="fa-solid fa-check me-2"></i>Confirmar Transferencia
-        </button>
+      <div class="modal-footer" id="transferDetailFooter">
+        <button class="btn btn-outline-secondary ms-auto" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Toast container -->
+<div id="toastContainerGlobal" class="toast-container-global"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
+// ===================== Sidebar =====================
 let _sidebarTimer = null;
 function toggleSidebar() {
   if (window.innerWidth >= 992) {
@@ -334,55 +216,73 @@ function closeSidebar() {
   document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
-function initDatePickers() {
-  document.querySelectorAll('.date-es').forEach(el => {
-    flatpickr(el, { locale: 'es', altInput: true, altFormat: 'j M Y', dateFormat: 'Y-m-d', allowInput: true });
-  });
-}
-
-// Med suggestions
-const allMeds = [
-  'Amoxicilina 500mg','Ibuprofeno 400mg','Paracetamol 1g','Loratadina 10mg',
-  'Omeprazol 20mg','Metformina 850mg','Insulina Glargina','Enalapril 20mg',
-  'Vitamina C 1000mg','Azitromicina 500mg','Losartan 50mg','Atorvastatina 20mg'
+// ===================== Data =====================
+let transfers = [
+  { folio:'#TR-0417', from:'Central', to:'Norte',
+    products:[{name:'Ibuprofeno 400mg', qty:50, unit:'Tabletas'},{name:'Loratadina 10mg', qty:75, unit:'Tabletas'},{name:'Omeprazol 20mg', qty:60, unit:'Cápsulas'}],
+    date:'06/03 10:30', status:'Borrador' },
+  { folio:'#TR-0416', from:'Bodega', to:'Sur',
+    products:[{name:'Amoxicilina 500mg', qty:100, unit:'Tabletas'},{name:'Paracetamol 1g', qty:200, unit:'Tabletas'}],
+    date:'06/03 09:00', status:'Borrador' },
+  { folio:'#TR-0415', from:'Bodega', to:'Central',
+    products:[{name:'Insulina Glargina', qty:30, unit:'Frascos'}],
+    date:'03/03 08:00', status:'En Tránsito' },
+  { folio:'#TR-0414', from:'Bodega', to:'Norte',
+    products:[{name:'Amoxicilina 875mg', qty:200, unit:'Tabletas'}],
+    date:'02/03 14:30', status:'Recibido' },
+  { folio:'#TR-0413', from:'Bodega', to:'Sur',
+    products:[{name:'Metformina 850mg', qty:150, unit:'Tabletas'}],
+    date:'02/03 11:00', status:'Pendiente' },
+  { folio:'#TR-0412', from:'Central', to:'Norte',
+    products:[{name:'Amoxicilina 500mg', qty:50, unit:'Tabletas'}],
+    date:'02/03 10:30', status:'En Tránsito' },
+  { folio:'#TR-0411', from:'Sur', to:'Este',
+    products:[{name:'Paracetamol 1g', qty:100, unit:'Tabletas'}],
+    date:'02/03 09:15', status:'Pendiente' },
+  { folio:'#TR-0410', from:'Industrial', to:'Universitaria',
+    products:[{name:'Insulina Glargina', qty:10, unit:'Frascos'}],
+    date:'01/03 16:45', status:'Recibido' },
+  { folio:'#TR-0409', from:'Central', to:'Oeste',
+    products:[{name:'Omeprazol 20mg', qty:75, unit:'Cápsulas'}],
+    date:'01/03 14:20', status:'Recibido' },
+  { folio:'#TR-0408', from:'Norte', to:'Plaza Mayor',
+    products:[{name:'Ibuprofeno 400mg', qty:60, unit:'Tabletas'}],
+    date:'01/03 11:50', status:'Recibido' },
+  { folio:'#TR-0407', from:'Este', to:'Sur',
+    products:[{name:'Loratadina 10mg', qty:30, unit:'Tabletas'}],
+    date:'01/03 10:00', status:'En Tránsito' },
+  { folio:'#TR-0406', from:'Oeste', to:'Central',
+    products:[{name:'Metformina 850mg', qty:40, unit:'Tabletas'}],
+    date:'28/02 15:30', status:'Pendiente' },
+  { folio:'#TR-0405', from:'Plaza Mayor', to:'Norte',
+    products:[{name:'Vitamina C 1000mg', qty:200, unit:'Tabletas'}],
+    date:'28/02 13:00', status:'Recibido' },
+  { folio:'#TR-0404', from:'Central', to:'Industrial',
+    products:[{name:'Enalapril 20mg', qty:55, unit:'Tabletas'}],
+    date:'28/02 09:45', status:'Recibido' },
+  { folio:'#TR-0403', from:'Sur', to:'Universitaria',
+    products:[{name:'Azitromicina 500mg', qty:25, unit:'Cápsulas'}],
+    date:'27/02 16:00', status:'Recibido' },
 ];
-function showMedSuggestions(val) {
-  const list = document.getElementById('medSuggestions');
-  if (!val) { list.style.display = 'none'; return; }
-  const filtered = allMeds.filter(m => m.toLowerCase().includes(val.toLowerCase()));
-  if (!filtered.length) { list.style.display = 'none'; return; }
-  list.innerHTML = filtered.map(m =>
-    `<li class="list-group-item list-group-item-action py-2" style="font-size:13px;cursor:pointer"
-         onclick="selectMed('${m}')">${m}</li>`
-  ).join('');
-  list.style.display = 'block';
-}
-function selectMed(name) {
-  document.getElementById('medSearch').value = name;
-  document.getElementById('medSuggestions').style.display = 'none';
-}
-document.addEventListener('click', e => {
-  if (!e.target.closest('#medSearch') && !e.target.closest('#medSuggestions')) {
-    document.getElementById('medSuggestions').style.display = 'none';
-  }
-});
 
-// Transfer table
-const transfers = [
-  { folio:'#TR-0412', from:'Central', to:'Norte', med:'Amoxicilina 500mg', qty:50, date:'02/03 10:30', status:'En Tránsito' },
-  { folio:'#TR-0411', from:'Sur', to:'Este', med:'Paracetamol 1g', qty:100, date:'02/03 09:15', status:'Pendiente' },
-  { folio:'#TR-0410', from:'Industrial', to:'Universitaria', med:'Insulina Glargina', qty:10, date:'01/03 16:45', status:'Recibido' },
-  { folio:'#TR-0409', from:'Central', to:'Oeste', med:'Omeprazol 20mg', qty:75, date:'01/03 14:20', status:'Recibido' },
-  { folio:'#TR-0408', from:'Norte', to:'Plaza Mayor', med:'Ibuprofeno 400mg', qty:60, date:'01/03 11:50', status:'Recibido' },
-  { folio:'#TR-0407', from:'Este', to:'Sur', med:'Loratadina 10mg', qty:30, date:'01/03 10:00', status:'En Tránsito' },
-  { folio:'#TR-0406', from:'Oeste', to:'Central', med:'Metformina 850mg', qty:40, date:'28/02 15:30', status:'Pendiente' },
-  { folio:'#TR-0405', from:'Plaza Mayor', to:'Norte', med:'Vitamina C 1000mg', qty:200, date:'28/02 13:00', status:'Recibido' },
-  { folio:'#TR-0404', from:'Central', to:'Industrial', med:'Enalapril 20mg', qty:55, date:'28/02 09:45', status:'Recibido' },
-  { folio:'#TR-0403', from:'Sur', to:'Universitaria', med:'Azitromicina 500mg', qty:25, date:'27/02 16:00', status:'Recibido' },
-];
-const statusCls = { 'Pendiente': 'badge-warning', 'En Tránsito': 'badge-info', 'Recibido': 'badge-success', 'Cancelado': 'badge-secondary' };
+const statusCls = {
+  'Borrador':    'badge-warning',
+  'Pendiente':   'badge-warning',
+  'En Tránsito': 'badge-info',
+  'Recibido':    'badge-success',
+  'Cancelado':   'badge-secondary'
+};
+const statusIcon = {
+  'Borrador':    'fa-file-pen',
+  'Pendiente':   'fa-hourglass-half',
+  'En Tránsito': 'fa-truck-fast',
+  'Recibido':    'fa-circle-check',
+  'Cancelado':   'fa-ban'
+};
+
 let trSortCol = null, trSortDir = 1;
 
+// ===================== Sort =====================
 function sortTransfers(col) {
   if (trSortCol === col) trSortDir *= -1;
   else { trSortCol = col; trSortDir = 1; }
@@ -396,6 +296,7 @@ function sortTransfers(col) {
   renderTransfers();
 }
 
+// ===================== Toggle row (mobile) =====================
 function toggleRow(btn) {
   const row = btn.closest('tr');
   const detail = row.nextElementSibling;
@@ -407,8 +308,11 @@ function toggleRow(btn) {
   }
 }
 
+// ===================== Render =====================
 function renderTransfers() {
   let data = [...transfers];
+  const statusFilter = document.getElementById('filterStatus').value;
+  if (statusFilter) data = data.filter(t => t.status === statusFilter);
   if (trSortCol) {
     data.sort((a, b) => {
       const va = a[trSortCol], vb = b[trSortCol];
@@ -419,9 +323,11 @@ function renderTransfers() {
   const tbody = document.getElementById('transferTableBody');
   tbody.innerHTML = '';
   data.forEach(t => {
+    const cls = statusCls[t.status] || 'badge-secondary';
+    const icon = statusIcon[t.status] || 'fa-circle';
     tbody.innerHTML += `
-    <tr>
-      <td><span style="font-weight:600;color:#2563eb">${t.folio}</span></td>
+    <tr onclick="viewTransfer('${t.folio}')" style="cursor:pointer">
+      <td><strong style="color:#2563eb">${t.folio}</strong></td>
       <td><span style="font-size:12px;font-weight:600">${t.from}</span></td>
       <td>
         <div class="d-flex align-items-center gap-1">
@@ -429,38 +335,101 @@ function renderTransfers() {
           <span style="font-size:12px;font-weight:600">${t.to}</span>
         </div>
       </td>
-      <td class="col-secondary"><strong style="font-size:13px">${t.med}</strong></td>
-      <td class="col-secondary"><span class="badge bg-light text-dark">${t.qty}</span></td>
+      <td><span class="badge bg-light text-dark border">${t.products.length} producto(s)</span></td>
       <td class="col-secondary"><small class="text-muted">${t.date}</small></td>
-      <td><span class="badge-status ${statusCls[t.status]}">${t.status}</span></td>
-      <td>
-        <div class="table-actions">
-          <button class="btn-icon" title="Ver detalle" onclick="viewTransfer('${t.folio}')"><i class="fa-solid fa-eye"></i></button>
-          ${t.status === 'En Tránsito' ? `<button class="btn-icon success" title="Marcar recibido" onclick="markReceived('${t.folio}')"><i class="fa-solid fa-check"></i></button>` : ''}
-          ${t.status === 'Pendiente' ? `<button class="btn-icon danger" title="Cancelar" onclick="cancelTransfer('${t.folio}')"><i class="fa-solid fa-ban"></i></button>` : ''}
-          <button class="btn-icon expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
-        </div>
+      <td><span class="badge-status ${cls}"><i class="fa-solid ${icon} me-1"></i>${t.status}</span></td>
+      <td class="d-md-none text-center" onclick="event.stopPropagation()">
+        <button class="expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
       </td>
     </tr>
     <tr class="row-detail">
-      <td colspan="8">
+      <td colspan="7">
         <div class="row-detail-grid">
-          <div class="row-detail-item"><span class="rd-label">Producto</span><span class="rd-value">${t.med}</span></div>
-          <div class="row-detail-item"><span class="rd-label">Cantidad</span><span class="rd-value">${t.qty} uds</span></div>
-          <div class="row-detail-item"><span class="rd-label">Fecha</span><span class="rd-value">${t.date}</span></div>
-        </div>
-        <div class="table-actions mt-2">
-          <button class="btn-icon" onclick="viewTransfer('${t.folio}')"><i class="fa-solid fa-eye"></i></button>
-          ${t.status === 'En Tránsito' ? `<button class="btn-icon success" onclick="markReceived('${t.folio}')"><i class="fa-solid fa-check"></i></button>` : ''}
-          ${t.status === 'Pendiente' ? `<button class="btn-icon danger" onclick="cancelTransfer('${t.folio}')"><i class="fa-solid fa-ban"></i></button>` : ''}
+          <div class="row-detail-item"><span class="detail-label">Origen</span><span>${t.from}</span></div>
+          <div class="row-detail-item"><span class="detail-label">Destino</span><span>${t.to}</span></div>
+          <div class="row-detail-item"><span class="detail-label">Productos</span><span>${t.products.length}</span></div>
+          <div class="row-detail-item"><span class="detail-label">Fecha</span><span>${t.date}</span></div>
         </div>
       </td>
     </tr>`;
   });
+  document.getElementById('transfersFooter').textContent =
+    `Mostrando ${data.length} de ${transfers.length} transferencias`;
 }
-renderTransfers();
 
-// ===== TOAST =====
+// ===================== View Detail =====================
+function viewTransfer(folio) {
+  const t = transfers.find(x => x.folio === folio);
+  if (!t) return;
+  const cls = statusCls[t.status] || 'badge-secondary';
+  document.getElementById('trDetailFolio').textContent = t.folio;
+  document.getElementById('trDetailBadge').innerHTML = `<span class="badge-status ${cls}">${t.status}</span>`;
+  document.getElementById('trDetailInfo').innerHTML = `
+    <div style="font-size:12px;color:#64748b;font-weight:600;margin-bottom:8px">TRANSFERENCIA</div>
+    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Folio:</span><strong style="font-size:13px">${t.folio}</strong></div>
+    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Fecha:</span><strong style="font-size:13px">${t.date}</strong></div>
+    <div class="d-flex justify-content-between"><span class="text-muted" style="font-size:13px">Estado:</span><strong style="font-size:13px">${t.status}</strong></div>`;
+  document.getElementById('trDetailRoute').innerHTML = `
+    <div style="font-size:12px;color:#64748b;font-weight:600;margin-bottom:8px">RUTA</div>
+    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Origen:</span><strong style="font-size:13px">${t.from}</strong></div>
+    <div class="d-flex justify-content-between"><span class="text-muted" style="font-size:13px">Destino:</span><strong style="font-size:13px">${t.to}</strong></div>`;
+  document.getElementById('trDetailBody').innerHTML =
+    t.products.map(pr => `<tr><td>${pr.name}</td><td class="text-center">${pr.qty}</td><td>${pr.unit}</td></tr>`).join('');
+
+  // Dynamic footer buttons
+  let btns = '';
+  if (t.status === 'Borrador') {
+    btns += `<button class="btn btn-primary" onclick="editTransfer('${t.folio}')"><i class="fa-solid fa-pen me-1"></i>Editar transferencia</button>`;
+    btns += `<button class="btn btn-success ms-2" onclick="confirmTransfer('${t.folio}')"><i class="fa-solid fa-paper-plane me-1"></i>Confirmar</button>`;
+  }
+  if (t.status === 'Pendiente') {
+    btns += `<button class="btn btn-outline-danger" onclick="cancelTransfer('${t.folio}')"><i class="fa-solid fa-ban me-1"></i>Cancelar</button>`;
+  }
+  if (t.status === 'En Tránsito') {
+    btns += `<button class="btn btn-success" onclick="markReceived('${t.folio}')"><i class="fa-solid fa-circle-check me-1"></i>Marcar recibido</button>`;
+  }
+  document.getElementById('transferDetailFooter').innerHTML =
+    btns + `<button class="btn btn-outline-secondary ms-auto" data-bs-dismiss="modal">Cerrar</button>`;
+
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('transferDetailModal')).show();
+}
+
+// ===================== Actions =====================
+function editTransfer(folio) {
+  const t = transfers.find(x => x.folio === folio);
+  if (!t) return;
+  localStorage.setItem('editTransferDraft', JSON.stringify(t));
+  bootstrap.Modal.getInstance(document.getElementById('transferDetailModal')).hide();
+  location.href = 'nueva-transferencia.html';
+}
+
+function confirmTransfer(folio) {
+  const t = transfers.find(x => x.folio === folio);
+  if (t) t.status = 'En Tránsito';
+  bootstrap.Modal.getInstance(document.getElementById('transferDetailModal')).hide();
+  showToast('Transferencia confirmada y enviada en tránsito.', 'success');
+  renderTransfers();
+}
+
+function markReceived(folio) {
+  const t = transfers.find(x => x.folio === folio);
+  if (!t) return;
+  t.status = 'Recibido';
+  bootstrap.Modal.getInstance(document.getElementById('transferDetailModal')).hide();
+  renderTransfers();
+  showToast('Transferencia marcada como recibida.', 'success');
+}
+
+function cancelTransfer(folio) {
+  const t = transfers.find(x => x.folio === folio);
+  if (!t) return;
+  t.status = 'Cancelado';
+  bootstrap.Modal.getInstance(document.getElementById('transferDetailModal')).hide();
+  renderTransfers();
+  showToast('Transferencia cancelada.', 'danger');
+}
+
+// ===================== Toast =====================
 function showToast(message, type = 'success', duration = 3000) {
   const icons = { success:'fa-circle-check', danger:'fa-circle-exclamation', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
   const container = document.getElementById('toastContainerGlobal');
@@ -477,44 +446,15 @@ function showToast(message, type = 'success', duration = 3000) {
   }, duration);
 }
 
-function viewTransfer(folio) {
-  const t = transfers.find(x => x.folio === folio);
-  if (!t) return;
-  document.getElementById('trDetailFolio').textContent = t.folio;
-  document.getElementById('trDetailBadge').innerHTML = `<span class="badge-status ${statusCls[t.status]}">${t.status}</span>`;
-  document.getElementById('trDetailInfo').innerHTML = `
-    <div style="font-size:12px;color:#64748b;font-weight:600;margin-bottom:8px">TRANSFERENCIA</div>
-    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Folio:</span><strong style="font-size:13px">${t.folio}</strong></div>
-    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Fecha:</span><strong style="font-size:13px">${t.date}</strong></div>
-    <div class="d-flex justify-content-between"><span class="text-muted" style="font-size:13px">Estado:</span><strong style="font-size:13px">${t.status}</strong></div>`;
-  document.getElementById('trDetailRoute').innerHTML = `
-    <div style="font-size:12px;color:#64748b;font-weight:600;margin-bottom:8px">RUTA</div>
-    <div class="d-flex justify-content-between mb-1"><span class="text-muted" style="font-size:13px">Origen:</span><strong style="font-size:13px">${t.from}</strong></div>
-    <div class="d-flex justify-content-between"><span class="text-muted" style="font-size:13px">Destino:</span><strong style="font-size:13px">${t.to}</strong></div>`;
-  document.getElementById('trDetailBody').innerHTML =
-    `<tr><td>${t.med}</td><td class="text-center">${t.qty}</td><td>—</td></tr>`;
-  new bootstrap.Modal(document.getElementById('transferDetailModal')).show();
-}
-
-function markReceived(folio) {
-  const t = transfers.find(x => x.folio === folio);
-  if (!t) return;
-  t.status = 'Recibido';
+// ===================== Init =====================
+(function() {
+  const newTransfer = JSON.parse(localStorage.getItem('newTransfer') || 'null');
+  if (newTransfer) { transfers.unshift(newTransfer); localStorage.removeItem('newTransfer'); }
+  const draftTransfer = JSON.parse(localStorage.getItem('newTransferDraft') || 'null');
+  if (draftTransfer) { transfers.unshift(draftTransfer); localStorage.removeItem('newTransferDraft'); }
   renderTransfers();
-  showToast('Transferencia marcada como recibida', 'success');
-}
-
-function cancelTransfer(folio) {
-  const t = transfers.find(x => x.folio === folio);
-  if (!t) return;
-  t.status = 'Cancelado';
-  renderTransfers();
-  showToast('Transferencia cancelada', 'danger');
-}
-
-initDatePickers();
+})();
 </script>
-<div id="toastContainerGlobal" class="toast-container-global"></div>
 <script>
 (function(){
   if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
@@ -522,34 +462,6 @@ initDatePickers();
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
-<!-- Modal Transfer Detail -->
-<div class="modal fade" id="transferDetailModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="fa-solid fa-truck-fast me-2 text-primary"></i><span id="trDetailFolio"></span> <span id="trDetailBadge"></span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row g-3 mb-4">
-          <div class="col-sm-6">
-            <div id="trDetailInfo" class="p-3 rounded-3" style="background:#f0f4f8"></div>
-          </div>
-          <div class="col-sm-6">
-            <div id="trDetailRoute" class="p-3 rounded-3" style="background:#f0f4f8"></div>
-          </div>
-        </div>
-        <table class="table table-sm">
-          <thead><tr><th>Producto</th><th class="text-center">Cantidad</th><th>Observaciones</th></tr></thead>
-          <tbody id="trDetailBody"></tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

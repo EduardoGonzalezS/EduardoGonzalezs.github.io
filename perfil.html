@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Mi Perfil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===================== SIDEBAR OVERLAY ===================== -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ===================== SIDEBAR ===================== -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div>
+      <div class="brand-name">Farmacéutico MK</div>
+      <div class="brand-sub">Cadena de Farmacias</div>
+    </div>
+  </a>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </a>
+      <a href="ventas.html" class="nav-link">
+        <i class="fa-solid fa-receipt"></i> Ventas
+        <span class="sidebar-badge">8</span>
+      </a>
+      <a href="inventario.html" class="nav-link">
+        <i class="fa-solid fa-boxes-stacked"></i> Inventario
+        <span class="sidebar-badge" style="background:#d97706">12</span>
+      </a>
+      <a href="transferencias.html" class="nav-link">
+        <i class="fa-solid fa-truck-fast"></i> Transferencias
+      </a>
+      <a href="pos.html" class="nav-link">
+        <i class="fa-solid fa-cash-register"></i> Punto de Venta
+      </a>
+      <a href="compras.html" class="nav-link">
+        <i class="fa-solid fa-cart-flatbed"></i> Compras
+      </a>
+      <a href="alertas.html" class="nav-link">
+        <i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link">
+        <i class="fa-solid fa-users"></i> Usuarios
+      </a>
+      <a href="sucursales.html" class="nav-link">
+        <i class="fa-solid fa-building-columns"></i> Sucursales
+      </a>
+      <a href="proveedores.html" class="nav-link">
+        <i class="fa-solid fa-handshake"></i> Proveedores
+      </a>
+      <a href="reportes.html" class="nav-link">
+        <i class="fa-solid fa-chart-line"></i> Reportes
+      </a>
+      <a href="configuracion.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i> Configuración
+      </a>
+    </nav>
+  </div>
+
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name">
+      <span class="branch-status"></span>Sucursal Central
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== TOPBAR ===================== -->
+<header class="topbar">
+  <button class="btn-icon me-2" id="sidebarToggle" onclick="toggleSidebar()" style="font-size:17px">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-right">
+    <select class="topbar-branch-select d-none d-md-block">
+      <option>Todas las sucursales</option>
+      <option>Sucursal Central</option>
+      <option>Norte</option>
+      <option>Sur</option>
+      <option>Este</option>
+      <option>Oeste</option>
+      <option>Plaza Mayor</option>
+      <option>Universitaria</option>
+      <option>Industrial</option>
+    </select>
+
+    <a href="alertas.html" class="topbar-icon-btn">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notif-dot"></span>
+    </a>
+
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block">
+        <div class="user-name">Administrador</div>
+        <div class="user-role">Super Admin</div>
+      </div>
+      <i class="fa-solid fa-chevron-down ms-1 d-none d-sm-block" style="font-size:10px;color:#94a3b8"></i>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item active" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main class="main-content">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Mi Perfil</li>
+    </ol>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Mi Perfil</h1>
+      <p class="page-subtitle">Gestión de cuenta y seguridad</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="card-title mb-0"><i class="fa-solid fa-lock me-2 text-primary"></i>Cambiar Contraseña</h6>
+        </div>
+        <div class="card-body">
+
+          <!-- Alert message -->
+          <div id="alertMsg" class="alert d-none mb-3" role="alert"></div>
+
+          <form id="changePasswordForm" onsubmit="changePassword(event)" novalidate>
+            <!-- Contraseña actual -->
+            <div class="mb-3">
+              <label for="currentPass" class="form-label">Contraseña actual</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="currentPass" placeholder="Ingresa tu contraseña actual" autocomplete="current-password">
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePass('currentPass')" tabindex="-1">
+                  <i class="fa-solid fa-eye" id="currentPassIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Nueva contraseña -->
+            <div class="mb-3">
+              <label for="newPass" class="form-label">Nueva contraseña</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="newPass" placeholder="Ingresa la nueva contraseña" autocomplete="new-password">
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePass('newPass')" tabindex="-1">
+                  <i class="fa-solid fa-eye" id="newPassIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="mb-4">
+              <label for="confirmPass" class="form-label">Confirmar nueva contraseña</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="confirmPass" placeholder="Repite la nueva contraseña" autocomplete="new-password">
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePass('confirmPass')" tabindex="-1">
+                  <i class="fa-solid fa-eye" id="confirmPassIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fa-solid fa-floppy-disk me-2"></i>Guardar cambios
+            </button>
+          </form>
+        </div>
+        <div class="card-footer text-muted" style="font-size:13px">
+          <i class="fa-solid fa-circle-info me-1"></i>Requisitos: mínimo 8 caracteres
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===================== Sidebar Toggle =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Perfil / Cambio de Contraseña =====================
+const MOCK_PASSWORD = 'admin123';
+
+function togglePass(id) {
+  const input = document.getElementById(id);
+  const icon  = document.getElementById(id + 'Icon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
+}
+
+function showAlert(msg, type) {
+  const el = document.getElementById('alertMsg');
+  el.className = `alert alert-${type}`;
+  el.textContent = msg;
+  el.classList.remove('d-none');
+}
+
+function changePassword(event) {
+  event.preventDefault();
+  const currentPass = document.getElementById('currentPass').value;
+  const newPass     = document.getElementById('newPass').value;
+  const confirmPass = document.getElementById('confirmPass').value;
+
+  if (!currentPass) {
+    showAlert('Ingresa tu contraseña actual.', 'danger');
+    return;
+  }
+  if (currentPass !== MOCK_PASSWORD) {
+    showAlert('Contraseña actual incorrecta.', 'danger');
+    return;
+  }
+  if (newPass.length < 8) {
+    showAlert('La nueva contraseña debe tener mínimo 8 caracteres.', 'danger');
+    return;
+  }
+  if (newPass !== confirmPass) {
+    showAlert('Las contraseñas no coinciden.', 'danger');
+    return;
+  }
+
+  showAlert('Contraseña actualizada correctamente.', 'success');
+  document.getElementById('changePasswordForm').reset();
+  // Reset eye icons to closed
+  ['currentPassIcon','newPassIcon','confirmPassIcon'].forEach(id => {
+    const icon = document.getElementById(id);
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  });
+  // Reset input types
+  ['currentPass','newPass','confirmPass'].forEach(id => {
+    document.getElementById(id).type = 'password';
+  });
+}
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+<script src="sidebar-compact.js"></script>
+</body>
+</html>

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Plan de Migración a .NET + Cloud Run</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    /* ── HERO HEADER ─────────────────────────────────── */
+    .doc-header {
+      background: linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 60%, #2563eb 100%);
+      color: #fff;
+      padding: 48px 0 56px;
+    }
+    .doc-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .doc-header .brand-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,.15);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .doc-header .brand-name { font-size: 20px; font-weight: 700; }
+    .doc-header .brand-sub  { font-size: 12px; opacity: .7; }
+    .doc-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .doc-title {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .doc-subtitle { font-size: 15px; opacity: .8; margin-bottom: 28px; }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 13px;
+      opacity: .85;
+    }
+    .doc-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── LAYOUT ──────────────────────────────────────── */
+    .doc-body { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── SECTION HEADERS ─────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-num {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 18px; font-weight: 700; color: #0f172a; }
+    .section-desc  { font-size: 13px; color: #64748b; margin-top: 2px; }
+
+    /* ── CARDS ───────────────────────────────────────── */
+    .est-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    .est-card-inner { padding: 28px; }
+
+    /* ── TABLES ──────────────────────────────────────── */
+    .est-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .est-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .est-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+      color: #334155;
+    }
+    .est-table tr:last-child td { border-bottom: none; }
+    .est-table .total-row td {
+      background: #f0f7ff;
+      font-weight: 700;
+      color: #0f172a;
+      border-top: 2px solid #2563eb;
+      border-bottom: none;
+    }
+    .est-table .subtotal-row td {
+      background: #fffbeb;
+      font-weight: 600;
+      color: #92400e;
+      border-top: 1px solid #fde68a;
+    }
+    .price-col { text-align: right; white-space: nowrap; font-weight: 600; }
+    .price-blue  { color: #2563eb; }
+    .price-green { color: #16a34a; }
+    .price-amber { color: #d97706; }
+    .zero-price  { color: #94a3b8; }
+
+    /* ── INFO BADGE ──────────────────────────────────── */
+    .info-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .pill-blue   { background: #eff6ff; color: #2563eb; }
+    .pill-green  { background: #f0fdf4; color: #16a34a; }
+    .pill-amber  { background: #fffbeb; color: #d97706; }
+    .pill-purple { background: #faf5ff; color: #7c3aed; }
+    .pill-red    { background: #fef2f2; color: #dc2626; }
+    .pill-teal   { background: #f0fdfa; color: #0f766e; }
+
+    /* ── KPI ROW ─────────────────────────────────────── */
+    .mini-kpi {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .mini-kpi-value { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .mini-kpi-label { font-size: 12px; color: #64748b; font-weight: 500; }
+
+    /* ── SUMMARY CARD ────────────────────────────────── */
+    .summary-card {
+      background: linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 60%, #2563eb 100%);
+      border-radius: 16px;
+      padding: 36px;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+    .summary-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .summary-subtitle { font-size: 13px; opacity: .75; margin-bottom: 28px; }
+    .summary-table { width: 100%; border-collapse: collapse; }
+    .summary-table td {
+      padding: 10px 0;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.85);
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table .type-pill {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.9);
+      font-weight: 600;
+    }
+    .summary-table .amount { text-align: right; font-weight: 600; color: #fff; }
+    .summary-total {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid rgba(255,255,255,.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .summary-total-label { font-size: 16px; font-weight: 600; opacity: .9; }
+    .summary-total-amount { font-size: 36px; font-weight: 800; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .validity-note {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .contact-info {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .contact-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #94a3b8; font-weight: 600; margin-bottom: 8px; }
+    .contact-item  { font-size: 13px; color: #475569; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+    /* ── PRINT ───────────────────────────────────────── */
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .est-card  { box-shadow: none; break-inside: avoid; }
+      .summary-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .doc-header  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .timeline-phase { break-inside: avoid; }
+      .arch-flow { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 575.98px) {
+      .doc-title { font-size: 22px; }
+      .est-table th, .est-table td { padding: 8px 10px; font-size: 12px; }
+      .summary-total-amount { font-size: 26px; }
+      .summary-card { padding: 24px; }
+    }
+
+    /* ── TIMELINE ────────────────────────────────────── */
+    .timeline-wrap { position: relative; padding-left: 28px; }
+    .timeline-wrap::before {
+      content: '';
+      position: absolute;
+      left: 12px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, #2563eb, #7c3aed, #16a34a, #d97706);
+      border-radius: 2px;
+    }
+    .timeline-phase {
+      position: relative;
+      padding: 20px 20px 20px 28px;
+      margin-bottom: 20px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      break-inside: avoid;
+    }
+    .timeline-phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .timeline-phase-num {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .timeline-phase-title { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .timeline-phase-weeks { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .milestone-list { list-style: none; padding: 0; margin: 0; }
+    .milestone-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: #475569;
+      padding: 4px 0;
+      border-bottom: 1px dashed #f1f5f9;
+    }
+    .milestone-item:last-child { border-bottom: none; }
+    .milestone-item i { color: #2563eb; margin-top: 2px; flex-shrink: 0; }
+    .deliverable-box {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #f0f7ff;
+      border-left: 3px solid #2563eb;
+      font-size: 12px; color: #1d4ed8; font-weight: 600;
+    }
+
+    /* ── ARCHITECTURE FLOW ───────────────────────────── */
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .arch-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 12px; font-weight: 600;
+      color: #334155;
+      min-width: 110px;
+    }
+    .arch-box.arch-current { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+    .arch-box.arch-target  { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    .arch-box.arch-cloud   { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+    .arch-arrow { font-size: 20px; color: #94a3b8; padding: 0 8px; }
+
+    /* ── MCP TOOLS ───────────────────────────────────── */
+    .mcp-tool-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .mcp-tool-item:last-of-type { border-bottom: none; }
+    .mcp-tool-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .mcp-tool-name { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .mcp-tool-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<div class="doc-header">
+  <div class="doc-body" style="padding-bottom: 0; padding-top: 0;">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+      <div>
+        <div class="brand-name">Farmacéutico MK</div>
+        <div class="brand-sub">Sistema de Administración para Cadena de Farmacias</div>
+      </div>
+    </div>
+    <div class="doc-badge"><i class="fa-brands fa-microsoft me-1"></i>Plan de Migración Técnica 2026</div>
+    <h1 class="doc-title">Plan de Migración a .NET + Cloud Run</h1>
+    <p class="doc-subtitle">Roadmap técnico para evolucionar de HTML estático a .NET 9 Razor Pages con backend real en Google Cloud</p>
+    <div class="doc-meta">
+      <span><i class="fa-solid fa-calendar-day"></i> Fecha: 6 de marzo de 2026</span>
+      <span><i class="fa-solid fa-clock"></i> Duración estimada: ~16 semanas</span>
+      <span><i class="fa-solid fa-code-branch"></i> Versión: 1.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="doc-body">
+
+  <!-- KPI resumen rápido -->
+  <div class="row g-3 mb-5 mt-2">
+    <div class="col-6 col-md-3">
+      <div class="mini-kpi">
+        <div class="mini-kpi-value price-blue">4</div>
+        <div class="mini-kpi-label">Fases de migración</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mini-kpi">
+        <div class="mini-kpi-value price-amber">~16 sem</div>
+        <div class="mini-kpi-label">Duración estimada</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mini-kpi">
+        <div class="mini-kpi-value" style="color:#0d9488">.NET 9</div>
+        <div class="mini-kpi-label">Stack objetivo</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="mini-kpi">
+        <div class="mini-kpi-value price-green">$45K–$65K</div>
+        <div class="mini-kpi-label">MXN costo desarrollo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 1: ARQUITECTURA ACTUAL VS. OBJETIVO ── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#0ea5e9"><i class="fa-solid fa-diagram-project"></i></div>
+    <div>
+      <div class="section-title">1. Arquitectura Actual vs. Objetivo</div>
+      <div class="section-desc">Comparativa visual entre el sistema estático actual y la arquitectura cloud-native propuesta</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <div class="row g-4">
+        <!-- Actual -->
+        <div class="col-md-5">
+          <div class="p-4 rounded-3 h-100" style="background:#fef2f2;border:1.5px solid #fca5a5">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="info-pill pill-red"><i class="fa-solid fa-triangle-exclamation me-1"></i>Actual</span>
+              <strong style="font-size:14px;color:#b91c1c">HTML Estático</strong>
+            </div>
+            <div class="arch-flow flex-column align-items-start" style="margin:0;gap:8px">
+              <div class="arch-box arch-current w-100"><i class="fa-solid fa-file-code me-2"></i>HTML + CSS + Bootstrap</div>
+              <div class="arch-box arch-current w-100"><i class="fa-solid fa-code me-2"></i>JavaScript inline (datos simulados)</div>
+              <div class="arch-box arch-current w-100"><i class="fa-solid fa-ban me-2"></i>Sin autenticación real</div>
+              <div class="arch-box arch-current w-100"><i class="fa-solid fa-ban me-2"></i>Sin base de datos</div>
+              <div class="arch-box arch-current w-100"><i class="fa-solid fa-server me-2"></i>VPS DigitalOcean ($1,521/mes)</div>
+            </div>
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div class="col-md-2 d-flex align-items-center justify-content-center">
+          <div class="text-center">
+            <i class="fa-solid fa-arrow-right fa-2x" style="color:#2563eb"></i>
+            <div style="font-size:11px;color:#64748b;margin-top:6px;font-weight:600">MIGRACIÓN</div>
+          </div>
+        </div>
+        <!-- Objetivo -->
+        <div class="col-md-5">
+          <div class="p-4 rounded-3 h-100" style="background:#f0fdf4;border:1.5px solid #86efac">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="info-pill pill-green"><i class="fa-solid fa-circle-check me-1"></i>Objetivo</span>
+              <strong style="font-size:14px;color:#15803d">.NET 9 + Cloud Run</strong>
+            </div>
+            <div class="arch-flow flex-column align-items-start" style="margin:0;gap:8px">
+              <div class="arch-box arch-target w-100"><i class="fa-brands fa-microsoft me-2"></i>ASP.NET Core 9 Razor Pages</div>
+              <div class="arch-box arch-target w-100"><i class="fa-solid fa-database me-2"></i>EF Core 9 + PostgreSQL 16</div>
+              <div class="arch-box arch-target w-100"><i class="fa-solid fa-shield-halved me-2"></i>ASP.NET Identity (auth real)</div>
+              <div class="arch-box arch-cloud w-100"><i class="fa-brands fa-docker me-2"></i>Docker + Artifact Registry</div>
+              <div class="arch-box arch-cloud w-100"><i class="fa-solid fa-cloud me-2"></i>Cloud Run (~$1,300/mes)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex flex-wrap gap-2">
+        <span class="info-pill pill-green"><i class="fa-solid fa-shield-halved me-1"></i>Auth real con roles</span>
+        <span class="info-pill pill-blue"><i class="fa-solid fa-database me-1"></i>BD relacional persistente</span>
+        <span class="info-pill pill-teal"><i class="fa-solid fa-arrows-up-down me-1"></i>Autoescalado en Cloud Run</span>
+        <span class="info-pill pill-amber"><i class="fa-solid fa-dollar-sign me-1"></i>Ahorro ~$221 MXN/mes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 2: STACK TECNOLÓGICO ─────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#4338ca"><i class="fa-solid fa-layer-group"></i></div>
+    <div>
+      <div class="section-title">2. Stack Tecnológico Objetivo</div>
+      <div class="section-desc">Tecnologías seleccionadas para la arquitectura cloud-native de producción</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <div class="table-responsive">
+        <table class="est-table">
+          <thead>
+            <tr>
+              <th style="width:22%">Componente</th>
+              <th style="width:28%">Tecnología</th>
+              <th style="width:12%">Versión</th>
+              <th>Razón de elección</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="fw-semibold">Framework web</div></td>
+              <td><span class="info-pill pill-blue"><i class="fa-brands fa-microsoft me-1"></i>ASP.NET Core Razor Pages</span></td>
+              <td>.NET 9</td>
+              <td>Patrón page-centric, ideal para migrar desde HTML; sin overhead de SPA.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">ORM / acceso a datos</div></td>
+              <td><span class="info-pill pill-blue">EF Core</span></td>
+              <td>9.x</td>
+              <td>Migraciones automáticas, LINQ tipado, soporte PostgreSQL nativo.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Base de datos</div></td>
+              <td><span class="info-pill pill-teal"><i class="fa-solid fa-database me-1"></i>PostgreSQL</span></td>
+              <td>16</td>
+              <td>Robusto, open source, soporte completo en Cloud SQL de GCP.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Autenticación</div></td>
+              <td><span class="info-pill pill-green">ASP.NET Identity</span></td>
+              <td>9.x</td>
+              <td>Roles, claims, hash de contraseñas y gestión de sesiones out-of-the-box.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Contenedorización</div></td>
+              <td><span class="info-pill pill-blue"><i class="fa-brands fa-docker me-1"></i>Docker</span></td>
+              <td>latest</td>
+              <td>Imagen reproducible; requerido por Cloud Run para despliegue serverless.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Registro de imágenes</div></td>
+              <td><span class="info-pill pill-blue">Artifact Registry</span></td>
+              <td>GCP</td>
+              <td>Almacén seguro de imágenes Docker dentro del ecosistema Google Cloud.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">CI/CD</div></td>
+              <td><span class="info-pill pill-blue">Cloud Build</span></td>
+              <td>GCP</td>
+              <td>Pipeline automático: push → build → push image → deploy Cloud Run.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Hosting / compute</div></td>
+              <td><span class="info-pill pill-teal"><i class="fa-solid fa-cloud me-1"></i>Cloud Run</span></td>
+              <td>GCP</td>
+              <td>Serverless, autoescalado, pago por uso; costo ~$800/mes a carga normal.</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Frontend UI</div></td>
+              <td><span class="info-pill pill-purple">Bootstrap 5.3</span></td>
+              <td>5.3.3</td>
+              <td>Reutilizar el HTML/CSS existente de FarmaAdmin sin rediseño.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-3 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#eff6ff;border:1px solid #bfdbfe;font-size:13px">
+        <i class="fa-solid fa-circle-info text-primary mt-1"></i>
+        <div style="color:#1e40af">
+          <strong>Licencias:</strong> Todo el stack es <strong>open source</strong> o tiene tier gratuito en GCP.
+          .NET 9 es MIT. EF Core es MIT. PostgreSQL es PostgreSQL License. Bootstrap es MIT. Costo de licencias: <strong>$0</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 3: FASES DE MIGRACIÓN ────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#d97706"><i class="fa-solid fa-list-check"></i></div>
+    <div>
+      <div class="section-title">3. Fases de Migración</div>
+      <div class="section-desc">Roadmap en 4 fases incrementales de 16 semanas en total</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <div class="timeline-wrap">
+
+        <!-- FASE 1 -->
+        <div class="timeline-phase">
+          <div class="timeline-phase-header">
+            <div class="timeline-phase-num" style="background:#2563eb">1</div>
+            <div>
+              <div class="timeline-phase-title">Fase 1 — Setup e Infraestructura</div>
+              <div class="timeline-phase-weeks"><i class="fa-solid fa-calendar me-1"></i>Semanas 1–2</div>
+            </div>
+            <span class="info-pill pill-blue ms-auto">2 semanas</span>
+          </div>
+          <ul class="milestone-list">
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Crear solución .NET 9 con proyecto Razor Pages</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Escribir Dockerfile multi-stage (build + runtime)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Configurar Artifact Registry en GCP</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Desplegar servicio Cloud Run vacío (health check)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Pipeline CI/CD: Cloud Build trigger en push a main</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Configurar Secret Manager para connection strings</li>
+          </ul>
+          <div class="deliverable-box">
+            <i class="fa-solid fa-flag-checkered me-2"></i>
+            <strong>Entregable:</strong> URL de Cloud Run funcional que responde 200 OK con página index placeholder
+          </div>
+        </div>
+
+        <!-- FASE 2 -->
+        <div class="timeline-phase">
+          <div class="timeline-phase-header">
+            <div class="timeline-phase-num" style="background:#7c3aed">2</div>
+            <div>
+              <div class="timeline-phase-title">Fase 2 — Core Pages y Autenticación</div>
+              <div class="timeline-phase-weeks"><i class="fa-solid fa-calendar me-1"></i>Semanas 3–6</div>
+            </div>
+            <span class="info-pill pill-purple ms-auto">4 semanas</span>
+          </div>
+          <ul class="milestone-list">
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Crear <code>_Layout.cshtml</code> con sidebar + topbar (HTML existente)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Integrar ASP.NET Identity: login, logout, roles (Admin/Gerente/Cajero/Farmacéutico)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Migrar Dashboard → Razor Page con datos simulados en C#</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Migrar Ventas → Razor Page + filtros server-side</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Migrar Inventario → Razor Page + paginación</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Proteger rutas con <code>[Authorize(Roles="...")]</code></li>
+          </ul>
+          <div class="deliverable-box">
+            <i class="fa-solid fa-flag-checkered me-2"></i>
+            <strong>Entregable:</strong> Login real con roles funcional + 3 módulos principales navegables en Cloud Run
+          </div>
+        </div>
+
+        <!-- FASE 3 -->
+        <div class="timeline-phase">
+          <div class="timeline-phase-header">
+            <div class="timeline-phase-num" style="background:#16a34a">3</div>
+            <div>
+              <div class="timeline-phase-title">Fase 3 — Capa de Datos Real</div>
+              <div class="timeline-phase-weeks"><i class="fa-solid fa-calendar me-1"></i>Semanas 7–12</div>
+            </div>
+            <span class="info-pill pill-green ms-auto">6 semanas</span>
+          </div>
+          <ul class="milestone-list">
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Modelar entidades EF Core: Producto, Sucursal, Usuario, Venta, OrdenCompra, Inventario, Transferencia, Proveedor, Alerta</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Crear instancia Cloud SQL (PostgreSQL 16) + configurar VPC</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Ejecutar migraciones EF Core (<code>dotnet ef database update</code>)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Seed data: 8 sucursales, usuarios por rol, productos de muestra</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Conectar todos los módulos (Transferencias, Usuarios, Proveedores, Compras, Alertas) a BD real</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Configurar Secret Manager para connection string de producción</li>
+          </ul>
+          <div class="deliverable-box">
+            <i class="fa-solid fa-flag-checkered me-2"></i>
+            <strong>Entregable:</strong> Base de datos real en Cloud SQL — todos los módulos leen y escriben datos persistentes
+          </div>
+        </div>
+
+        <!-- FASE 4 -->
+        <div class="timeline-phase" style="margin-bottom:0">
+          <div class="timeline-phase-header">
+            <div class="timeline-phase-num" style="background:#d97706">4</div>
+            <div>
+              <div class="timeline-phase-title">Fase 4 — Paridad Completa y Go-Live</div>
+              <div class="timeline-phase-weeks"><i class="fa-solid fa-calendar me-1"></i>Semanas 13–16</div>
+            </div>
+            <span class="info-pill pill-amber ms-auto">4 semanas</span>
+          </div>
+          <ul class="milestone-list">
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Sistema de permisos granulares por módulo y sucursal</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>POS con AJAX (añadir al carrito sin recarga de página)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Alta masiva CSV: FileReader → validación server-side → EF Core bulk insert</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>QR Scanner integrado (html5-qrcode → API endpoint)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Auditoría de acciones (log de cambios en BD)</li>
+            <li class="milestone-item"><i class="fa-solid fa-check-circle"></i>Pruebas de carga + ajuste de recursos en Cloud Run</li>
+          </ul>
+          <div class="deliverable-box">
+            <i class="fa-solid fa-flag-checkered me-2"></i>
+            <strong>Entregable:</strong> Sistema en producción con paridad completa — Go-live oficial
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: MCP TOOLS ──────────────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#7c3aed"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+    <div>
+      <div class="section-title">4. MCP Tools para la Migración</div>
+      <div class="section-desc">Integraciones de Claude Code que aceleran cada etapa del proceso de migración</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+
+      <!-- Filesystem MCP -->
+      <div class="mcp-tool-item">
+        <div class="mcp-tool-icon" style="background:#f0fdf4;color:#16a34a">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <div class="flex-1">
+          <div class="mcp-tool-name">
+            Filesystem MCP
+            <span class="info-pill pill-green ms-2" style="font-size:11px"><i class="fa-solid fa-circle-check me-1"></i>Activo ahora</span>
+          </div>
+          <div class="mcp-tool-desc">
+            Ya configurado en este proyecto. Claude Code lee el HTML de <code>C:\FM\</code> y genera directamente los Razor Pages equivalentes (<code>.cshtml</code>), modelos C# y migrations de EF Core. Sin copiar y pegar manualmente.
+          </div>
+          <div class="mt-2 d-flex flex-wrap gap-2">
+            <span class="info-pill pill-green" style="font-size:11px">Lee archivos HTML actuales</span>
+            <span class="info-pill pill-green" style="font-size:11px">Escribe archivos .cshtml/.cs</span>
+            <span class="info-pill pill-green" style="font-size:11px">Sin configuración adicional</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GitHub MCP -->
+      <div class="mcp-tool-item">
+        <div class="mcp-tool-icon" style="background:#eff6ff;color:#2563eb">
+          <i class="fa-brands fa-github"></i>
+        </div>
+        <div class="flex-1">
+          <div class="mcp-tool-name">
+            GitHub MCP
+            <span class="info-pill pill-blue ms-2" style="font-size:11px"><i class="fa-solid fa-key me-1"></i>Requiere PAT</span>
+          </div>
+          <div class="mcp-tool-desc">
+            Con un Personal Access Token de GitHub, Claude Code puede crear branches por fase (<code>fase/1-setup</code>, <code>fase/2-core-pages</code>...), hacer commits, abrir Pull Requests y revisar código. Control de versiones completo desde el chat.
+          </div>
+          <div class="mt-2 d-flex flex-wrap gap-2">
+            <span class="info-pill pill-blue" style="font-size:11px">Branches por fase</span>
+            <span class="info-pill pill-blue" style="font-size:11px">Commits automáticos</span>
+            <span class="info-pill pill-blue" style="font-size:11px">Pull Requests desde Claude</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Google Cloud MCP -->
+      <div class="mcp-tool-item">
+        <div class="mcp-tool-icon" style="background:#fffbeb;color:#d97706">
+          <i class="fa-brands fa-google"></i>
+        </div>
+        <div class="flex-1">
+          <div class="mcp-tool-name">
+            Google Cloud MCP (gcp-mcp)
+            <span class="info-pill pill-amber ms-2" style="font-size:11px"><i class="fa-solid fa-download me-1"></i>Requiere instalación</span>
+          </div>
+          <div class="mcp-tool-desc">
+            Una vez instalado (<code>npx @google-cloud/mcp</code> + autenticación gcloud), Claude Code puede desplegar a Cloud Run, consultar logs en tiempo real, administrar Cloud SQL, configurar variables de entorno en Secret Manager y revisar métricas — todo desde el chat sin salir de Claude Code.
+          </div>
+          <div class="mt-2 d-flex flex-wrap gap-2">
+            <span class="info-pill pill-amber" style="font-size:11px">Deploy Cloud Run</span>
+            <span class="info-pill pill-amber" style="font-size:11px">Logs en tiempo real</span>
+            <span class="info-pill pill-amber" style="font-size:11px">Cloud SQL + Secret Manager</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px">
+        <i class="fa-solid fa-robot mt-1" style="color:#7c3aed"></i>
+        <div style="color:#4c1d95">
+          <strong>Con los 3 MCPs configurados</strong>, toda la migración puede ejecutarse desde Claude Code: leer el HTML actual → generar Razor Pages → commitear a GitHub → hacer push de imagen Docker → desplegar en Cloud Run → verificar logs. Un ciclo completo sin abrir terminales ni consolas externas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 5: CRONOGRAMA Y COSTOS ────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#16a34a"><i class="fa-solid fa-calendar-check"></i></div>
+    <div>
+      <div class="section-title">5. Cronograma y Costos de Desarrollo</div>
+      <div class="section-desc">Estimación de horas y costo de desarrollo al ritmo asistido por Claude Code Pro (@$600/h)</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <div class="table-responsive">
+        <table class="est-table">
+          <thead>
+            <tr>
+              <th style="width:22%">Fase</th>
+              <th style="width:14%">Semanas</th>
+              <th style="width:16%">Horas est.</th>
+              <th class="price-col" style="width:20%">Costo MXN</th>
+              <th>Entregable principal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="fw-semibold">Fase 1 — Setup</div></td>
+              <td>Sem 1–2</td>
+              <td>16 h</td>
+              <td class="price-col price-blue">$9,600</td>
+              <td>Cloud Run funcional + CI/CD</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Fase 2 — Core Pages</div></td>
+              <td>Sem 3–6</td>
+              <td>32 h</td>
+              <td class="price-col price-blue">$19,200</td>
+              <td>Login real + 3 módulos en Razor Pages</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Fase 3 — Capa de datos</div></td>
+              <td>Sem 7–12</td>
+              <td>40 h</td>
+              <td class="price-col price-blue">$24,000</td>
+              <td>Cloud SQL + todos los módulos con BD real</td>
+            </tr>
+            <tr>
+              <td><div class="fw-semibold">Fase 4 — Paridad + Go-live</div></td>
+              <td>Sem 13–16</td>
+              <td>20 h</td>
+              <td class="price-col price-blue">$12,000</td>
+              <td>POS AJAX, alta masiva CSV, auditoría</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td colspan="2"><strong>Total</strong></td>
+              <td><strong>108 h</strong></td>
+              <td class="price-col">$64,800</td>
+              <td>Sistema .NET completo en producción</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#f0fdf4;border:1px solid #bbf7d0;font-size:13px">
+        <i class="fa-solid fa-bolt mt-1" style="color:#16a34a"></i>
+        <div style="color:#14532d">
+          <strong>Nota sobre velocidad:</strong> Con Claude Code Pro activo durante la migración, el desarrollo real es estimado en <strong>3x más rápido</strong> que desarrollo tradicional.
+          El escenario optimista ($45,000 MXN) asume ~75 horas efectivas con alto aprovechamiento de Claude Code.
+          El escenario conservador es $64,800 MXN (108h × $600).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 6: RESUMEN EJECUTIVO ─────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#0f172a"><i class="fa-solid fa-calculator"></i></div>
+    <div>
+      <div class="section-title">6. Resumen Ejecutivo</div>
+      <div class="section-desc">Comparativa financiera y decisión de migración</div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-title"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Proyección de Costos — Migración a .NET + Cloud Run</div>
+    <div class="summary-subtitle">Análisis de inversión única vs. ahorro recurrente en infraestructura</div>
+    <table class="summary-table">
+      <tbody>
+        <tr>
+          <td><i class="fa-solid fa-code me-2" style="opacity:.6"></i>Desarrollo de migración</td>
+          <td><span class="type-pill">Pago único</span></td>
+          <td class="amount">$45,000–$64,800 MXN</td>
+        </tr>
+        <tr>
+          <td><i class="fa-brands fa-docker me-2" style="opacity:.6"></i>Cloud Run hosting</td>
+          <td><span class="type-pill">Recurrente</span></td>
+          <td class="amount">~$800 MXN/mes</td>
+        </tr>
+        <tr>
+          <td><i class="fa-solid fa-database me-2" style="opacity:.6"></i>Cloud SQL PostgreSQL</td>
+          <td><span class="type-pill">Recurrente</span></td>
+          <td class="amount">~$500 MXN/mes</td>
+        </tr>
+        <tr>
+          <td><i class="fa-brands fa-microsoft me-2" style="opacity:.6"></i>Licencias .NET</td>
+          <td><span class="type-pill">Open Source</span></td>
+          <td class="amount">$0</td>
+        </tr>
+        <tr>
+          <td><i class="fa-solid fa-shield-halved me-2" style="opacity:.6"></i>Secret Manager + IAM</td>
+          <td><span class="type-pill">GCP Free Tier</span></td>
+          <td class="amount">$0</td>
+        </tr>
+        <tr>
+          <td><i class="fa-solid fa-circle-plus me-2" style="opacity:.6"></i><strong>Subtotal nueva infra</strong></td>
+          <td><span class="type-pill">Recurrente</span></td>
+          <td class="amount">~$1,300 MXN/mes</td>
+        </tr>
+        <tr>
+          <td><i class="fa-solid fa-arrow-trend-down me-2" style="opacity:.6"></i>Ahorro vs VPS actual ($1,521)</td>
+          <td><span class="type-pill">Desde año 2</span></td>
+          <td class="amount" style="color:#86efac">~$221 MXN/mes</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="summary-total">
+      <div>
+        <div class="summary-total-label">Ahorro anual desde año 2</div>
+        <div style="font-size:12px;opacity:.65;margin-top:4px">Ahorro neto en infraestructura (Cloud Run vs VPS)</div>
+      </div>
+      <div class="text-end">
+        <div class="summary-total-amount">~$2,652</div>
+        <div style="font-size:14px;opacity:.75">MXN / año</div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-3 rounded-3" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);font-size:13px;color:rgba(255,255,255,.85)">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px">Tiempo de amortización</div>
+          <div style="font-size:20px;font-weight:800">6–8 meses</div>
+          <div style="font-size:11px;opacity:.65">con escenario optimista</div>
+        </div>
+        <div class="col-md-4">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px">Primer año total</div>
+          <div style="font-size:20px;font-weight:800">~$162K–$178K</div>
+          <div style="font-size:11px;opacity:.65">MXN (incluye migración + infra + soporte)</div>
+        </div>
+        <div class="col-md-4">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px">Beneficio clave</div>
+          <div style="font-size:14px;font-weight:700">BD real + auth + escalado</div>
+          <div style="font-size:11px;opacity:.65">Sistema productivo real, no prototipo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-7">
+      <div class="validity-note">
+        <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+        <div>
+          <strong>Vigencia del plan:</strong> Este roadmap es orientativo y puede ajustarse según prioridades.
+          Los costos de GCP son estimados según tarifas de marzo 2026. El costo de desarrollo asume @$600 MXN/hora.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="contact-info">
+        <div class="contact-label">Información de contacto</div>
+        <div class="contact-item"><i class="fa-solid fa-user text-primary"></i>Desarrollador FarmaAdmin</div>
+        <div class="contact-item"><i class="fa-solid fa-envelope text-primary"></i>contacto@farmaadmin.com.mx</div>
+        <div class="contact-item"><i class="fa-solid fa-phone text-primary"></i>+52 (55) 0000-0000</div>
+        <div class="contact-item"><i class="fa-solid fa-globe text-primary"></i>www.farmaadmin.com.mx</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="text-center py-4 no-print">
+    <button class="btn btn-primary btn-lg px-5 rounded-pill" onclick="window.print()" style="font-weight:600">
+      <i class="fa-solid fa-print me-2"></i>Imprimir Plan
+    </button>
+    <a href="estimacion.html" class="btn btn-outline-secondary btn-lg px-4 rounded-pill ms-3" style="font-weight:500">
+      <i class="fa-solid fa-arrow-left me-2"></i>Ver Estimación de Costos
+    </a>
+  </div>
+
+</div><!-- /doc-body -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+</body>
+</html>

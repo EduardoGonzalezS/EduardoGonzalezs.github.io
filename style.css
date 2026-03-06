@@ -66,7 +66,7 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1040;
-  transition: transform .3s ease;
+  transition: transform .3s ease, width .3s ease;
 }
 
 .sidebar-brand {
@@ -1202,6 +1202,38 @@ th[data-sort]:hover .sort-icon { opacity: 1; }
   /* Transfer form vertical stacking */
   .transfer-route { flex-direction: column !important; }
   .transfer-arrow { transform: rotate(90deg); }
+}
+
+/* ── Compact sidebar (icon-only) — 992px to 1500px ── */
+@media (min-width: 992px) and (max-width: 1500px) {
+  body.sidebar-compact .sidebar {
+    width: 64px;
+  }
+  body.sidebar-compact .topbar {
+    left: 64px;
+  }
+  body.sidebar-compact .main-content {
+    margin-left: 64px;
+  }
+  body.sidebar-compact .sidebar .nav-link {
+    font-size: 0;
+    justify-content: center;
+    padding: 10px 0;
+    gap: 0;
+  }
+  body.sidebar-compact .sidebar .nav-link i {
+    font-size: 15px;
+    width: auto;
+  }
+  body.sidebar-compact .sidebar-section-title { display: none; }
+  body.sidebar-compact .sidebar-badge { display: none; }
+  body.sidebar-compact .sidebar-branch { display: none; }
+  body.sidebar-compact .sidebar-brand {
+    justify-content: center;
+    padding: 20px 12px 16px;
+    gap: 0;
+  }
+  body.sidebar-compact .sidebar-brand > div:last-child { display: none; }
 }
 
 /* =========================================================

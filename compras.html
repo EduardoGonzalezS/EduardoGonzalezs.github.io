@@ -39,7 +39,6 @@
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
       <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
-      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
     </nav>
   </div>
@@ -60,6 +59,8 @@
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
   </div>
@@ -149,7 +150,6 @@
             <th data-sort="total" onclick="sortTable('total')">Total <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
             <th data-sort="date" onclick="sortTable('date')" class="col-secondary">Fecha <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
             <th data-sort="status" onclick="sortTable('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
-            <th>Acciones</th>
             <th class="d-md-none"></th>
           </tr>
         </thead>
@@ -172,8 +172,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body" id="purchaseDetailBody"></div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer" id="purchaseDetailFooter">
+        <button class="btn btn-outline-secondary ms-auto" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
@@ -363,7 +363,7 @@ function renderTable(data) {
   data.forEach(p => {
     const sc = statusConfig[p.status];
     tbody.innerHTML += `
-      <tr>
+      <tr onclick="viewPurchase(${p.id})" style="cursor:pointer">
         <td><strong style="color:#2563eb">${p.folio}</strong></td>
         <td>
           <div style="font-weight:600;font-size:13px">${p.supplier}</div>
@@ -373,18 +373,12 @@ function renderTable(data) {
         <td><strong>$${p.total.toLocaleString()}</strong></td>
         <td class="col-secondary"><small class="text-muted">${p.date}</small></td>
         <td><span class="badge-status badge-${sc.cls}"><i class="fa-solid ${sc.icon} me-1"></i>${p.status}</span></td>
-        <td>
-          <button class="btn-icon" onclick="viewPurchase(${p.id})" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-          ${p.status==='Borrador'?`<button class="btn-icon" onclick="editPurchase(${p.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>`:''}
-          ${p.status==='Aprobado'?`<button class="btn-icon text-success" onclick="openReceive(${p.id})" title="Marcar recibido"><i class="fa-solid fa-boxes-stacked"></i></button>`:''}
-          ${['Borrador','Pendiente'].includes(p.status)?`<button class="btn-icon text-danger" onclick="cancelPurchase(${p.id})" title="Cancelar"><i class="fa-solid fa-ban"></i></button>`:''}
-        </td>
-        <td class="d-md-none">
+        <td class="d-md-none text-center" onclick="event.stopPropagation()">
           <button class="expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
         </td>
       </tr>
       <tr class="row-detail">
-        <td colspan="9">
+        <td colspan="8">
           <div class="row-detail-grid">
             <div class="row-detail-item"><span class="detail-label">Sucursal</span><span>${p.branch}</span></div>
             <div class="row-detail-item"><span class="detail-label">Fecha</span><span>${p.date}</span></div>
@@ -443,6 +437,23 @@ function viewPurchase(id) {
         </tr>
       </tfoot>
     </table>`;
+  let actionBtns = '';
+  if (p.status === 'Borrador') {
+    actionBtns += `<button class="btn btn-primary" onclick="editPurchase(${p.id})"><i class="fa-solid fa-pen me-1"></i>Seguir editando</button>`;
+    actionBtns += `<button class="btn btn-success ms-2" onclick="submitForApproval(${p.id})"><i class="fa-solid fa-paper-plane me-1"></i>Enviar para Aprobación</button>`;
+  }
+  if (p.status === 'Pendiente') {
+    actionBtns += `<button class="btn btn-success" onclick="approvePurchase(${p.id})"><i class="fa-solid fa-check me-1"></i>Aprobar</button>`;
+    actionBtns += `<button class="btn btn-danger ms-2" onclick="rejectPurchase(${p.id})"><i class="fa-solid fa-times me-1"></i>Rechazar</button>`;
+  }
+  if (p.status === 'Aprobado') {
+    actionBtns += `<button class="btn btn-success" onclick="openReceive(${p.id})"><i class="fa-solid fa-boxes-stacked me-1"></i>Marcar como recibido</button>`;
+  }
+  if (['Borrador', 'Pendiente'].includes(p.status)) {
+    actionBtns += `<button class="btn btn-outline-danger ms-2" onclick="cancelPurchase(${p.id})"><i class="fa-solid fa-ban me-1"></i>Cancelar</button>`;
+  }
+  document.getElementById('purchaseDetailFooter').innerHTML =
+    actionBtns + `<button class="btn btn-outline-secondary ms-auto" data-bs-dismiss="modal">Cerrar</button>`;
   bootstrap.Modal.getOrCreateInstance(document.getElementById('purchaseDetailModal')).show();
 }
 
@@ -451,7 +462,16 @@ function openReceive(id) {
   receiveTargetId = id;
   const p = purchases.find(x => x.id === id);
   document.getElementById('receiveOrderId').textContent = p.folio;
-  bootstrap.Modal.getOrCreateInstance(document.getElementById('receiveModal')).show();
+  const detailModal = bootstrap.Modal.getInstance(document.getElementById('purchaseDetailModal'));
+  if (detailModal) {
+    document.getElementById('purchaseDetailModal').addEventListener('hidden.bs.modal', function onHidden() {
+      document.getElementById('purchaseDetailModal').removeEventListener('hidden.bs.modal', onHidden);
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('receiveModal')).show();
+    });
+    detailModal.hide();
+  } else {
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('receiveModal')).show();
+  }
 }
 
 function confirmReceive() {
@@ -462,11 +482,29 @@ function confirmReceive() {
   applyFilters();
 }
 
+// ===================== Approve / Reject =====================
+function approvePurchase(id) {
+  const p = purchases.find(x => x.id === id);
+  if (p) p.status = 'Aprobado';
+  bootstrap.Modal.getInstance(document.getElementById('purchaseDetailModal')).hide();
+  showToast('Compra aprobada.', '#16a34a');
+  applyFilters();
+}
+function rejectPurchase(id) {
+  const p = purchases.find(x => x.id === id);
+  if (p) p.status = 'Rechazado';
+  bootstrap.Modal.getInstance(document.getElementById('purchaseDetailModal')).hide();
+  showToast('Compra rechazada.', '#dc2626');
+  applyFilters();
+}
+
 // ===================== Cancel =====================
 function cancelPurchase(id) {
   cancelTargetId = id;
   const p = purchases.find(x => x.id === id);
   document.getElementById('cancelOrderFolio').textContent = p.folio;
+  const detailModal = bootstrap.Modal.getInstance(document.getElementById('purchaseDetailModal'));
+  if (detailModal) detailModal.hide();
   bootstrap.Modal.getOrCreateInstance(document.getElementById('cancelConfirmModal')).show();
 }
 
@@ -475,6 +513,15 @@ function confirmCancelPurchase() {
   bootstrap.Modal.getInstance(document.getElementById('cancelConfirmModal')).hide();
   applyFilters();
   showToast('Orden cancelada.', '#dc2626');
+}
+
+// ===================== Submit for Approval =====================
+function submitForApproval(id) {
+  const p = purchases.find(x => x.id === id);
+  if (p) p.status = 'Pendiente';
+  bootstrap.Modal.getInstance(document.getElementById('purchaseDetailModal')).hide();
+  showToast('Compra enviada para aprobación.', '#2563eb');
+  applyFilters();
 }
 
 // ===================== Edit Draft =====================
@@ -522,5 +569,6 @@ initDatePickers();
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>

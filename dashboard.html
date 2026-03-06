@@ -68,9 +68,6 @@
       <a href="reportes.html" class="nav-link">
         <i class="fa-solid fa-chart-line"></i> Reportes
       </a>
-      <a href="estimacion.html" class="nav-link">
-        <i class="fa-solid fa-file-invoice-dollar"></i> Estimación
-      </a>
       <a href="configuracion.html" class="nav-link">
         <i class="fa-solid fa-gear"></i> Configuración
       </a>
@@ -110,9 +107,6 @@
       <i class="fa-solid fa-bell"></i>
       <span class="notif-dot"></span>
     </a>
-    <a href="#" class="topbar-icon-btn">
-      <i class="fa-solid fa-envelope"></i>
-    </a>
 
     <div class="topbar-user dropdown" data-bs-toggle="dropdown">
       <div class="user-avatar">AD</div>
@@ -123,8 +117,7 @@
       <i class="fa-solid fa-chevron-down ms-1 d-none d-sm-block" style="font-size:10px;color:#94a3b8"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-end">
-      <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
-      <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Configuración</a></li>
+      <li><a class="dropdown-item" href="perfil.html"><i class="fa-solid fa-user me-2"></i>Mi perfil</a></li>
       <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
     </ul>
@@ -147,9 +140,6 @@
         <button class="period-pill">Mes</button>
         <button class="period-pill">Año</button>
       </div>
-      <button class="btn btn-primary">
-        <i class="fa-solid fa-download me-2"></i>Exportar
-      </button>
     </div>
   </div>
 
@@ -273,7 +263,6 @@
                 <th>Total</th>
                 <th>Hora</th>
                 <th>Estado</th>
-                <th>Detalle</th>
               </tr>
             </thead>
             <tbody id="recentSalesBody"></tbody>
@@ -673,16 +662,11 @@ function renderRecentSales(sales) {
   tbody.innerHTML = '';
   sales.forEach(r => {
     tbody.innerHTML += `
-      <tr>
+      <tr onclick="viewSaleDetail('${r.folio}')" style="cursor:pointer">
         <td>${r.suc}</td>
         <td><strong>${r.total}</strong></td>
         <td><small class="text-muted">${r.hora}</small></td>
         <td><span class="badge-status ${r.cls}">${r.label}</span></td>
-        <td>
-          <button class="btn-icon" onclick="viewSaleDetail('${r.folio}')" title="Ver detalle">
-            <i class="fa-solid fa-eye"></i>
-          </button>
-        </td>
       </tr>`;
   });
 }
@@ -809,5 +793,6 @@ renderAlerts(periodData.hoy.alerts, periodData.hoy.alertCount);
   if(c){ document.documentElement.style.setProperty('--primary',c); }
 })();
 </script>
+<script src="sidebar-compact.js"></script>
 </body>
 </html>
