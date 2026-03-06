@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Alertas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    .alert-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: box-shadow .15s, opacity .2s;
+    }
+    .alert-card.read { opacity: .55; }
+    .alert-card.ignored { display: none; }
+    .alert-card-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .alert-card-body { flex: 1; min-width: 0; }
+    .alert-card-title { font-weight: 600; font-size: 14px; color: #1e293b; }
+    .alert-card-desc  { font-size: 13px; color: #64748b; margin-top: 2px; }
+    .alert-card-meta  { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .alert-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .alert-type-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .tab-filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+    .tab-filter { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500;
+                  background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; cursor: pointer; }
+    .tab-filter.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .tab-filter .tab-count { background: rgba(255,255,255,.25); border-radius: 10px; padding: 1px 7px; font-size: 11px; }
+    .tab-filter:not(.active) .tab-count { background: #e2e8f0; color: #64748b; }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link active"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+
+  <div class="topbar-right">
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Alertas</li></ol></nav>
+      <h1 class="page-title">Centro de Alertas</h1>
+      <p class="page-subtitle">Monitorea eventos críticos del inventario de productos</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm" onclick="markAllRead()">
+        <i class="fa-solid fa-check-double me-1"></i>Marcar todas como leídas
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total Alertas</div>
+          <div class="kpi-value" id="kpiTotal">0</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-bell"></i> Activas</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-bell"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Críticas</div>
+          <div class="kpi-value text-danger" id="kpiCritical">0</div>
+          <div class="kpi-change down"><i class="fa-solid fa-triangle-exclamation"></i> Acción urgente</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Por Vencer</div>
+          <div class="kpi-value text-warning" id="kpiExpiring">0</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-calendar-xmark"></i> Próximos 7 días</div>
+        </div>
+        <div class="kpi-icon amber"><i class="fa-solid fa-calendar-xmark"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Stock Bajo</div>
+          <div class="kpi-value text-warning" id="kpiLowStock">0</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-box-open"></i> Reordenar pronto</div>
+        </div>
+        <div class="kpi-icon amber"><i class="fa-solid fa-box-open"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Filters -->
+  <div class="tab-filter-bar" id="tabFilterBar"></div>
+
+  <!-- Alerts List -->
+  <div id="alertsList"></div>
+
+</main>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="alertsToast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="alertsToastMsg">Operación completada.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===================== Sidebar =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Data =====================
+const typeConfig = {
+  'Stock Bajo': { bg:'#fef3c7', color:'#d97706', icon:'fa-box-open',          tab:'Stock Bajo' },
+  'Agotado':    { bg:'#fee2e2', color:'#dc2626', icon:'fa-ban',               tab:'Críticas'   },
+  'Por Vencer': { bg:'#fef3c7', color:'#d97706', icon:'fa-clock-rotate-left', tab:'Por Vencer' },
+};
+
+let alerts = [
+  { id:1,  type:'Agotado',    title:'Metformina 850mg — agotado',        desc:'Sucursal Universitaria · 0 unidades disponibles',    branch:'Universitaria', time:'hace 1h',  status:'unread' },
+  { id:2,  type:'Stock Bajo', title:'Paracetamol 1g — stock bajo',       desc:'Sucursal Sur · Solo 15 unidades restantes (mín. 50)',branch:'Sur',          time:'hace 2h',  status:'unread' },
+  { id:3,  type:'Por Vencer', title:'Amoxicilina 500mg — por vencer',    desc:'Sucursal Norte · 120 unidades · Vence: 15 Mar 2026', branch:'Norte',        time:'hace 2h',  status:'unread' },
+  { id:4,  type:'Por Vencer', title:'Ibuprofeno 400mg — por vencer',     desc:'Sucursal Este · 80 unidades · Vence: 20 Mar 2026',   branch:'Este',         time:'hace 3h',  status:'unread' },
+  { id:5,  type:'Stock Bajo', title:'Insulina Glargina — stock crítico', desc:'Sucursal Industrial · Solo 3 unidades (mín. 20)',    branch:'Industrial',   time:'hace 4h',  status:'unread' },
+  { id:6,  type:'Agotado',    title:'Vitamina D3 — agotado',             desc:'Sucursal Oeste · 0 unidades disponibles',            branch:'Oeste',        time:'hace 5h',  status:'read'   },
+  { id:12, type:'Stock Bajo', title:'Omeprazol 20mg — stock bajo',       desc:'Sucursal Plaza Mayor · Solo 25 unidades (mín. 80)',  branch:'Plaza Mayor',  time:'hace 4h',  status:'unread' },
+  { id:13, type:'Por Vencer', title:'Claritromicina 500mg — por vencer', desc:'Sucursal Sur · 40 unidades · Vence: 18 Mar 2026',    branch:'Sur',          time:'hace 5h',  status:'read'   },
+  { id:15, type:'Agotado',    title:'Losartán 50mg — agotado',           desc:'Sucursal Central · 0 unidades disponibles',          branch:'Central',      time:'hace 8h',  status:'unread' },
+];
+
+const tabs = ['Todas', 'Críticas', 'Stock Bajo', 'Por Vencer', 'Agotados'];
+const tabMap = {
+  'Todas':      () => true,
+  'Críticas':   a => a.type === 'Agotado',
+  'Stock Bajo': a => a.type === 'Stock Bajo',
+  'Por Vencer': a => a.type === 'Por Vencer',
+  'Agotados':   a => a.type === 'Agotado',
+};
+
+let activeTab = 'Todas';
+
+function getVisibleAlerts() {
+  const search = '';
+  return alerts.filter(a => {
+    if (a.status === 'ignored') return false;
+    if (!tabMap[activeTab](a)) return false;
+    if (search && !a.title.toLowerCase().includes(search) && !a.desc.toLowerCase().includes(search)) return false;
+    return true;
+  });
+}
+
+function updateKPIs() {
+  const active = alerts.filter(a => a.status !== 'ignored');
+  document.getElementById('kpiTotal').textContent    = active.length;
+  document.getElementById('kpiCritical').textContent = active.filter(a => a.type === 'Agotado').length;
+  document.getElementById('kpiExpiring').textContent = active.filter(a => a.type === 'Por Vencer').length;
+  document.getElementById('kpiLowStock').textContent = active.filter(a => a.type === 'Stock Bajo').length;
+}
+
+function renderTabs() {
+  const bar = document.getElementById('tabFilterBar');
+  bar.innerHTML = tabs.map(t => {
+    const count = alerts.filter(a => a.status !== 'ignored' && tabMap[t](a)).length;
+    return `<button class="tab-filter${t===activeTab?' active':''}" onclick="setTab('${t}')">
+      ${t} <span class="tab-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function setTab(tab) {
+  activeTab = tab;
+  renderTabs();
+  renderAlerts();
+}
+
+function renderAlerts() {
+  const visible = getVisibleAlerts();
+  const list = document.getElementById('alertsList');
+  if (visible.length === 0) {
+    list.innerHTML = `<div class="text-center py-5 text-muted">
+      <i class="fa-solid fa-check-circle fa-2x mb-3 text-success"></i>
+      <div style="font-size:15px">No hay alertas en esta categoría</div>
+    </div>`;
+    return;
+  }
+  const moduleLink = { 'Agotado':'inventario.html', 'Stock Bajo':'inventario.html', 'Por Vencer':'inventario.html' };
+  list.innerHTML = visible.map(a => {
+    const cfg = typeConfig[a.type];
+    const readCls = a.status === 'read' ? ' read' : '';
+    return `<div class="alert-card${readCls}" id="alert-${a.id}">
+      <div class="alert-card-icon" style="background:${cfg.bg};color:${cfg.color}">
+        <i class="fa-solid ${cfg.icon}"></i>
+      </div>
+      <div class="alert-card-body">
+        <div class="alert-card-title">${a.title}</div>
+        <div class="alert-card-desc">${a.desc}</div>
+        <div class="alert-card-meta">
+          <span class="alert-type-badge" style="background:${cfg.bg};color:${cfg.color}">${a.type}</span>
+          <small class="text-muted"><i class="fa-solid fa-building me-1"></i>${a.branch}</small>
+          <small class="text-muted"><i class="fa-solid fa-clock me-1"></i>${a.time}</small>
+          ${a.status==='read'?'<span class="badge-status badge-success" style="font-size:11px">Leída</span>':''}
+        </div>
+      </div>
+      <div class="alert-card-actions">
+        <button class="btn btn-sm btn-outline-success" onclick="markRead(${a.id})" title="Marcar como leída">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <a href="${moduleLink[a.type]||'#'}" class="btn btn-sm btn-outline-primary" title="Ver módulo">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <button class="btn btn-sm btn-outline-secondary" onclick="ignoreAlert(${a.id})" title="Ignorar">
+          <i class="fa-solid fa-eye-slash"></i>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function markRead(id) {
+  const a = alerts.find(x => x.id === id);
+  if (!a) return;
+  a.status = 'read';
+  updateKPIs();
+  renderTabs();
+  renderAlerts();
+  showToast('Alerta marcada como leída.', '#16a34a');
+}
+
+function ignoreAlert(id) {
+  const a = alerts.find(x => x.id === id);
+  if (!a) return;
+  a.status = 'ignored';
+  updateKPIs();
+  renderTabs();
+  renderAlerts();
+  showToast('Alerta ignorada.', '#64748b');
+}
+
+function markAllRead() {
+  getVisibleAlerts().forEach(a => { a.status = 'read'; });
+  updateKPIs();
+  renderTabs();
+  renderAlerts();
+  showToast('Todas las alertas marcadas como leídas.', '#16a34a');
+}
+
+function showToast(msg, bg) {
+  const toast = document.getElementById('alertsToast');
+  toast.style.background = bg || '#16a34a';
+  document.getElementById('alertsToastMsg').textContent = msg;
+  new bootstrap.Toast(toast, { delay: 3000 }).show();
+}
+
+// Init
+updateKPIs();
+renderTabs();
+renderAlerts();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+</body>
+</html>

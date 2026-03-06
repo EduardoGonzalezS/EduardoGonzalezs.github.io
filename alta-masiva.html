@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -27,6 +28,8 @@
       <a href="inventario.html" class="nav-link active"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
       <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
       <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
     </nav>
   </div>
   <div class="sidebar-section">
@@ -34,6 +37,7 @@
     <nav class="nav flex-column">
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
       <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
@@ -48,12 +52,9 @@
 <!-- TOPBAR -->
 <header class="topbar">
   <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
-  <div class="topbar-search position-relative">
-    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-    <input type="text" class="form-control" placeholder="Alta masiva de productos">
-  </div>
+
   <div class="topbar-right">
-    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
     <div class="topbar-user dropdown" data-bs-toggle="dropdown">
       <div class="user-avatar">AD</div>
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
@@ -111,6 +112,10 @@
           </button>
           <button class="btn btn-sm btn-outline-secondary" onclick="downloadTemplate()">
             <i class="fa-solid fa-download me-1"></i>Plantilla
+          </button>
+          <input type="file" id="csvFileInput" accept=".csv" class="d-none" onchange="importCSV(event)">
+          <button class="btn btn-sm btn-outline-success" onclick="document.getElementById('csvFileInput').click()">
+            <i class="fa-solid fa-file-import me-1"></i>Importar CSV
           </button>
           <button class="btn btn-sm btn-outline-danger" onclick="clearRows()">
             <i class="fa-solid fa-trash me-1"></i>Limpiar
@@ -207,7 +212,10 @@
 
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
 const TYPES  = ['medicamento','general','suplemento','equipo'];
 const CATS   = ['Antibióticos','Analgésicos','Antiinflamatorios','Vitaminas','Insulinas','Antiácidos','Antisépticos','Cosméticos','Suplementos','Equipo Médico','Curaciones','Inyectables'];
@@ -247,7 +255,16 @@ function renderBulkTable() {
           ${TYPES.map(t => `<option value="${t}"${r.type===t?' selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
         </select>
       </td>
-      <td><input type="text" value="${r.code}" oninput="rows[${i}].code=this.value" placeholder="MED-00000"></td>
+      <td>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control" value="${r.code}"
+                 oninput="rows[${i}].code=this.value" placeholder="MED-00000">
+          <button class="btn btn-outline-secondary" type="button"
+                  onclick="openBulkBarcodeScanner(${i})" title="Escanear código de barras">
+            <i class="fa-solid fa-barcode"></i>
+          </button>
+        </div>
+      </td>
       <td>
         <select onchange="rows[${i}].cat=this.value">
           ${CATS.map(c => `<option${r.cat===c?' selected':''}>${c}</option>`).join('')}
@@ -256,7 +273,7 @@ function renderBulkTable() {
       <td><input type="number" value="${r.priceBuy}" oninput="rows[${i}].priceBuy=this.value" placeholder="0.00" min="0" step="0.01"></td>
       <td><input type="number" value="${r.priceSell}" oninput="rows[${i}].priceSell=this.value" placeholder="0.00" min="0" step="0.01"></td>
       <td><input type="number" value="${r.stock}" oninput="rows[${i}].stock=this.value" placeholder="0" min="0"></td>
-      <td><input type="date" value="${r.exp}" oninput="rows[${i}].exp=this.value"></td>
+      <td><input type="text" class="date-expiry-bulk" placeholder="Fecha venc." value="${r.exp || ''}"></td>
       <td>
         <select onchange="rows[${i}].branch=this.value">
           ${BRANCHES.map(b => `<option${r.branch===b?' selected':''}>${b}</option>`).join('')}
@@ -270,6 +287,17 @@ function renderBulkTable() {
     </tr>`;
   });
   document.getElementById('rowCount').textContent = rows.length + (rows.length === 1 ? ' fila' : ' filas');
+  initBulkExpiryPickers();
+}
+
+function initBulkExpiryPickers() {
+  document.querySelectorAll('.date-expiry-bulk').forEach((el, idx) => {
+    flatpickr(el, {
+      locale: 'es',
+      dateFormat: 'j M Y',
+      onChange: (dates, dateStr) => { rows[idx].exp = dateStr; }
+    });
+  });
 }
 
 function validateRow(r) {
@@ -352,6 +380,36 @@ function setStep(n) {
   });
 }
 
+function importCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    lines.shift(); // skip header
+    rows = lines.map((line, i) => {
+      const parts = line.split(',').map(s => s.trim());
+      const [name='', type='medicamento', code='', cat='Antibióticos',
+             priceBuy='', priceSell='', stock='0', exp='', branch='Central'] = parts;
+      return {
+        id: i + 1,
+        name,
+        type: TYPES.includes(type) ? type : 'medicamento',
+        code,
+        cat: CATS.includes(cat) ? cat : 'Antibióticos',
+        priceBuy,
+        priceSell,
+        stock,
+        exp,
+        branch: BRANCHES.includes(branch) ? branch : 'Central'
+      };
+    });
+    renderBulkTable();
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
 function downloadTemplate() {
   const headers = 'Nombre,Tipo,Código,Categoría,Precio Compra,Precio Venta,Stock,Vencimiento,Sucursal\n';
   const example = 'Amoxicilina 500mg,medicamento,MED-00001,Antibióticos,42.00,85.00,100,2027-06-15,Central\n';
@@ -363,22 +421,86 @@ function downloadTemplate() {
 }
 
 // Sidebar
+let _sidebarTimer = null;
 function toggleSidebar() {
   if (window.innerWidth >= 992) {
     document.body.classList.toggle('sidebar-collapsed');
   } else {
-    document.getElementById('sidebar').classList.toggle('show');
-    document.getElementById('sidebarOverlay').classList.toggle('show');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
   }
 }
 function closeSidebar() {
+  clearTimeout(_sidebarTimer);
   document.getElementById('sidebar').classList.remove('show');
   document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
 // Init: start with 3 blank rows
 addRow(); addRow(); addRow();
+
+// ======================== Barcode Scanner (Alta Masiva) ========================
+let _bulkQrCode = null;
+let _bulkScanTarget = -1;
+
+function openBulkBarcodeScanner(rowIndex) {
+  _bulkScanTarget = rowIndex;
+  const modal = new bootstrap.Modal(document.getElementById('bulkBarcodeScannerModal'));
+  modal.show();
+  document.getElementById('bulkBarcodeScannerModal').addEventListener('shown.bs.modal', () => {
+    _bulkQrCode = new Html5Qrcode('bulk-barcode-reader');
+    _bulkQrCode.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 120 } },
+      (decodedText) => {
+        rows[_bulkScanTarget].code = decodedText;
+        stopBulkBarcodeScanner();
+        bootstrap.Modal.getInstance(document.getElementById('bulkBarcodeScannerModal')).hide();
+        renderBulkTable();
+      },
+      () => {}
+    ).catch(() => alert('No se pudo acceder a la cámara'));
+  }, { once: true });
+}
+
+function stopBulkBarcodeScanner() {
+  if (_bulkQrCode && _bulkQrCode.isScanning) {
+    _bulkQrCode.stop().catch(() => {});
+  }
+}
+
+document.getElementById('bulkBarcodeScannerModal').addEventListener('hidden.bs.modal', stopBulkBarcodeScanner);
 </script>
+<!-- Modal Escáner — Alta Masiva -->
+<div class="modal fade" id="bulkBarcodeScannerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-camera me-2 text-primary"></i>Escanear Código de Barras
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="bulk-barcode-reader" style="width:100%"></div>
+        <p class="text-muted text-center py-2 mb-0" style="font-size:12px">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          Apunta la cámara al código de barras del producto
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');

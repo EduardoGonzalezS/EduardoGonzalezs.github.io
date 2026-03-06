@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Nueva Compra</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link active"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+
+  <div class="topbar-right">
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="compras.html">Compras</a></li>
+          <li class="breadcrumb-item active">Nueva Orden</li>
+        </ol>
+      </nav>
+      <h1 class="page-title">Nueva Orden de Compra</h1>
+      <p class="page-subtitle">Registra una nueva orden de compra a proveedor</p>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-file-invoice me-2 text-primary"></i>Datos de la Orden</h6>
+    </div>
+    <div class="p-3">
+      <!-- Header de la orden -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-3">
+          <label class="form-label">Proveedor *</label>
+          <select class="form-select" id="purchaseSupplier">
+            <option value="">— Seleccionar —</option>
+            <option>Mediglobal S.A. de C.V.</option>
+            <option>FarmaDistrib S.A. de C.V.</option>
+            <option>Biolab MX S.A. de C.V.</option>
+            <option>MedPharma México</option>
+            <option>SaludPlus Distribuciones</option>
+            <option>Equipos Médicos del Norte</option>
+            <option>Distribuidora Nacional Farma</option>
+            <option>MedEquip Soluciones</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Sucursal destino *</label>
+          <select class="form-select" id="purchaseBranch">
+            <option>Central</option><option>Norte</option><option>Sur</option>
+            <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
+            <option>Universitaria</option><option>Industrial</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Fecha</label>
+          <input type="date" class="form-control date-es" id="purchaseDate" value="2026-03-05">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">No. Orden</label>
+          <input type="text" class="form-control" value="OC-2026-027" readonly style="background:#f8fafc">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observaciones</label>
+          <textarea class="form-control" id="purchaseObservations" rows="2" placeholder="Notas adicionales sobre esta compra..."></textarea>
+        </div>
+      </div>
+
+      <!-- Tabla de productos -->
+      <div class="mb-2 d-flex justify-content-end">
+        <button class="btn btn-outline-primary btn-sm" onclick="addProductRow()">
+          <i class="fa-solid fa-plus me-1"></i>Agregar producto
+        </button>
+      </div>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm" id="purchaseProductsTable">
+          <thead>
+            <tr style="background:#f8fafc">
+              <th style="min-width:130px">Tipo</th>
+              <th style="min-width:120px">Categoría</th>
+              <th style="min-width:160px">Nombre</th>
+              <th style="min-width:110px">Código / SKU</th>
+              <th style="width:90px" class="text-center">Cantidad</th>
+              <th style="min-width:140px">Fecha Venc.</th>
+              <th style="width:120px" class="text-end">P. Compra</th>
+              <th style="width:120px" class="text-end">Subtotal</th>
+              <th style="width:44px"></th>
+            </tr>
+          </thead>
+          <tbody id="purchaseProductsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Totales y método de pago -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background:#f0f4f8">
+            <div class="form-label fw-semibold mb-2">Método de pago</div>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payMethod" id="payEfectivo" checked>
+                <label class="form-check-label" for="payEfectivo">Efectivo</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payMethod" id="payTransferencia">
+                <label class="form-check-label" for="payTransferencia">Transferencia</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background:#f0f4f8">
+            <div class="d-flex justify-content-between mb-1">
+              <span style="font-size:13px;color:#64748b">Subtotal:</span>
+              <span style="font-size:13px;font-weight:600" id="purchaseSubtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span style="font-size:13px;color:#64748b">IVA (16%):</span>
+              <span style="font-size:13px;font-weight:600" id="purchaseIVA">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span style="font-size:14px;font-weight:700">Total:</span>
+              <span style="font-size:16px;font-weight:800;color:#2563eb" id="purchaseTotal">$0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-3">
+        <a href="compras.html" class="btn btn-outline-secondary">
+          <i class="fa-solid fa-arrow-left me-2"></i>Cancelar
+        </a>
+        <button class="btn btn-outline-primary" onclick="saveDraft()">
+          <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Borrador
+        </button>
+        <button class="btn btn-primary" onclick="submitForApproval()">
+          <i class="fa-solid fa-paper-plane me-2"></i>Enviar para Aprobación
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="purchaseToast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="purchaseToastMsg">Operación completada.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script>
+// ===================== Sidebar =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Products =====================
+let purchaseProducts = [];
+
+function addProductRow() {
+  purchaseProducts.push({ type: '', category: '', name: '', code: '', qty: 1, expiry: '', priceBuy: 0 });
+  renderProductsTable();
+}
+
+function updateRow(index, field, value) {
+  if (field === 'qty' || field === 'priceBuy') {
+    purchaseProducts[index][field] = parseFloat(value) || (field === 'qty' ? 1 : 0);
+    renderProductsTable();
+  } else {
+    purchaseProducts[index][field] = value;
+  }
+}
+
+function removeProductRow(index) {
+  purchaseProducts.splice(index, 1);
+  renderProductsTable();
+}
+
+function renderProductsTable() {
+  const tbody = document.getElementById('purchaseProductsBody');
+  if (purchaseProducts.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4" style="font-size:13px"><i class="fa-solid fa-box-open me-2"></i>Usa "Agregar producto" para registrar productos en la orden</td></tr>`;
+    updateTotals();
+    return;
+  }
+  tbody.innerHTML = purchaseProducts.map((pr, i) => {
+    const sub = pr.qty * pr.priceBuy;
+    const fmt = n => n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return `<tr>
+      <td>
+        <select class="form-select form-select-sm" style="min-width:120px" onchange="updateRow(${i},'type',this.value)">
+          <option value="" ${pr.type===''?'selected':''}>— Tipo —</option>
+          <option value="medicamento" ${pr.type==='medicamento'?'selected':''}>Medicamento</option>
+          <option value="general" ${pr.type==='general'?'selected':''}>General</option>
+          <option value="suplemento" ${pr.type==='suplemento'?'selected':''}>Suplemento</option>
+          <option value="equipo" ${pr.type==='equipo'?'selected':''}>Equipo</option>
+        </select>
+      </td>
+      <td><input type="text" class="form-control form-control-sm" style="min-width:110px" placeholder="Categoría" value="${pr.category}" oninput="updateRow(${i},'category',this.value)"></td>
+      <td><input type="text" class="form-control form-control-sm" style="min-width:150px" placeholder="Nombre del producto" value="${pr.name}" oninput="updateRow(${i},'name',this.value)"></td>
+      <td>
+        <div class="input-group input-group-sm" style="min-width:120px">
+          <input type="text" class="form-control form-control-sm" placeholder="SKU / Código" value="${pr.code}" oninput="updateRow(${i},'code',this.value)" id="newPurchaseCode_${i}">
+          <button class="btn btn-outline-secondary" type="button" onclick="openNewPurchaseScanner(${i})" title="Escanear código"><i class="fa-solid fa-barcode"></i></button>
+        </div>
+      </td>
+      <td><input type="number" class="form-control form-control-sm text-center" style="width:75px;margin:0 auto" min="1" value="${pr.qty}" onchange="updateRow(${i},'qty',this.value)"></td>
+      <td><input type="text" class="form-control form-control-sm date-expiry" style="min-width:130px" placeholder="Fecha venc." value="${pr.expiry || ''}"></td>
+      <td><input type="number" class="form-control form-control-sm text-end" style="width:100px;margin-left:auto" min="0" step="0.01" value="${pr.priceBuy}" onchange="updateRow(${i},'priceBuy',this.value)"></td>
+      <td class="text-end fw-semibold" style="font-size:13px;white-space:nowrap">$${fmt(sub)}</td>
+      <td class="text-center"><button class="btn-icon text-danger" onclick="removeProductRow(${i})" title="Quitar"><i class="fa-solid fa-times"></i></button></td>
+    </tr>`;
+  }).join('');
+  updateTotals();
+  initExpiryPickers();
+}
+
+function updateTotals() {
+  const subtotal = purchaseProducts.reduce((s, pr) => s + pr.qty * pr.priceBuy, 0);
+  const iva = subtotal * 0.16;
+  document.getElementById('purchaseSubtotal').textContent = '$' + subtotal.toFixed(2);
+  document.getElementById('purchaseIVA').textContent = '$' + iva.toFixed(2);
+  document.getElementById('purchaseTotal').textContent = '$' + (subtotal + iva).toFixed(2);
+}
+
+function initExpiryPickers() {
+  document.querySelectorAll('.date-expiry').forEach((el, idx) => {
+    flatpickr(el, {
+      locale: 'es',
+      dateFormat: 'j M Y',
+      onChange: (dates, dateStr) => { purchaseProducts[idx].expiry = dateStr; }
+    });
+  });
+}
+
+function initDatePickers() {
+  document.querySelectorAll('.date-es').forEach(el => {
+    if (!el._flatpickr) {
+      flatpickr(el, { locale: 'es', altInput: true, altFormat: 'j M Y', dateFormat: 'Y-m-d', allowInput: true });
+    }
+  });
+}
+
+// ===================== Barcode Scanner =====================
+let _newPurchaseScannerRowIndex = null;
+let _newPurchaseHtml5Qr = null;
+
+function openNewPurchaseScanner(rowIndex) {
+  _newPurchaseScannerRowIndex = rowIndex;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('newPurchaseBarcodeScannerModal')).show();
+  setTimeout(() => {
+    _newPurchaseHtml5Qr = new Html5Qrcode('newPurchaseScannerContainer');
+    _newPurchaseHtml5Qr.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 150 } },
+      code => {
+        stopNewPurchaseScanner();
+        bootstrap.Modal.getInstance(document.getElementById('newPurchaseBarcodeScannerModal')).hide();
+        purchaseProducts[_newPurchaseScannerRowIndex].code = code;
+        renderProductsTable();
+        showToast('Código escaneado: ' + code, '#2563eb');
+      },
+      () => {}
+    ).catch(() => showToast('No se pudo acceder a la cámara. Requiere HTTPS.', '#dc2626'));
+  }, 400);
+}
+
+function stopNewPurchaseScanner() {
+  if (_newPurchaseHtml5Qr) {
+    _newPurchaseHtml5Qr.stop().catch(() => {}).finally(() => {
+      _newPurchaseHtml5Qr.clear();
+      _newPurchaseHtml5Qr = null;
+    });
+  }
+}
+
+// Init
+renderProductsTable();
+initDatePickers();
+
+// ===================== Actions =====================
+function saveDraft() {
+  showToast('Borrador guardado correctamente.', '#0ea5e9');
+  setTimeout(() => { location.href = 'compras.html'; }, 1800);
+}
+
+function submitForApproval() {
+  if (!document.getElementById('purchaseSupplier').value) {
+    showToast('Selecciona un proveedor para continuar.', '#d97706');
+    return;
+  }
+  showToast('Orden enviada para aprobación.', '#16a34a');
+  setTimeout(() => { location.href = 'compras.html'; }, 1800);
+}
+
+function showToast(msg, bg) {
+  const toast = document.getElementById('purchaseToast');
+  toast.style.background = bg || '#16a34a';
+  document.getElementById('purchaseToastMsg').textContent = msg;
+  new bootstrap.Toast(toast, { delay: 2500 }).show();
+}
+</script>
+<!-- Modal: Escáner de código de barras (Nueva Compra) -->
+<div class="modal fade" id="newPurchaseBarcodeScannerModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-barcode me-2 text-primary"></i>Escanear Código</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="newPurchaseScannerContainer" style="width:100%"></div>
+        <p class="text-muted text-center mt-2 mb-0" style="font-size:12px">Apunta la cámara al código de barras o QR</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('newPurchaseBarcodeScannerModal')
+  .addEventListener('hidden.bs.modal', stopNewPurchaseScanner);
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+</body>
+</html>

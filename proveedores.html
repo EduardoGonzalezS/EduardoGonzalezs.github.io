@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Proveedores</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link active"><i class="fa-solid fa-handshake"></i> Proveedores</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+
+  <div class="topbar-right">
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Proveedores</li></ol></nav>
+      <h1 class="page-title">Proveedores</h1>
+      <p class="page-subtitle">Gestiona los proveedores de medicamentos y productos de la cadena</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newSupplierModal">
+      <i class="fa-solid fa-plus me-2"></i>Nuevo Proveedor
+    </button>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total Proveedores</div>
+          <div class="kpi-value">10</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-handshake"></i> Registrados</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-handshake"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Activos</div>
+          <div class="kpi-value text-success">8</div>
+          <div class="kpi-change up"><i class="fa-solid fa-circle-check"></i> Con pedidos activos</div>
+        </div>
+        <div class="kpi-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Inactivos</div>
+          <div class="kpi-value text-danger">2</div>
+          <div class="kpi-change down"><i class="fa-solid fa-circle-xmark"></i> Sin actividad</div>
+        </div>
+        <div class="kpi-icon red"><i class="fa-solid fa-circle-xmark"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Órdenes este mes</div>
+          <div class="kpi-value">24</div>
+          <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> +3 vs mes ant.</div>
+        </div>
+        <div class="kpi-icon teal"><i class="fa-solid fa-file-invoice"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-handshake me-2 text-primary"></i>Lista de Proveedores</h6>
+      <div class="d-flex gap-2 flex-wrap">
+        <select class="form-select form-select-sm" style="width:160px" id="filterCat" onchange="applyFilters()">
+          <option value="">Todas las categorías</option>
+          <option>Farmacéutico</option>
+          <option>General</option>
+          <option>Equipo Médico</option>
+        </select>
+        <select class="form-select form-select-sm" style="width:130px" id="filterStatus" onchange="applyFilters()">
+          <option value="">Todos los estados</option>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-sort="name" onclick="sortTable('name')">Nombre <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="cat" onclick="sortTable('cat')" class="col-secondary">Categoría <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th class="col-secondary">Teléfono</th>
+            <th class="col-secondary">Dirección</th>
+            <th data-sort="status" onclick="sortTable('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th>Acciones</th>
+            <th class="d-md-none"></th>
+          </tr>
+        </thead>
+        <tbody id="supplierTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
+      <small class="text-muted" id="tableFooter">Mostrando 0 proveedores</small>
+    </div>
+  </div>
+
+</main>
+
+<!-- Modal: Nuevo Proveedor -->
+<div class="modal fade" id="newSupplierModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-handshake me-2 text-primary"></i>Nuevo Proveedor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control" placeholder="Razón social del proveedor">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Categoría</label>
+            <select class="form-select">
+              <option>Farmacéutico</option>
+              <option>General</option>
+              <option>Equipo Médico</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" placeholder="55 1234 5678">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="contacto@proveedor.com">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">RFC</label>
+            <input type="text" class="form-control" placeholder="ABC123456XXX">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Contacto</label>
+            <input type="text" class="form-control" placeholder="Nombre del representante">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" placeholder="Calle, Colonia, Ciudad, CP">
+          </div>
+          <div class="col-12">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="newSupplierActive" checked>
+              <label class="form-check-label" for="newSupplierActive">Proveedor activo</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveNewSupplier()"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Proveedor -->
+<div class="modal fade" id="editSupplierModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-pen me-2 text-primary"></i>Editar Proveedor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="editSupplierBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver Detalle -->
+<div class="modal fade" id="viewSupplierModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-eye me-2 text-primary"></i>Detalle del Proveedor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="viewSupplierBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Eliminar Proveedor -->
+<div class="modal fade" id="deleteSupplierModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-triangle-exclamation me-2 text-danger"></i>Eliminar Proveedor
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">¿Estás seguro de que deseas eliminar a
+          <strong id="deleteSupplierName"></strong>?
+          Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-danger" onclick="confirmDeleteSupplier()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="supplierToast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="supplierToastMsg">Operación completada.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ===================== Sidebar =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Data =====================
+let suppliers = [
+  { id:1,  name:'Mediglobal S.A. de C.V.',      phone:'55 3200 1100', address:'Av. Insurgentes Sur 1457, CDMX',      cat:'Farmacéutico',  email:'ventas@mediglobal.mx',     rfc:'MGS910415ABC', contact:'Ing. Roberto Salinas',  status:'Activo'   },
+  { id:2,  name:'FarmaDistrib S.A. de C.V.',    phone:'55 4100 2200', address:'Blvd. Manuel Ávila Camacho 32, CDMX',cat:'Farmacéutico',  email:'pedidos@farmadistrib.mx',  rfc:'FDS880320DEF', contact:'Lic. Mónica Herrera',   status:'Activo'   },
+  { id:3,  name:'Biolab MX S.A. de C.V.',       phone:'33 2100 5500', address:'Av. López Mateos 520, Guadalajara',  cat:'Farmacéutico',  email:'contacto@biolabmx.mx',     rfc:'BMX950612GHI', contact:'Dr. Alfonso Ramírez',   status:'Activo'   },
+  { id:4,  name:'MedPharma México',             phone:'81 8300 7700', address:'Calzada del Valle 400, Monterrey',  cat:'Farmacéutico',  email:'info@medpharma.mx',        rfc:'MPM010830JKL', contact:'Lic. Daniela Torres',   status:'Activo'   },
+  { id:5,  name:'SaludPlus Distribuciones',     phone:'55 6100 3300', address:'Periférico Norte 2800, CDMX',       cat:'General',       email:'ventas@saludplus.mx',      rfc:'SPD921010MNO', contact:'Sr. Carlos Vega',       status:'Activo'   },
+  { id:6,  name:'Equipos Médicos del Norte',    phone:'81 9200 4400', address:'Av. Constitución 1800, Monterrey',  cat:'Equipo Médico', email:'emn@equiposmedicos.mx',    rfc:'EMN870225PQR', contact:'Ing. Patricia Luna',    status:'Activo'   },
+  { id:7,  name:'Distribuidora Nacional Farma', phone:'55 7200 8800', address:'Eje Central Lázaro Cárdenas 900, CDMX',cat:'Farmacéutico',email:'dnf@distrifarma.mx',      rfc:'DNF050714STU', contact:'Lic. Jorge Mendoza',    status:'Activo'   },
+  { id:8,  name:'MedEquip Soluciones',         phone:'33 5500 9900', address:'Av. Vallarta 3500, Guadalajara',     cat:'Equipo Médico', email:'info@medequip.mx',         rfc:'MES130219VWX', contact:'Ing. Sandra Cruz',      status:'Activo'   },
+  { id:9,  name:'General Médica S.A.',          phone:'55 2200 6600', address:'Calle Poniente 134 No. 850, CDMX',  cat:'General',       email:'gm@generalmedica.mx',      rfc:'GMS790408YZA', contact:'Lic. Tomás Ríos',       status:'Inactivo' },
+  { id:10, name:'Suplementos Plus S.A.',        phone:'55 4400 1100', address:'Av. Río San Joaquín 299, CDMX',     cat:'General',       email:'sp@suplementosplus.mx',    rfc:'SPS110622BCD', contact:'Lic. Elena Castillo',   status:'Inactivo' },
+];
+
+let sortCol = null, sortDir = 1;
+let searchTerm = '', filterCat = '', filterStatus = '';
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  updateSortIcons();
+  renderTable();
+}
+
+function updateSortIcons() {
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (!icon) return;
+    const col = th.dataset.sort;
+    icon.className = 'sort-icon fa-solid ' + (col === sortCol ? (sortDir === 1 ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort') + ' text-muted';
+  });
+}
+
+function filterBySearch(val) { searchTerm = val.toLowerCase(); applyFilters(); }
+
+function applyFilters() {
+  filterCat    = document.getElementById('filterCat').value;
+  filterStatus = document.getElementById('filterStatus').value;
+  renderTable();
+}
+
+function renderTable() {
+  let data = [...suppliers];
+  if (searchTerm) data = data.filter(s => s.name.toLowerCase().includes(searchTerm) || s.contact.toLowerCase().includes(searchTerm));
+  if (filterCat)    data = data.filter(s => s.cat === filterCat);
+  if (filterStatus) data = data.filter(s => s.status === filterStatus);
+  if (sortCol) data.sort((a, b) => typeof a[sortCol] === 'string'
+    ? a[sortCol].localeCompare(b[sortCol]) * sortDir
+    : (a[sortCol] - b[sortCol]) * sortDir);
+
+  const tbody = document.getElementById('supplierTableBody');
+  tbody.innerHTML = '';
+  data.forEach(s => {
+    const statusCls = s.status === 'Activo' ? 'badge-success' : 'badge-danger';
+    const catIcon = s.cat === 'Farmacéutico' ? 'fa-capsules text-primary' : s.cat === 'Equipo Médico' ? 'fa-stethoscope text-warning' : 'fa-box text-secondary';
+    tbody.innerHTML += `
+      <tr>
+        <td>
+          <div style="font-weight:600;color:#1e293b">${s.name}</div>
+          <div style="font-size:12px;color:#64748b">${s.email}</div>
+        </td>
+        <td class="col-secondary"><i class="fa-solid ${catIcon} me-1"></i>${s.cat}</td>
+        <td class="col-secondary"><small>${s.phone}</small></td>
+        <td class="col-secondary"><small class="text-muted">${s.address}</small></td>
+        <td><span class="badge-status ${statusCls}">${s.status}</span></td>
+        <td>
+          <button class="btn-icon" onclick="viewSupplier(${s.id})" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon" onclick="editSupplier(${s.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon text-danger" onclick="deleteSupplier(${s.id})" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+        </td>
+        <td class="d-md-none">
+          <button class="expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
+        </td>
+      </tr>
+      <tr class="row-detail">
+        <td colspan="7">
+          <div class="row-detail-grid">
+            <div class="row-detail-item"><span class="detail-label">Categoría</span><span>${s.cat}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Teléfono</span><span>${s.phone}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Contacto</span><span>${s.contact}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Dirección</span><span>${s.address}</span></div>
+          </div>
+        </td>
+      </tr>`;
+  });
+  document.getElementById('tableFooter').textContent = `Mostrando ${data.length} de ${suppliers.length} proveedores`;
+}
+
+function toggleRow(btn) {
+  btn.closest('tr').nextElementSibling.classList.toggle('open');
+  btn.querySelector('i').classList.toggle('fa-chevron-down');
+  btn.querySelector('i').classList.toggle('fa-chevron-up');
+}
+
+function viewSupplier(id) {
+  const s = suppliers.find(x => x.id === id);
+  if (!s) return;
+  const statusCls = s.status === 'Activo' ? 'badge-success' : 'badge-danger';
+  document.getElementById('viewSupplierBody').innerHTML = `
+    <div class="p-3 rounded-3 mb-3" style="background:#f0f4f8">
+      <div class="row g-2">
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">NOMBRE</div><div style="font-weight:600">${s.name}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">ESTADO</div><span class="badge-status ${statusCls}">${s.status}</span></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">CATEGORÍA</div><div>${s.cat}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">RFC</div><div>${s.rfc}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">TELÉFONO</div><div>${s.phone}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">EMAIL</div><div>${s.email}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">CONTACTO</div><div>${s.contact}</div></div>
+        <div class="col-12"><div style="font-size:11px;color:#64748b;font-weight:600">DIRECCIÓN</div><div>${s.address}</div></div>
+      </div>
+    </div>`;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('viewSupplierModal')).show();
+}
+
+function editSupplier(id) {
+  const s = suppliers.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('editSupplierBody').innerHTML = `
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label">Nombre *</label><input type="text" class="form-control" value="${s.name}"></div>
+      <div class="col-md-6"><label class="form-label">Categoría</label>
+        <select class="form-select">
+          <option${s.cat==='Farmacéutico'?' selected':''}>Farmacéutico</option>
+          <option${s.cat==='General'?' selected':''}>General</option>
+          <option${s.cat==='Equipo Médico'?' selected':''}>Equipo Médico</option>
+        </select></div>
+      <div class="col-md-6"><label class="form-label">Teléfono</label><input type="text" class="form-control" value="${s.phone}"></div>
+      <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" value="${s.email}"></div>
+      <div class="col-md-6"><label class="form-label">RFC</label><input type="text" class="form-control" value="${s.rfc}"></div>
+      <div class="col-md-6"><label class="form-label">Contacto</label><input type="text" class="form-control" value="${s.contact}"></div>
+      <div class="col-12"><label class="form-label">Dirección</label><input type="text" class="form-control" value="${s.address}"></div>
+      <div class="col-12"><div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="editSupplierActive"${s.status==='Activo'?' checked':''}>
+        <label class="form-check-label" for="editSupplierActive">Proveedor activo</label>
+      </div></div>
+    </div>`;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('editSupplierModal')).show();
+}
+
+let deleteTargetId = null;
+function deleteSupplier(id) {
+  deleteTargetId = id;
+  const s = suppliers.find(x => x.id === id);
+  document.getElementById('deleteSupplierName').textContent = s.name;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteSupplierModal')).show();
+}
+function confirmDeleteSupplier() {
+  suppliers = suppliers.filter(s => s.id !== deleteTargetId);
+  bootstrap.Modal.getInstance(document.getElementById('deleteSupplierModal')).hide();
+  renderTable();
+  showToast('Proveedor eliminado.', '#dc2626');
+}
+
+function saveNewSupplier() {
+  bootstrap.Modal.getInstance(document.getElementById('newSupplierModal')).hide();
+  showToast('Proveedor registrado correctamente.', '#16a34a');
+  renderTable();
+}
+
+function showToast(msg, bg) {
+  const toast = document.getElementById('supplierToast');
+  toast.style.background = bg || '#16a34a';
+  document.getElementById('supplierToastMsg').textContent = msg;
+  new bootstrap.Toast(toast, { delay: 3000 }).show();
+}
+
+// Init
+renderTable();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+</body>
+</html>

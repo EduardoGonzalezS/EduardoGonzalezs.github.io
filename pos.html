@@ -384,7 +384,7 @@
                placeholder="Buscar medicamento por nombre, código o barras..."
                oninput="filterProducts(this.value)">
       </div>
-      <button class="btn-scan">
+      <button class="btn-scan" onclick="openPosScanner()">
         <i class="fa-solid fa-barcode"></i>
         <span class="d-none d-sm-inline">Escanear</span>
       </button>
@@ -408,20 +408,6 @@
     <div class="cart-header">
       <h6><i class="fa-solid fa-shopping-basket me-2 text-primary"></i>Ticket Actual</h6>
       <span class="badge bg-primary rounded-pill" id="cartCount">0</span>
-    </div>
-
-    <!-- Client info -->
-    <div class="cart-client">
-      <div class="input-group input-group-sm">
-        <span class="input-group-text" style="background:#f8fafc">
-          <i class="fa-solid fa-user text-muted" style="font-size:12px"></i>
-        </span>
-        <input type="text" class="form-control form-control-sm"
-               placeholder="Nombre del cliente (opcional)">
-        <button class="btn btn-sm btn-outline-secondary" type="button">
-          <i class="fa-solid fa-id-card"></i>
-        </button>
-      </div>
     </div>
 
     <!-- Cart items -->
@@ -786,6 +772,37 @@ function showAlert(message, { title = 'Aviso', type = 'info' } = {}) {
   document.getElementById('gAlertMsg').textContent = message;
   bootstrap.Modal.getOrCreate(document.getElementById('globalAlertModal')).show();
 }
+// ======================== Barcode Scanner (POS) ========================
+let _posQrCode = null;
+
+function openPosScanner() {
+  const modal = new bootstrap.Modal(document.getElementById('posBarcodeScannerModal'));
+  modal.show();
+  document.getElementById('posBarcodeScannerModal').addEventListener('shown.bs.modal', () => {
+    _posQrCode = new Html5Qrcode('pos-barcode-reader');
+    _posQrCode.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 120 } },
+      (decodedText) => {
+        stopPosScanner();
+        bootstrap.Modal.getInstance(document.getElementById('posBarcodeScannerModal')).hide();
+        const input = document.getElementById('posSearch');
+        input.value = decodedText;
+        filterProducts(decodedText);
+      },
+      () => {}
+    ).catch(() => showAlert('No se pudo acceder a la cámara', { type: 'danger' }));
+  }, { once: true });
+}
+
+function stopPosScanner() {
+  if (_posQrCode && _posQrCode.isScanning) {
+    _posQrCode.stop().catch(() => {});
+  }
+}
+
+document.getElementById('posBarcodeScannerModal').addEventListener('hidden.bs.modal', stopPosScanner);
+
 function showConfirm(message, { title = 'Confirmar acción', type = 'warning', confirmText = 'Confirmar', confirmClass = 'btn-warning', onConfirm = () => {} } = {}) {
   const cfg = _dialogCfg[type] || _dialogCfg.warning;
   document.getElementById('gConfirmIcon').style.color = cfg.color;
@@ -803,6 +820,32 @@ function showConfirm(message, { title = 'Confirmar acción', type = 'warning', c
   bootstrap.Modal.getOrCreate(document.getElementById('globalConfirmModal')).show();
 }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
+<!-- Modal Escáner — POS -->
+<div class="modal fade" id="posBarcodeScannerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-camera me-2 text-primary"></i>Escanear Código de Barras
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="pos-barcode-reader" style="width:100%"></div>
+        <p class="text-muted text-center py-2 mb-0" style="font-size:12px">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          Apunta la cámara al código de barras del producto
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal de Alerta Global -->
 <div class="modal fade" id="globalAlertModal" tabindex="-1">

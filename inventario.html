@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -27,6 +28,8 @@
       <a href="inventario.html" class="nav-link active"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
       <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
       <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
     </nav>
   </div>
   <div class="sidebar-section">
@@ -34,6 +37,7 @@
     <nav class="nav flex-column">
       <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
       <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
       <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
       <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
       <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
@@ -48,10 +52,7 @@
 <!-- TOPBAR -->
 <header class="topbar">
   <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
-  <div class="topbar-search position-relative">
-    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-    <input type="text" class="form-control" placeholder="Buscar producto, código..." id="topbarSearch" oninput="applyFilters()">
-  </div>
+
   <div class="topbar-right">
     <select class="topbar-branch-select d-none d-md-block" id="topbarBranch" onchange="applyFilters()">
       <option value="">Todas las sucursales</option>
@@ -59,7 +60,7 @@
       <option>Este</option><option>Oeste</option><option>Plaza Mayor</option>
       <option>Universitaria</option><option>Industrial</option>
     </select>
-    <a href="#" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
     <div class="topbar-user dropdown" data-bs-toggle="dropdown">
       <div class="user-avatar">AD</div>
       <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
@@ -115,7 +116,7 @@
           </div>
           <div class="col-sm-3">
             <label class="form-label fw-semibold">Fecha</label>
-            <input type="date" class="form-control" id="invFormDate">
+            <input type="date" class="form-control date-es" id="invFormDate">
           </div>
           <div class="col-sm-5">
             <label class="form-label fw-semibold">Responsable</label>
@@ -284,7 +285,6 @@
           <table class="table">
             <thead>
               <tr>
-                <th><input type="checkbox"></th>
                 <th data-sort="code" onclick="sortTable('code')">Código <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
                 <th data-sort="name" onclick="sortTable('name')">Producto <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
                 <th data-sort="cat" onclick="sortTable('cat')" class="col-secondary">Categoría <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
@@ -305,7 +305,7 @@
       <div class="tab-pane fade" id="tabExpiring">
         <div class="table-responsive">
           <table class="table">
-            <thead><tr><th>Código</th><th>Producto</th><th>Stock</th><th>Vencimiento</th><th>Días Rest.</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Producto</th><th>Stock</th><th>Vencimiento</th><th>Días Rest.</th><th>Sucursal</th><th>Acciones</th></tr></thead>
             <tbody id="expiringTableBody"></tbody>
           </table>
         </div>
@@ -314,7 +314,7 @@
       <div class="tab-pane fade" id="tabLow">
         <div class="table-responsive">
           <table class="table">
-            <thead><tr><th>Código</th><th>Producto</th><th>Stock Actual</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Producto</th><th>Stock Actual</th><th>Sucursal</th><th>Acciones</th></tr></thead>
             <tbody id="lowTableBody"></tbody>
           </table>
         </div>
@@ -323,7 +323,7 @@
       <div class="tab-pane fade" id="tabOut">
         <div class="table-responsive">
           <table class="table">
-            <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Sucursal</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Producto</th><th>Categoría</th><th>Sucursal</th><th>Acciones</th></tr></thead>
             <tbody id="outTableBody"></tbody>
           </table>
         </div>
@@ -362,7 +362,6 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Folio</th>
                 <th>Sucursal</th>
                 <th class="col-secondary">Fecha</th>
                 <th class="col-secondary">Responsable</th>
@@ -544,7 +543,7 @@
           </div>
           <div class="col-sm-4">
             <label class="form-label">Fecha de vencimiento</label>
-            <input type="date" class="form-control">
+            <input type="date" class="form-control date-es">
           </div>
           <div class="col-sm-6">
             <label class="form-label">Sucursal</label>
@@ -557,10 +556,6 @@
           <div class="col-sm-6">
             <label class="form-label">Proveedor</label>
             <input type="text" class="form-control" placeholder="Nombre del proveedor">
-          </div>
-          <div class="col-12">
-            <label class="form-label">Descripción / Composición</label>
-            <textarea class="form-control" rows="2" placeholder="Descripción del producto..."></textarea>
           </div>
         </div>
       </div>
@@ -691,6 +686,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
 // ===== DATA =====
 let meds = [
@@ -873,7 +870,6 @@ function renderMainTable(data) {
 
     tbody.innerHTML += `
     <tr>
-      <td><input type="checkbox"></td>
       <td><small class="text-muted">${m.code}</small></td>
       <td>
         <strong>${m.name}</strong><br>
@@ -900,7 +896,7 @@ function renderMainTable(data) {
       </td>
     </tr>
     <tr class="row-detail">
-      <td colspan="11">
+      <td colspan="10">
         <div class="row-detail-grid">
           <div class="row-detail-item"><span class="rd-label">Categoría</span><span class="rd-value">${m.cat}</span></div>
           <div class="row-detail-item"><span class="rd-label">P. Compra</span><span class="rd-value">$${m.priceBuy.toFixed(2)}</span></div>
@@ -933,7 +929,6 @@ function renderSubTabs(data) {
     const days = Math.ceil((new Date(m.exp) - today) / (24*3600*1000));
     const cls = days <= 14 ? 'badge-danger' : 'badge-warning';
     exTbody.innerHTML += `<tr>
-      <td><small class="text-muted">${m.code}</small></td>
       <td><strong>${m.name}</strong></td>
       <td>${m.stock}</td>
       <td class="text-danger fw-bold">${m.exp}</td>
@@ -953,7 +948,6 @@ function renderSubTabs(data) {
   lowTbody.innerHTML = '';
   low.forEach(m => {
     lowTbody.innerHTML += `<tr>
-      <td><small class="text-muted">${m.code}</small></td>
       <td><strong>${m.name}</strong></td>
       <td><span class="badge-status badge-warning">${m.stock} uds</span></td>
       <td>${m.suc}</td>
@@ -971,7 +965,6 @@ function renderSubTabs(data) {
   outTbody.innerHTML = '';
   out.forEach(m => {
     outTbody.innerHTML += `<tr>
-      <td><small class="text-muted">${m.code}</small></td>
       <td><strong>${m.name}</strong></td>
       <td>${m.cat}</td>
       <td>${m.suc}</td>
@@ -1063,7 +1056,7 @@ function renderInventoriesTab() {
   tbody.innerHTML = '';
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-clipboard-list fa-2x mb-2 d-block" style="opacity:.3"></i>No hay inventarios registrados</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-clipboard-list fa-2x mb-2 d-block" style="opacity:.3"></i>No hay inventarios registrados</td></tr>`;
     return;
   }
 
@@ -1078,7 +1071,6 @@ function renderInventoriesTab() {
 
     tbody.innerHTML += `
     <tr>
-      <td><strong style="color:#2563eb">${inv.id}</strong></td>
       <td>${inv.branch}</td>
       <td class="col-secondary"><small class="text-muted">${formatDate(inv.date)}</small></td>
       <td class="col-secondary"><small>${inv.createdBy || '—'}</small></td>
@@ -1666,22 +1658,39 @@ function showToast(message, type = 'success', duration = 3000) {
 }
 
 // Sidebar
+let _sidebarTimer = null;
 function toggleSidebar() {
   if (window.innerWidth >= 992) {
     document.body.classList.toggle('sidebar-collapsed');
   } else {
-    document.getElementById('sidebar').classList.toggle('show');
-    document.getElementById('sidebarOverlay').classList.toggle('show');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
   }
 }
 function closeSidebar() {
+  clearTimeout(_sidebarTimer);
   document.getElementById('sidebar').classList.remove('show');
   document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+function initDatePickers() {
+  document.querySelectorAll('.date-es').forEach(el => {
+    if (!el._flatpickr) {
+      flatpickr(el, { locale: 'es', altInput: true, altFormat: 'j M Y', dateFormat: 'Y-m-d', allowInput: true });
+    }
+  });
 }
 
 // Init
 applyFilters();
 updateInventoryTabBadge();
+initDatePickers();
 </script>
 <div id="toastContainerGlobal" class="toast-container-global"></div>
 <script>

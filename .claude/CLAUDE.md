@@ -22,8 +22,12 @@ C:\FM\
 ├── pos.html               # Punto de Venta (POS)
 ├── sucursales.html        # Gestión de sucursales (alta/edición/detalle)
 ├── configuracion.html     # Configuraciones del sistema (inactividad, etc.)
-├── alta-masiva.html       # Wizard de alta masiva de productos (3 pasos)
-└── reportes.html          # Módulo de Reportes — pantalla "Próximamente"
+├── alta-masiva.html       # Wizard de alta masiva de productos (3 pasos) + importar CSV
+├── reportes.html          # Módulo de Reportes — pantalla "Próximamente"
+├── proveedores.html       # Gestión de proveedores (tabla CRUD + 3 modales)
+├── compras.html           # Órdenes de compra a proveedores (borrador/pendiente/aprobado/recibido/rechazado)
+├── alertas.html           # Centro de alertas del sistema (inventario, compras, transferencias, sistema)
+└── editar-compra.html     # Edición de borrador de compra como página full (pre-rellena desde localStorage 'editDraft')
 ```
 
 ---
@@ -36,6 +40,7 @@ C:\FM\
 | Font Awesome | 6.5.0 | Íconos en todo el sitio |
 | Google Fonts (Inter) | 300–800 | Tipografía principal |
 | Chart.js | 4.4.2 | Gráficas (solo `dashboard.html` y `ventas.html`) |
+| html5-qrcode | 2.3.8 | Lector de código de barras por cámara (`inventario.html`, `alta-masiva.html`, `pos.html`) |
 
 ---
 
@@ -70,6 +75,10 @@ C:\FM\
 - Tabla ordenable con sub-filas expandibles; columnas priceBuy/priceSell/type
 - Tipos de producto: `medicamento`, `general`, `suplemento`, `equipo`
 - Modal "Nuevo Producto" con campo Tipo, Precio Compra, Precio Venta
+  - Campo "Código / SKU" (`id="newProductCode"`) tiene botón `fa-barcode` que abre `#barcodeScannerModal`
+  - `#barcodeScannerModal`: usa `html5-qrcode@2.3.8` (CDN), `facingMode: environment`, soporta EAN-13/Code-128/QR
+  - Al escanear: rellena el campo, cierra el modal y muestra toast de confirmación
+  - `stopBarcodeScanner()` se llama en `hidden.bs.modal` para evitar memory leaks (requiere HTTPS o localhost)
 - Modal de ajuste de stock (entrada/salida/corrección)
 - Botón "Alta Masiva" → enlaza a `alta-masiva.html`
 
@@ -79,12 +88,13 @@ C:\FM\
 - Autocomplete para búsqueda de productos
 - Modal de confirmación con resumen de la transferencia
 - Historial ordenable con sub-filas; badges: Pendiente / En Tránsito / Recibido
+- Modal de detalle de transferencia: footer solo con "Cerrar" (botón "Imprimir" eliminado)
 
 ### 6. Usuarios (`usuarios.html`)
 - 4 KPIs: total usuarios, activos, inactivos, conectados ahora
 - Cards de distribución por rol (Admin / Gerente / Cajero / Farmacéutico)
 - Filtros por rol, sucursal y estado
-- Tabla ordenable con sub-filas expandibles; avatar, nombre, email, sucursal, rol
+- Tabla ordenable con sub-filas expandibles; avatar, nombre, email, sucursal, rol (**sin** columna checkbox ni botón Exportar)
 - Toggle switch para activar/desactivar usuario
 - Modal de nuevo usuario con checklist de permisos por módulo
 
@@ -92,14 +102,18 @@ C:\FM\
 - Topbar propio (sin sidebar) con reloj en tiempo real
 - Chips de categorías con filtro por tipo (medicamento/general/suplemento/equipo)
 - Grid de producto cards: medicamentos + productos generales + suplementos + equipo médico
-- Carrito con controles de cantidad (+/-), descuento %
+- Carrito **sin** campo "Nombre del cliente" (eliminado); solo items, descuento y totales
 - Totales: subtotal, descuento, IVA, TOTAL
 - 3 métodos de pago: Efectivo / Tarjeta / Mixto
 - Modal de cobro con montos rápidos y cálculo de cambio automático
+- Botón "Escanear" (`fa-barcode`) conectado a `openPosScanner()` → `#posBarcodeScannerModal`
+  - Al escanear: rellena `#posSearch` y llama `filterProducts()` automáticamente
+  - `stopPosScanner()` en `hidden.bs.modal` para evitar memory leaks
+  - Usa `html5-qrcode@2.3.8` (CDN); requiere HTTPS o localhost
 
 ### 8. Sucursales (`sucursales.html`)
 - 4 KPIs: total, activas, inactivas, top sucursal
-- Tabla ordenable con sub-filas expandibles (dirección, teléfono, horario, empleados, ventas)
+- Tabla ordenable con sub-filas expandibles (dirección, teléfono, horario, empleados, ventas) (**sin** columna `#` ni botón Actualizar)
 - 3 modales: detalle (modal-lg), editar, nueva sucursal
 
 ### 9. Configuración (`configuracion.html`)
@@ -111,14 +125,56 @@ C:\FM\
 ### 10. Alta Masiva (`alta-masiva.html`)
 - Wizard de 3 pasos: Captura → Validación → Confirmación
 - Tabla editable con inputs/selects por fila (nombre, tipo, código, categoría, precios, stock, vencimiento, sucursal)
+- Campo Código: `input-group` con botón `fa-barcode` → `openBulkBarcodeScanner(rowIndex)` → `#bulkBarcodeScannerModal`
+  - Al escanear: actualiza `rows[i].code` y llama `renderBulkTable()` (preserva todos los demás campos)
+  - `stopBulkBarcodeScanner()` en `hidden.bs.modal` para evitar memory leaks
+  - Usa `html5-qrcode@2.3.8` (CDN, cargado antes del CDN Bootstrap JS); requiere HTTPS o localhost
 - Validación: nombre requerido, código requerido, P.Venta > 0, stock ≥ 0
 - Descarga de plantilla CSV
+- Botón "Importar CSV" → `importCSV(event)` via FileReader; parsea líneas, valida tipo/categoría/sucursal y llena `rows[]`
 - Sub-página de Inventario (breadcrumb + sidebar activo en Inventario)
 
 ### 11. Reportes (`reportes.html`)
 - Pantalla "Próximamente" — módulo en desarrollo
 - Preview de features futuras: Exportación PDF, Exportación Excel, Reportes por Sucursal, Análisis de Rentabilidad
 - Sidebar activo en Reportes; enlace desde todos los demás archivos apunta a `reportes.html`
+
+### 12. Proveedores (`proveedores.html`)
+- Sidebar activo en "Proveedores" (sección Administración), icon `fa-handshake`
+- 4 KPI cards: Total | Activos | Inactivos | Órdenes este mes
+- Tabla ordenable con sub-filas; columnas: # | Nombre | Categoría | Teléfono | Dirección | Estado | Acciones
+- Categorías: Farmacéutico | General | Equipo Médico
+- 3 modales: Ver Detalle, Editar, Nuevo Proveedor
+- Datos simulados: 10 proveedores con datos realistas de México
+- Funciones: `viewSupplier(id)`, `editSupplier(id)`, `deleteSupplier(id)`, `saveNewSupplier()`
+
+### 13. Compras (`compras.html`)
+- Sidebar activo en "Compras" (sección Principal), icon `fa-cart-flatbed`
+- 4 KPI cards: Compras este mes | Pendientes aprobación | Borradores | Total invertido
+- Panel inline colapsable "Nueva Compra": proveedor, sucursal, fecha, No. Orden, tabla de productos, totales, método de pago
+- Botones: "Guardar Borrador" y "Enviar para Aprobación"
+- Historial de Compras — tabla ordenable con sub-filas; estados: Borrador | Pendiente | Aprobado | Recibido | Rechazado
+- Modal de detalle de compra + modal de recepción con confirmación
+- Datos simulados: 15 compras con diferentes estados y proveedores
+- Funciones: `toggleNewPurchasePanel()`, `saveDraft()`, `submitForApproval()`, `viewPurchase(id)`, `openReceive(id)`, `confirmReceive()`, `cancelPurchase(id)`
+
+### 14. Alertas (`alertas.html`)
+- Sidebar activo en "Alertas" (sección Principal), icon `fa-bell`
+- 4 KPI cards: Total Alertas | Críticas | Por Vencer | Stock Bajo
+- Tabs de filtro: Todas | Críticas | Stock Bajo | Por Vencer | Agotados | Transferencias | Compras | Sistema
+- Cada tab muestra conteo de alertas activas; filtro por búsqueda en topbar
+- Cards de alerta con: icono de tipo, título, descripción, sucursal, tiempo, badge de estado
+- Acciones por alerta: Marcar leída (`fa-check`), Ver módulo (`fa-arrow-up-right-from-square`), Ignorar (`fa-eye-slash`)
+- "Marcar todas como leídas" — botón en page-header
+- Tipos de alerta: Agotado | Stock Bajo | Por Vencer | Compra Pendiente | Proveedor | Transferencia | Sistema
+- 15 alertas simuladas; estados: unread | read | ignored
+- Funciones: `markRead(id)`, `ignoreAlert(id)`, `markAllRead()`, `renderAlerts()`, `renderTabs()`, `updateKPIs()`
+
+### Dashboard — Cambios en v2
+- Nueva fila de charts: Bar chart "Compras vs Ventas — Últimos 6 meses" (col-lg-7) + Doughnut "Compras por Proveedor" (col-lg-5)
+- Card de alertas simplificado (col-lg-4): muestra solo 3 alertas + botón "Ver todas las alertas" → `alertas.html`
+- Tabla "Últimas Ventas" ampliada a col-lg-8
+- Transferencias: formulario col-12 col-xl-4 / historial col-12 col-xl-8 (layout tablet fix)
 
 ---
 
@@ -230,6 +286,9 @@ new ResizeObserver(() => myChart.resize()).observe(canvas.parentElement);
 - Todos los links "Cerrar sesión" apuntan a `index.html`
 - El redirect de inactividad en `configuracion.html` también apunta a `index.html`
 
+### Topbar — icono campana
+- El icono `fa-bell` del topbar (`.topbar-icon-btn`) apunta a `alertas.html` en **todos** los archivos
+
 ---
 
 ## Instrucciones para Modificar
@@ -239,4 +298,5 @@ new ResizeObserver(() => myChart.resize()).observe(canvas.parentElement);
 - Para cambiar colores: modificar variables en `:root` dentro de `style.css`
 - Para agregar una nueva página: copiar la estructura sidebar+topbar de cualquier página existente y ajustar `.nav-link.active`
 - Chart.js solo está cargado en `dashboard.html` y `ventas.html`; agregarlo en el `<script src>` si se necesita en otra página
+- `html5-qrcode@2.3.8` está cargado en `inventario.html`, `alta-masiva.html` y `pos.html`; el escáner requiere HTTPS o localhost para acceder a la cámara
 - Para añadir un tipo de producto nuevo: agregar entrada en `TYPES` (alta-masiva.html), `typeBadge` map (inventario.html) y nueva clase `.type-xxx` en style.css

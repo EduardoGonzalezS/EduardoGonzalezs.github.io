@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmacéutico MK — Compras</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="dashboard.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div><div class="brand-name">Farmacéutico MK</div><div class="brand-sub">Cadena de Farmacias</div></div>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Principal</div>
+    <nav class="nav flex-column">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="ventas.html" class="nav-link"><i class="fa-solid fa-receipt"></i> Ventas</a>
+      <a href="inventario.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="transferencias.html" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Transferencias</a>
+      <a href="pos.html" class="nav-link"><i class="fa-solid fa-cash-register"></i> Punto de Venta</a>
+      <a href="compras.html" class="nav-link active"><i class="fa-solid fa-cart-flatbed"></i> Compras</a>
+      <a href="alertas.html" class="nav-link"><i class="fa-solid fa-bell"></i> Alertas<span class="sidebar-badge" style="background:#dc2626">5</span></a>
+    </nav>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Administración</div>
+    <nav class="nav flex-column">
+      <a href="usuarios.html" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a>
+      <a href="sucursales.html" class="nav-link"><i class="fa-solid fa-building-columns"></i> Sucursales</a>
+      <a href="proveedores.html" class="nav-link"><i class="fa-solid fa-handshake"></i> Proveedores</a>
+      <a href="reportes.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reportes</a>
+      <a href="estimacion.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Estimación</a>
+      <a href="configuracion.html" class="nav-link"><i class="fa-solid fa-gear"></i> Configuración</a>
+    </nav>
+  </div>
+  <div class="sidebar-branch">
+    <div class="branch-label">Sucursal activa</div>
+    <div class="branch-name"><span class="branch-status"></span>Todas las Sucursales</div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="btn-icon me-2" onclick="toggleSidebar()" style="font-size:17px"><i class="fa-solid fa-bars"></i></button>
+
+  <div class="topbar-right">
+    <a href="alertas.html" class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></a>
+    <div class="topbar-user dropdown" data-bs-toggle="dropdown">
+      <div class="user-avatar">AD</div>
+      <div class="user-info d-none d-sm-block"><div class="user-name">Administrador</div><div class="user-role">Super Admin</div></div>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item text-danger" href="index.html"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar sesión</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div class="page-header d-flex flex-wrap align-items-start justify-content-between gap-3">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="dashboard.html">Inicio</a></li><li class="breadcrumb-item active">Compras</li></ol></nav>
+      <h1 class="page-title">Compras a Proveedores</h1>
+      <p class="page-subtitle">Registra y da seguimiento a las órdenes de compra de la cadena</p>
+    </div>
+    <a href="nueva-compra.html" class="btn btn-primary">
+      <i class="fa-solid fa-plus me-2"></i>Nueva Compra
+    </a>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Compras este mes</div>
+          <div class="kpi-value">24</div>
+          <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> +3 vs mes ant.</div>
+        </div>
+        <div class="kpi-icon blue"><i class="fa-solid fa-cart-flatbed"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Pendientes aprobación</div>
+          <div class="kpi-value text-warning">4</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-clock"></i> En revisión</div>
+        </div>
+        <div class="kpi-icon amber"><i class="fa-solid fa-hourglass-half"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Borradores</div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-change neutral"><i class="fa-solid fa-pen"></i> Sin enviar</div>
+        </div>
+        <div class="kpi-icon teal"><i class="fa-solid fa-file-pen"></i></div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card">
+        <div class="kpi-info">
+          <div class="kpi-label">Total invertido</div>
+          <div class="kpi-value">$1.1M</div>
+          <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> Este mes</div>
+        </div>
+        <div class="kpi-icon green"><i class="fa-solid fa-dollar-sign"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial de Compras -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h6 class="card-title mb-0"><i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Historial de Compras</h6>
+      <div class="d-flex gap-2 flex-wrap">
+        <select class="form-select form-select-sm" style="width:160px" id="filterStatus" onchange="applyFilters()">
+          <option value="">Todos los estados</option>
+          <option value="Borrador">Borrador</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Aprobado">Aprobado</option>
+          <option value="Recibido">Recibido</option>
+          <option value="Rechazado">Rechazado</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-sort="folio" onclick="sortTable('folio')">Folio <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="supplier" onclick="sortTable('supplier')">Proveedor <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="branch" onclick="sortTable('branch')" class="col-secondary">Sucursal <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th class="col-secondary">Productos</th>
+            <th data-sort="total" onclick="sortTable('total')">Total <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="date" onclick="sortTable('date')" class="col-secondary">Fecha <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th data-sort="status" onclick="sortTable('status')">Estado <i class="sort-icon fa-solid fa-sort text-muted"></i></th>
+            <th>Acciones</th>
+            <th class="d-md-none"></th>
+          </tr>
+        </thead>
+        <tbody id="purchasesTableBody"></tbody>
+      </table>
+    </div>
+    <div class="d-flex align-items-center justify-content-between px-3 py-2 border-top" style="background:#f8fafc">
+      <small class="text-muted" id="purchasesFooter">Mostrando 0 compras</small>
+    </div>
+  </div>
+
+</main>
+
+<!-- Modal: Detalle de Compra -->
+<div class="modal fade" id="purchaseDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-receipt me-2 text-primary"></i><span id="purchaseDetailTitle">Detalle de Compra</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="purchaseDetailBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Recepción de Compra -->
+<div class="modal fade" id="receiveModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-boxes-stacked me-2 text-success"></i>Confirmar Recepción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <div style="width:64px;height:64px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#16a34a">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+          </div>
+          <p class="mb-1">¿Confirmas que los productos de la orden <strong id="receiveOrderId"></strong> han sido recibidos?</p>
+          <p class="text-muted" style="font-size:13px">El stock del inventario se actualizará automáticamente.</p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Fecha de recepción</label>
+          <input type="date" class="form-control date-es" value="2026-03-05">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Observaciones de recepción</label>
+          <textarea class="form-control" rows="2" placeholder="Ej: Todos los productos en buen estado"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success" onclick="confirmReceive()"><i class="fa-solid fa-check me-2"></i>Confirmar recepción</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cancelar Compra -->
+<div class="modal fade" id="cancelConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation me-2 text-danger"></i>Cancelar Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">¿Estás seguro de que deseas cancelar la orden <strong id="cancelOrderFolio"></strong>? Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Volver</button>
+        <button class="btn btn-danger" onclick="confirmCancelPurchase()">Cancelar Orden</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="purchaseToast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="purchaseToastMsg">Operación completada.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script>
+// ===================== Sidebar =====================
+let _sidebarTimer = null;
+function toggleSidebar() {
+  if (window.innerWidth >= 992) {
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    clearTimeout(_sidebarTimer);
+    if (sidebar.classList.contains('show')) {
+      _sidebarTimer = setTimeout(closeSidebar, 3000);
+    }
+  }
+}
+function closeSidebar() {
+  clearTimeout(_sidebarTimer);
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ===================== Data =====================
+const statusConfig = {
+  'Borrador':   { cls:'warning',   icon:'fa-file-pen'        },
+  'Pendiente':  { cls:'info',      icon:'fa-hourglass-half'  },
+  'Aprobado':   { cls:'success',   icon:'fa-circle-check'    },
+  'Recibido':   { cls:'success',   icon:'fa-boxes-stacked'   },
+  'Rechazado':  { cls:'danger',    icon:'fa-circle-xmark'    },
+};
+
+let purchases = [
+  { id:1,  folio:'OC-2026-024', supplier:'Mediglobal S.A. de C.V.',      branch:'Central',
+    products:[{name:'Amoxicilina 500mg', qty:200, priceBuy:85},{name:'Paracetamol 1g', qty:500, priceBuy:28},{name:'Ibuprofeno 400mg', qty:300, priceBuy:35}],
+    total:48500, date:'2026-03-04', status:'Pendiente'  },
+  { id:2,  folio:'OC-2026-023', supplier:'FarmaDistrib S.A. de C.V.',    branch:'Norte',
+    products:[{name:'Metformina 850mg', qty:400, priceBuy:185},{name:'Insulina Glargina', qty:50, priceBuy:380}],
+    total:92000, date:'2026-03-03', status:'Aprobado'  },
+  { id:3,  folio:'OC-2026-022', supplier:'Biolab MX S.A. de C.V.',       branch:'Sur',
+    products:[{name:'Omeprazol 20mg', qty:600, priceBuy:32},{name:'Losartán 50mg', qty:300, priceBuy:55}],
+    total:34200, date:'2026-03-02', status:'Recibido'  },
+  { id:4,  folio:'OC-2026-021', supplier:'MedPharma México',             branch:'Este',
+    products:[{name:'Vitamina C 500mg', qty:1000, priceBuy:14},{name:'Omega-3', qty:200, priceBuy:42}],
+    total:18700, date:'2026-03-01', status:'Recibido'  },
+  { id:5,  folio:'OC-2026-020', supplier:'SaludPlus Distribuciones',     branch:'Oeste',
+    products:[{name:'Alcohol Isopropílico', qty:50, priceBuy:85},{name:'Vendas 4"', qty:100, priceBuy:55}],
+    total:12300, date:'2026-02-28', status:'Recibido'  },
+  { id:6,  folio:'OC-2026-019', supplier:'Equipos Médicos del Norte',    branch:'Plaza Mayor',
+    products:[{name:'Glucómetro Accu-Check', qty:10, priceBuy:3800},{name:'Tensiómetro Digital', qty:5, priceBuy:2200}],
+    total:65000, date:'2026-02-27', status:'Recibido'  },
+  { id:7,  folio:'OC-2026-018', supplier:'Distribuidora Nacional Farma', branch:'Universitaria',
+    products:[{name:'Amoxicilina 500mg', qty:500, priceBuy:85},{name:'Ciprofloxacino 500mg', qty:200, priceBuy:65}],
+    total:55800, date:'2026-02-26', status:'Rechazado' },
+  { id:8,  folio:'OC-2026-017', supplier:'Mediglobal S.A. de C.V.',      branch:'Industrial',
+    products:[{name:'Paracetamol 500mg', qty:800, priceBuy:28},{name:'Ibuprofeno 600mg', qty:400, priceBuy:42}],
+    total:39400, date:'2026-02-25', status:'Recibido'  },
+  { id:9,  folio:'OC-2026-016', supplier:'FarmaDistrib S.A. de C.V.',    branch:'Central',
+    products:[{name:'Loratadina 10mg', qty:300, priceBuy:38},{name:'Cetirizina 10mg', qty:300, priceBuy:36}],
+    total:22100, date:'2026-02-24', status:'Recibido'  },
+  { id:10, folio:'OC-2026-015', supplier:'Biolab MX S.A. de C.V.',       branch:'Norte',
+    products:[{name:'Proteína Whey', qty:30, priceBuy:650},{name:'Vitamina D3', qty:200, priceBuy:35}],
+    total:28600, date:'2026-02-23', status:'Recibido'  },
+  { id:11, folio:'OC-2026-014', supplier:'MedPharma México',             branch:'Sur',
+    products:[{name:'Diclofenaco 50mg', qty:500, priceBuy:29}],
+    total:14500, date:'2026-02-20', status:'Recibido'  },
+  { id:12, folio:'OC-2026-013', supplier:'SaludPlus Distribuciones',     branch:'Este',
+    products:[{name:'Jeringas 5ml', qty:200, priceBuy:45},{name:'Guantes nitrilo', qty:500, priceBuy:18}],
+    total:19800, date:'2026-02-18', status:'Recibido'  },
+  { id:13, folio:'OC-2026-012', supplier:'Mediglobal S.A. de C.V.',      branch:'Oeste',
+    products:[{name:'Insulina Regular', qty:30, priceBuy:1200},{name:'Metformina 500mg', qty:300, priceBuy:38}],
+    total:78000, date:'2026-02-15', status:'Recibido'  },
+  { id:14, folio:'OC-2026-025', supplier:'Biolab MX S.A. de C.V.',       branch:'Plaza Mayor',
+    products:[{name:'Atorvastatina 20mg', qty:400, priceBuy:62}],
+    total:31200, date:'2026-03-05', status:'Borrador'  },
+  { id:15, folio:'OC-2026-026', supplier:'FarmaDistrib S.A. de C.V.',    branch:'Central',
+    products:[{name:'Amoxicilina 875mg', qty:300, priceBuy:95},{name:'Azitromicina 500mg', qty:100, priceBuy:145}],
+    total:42700, date:'2026-03-05', status:'Borrador'  },
+];
+
+let sortCol = null, sortDir = 1;
+let receiveTargetId = null;
+let cancelTargetId = null;
+
+// ===================== Sort =====================
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  updateSortIcons();
+  applyFilters();
+}
+
+function updateSortIcons() {
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    if (!icon) return;
+    icon.className = 'sort-icon fa-solid ' + (th.dataset.sort === sortCol ? (sortDir===1?'fa-sort-up':'fa-sort-down') : 'fa-sort') + ' text-muted';
+  });
+}
+
+// ===================== Filters & Render =====================
+function applyFilters() {
+  const search = '';
+  const status = document.getElementById('filterStatus').value;
+  let data = [...purchases];
+  if (search) data = data.filter(p => p.folio.toLowerCase().includes(search) || p.supplier.toLowerCase().includes(search));
+  if (status) data = data.filter(p => p.status === status);
+  if (sortCol) data.sort((a,b) => typeof a[sortCol]==='string'
+    ? a[sortCol].localeCompare(b[sortCol])*sortDir
+    : (a[sortCol]-b[sortCol])*sortDir);
+  renderTable(data);
+}
+
+function renderTable(data) {
+  if (data === undefined) { applyFilters(); return; }
+  const tbody = document.getElementById('purchasesTableBody');
+  tbody.innerHTML = '';
+  data.forEach(p => {
+    const sc = statusConfig[p.status];
+    tbody.innerHTML += `
+      <tr>
+        <td><strong style="color:#2563eb">${p.folio}</strong></td>
+        <td>
+          <div style="font-weight:600;font-size:13px">${p.supplier}</div>
+        </td>
+        <td class="col-secondary"><small>${p.branch}</small></td>
+        <td class="col-secondary"><small class="text-muted">${p.products.length} producto(s)</small></td>
+        <td><strong>$${p.total.toLocaleString()}</strong></td>
+        <td class="col-secondary"><small class="text-muted">${p.date}</small></td>
+        <td><span class="badge-status badge-${sc.cls}"><i class="fa-solid ${sc.icon} me-1"></i>${p.status}</span></td>
+        <td>
+          <button class="btn-icon" onclick="viewPurchase(${p.id})" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+          ${p.status==='Borrador'?`<button class="btn-icon" onclick="editPurchase(${p.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>`:''}
+          ${p.status==='Aprobado'?`<button class="btn-icon text-success" onclick="openReceive(${p.id})" title="Marcar recibido"><i class="fa-solid fa-boxes-stacked"></i></button>`:''}
+          ${['Borrador','Pendiente'].includes(p.status)?`<button class="btn-icon text-danger" onclick="cancelPurchase(${p.id})" title="Cancelar"><i class="fa-solid fa-ban"></i></button>`:''}
+        </td>
+        <td class="d-md-none">
+          <button class="expand-row-btn" onclick="toggleRow(this)"><i class="fa-solid fa-chevron-down"></i></button>
+        </td>
+      </tr>
+      <tr class="row-detail">
+        <td colspan="9">
+          <div class="row-detail-grid">
+            <div class="row-detail-item"><span class="detail-label">Sucursal</span><span>${p.branch}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Fecha</span><span>${p.date}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Productos</span><span>${p.products.length}</span></div>
+            <div class="row-detail-item"><span class="detail-label">Total</span><strong>$${p.total.toLocaleString()}</strong></div>
+          </div>
+        </td>
+      </tr>`;
+  });
+  document.getElementById('purchasesFooter').textContent = `Mostrando ${data.length} de ${purchases.length} compras`;
+}
+
+function toggleRow(btn) {
+  btn.closest('tr').nextElementSibling.classList.toggle('open');
+  btn.querySelector('i').classList.toggle('fa-chevron-down');
+  btn.querySelector('i').classList.toggle('fa-chevron-up');
+}
+
+// ===================== View Detail =====================
+function viewPurchase(id) {
+  const p = purchases.find(x => x.id === id);
+  if (!p) return;
+  const sc = statusConfig[p.status];
+  document.getElementById('purchaseDetailTitle').textContent = 'Compra ' + p.folio;
+  document.getElementById('purchaseDetailBody').innerHTML = `
+    <div class="p-3 rounded-3 mb-3" style="background:#f0f4f8">
+      <div class="row g-2">
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">FOLIO</div><div style="font-weight:700;color:#2563eb">${p.folio}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">ESTADO</div><span class="badge-status badge-${sc.cls}">${p.status}</span></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">PROVEEDOR</div><div>${p.supplier}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">SUCURSAL</div><div>${p.branch}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">FECHA</div><div>${p.date}</div></div>
+        <div class="col-6"><div style="font-size:11px;color:#64748b;font-weight:600">TOTAL</div><div style="font-weight:700">$${p.total.toLocaleString()}</div></div>
+      </div>
+    </div>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Medicamento</th>
+          <th class="text-center" style="width:90px">Cantidad</th>
+          <th class="text-end" style="width:120px">Precio Compra</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${p.products.map(pr => `
+          <tr>
+            <td>${pr.name}</td>
+            <td class="text-center">${pr.qty}</td>
+            <td class="text-end">$${pr.priceBuy.toLocaleString()}</td>
+          </tr>`).join('')}
+      </tbody>
+      <tfoot style="background:#f8fafc">
+        <tr>
+          <td colspan="2" class="text-end fw-bold">Total:</td>
+          <td class="text-end fw-bold">$${p.total.toLocaleString()}</td>
+        </tr>
+      </tfoot>
+    </table>`;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('purchaseDetailModal')).show();
+}
+
+// ===================== Receive =====================
+function openReceive(id) {
+  receiveTargetId = id;
+  const p = purchases.find(x => x.id === id);
+  document.getElementById('receiveOrderId').textContent = p.folio;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('receiveModal')).show();
+}
+
+function confirmReceive() {
+  const p = purchases.find(x => x.id === receiveTargetId);
+  if (p) p.status = 'Recibido';
+  bootstrap.Modal.getInstance(document.getElementById('receiveModal')).hide();
+  showToast('Recepción confirmada. Stock actualizado.', '#16a34a');
+  applyFilters();
+}
+
+// ===================== Cancel =====================
+function cancelPurchase(id) {
+  cancelTargetId = id;
+  const p = purchases.find(x => x.id === id);
+  document.getElementById('cancelOrderFolio').textContent = p.folio;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('cancelConfirmModal')).show();
+}
+
+function confirmCancelPurchase() {
+  purchases = purchases.filter(p => p.id !== cancelTargetId);
+  bootstrap.Modal.getInstance(document.getElementById('cancelConfirmModal')).hide();
+  applyFilters();
+  showToast('Orden cancelada.', '#dc2626');
+}
+
+// ===================== Edit Draft =====================
+function editPurchase(id) {
+  const p = purchases.find(x => x.id === id);
+  if (!p || p.status !== 'Borrador') return;
+  localStorage.setItem('editDraft', JSON.stringify(p));
+  location.href = 'editar-compra.html';
+}
+
+// ===================== Toast =====================
+function showToast(msg, bg) {
+  const toast = document.getElementById('purchaseToast');
+  toast.style.background = bg || '#16a34a';
+  document.getElementById('purchaseToastMsg').textContent = msg;
+  new bootstrap.Toast(toast, { delay: 3500 }).show();
+}
+
+function initDatePickers() {
+  document.querySelectorAll('.date-es').forEach(el => {
+    if (!el._flatpickr) {
+      flatpickr(el, { locale: 'es', altInput: true, altFormat: 'j M Y', dateFormat: 'Y-m-d', allowInput: true });
+    }
+  });
+}
+
+// Init — apply saved draft from editar-compra.html if any
+(function() {
+  const saved = localStorage.getItem('savedDraft');
+  if (saved) {
+    const draft = JSON.parse(saved);
+    localStorage.removeItem('savedDraft');
+    const idx = purchases.findIndex(p => p.id === draft.id);
+    if (idx > -1) purchases[idx] = draft;
+  }
+})();
+
+applyFilters();
+initDatePickers();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+  var c=localStorage.getItem('accentColor');
+  if(c){ document.documentElement.style.setProperty('--primary',c); }
+})();
+</script>
+</body>
+</html>
