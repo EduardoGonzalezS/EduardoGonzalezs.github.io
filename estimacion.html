@@ -152,44 +152,6 @@
     .pill-purple { background: #faf5ff; color: #7c3aed; }
     .pill-red    { background: #fef2f2; color: #dc2626; }
 
-    /* ── CLAUDE CARD ─────────────────────────────────── */
-    .claude-highlight {
-      background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%);
-      border: 1px solid #ddd6fe;
-      border-radius: 14px;
-      padding: 28px;
-    }
-    .claude-logo {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, #7c3aed, #a855f7);
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
-      color: #fff;
-      margin-bottom: 14px;
-    }
-
-    /* ── INTEGRATION PHASES ──────────────────────────── */
-    .phase-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    .phase-item:last-of-type { border-bottom: none; }
-    .phase-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-    .phase-body { flex: 1; }
-    .phase-title { font-size: 14px; font-weight: 600; color: #0f172a; }
-    .phase-desc  { font-size: 12px; color: #64748b; margin-top: 2px; }
-    .phase-price { font-size: 15px; font-weight: 700; color: #2563eb; white-space: nowrap; }
-
     /* ── FEATURE COMPLEXITY CARDS ────────────────────── */
     .complexity-card {
       border-radius: 12px;
@@ -368,8 +330,8 @@
     <h1 class="doc-title">Estimación de Costos del Sistema</h1>
     <p class="doc-subtitle">Desglose completo de inversión para implementación, operación y crecimiento</p>
     <div class="doc-meta">
-      <span><i class="fa-solid fa-calendar-day"></i> Fecha de emisión: 4 de marzo de 2026</span>
-      <span><i class="fa-solid fa-clock"></i> Válida hasta: 3 de abril de 2026</span>
+      <span><i class="fa-solid fa-calendar-day"></i> Fecha de emisión: 6 de marzo de 2026</span>
+      <span><i class="fa-solid fa-clock"></i> Válida hasta: 5 de abril de 2026</span>
       <span><i class="fa-solid fa-building"></i> Cliente: Cadena de 8 Sucursales</span>
     </div>
   </div>
@@ -382,36 +344,99 @@
   <div class="row g-3 mb-5 mt-2">
     <div class="col-6 col-md-3">
       <div class="mini-kpi">
-        <div class="mini-kpi-value price-blue">$1,521</div>
-        <div class="mini-kpi-label">MXN / mes infraestructura</div>
+        <div class="mini-kpi-value price-blue">$45,000</div>
+        <div class="mini-kpi-label">MXN — precio del sistema</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="mini-kpi">
-        <div class="mini-kpi-value" style="color:#7c3aed">$1,700</div>
-        <div class="mini-kpi-label">MXN / mes Claude Code Pro</div>
+        <div class="mini-kpi-value price-amber">$400/$800</div>
+        <div class="mini-kpi-label">MXN — dominio (1 / 3 años)</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="mini-kpi">
-        <div class="mini-kpi-value price-amber">$25,000</div>
-        <div class="mini-kpi-label">MXN integración 1ª sucursal</div>
+        <div class="mini-kpi-value" style="color:#0ea5e9">$200–$500</div>
+        <div class="mini-kpi-label">MXN / mes — hosting</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="mini-kpi">
-        <div class="mini-kpi-value price-green">$4,500</div>
-        <div class="mini-kpi-label">MXN / mes soporte estándar</div>
+        <div class="mini-kpi-value price-green">2 meses</div>
+        <div class="mini-kpi-label">Garantía incluida post-entrega</div>
       </div>
     </div>
   </div>
 
-  <!-- ── SECCIÓN 1: INFRAESTRUCTURA ──────────────────── -->
+  <!-- ── SECCIÓN 1: SISTEMA FARMAADMIN ──────────────── -->
   <div class="section-header">
-    <div class="section-num" style="background:#0ea5e9"><i class="fa-solid fa-server"></i></div>
+    <div class="section-num" style="background:#2563eb"><i class="fa-solid fa-laptop-medical"></i></div>
     <div>
-      <div class="section-title">1. Hosting, Aplicación Web y Base de Datos</div>
-      <div class="section-desc">Costos mensuales de infraestructura en la nube para mantener el sistema en producción</div>
+      <div class="section-title">1. Sistema FarmaAdmin — Precio Único</div>
+      <div class="section-desc">Licencia perpetua del sistema completo de administración para la cadena de farmacias</div>
+    </div>
+  </div>
+
+  <div class="est-card mb-4">
+    <div class="est-card-inner">
+      <div class="row g-4 align-items-start">
+        <div class="col-md-8">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#1e40af,#2563eb);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;flex-shrink:0">
+              <i class="fa-solid fa-pills"></i>
+            </div>
+            <div>
+              <div style="font-size:18px;font-weight:700;color:#0f172a">FarmaAdmin — Sistema Completo</div>
+              <div style="font-size:13px;color:#64748b">Sistema web multi-sucursal</div>
+            </div>
+          </div>
+          <p style="font-size:14px;color:#475569;line-height:1.7;margin-bottom:16px">
+            Sistema de administración web de farmacias. Incluye módulos de operación, graficos y control, listos para usarse desde cualquier dispositivo.
+          </p>
+          <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:10px">Módulos incluidos:</div>
+          <div class="row g-1 mb-4">
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-receipt me-1"></i>Ventas</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-boxes-stacked me-1"></i>Inventario</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-cart-shopping me-1"></i>Compras</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-cash-register me-1"></i>POS</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-users me-1"></i>Usuarios</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-arrow-right-arrow-left me-1"></i>Transferencias</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-truck me-1"></i>Proveedores</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-bell me-1"></i>Alertas</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-building me-1"></i>Sucursales</span></div>
+            <div class="col-6 col-sm-4"><span class="info-pill pill-blue w-100 justify-content-start"><i class="fa-solid fa-gear me-1"></i>Configuración</span></div>
+            
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="info-pill pill-green"><i class="fa-solid fa-shield-check me-1"></i>2 meses de garantía incluidos</span>
+            <span class="info-pill pill-amber"><i class="fa-solid fa-mobile-screen me-1"></i>Responsive PC / tablet / móvil</span>
+            <span class="info-pill pill-blue"><i class="fa-solid fa-store me-1"></i>Hasta 8 sucursales</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 rounded-3 text-center" style="background:#eff6ff;border:2px solid #bfdbfe">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1d4ed8;margin-bottom:8px">Precio único</div>
+            <div style="font-size:46px;font-weight:800;color:#1e40af;line-height:1">$45,000</div>
+            <div style="font-size:14px;color:#3b82f6;font-weight:600;margin-top:4px">MXN</div>
+            <div class="mt-3 py-2 px-3 rounded-2" style="background:#dbeafe;font-size:12px;color:#1e40af;font-weight:600">
+              <i class="fa-solid fa-infinity me-1"></i>Pago único · Licencia perpetua
+            </div>
+            <div class="mt-3" style="font-size:12px;color:#64748b;line-height:1.6">
+              Incluye entrega, configuración inicial y 2 meses de garantía sin costo adicional.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 2: DOMINIO ──────────────────────────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#0ea5e9"><i class="fa-solid fa-globe"></i></div>
+    <div>
+      <div class="section-title">2. Dominio</div>
+      <div class="section-desc">Registro del nombre de dominio para acceder al sistema desde internet</div>
     </div>
   </div>
 
@@ -421,246 +446,176 @@
         <table class="est-table">
           <thead>
             <tr>
-              <th style="width:26%">Concepto</th>
-              <th style="width:38%">Descripción</th>
-              <th style="width:18%">Proveedor</th>
-              <th class="price-col" style="width:18%">Costo / mes</th>
+              <th style="width:30%">Plan</th>
+              <th style="width:40%">Descripción</th>
+              <th class="price-col" style="width:30%">Precio</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <div class="fw-semibold">Servidor VPS</div>
-                <small class="text-muted">Aplicación web</small>
+                <div class="fw-semibold">Dominio — 1 año</div>
+                <small class="text-muted">.com.mx o equivalente</small>
               </td>
-              <td>2 vCPU, 4 GB RAM, 80 GB SSD. Uptime 99.99%. Escalable según carga.</td>
-              <td><span class="info-pill pill-blue">DigitalOcean</span></td>
-              <td class="price-col price-blue">$800</td>
+              <td>Registro anual del dominio. Renovable cada año.</td>
+              <td class="price-col price-blue">$400 MXN / año</td>
             </tr>
             <tr>
               <td>
-                <div class="fw-semibold">Base de datos administrada</div>
-                <small class="text-muted">MySQL / PostgreSQL</small>
+                <div class="fw-semibold">Dominio — 3 años</div>
+                <small class="text-muted">Mejor precio por volumen</small>
               </td>
-              <td>Backups automáticos diarios, alta disponibilidad, réplica de lectura.</td>
-              <td><span class="info-pill pill-blue">DigitalOcean</span></td>
-              <td class="price-col price-blue">$500</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="fw-semibold">Almacenamiento en la nube</div>
-                <small class="text-muted">Backups, archivos</small>
-              </td>
-              <td>50 GB para respaldos de BD, imágenes de productos y archivos del sistema.</td>
-              <td><span class="info-pill pill-blue">Spaces / S3</span></td>
-              <td class="price-col price-blue">$200</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="fw-semibold">Dominio</div>
-                <small class="text-muted">.com.mx</small>
-              </td>
-              <td>Registro y renovación anual del dominio. ($250 MXN/año prorrateado).</td>
-              <td><span class="info-pill pill-blue">GoDaddy</span></td>
-              <td class="price-col price-blue">$21</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="fw-semibold">SSL + CDN + Seguridad</div>
-              </td>
-              <td>Certificado SSL (Let's Encrypt), CDN global, firewall y protección DDoS.</td>
-              <td><span class="info-pill pill-green">Cloudflare Free</span></td>
-              <td class="price-col zero-price">$0</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="fw-semibold">Monitoreo de uptime</div>
-              </td>
-              <td>Alertas por email/SMS ante caídas. Dashboard de disponibilidad 24/7.</td>
-              <td><span class="info-pill pill-green">UptimeRobot</span></td>
-              <td class="price-col zero-price">$0</td>
-            </tr>
-            <tr class="subtotal-row">
-              <td colspan="3"><i class="fa-solid fa-circle-arrow-right me-2"></i>Total mensual estimado</td>
-              <td class="price-col">$1,521</td>
-            </tr>
-            <tr class="total-row">
-              <td colspan="3"><i class="fa-solid fa-circle-arrow-right me-2"></i><strong>Total anual estimado</strong></td>
-              <td class="price-col price-blue"><strong>$18,252 MXN</strong></td>
+              <td>Registro por 3 años. Ahorro vs. renovaciones anuales.</td>
+              <td class="price-col price-green">$800 MXN / 3 años</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="mt-3 d-flex flex-wrap gap-2">
-        <span class="info-pill pill-green"><i class="fa-solid fa-shield-halved me-1"></i>SSL incluido sin costo</span>
-        <span class="info-pill pill-blue"><i class="fa-solid fa-arrows-up-down me-1"></i>Infraestructura escalable</span>
-        <span class="info-pill pill-amber"><i class="fa-solid fa-database me-1"></i>Backups automáticos diarios</span>
-      </div>
     </div>
   </div>
 
-  <!-- ── SECCIÓN 2: CLAUDE CODE PRO ──────────────────── -->
+  <!-- ── SECCIÓN 3: HOSTING ──────────────────────────── -->
   <div class="section-header">
-    <div class="section-num" style="background:#7c3aed"><i class="fa-solid fa-microchip"></i></div>
+    <div class="section-num" style="background:#0891b2"><i class="fa-solid fa-server"></i></div>
     <div>
-      <div class="section-title">2. Herramienta de Desarrollo — Claude Code Pro</div>
-      <div class="section-desc">Asistente de IA utilizado para el desarrollo y mantenimiento del sistema</div>
+      <div class="section-title">3. Hosting</div>
+      <div class="section-desc">Servidor para alojar el sistema y mantenerlo disponible en línea</div>
     </div>
   </div>
 
   <div class="est-card">
     <div class="est-card-inner">
-      <div class="claude-highlight">
+      <div class="table-responsive">
+        
+      </div>
+      <p class="mt-3 mb-0" style="font-size:13px;color:#64748b;">
+        <i class="fa-solid fa-circle-info me-1" style="color:#3b82f6;"></i>
+        El precio del hosting puede variar según el proveedor y condiciones del mercado. Se estima entre <strong>$200 y $500 MXN/mes</strong> aproximadamente.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN 4: GARANTÍA Y SOPORTE INICIAL ──────── -->
+  <div class="section-header">
+    <div class="section-num" style="background:#16a34a"><i class="fa-solid fa-shield-halved"></i></div>
+    <div>
+      <div class="section-title">4. Garantía y Soporte Inicial</div>
+      <div class="section-desc">Periodo de acompañamiento sin costo adicional tras la entrega del sistema</div>
+    </div>
+  </div>
+
+  <div class="est-card">
+    <div class="est-card-inner">
+      <div class="p-4 rounded-3" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac">
         <div class="row align-items-center g-4">
-          <div class="col-md-8">
-            <div class="claude-logo"><i class="fa-solid fa-robot"></i></div>
-            <h5 class="fw-bold mb-1" style="color:#4c1d95">Claude Code Pro <span style="color:#7c3aed">/ Max Plan</span></h5>
-            <p class="text-muted mb-3" style="font-size:13px">
-              Claude Code es la herramienta de inteligencia artificial de Anthropic utilizada para construir, mantener y evolucionar el sistema FarmaAdmin.
-              Permite entregar funcionalidades en <strong>días en lugar de semanas</strong>, reduciendo significativamente los costos de desarrollo.
-            </p>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="info-pill pill-purple"><i class="fa-solid fa-bolt me-1"></i>Desarrollo 5x más rápido</span>
-              <span class="info-pill pill-purple"><i class="fa-solid fa-code me-1"></i>Código revisado y optimizado</span>
-              <span class="info-pill pill-purple"><i class="fa-solid fa-clock me-1"></i>Disponible 24/7</span>
+          <div class="col-md-3 text-center">
+            <div style="width:80px;height:80px;background:linear-gradient(135deg,#16a34a,#22c55e);border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;margin:0 auto 12px">
+              <i class="fa-solid fa-calendar-check"></i>
             </div>
-            <!-- <div class="d-flex flex-wrap align-items-center gap-3" style="font-size:13px">
-              <div>
-                <span class="text-muted">Precio oficial:</span>
-                <strong class="ms-1" style="color:#4c1d95">$100 USD / mes</strong>
-              </div>
-              <div>
-                <span class="text-muted">Equivalente en MXN:</span>
-                <strong class="ms-1" style="color:#7c3aed">~$1,700 MXN / mes</strong>
-                <small class="text-muted ms-1">(tipo de cambio ~$17)</small>
-              </div>
-              <div>
-                <span class="text-muted">Anual:</span>
-                <strong class="ms-1" style="color:#7c3aed">~$20,400 MXN</strong>
-              </div>
-            </div> -->
+            <div style="font-size:36px;font-weight:800;color:#15803d;line-height:1">2</div>
+            <div style="font-size:14px;font-weight:600;color:#166534">meses incluidos</div>
+            <div style="font-size:12px;color:#16a34a;margin-top:4px">sin costo adicional</div>
           </div>
-          <div class="col-md-4">
-            <div class="p-3 rounded-3 text-center" style="background:rgba(124,58,237,.07);border:1px solid #ddd6fe">
-              <div style="font-size:13px;color:#6d28d9;font-weight:600;margin-bottom:10px">Qué incluye el Max Plan</div>
-              <div style="font-size:12px;color:#5b21b6;line-height:1.8;text-align:left">
-                <div><i class="fa-solid fa-check me-2"></i>Acceso completo a Claude Code</div>
-                <div><i class="fa-solid fa-check me-2"></i>Contexto extendido (200K tokens)</div>
-                <div><i class="fa-solid fa-check me-2"></i>Proyectos y memoria persistente</div>
-                <div><i class="fa-solid fa-check me-2"></i>Modelos Claude Opus y Sonnet</div>
-                <div><i class="fa-solid fa-check me-2"></i>Uso sin límites diarios</div>
+          <div class="col-md-9">
+            <div style="font-size:16px;font-weight:700;color:#14532d;margin-bottom:12px">
+              <i class="fa-solid fa-circle-check me-2 text-success"></i>¿Qué cubre la garantía?
+            </div>
+            <div class="row g-2">
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-2 p-2 rounded-2" style="background:rgba(255,255,255,.7)">
+                  <i class="fa-solid fa-bug-slash text-success mt-1" style="flex-shrink:0"></i>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#15803d">Corrección de bugs</div>
+                    <div style="font-size:12px;color:#4ade80">Errores detectados post-entrega sin cargo</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-2 p-2 rounded-2" style="background:rgba(255,255,255,.7)">
+                  <i class="fa-solid fa-sliders text-success mt-1" style="flex-shrink:0"></i>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#15803d">Ajustes de configuración</div>
+                    <div style="font-size:12px;color:#4ade80">Datos, catálogos, sucursales y usuarios</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-2 p-2 rounded-2" style="background:rgba(255,255,255,.7)">
+                  <i class="fa-solid fa-circle-question text-success mt-1" style="flex-shrink:0"></i>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#15803d">Dudas de uso</div>
+                    <div style="font-size:12px;color:#4ade80">Orientación sobre el funcionamiento del sistema</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="d-flex align-items-start gap-2 p-2 rounded-2" style="background:rgba(255,255,255,.7)">
+                  <i class="fa-solid fa-headset text-success mt-1" style="flex-shrink:0"></i>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:#15803d">Soporte directo</div>
+                    <div style="font-size:12px;color:#4ade80">Atención por WhatsApp / correo electrónico</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="mt-3 p-3 rounded-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px;color:#6d28d9">
-        <i class="fa-solid fa-circle-info me-2"></i>
-        <strong>Nota:</strong> Este costo corresponde al desarrollador, no al cliente. Se incluye en la propuesta para total transparencia.
-        Gracias a esta herramienta, el costo de desarrollo por módulo se reduce hasta un <strong>60%</strong> vs. desarrollo tradicional.
-      </div> -->
     </div>
   </div>
 
-  <!-- ── SECCIÓN 3: INTEGRACIÓN PRIMERA SUCURSAL ─────── -->
+  <!-- ── SECCIÓN 5: SOPORTE POR HORA ────────────────── -->
   <div class="section-header">
-    <div class="section-num" style="background:#d97706"><i class="fa-solid fa-building-flag"></i></div>
+    <div class="section-num" style="background:#7c3aed"><i class="fa-solid fa-headset"></i></div>
     <div>
-      <div class="section-title">3. Plan de Integración — Primera Sucursal</div>
-      <div class="section-desc">Costo único de implementación para poner en marcha el sistema en la sucursal piloto</div>
+      <div class="section-title">5. Soporte por Hora</div>
+      <div class="section-desc">Tarifa por hora de atención técnica una vez concluida la garantía inicial</div>
     </div>
   </div>
 
   <div class="est-card">
     <div class="est-card-inner">
       <div class="row g-4">
-        <div class="col-md-8">
-          <div class="phase-item">
-            <div class="phase-icon" style="background:#eff6ff">
-              <i class="fa-solid fa-magnifying-glass-chart" style="color:#2563eb"></i>
+        <div class="col-md-6">
+          <div class="pricing-plan h-100">
+            <div class="plan-name"><i class="fa-solid fa-clock me-2 text-primary"></i>Soporte Normal</div>
+            <div class="mt-2">
+              <span class="plan-price">$300</span>
+              <span class="plan-period"> MXN / hora</span>
             </div>
-            <div class="phase-body">
-              <div class="phase-title">Análisis y configuración inicial</div>
-              <div class="phase-desc">Levantamiento de requerimientos, parametrización del sistema: sucursales, roles de usuario, catálogos, precios y configuraciones específicas del negocio.</div>
-            </div>
-            <div class="phase-price">$5,000</div>
-          </div>
-          <div class="phase-item">
-            <div class="phase-icon" style="background:#fef9c3">
-              <i class="fa-solid fa-database" style="color:#d97706"></i>
-            </div>
-            <div class="phase-body">
-              <div class="phase-title">Migración de inventario</div>
-              <div class="phase-desc">Carga masiva del catálogo de productos, existencias actuales, precios de compra/venta y fechas de caducidad desde archivos Excel o sistema anterior.</div>
-            </div>
-            <div class="phase-price">$8,000</div>
-          </div>
-          <div class="phase-item">
-            <div class="phase-icon" style="background:#f0fdf4">
-              <i class="fa-solid fa-chalkboard-user" style="color:#16a34a"></i>
-            </div>
-            <div class="phase-body">
-              <div class="phase-title">Capacitación del personal</div>
-              <div class="phase-desc">8 horas de capacitación presencial o remota para cajeros, farmacéuticos, gerente y administrador. Manual de usuario incluido.</div>
-            </div>
-            <div class="phase-price">$4,000</div>
-          </div>
-          <div class="phase-item">
-            <div class="phase-icon" style="background:#faf5ff">
-              <i class="fa-solid fa-computer" style="color:#7c3aed"></i>
-            </div>
-            <div class="phase-body">
-              <div class="phase-title">Configuración de dispositivos</div>
-              <div class="phase-desc">Instalación y prueba en equipo del cliente: impresora de tickets, tablet o PC de mostrador, lector de código de barras.</div>
-            </div>
-            <div class="phase-price">$3,000</div>
-          </div>
-          <div class="phase-item" style="border-bottom:none">
-            <div class="phase-icon" style="background:#fef2f2">
-              <i class="fa-solid fa-vial-circle-check" style="color:#dc2626"></i>
-            </div>
-            <div class="phase-body">
-              <div class="phase-title">Pruebas y ajustes post-lanzamiento</div>
-              <div class="phase-desc">2 semanas de acompañamiento intensivo: corrección de incidencias en producción, ajustes de flujos y optimizaciones sin costo adicional.</div>
-            </div>
-            <div class="phase-price">$5,000</div>
+            <hr class="plan-divider">
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Correcciones y ajustes menores</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Consultas y orientación técnica</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Revisión de configuración</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Tiempo de respuesta: 24 hrs hábiles</div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="p-4 rounded-3 h-100 d-flex flex-column justify-content-between" style="background:#fffbeb;border:2px solid #fde68a">
-            <div>
-              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#92400e;margin-bottom:6px">
-                <i class="fa-solid fa-star me-1"></i>Total primera sucursal
-              </div>
-              <div style="font-size:38px;font-weight:800;color:#d97706">$25,000</div>
-              <div style="font-size:13px;color:#92400e;margin-bottom:16px">MXN · Pago único</div>
-              <hr style="border-color:#fde68a">
-              <div style="font-size:12px;color:#92400e;line-height:1.7">
-                <div class="mb-1"><i class="fa-solid fa-check me-2 text-success"></i>Implementación completa</div>
-                <div class="mb-1"><i class="fa-solid fa-check me-2 text-success"></i>Capacitación incluida</div>
-                <div class="mb-1"><i class="fa-solid fa-check me-2 text-success"></i>2 semanas de soporte</div>
-                <div><i class="fa-solid fa-check me-2 text-success"></i>Manual de usuario</div>
-              </div>
+        <div class="col-md-6">
+          <div class="pricing-plan recommended h-100">
+            <div class="recommended-badge">URGENTE</div>
+            <div class="plan-name"><i class="fa-solid fa-bolt me-2 text-warning"></i>Soporte Urgente</div>
+            <div class="mt-2">
+              <span class="plan-price" style="color:#d97706">$500</span>
+              <span class="plan-period"> MXN / hora</span>
             </div>
-            <div class="mt-3 pt-3" style="border-top:1px solid #fde68a">
-              <div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:4px">
-                <i class="fa-solid fa-building me-1"></i>Sucursales adicionales
-              </div>
-              <div style="font-size:20px;font-weight:700;color:#d97706">$12,000 <span style="font-size:13px;font-weight:500">MXN c/u</span></div>
-              <div style="font-size:11px;color:#a16207">(configuración + capacitación simplificada)</div>
-            </div>
+            <hr class="plan-divider">
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Fallas críticas en producción</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Sistema caído o inaccesible</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Errores que impiden operación</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Tiempo de respuesta: menos de 2 horas</div>
+            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Atención inmediata · fines de semana</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── SECCIÓN 4: NUEVAS FUNCIONALIDADES ───────────── -->
+  <!-- ── SECCIÓN 6: NUEVOS MÓDULOS ──────────────────── -->
   <div class="section-header">
-    <div class="section-num" style="background:#16a34a"><i class="fa-solid fa-code-branch"></i></div>
+    <div class="section-num" style="background:#0891b2"><i class="fa-solid fa-puzzle-piece"></i></div>
     <div>
-      <div class="section-title">4. Precio por Nueva Funcionalidad</div>
-      <div class="section-desc">Estimación por desarrollo de módulos adicionales según complejidad</div>
+      <div class="section-title">6. Nuevos Módulos y Funcionalidades</div>
+      <div class="section-desc">Estimación de costo para desarrollo de funcionalidades adicionales según complejidad</div>
     </div>
   </div>
 
@@ -669,427 +624,155 @@
       <div class="row g-3 mb-4">
         <!-- Simple -->
         <div class="col-md-4">
-          <div class="complexity-card" style="background:#f0fdf4;border:1px solid #bbf7d0">
-            <span class="complexity-badge" style="background:#dcfce7;color:#15803d">Módulo Simple</span>
-            <div class="complexity-price" style="color:#16a34a">$8,000</div>
-            <div class="complexity-time"><i class="fa-solid fa-clock me-1"></i>1 – 3 días de desarrollo</div>
+          <div class="complexity-card h-100" style="background:#f0fdf4;border:1.5px solid #86efac">
+            <span class="complexity-badge" style="background:#dcfce7;color:#15803d">Simple</span>
+            <div class="complexity-price" style="color:#15803d">$500–$1,000</div>
+            <div class="complexity-time"><i class="fa-solid fa-calendar me-1"></i>MXN por módulo</div>
+            <hr style="border-color:#bbf7d0;margin:10px 0">
             <div class="complexity-examples">
-              <strong style="color:#14532d">Ejemplos:</strong><br>
-              · Reporte exportable a PDF<br>
-              · Nuevo filtro o búsqueda<br>
-              · Ajuste de UI / diseño<br>
-              · Campo adicional en formulario<br>
-              · Gráfica nueva en dashboard
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#4ade80"></i>Filtros y búsquedas avanzadas</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#4ade80"></i>Reportes simples o exportación</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#4ade80"></i>Ajustes de interfaz (UI/UX)</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#4ade80"></i>Nuevos campos en formularios</div>
+              <div><i class="fa-solid fa-circle-dot me-2" style="color:#4ade80"></i>Validaciones o reglas de negocio</div>
             </div>
           </div>
         </div>
         <!-- Mediano -->
         <div class="col-md-4">
-          <div class="complexity-card" style="background:#eff6ff;border:1px solid #bfdbfe">
-            <span class="complexity-badge" style="background:#dbeafe;color:#1d4ed8">Módulo Mediano</span>
-            <div class="complexity-price" style="color:#2563eb">$15,000</div>
-            <div class="complexity-time"><i class="fa-solid fa-clock me-1"></i>3 – 7 días de desarrollo</div>
+          <div class="complexity-card h-100" style="background:#eff6ff;border:1.5px solid #93c5fd">
+            <span class="complexity-badge" style="background:#dbeafe;color:#1d4ed8">Mediano</span>
+            <div class="complexity-price" style="color:#1d4ed8">$2,000</div>
+            <div class="complexity-time"><i class="fa-solid fa-calendar me-1"></i>MXN por módulo</div>
+            <hr style="border-color:#bfdbfe;margin:10px 0">
             <div class="complexity-examples">
-              <strong style="color:#1e3a8a">Ejemplos:</strong><br>
-              · Módulo de proveedores<br>
-              · App móvil básica (PWA)<br>
-              · Integración de pasarela de pago<br>
-              · Reportes avanzados con filtros<br>
-              · Notificaciones por email/SMS
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#60a5fa"></i>Módulos CRUD completos</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#60a5fa"></i>Integraciones básicas (APIs)</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#60a5fa"></i>Reportes con gráficas nuevas</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#60a5fa"></i>Flujos con múltiples pasos</div>
+              <div><i class="fa-solid fa-circle-dot me-2" style="color:#60a5fa"></i>Permisos y roles adicionales</div>
             </div>
           </div>
         </div>
         <!-- Complejo -->
         <div class="col-md-4">
-          <div class="complexity-card" style="background:#fef2f2;border:1px solid #fecaca">
-            <span class="complexity-badge" style="background:#fee2e2;color:#b91c1c">Módulo Complejo</span>
-            <div class="complexity-price" style="color:#dc2626">$35,000</div>
-            <div class="complexity-time"><i class="fa-solid fa-clock me-1"></i>+ 1 semana de desarrollo</div>
+          <div class="complexity-card h-100" style="background:#faf5ff;border:1.5px solid #c4b5fd">
+            <span class="complexity-badge" style="background:#ede9fe;color:#6d28d9">Complejo</span>
+            <div class="complexity-price" style="color:#6d28d9">$3,000</div>
+            <div class="complexity-time"><i class="fa-solid fa-calendar me-1"></i>MXN por módulo</div>
+            <hr style="border-color:#ddd6fe;margin:10px 0">
             <div class="complexity-examples">
-              <strong style="color:#7f1d1d">Ejemplos:</strong><br>
-              · Facturación electrónica (CFDI 4.0)<br>
-              · Integración con ERP / SAP<br>
-              · Portal de clientes con cuenta<br>
-              · App nativa iOS / Android<br>
-              · Inteligencia artificial / predicciones
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#a78bfa"></i>Módulos complejos multi-entidad</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#a78bfa"></i>Integraciones avanzadas</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#a78bfa"></i>Automatizaciones y workflows</div>
+              <div class="mb-1"><i class="fa-solid fa-circle-dot me-2" style="color:#a78bfa"></i>Sincronización entre sucursales</div>
+              <div><i class="fa-solid fa-circle-dot me-2" style="color:#a78bfa"></i>Módulos con lógica de negocio avanzada</div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Precio por hora -->
-      <div class="p-4 rounded-3 d-flex flex-wrap align-items-center gap-4" style="background:#f8fafc;border:1px solid #e2e8f0">
-        <div class="d-flex align-items-center gap-3">
-          <div style="width:44px;height:44px;background:#f0f4f8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#475569">
-            <i class="fa-solid fa-stopwatch"></i>
-          </div>
-          <div>
-            <div style="font-size:13px;color:#64748b;font-weight:500">Desarrollo puntual / Consultoría técnica</div>
-            <div style="font-size:22px;font-weight:800;color:#0f172a">$600 <span style="font-size:14px;font-weight:500;color:#64748b">MXN / hora</span></div>
-          </div>
-        </div>
-        <div style="font-size:13px;color:#64748b;max-width:380px">
-          Para ajustes menores que no justifican un módulo completo, soporte técnico puntual, consultoría de procesos o revisión de código existente.
-        </div>
+      <div style="font-size:13px;color:#64748b">
+        <i class="fa-solid fa-circle-info me-2 text-primary"></i>
+        Los precios son estimados. Cada solicitud se evalúa individualmente y se proporciona una cotización específica antes de iniciar el desarrollo.
       </div>
     </div>
   </div>
 
-  <!-- ── SECCIÓN 5: SOPORTE MENSUAL ──────────────────── -->
-  <div class="section-header">
-    <div class="section-num" style="background:#dc2626"><i class="fa-solid fa-headset"></i></div>
-    <div>
-      <div class="section-title">5. Planes de Soporte Mensual</div>
-      <div class="section-desc">Acompañamiento técnico continuo para garantizar la estabilidad y evolución del sistema</div>
-    </div>
-  </div>
-
-  <div class="est-card">
-    <div class="est-card-inner">
-      <div class="row g-4 align-items-stretch">
-        <!-- Plan Básico -->
-        <div class="col-md-4">
-          <div class="pricing-plan">
-            <div class="plan-name">Plan Básico</div>
-            <div class="plan-price">$2,500 <span class="plan-period">MXN/mes</span></div>
-            <hr class="plan-divider">
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Corrección de bugs reportados</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Actualizaciones de seguridad</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Monitoreo de disponibilidad</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Tiempo de respuesta: 72 hrs</div>
-            <div class="plan-feature no"><i class="fa-solid fa-xmark"></i>Sin horas de soporte incluidas</div>
-            <div class="plan-feature no"><i class="fa-solid fa-xmark"></i>Sin mejoras de UI/UX</div>
-            <div class="plan-feature no"><i class="fa-solid fa-xmark"></i>Sin nuevas funcionalidades</div>
-            <div class="mt-3">
-              <span class="info-pill pill-blue" style="font-size:11px"><i class="fa-solid fa-store me-1"></i>Para 1–2 sucursales</span>
-            </div>
-          </div>
-        </div>
-        <!-- Plan Estándar (recomendado) -->
-        <div class="col-md-4">
-          <div class="pricing-plan recommended">
-            <div class="recommended-badge"><i class="fa-solid fa-star me-1"></i>Recomendado</div>
-            <div class="plan-name" style="color:#2563eb">Plan Estándar</div>
-            <div class="plan-price">$4,500 <span class="plan-period">MXN/mes</span></div>
-            <hr class="plan-divider">
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Todo lo del Plan Básico</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i><strong>4 horas de soporte incluidas</strong></div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Mejoras menores de UI/UX</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Optimizaciones de rendimiento</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Tiempo de respuesta: 24 hrs</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Reporte mensual de actividad</div>
-            <div class="plan-feature no"><i class="fa-solid fa-xmark"></i>Sin nuevas funcionalidades</div>
-            <div class="mt-3">
-              <span class="info-pill pill-blue" style="font-size:11px"><i class="fa-solid fa-store me-1"></i>Para 3–6 sucursales</span>
-            </div>
-          </div>
-        </div>
-        <!-- Plan Premium -->
-        <div class="col-md-4">
-          <div class="pricing-plan" style="border-color:#7c3aed">
-            <div class="plan-name" style="color:#7c3aed">Plan Premium</div>
-            <div class="plan-price" style="color:#7c3aed">$8,000 <span class="plan-period">MXN/mes</span></div>
-            <hr class="plan-divider">
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Todo lo del Plan Estándar</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i><strong>10 horas de soporte incluidas</strong></div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Acceso prioritario al desarrollador</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>1 funcionalidad menor/mes incluida</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Tiempo de respuesta: <strong>4 hrs</strong></div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Reunión mensual de revisión</div>
-            <div class="plan-feature"><i class="fa-solid fa-check text-success"></i>Actualizaciones con prioridad</div>
-            <div class="mt-3">
-              <span class="info-pill pill-purple" style="font-size:11px"><i class="fa-solid fa-store me-1"></i>Para 7–8 sucursales (cadena completa)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#f8fafc;border:1px solid #e2e8f0;font-size:13px">
-        <i class="fa-solid fa-circle-info text-primary mt-1"></i>
-        <div style="color:#475569">
-          Las horas de soporte no utilizadas en el mes <strong>no se acumulan</strong>. Horas adicionales más allá del plan: <strong>$600 MXN/hora</strong>.
-          Los planes son mensuales sin permanencia forzosa; se puede cambiar de plan con 15 días de aviso.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECCIÓN 7: MIGRACIÓN A .NET + CLOUD RUN ─────── -->
-  <div class="section-header">
-    <div class="section-num" style="background:#0d9488"><i class="fa-brands fa-microsoft"></i></div>
-    <div>
-      <div class="section-title">7. Migración a .NET + Cloud Run</div>
-      <div class="section-desc">Inversión opcional para evolucionar de HTML estático a sistema productivo con backend real</div>
-    </div>
-  </div>
-
-  <div class="est-card">
-    <div class="est-card-inner">
-      <!-- Callout intro -->
-      <div class="p-3 rounded-3 mb-4 d-flex align-items-start gap-3" style="background:#f0fdfa;border:1px solid #99f6e4;font-size:13px">
-        <i class="fa-brands fa-microsoft mt-1" style="color:#0d9488;font-size:18px"></i>
-        <div style="color:#134e4a">
-          <strong>¿Qué es la migración?</strong> Consiste en reescribir el sistema desde HTML/CSS estático a <strong>.NET 9 Razor Pages</strong> con autenticación real (ASP.NET Identity), base de datos PostgreSQL en Cloud SQL y despliegue en Google Cloud Run.
-          El resultado es un sistema productivo completo, con datos reales persistentes y roles de acceso funcionales.
-          <a href="plan-migracion.html" style="color:#0d9488;font-weight:600;margin-left:8px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver plan completo de migración</a>
-        </div>
-      </div>
-
-      <div class="table-responsive">
-        <table class="est-table">
-          <thead>
-            <tr>
-              <th style="width:26%">Concepto</th>
-              <th style="width:30%">Descripción</th>
-              <th style="width:16%">Tipo</th>
-              <th class="price-col" style="width:28%">Costo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="fw-semibold">Desarrollo migración</div><small class="text-muted">16 semanas, 4 fases</small></td>
-              <td>ASP.NET Core Razor Pages, EF Core 9, Identity, Docker, CI/CD con Cloud Build.</td>
-              <td><span class="info-pill pill-amber">Pago único</span></td>
-              <td class="price-col price-amber">$45,000–$64,800</td>
-            </tr>
-            <tr>
-              <td><div class="fw-semibold">Cloud Run hosting</div><small class="text-muted">Reemplaza VPS</small></td>
-              <td>Serverless, autoescalado, pago por uso. Sin administración de servidor.</td>
-              <td><span class="info-pill pill-blue">Recurrente</span></td>
-              <td class="price-col price-blue">~$800 / mes</td>
-            </tr>
-            <tr>
-              <td><div class="fw-semibold">Cloud SQL PostgreSQL</div><small class="text-muted">Reemplaza BD actual</small></td>
-              <td>PostgreSQL 16 administrado en GCP. Backups automáticos, alta disponibilidad.</td>
-              <td><span class="info-pill pill-blue">Recurrente</span></td>
-              <td class="price-col price-blue">~$500 / mes</td>
-            </tr>
-            <tr>
-              <td><div class="fw-semibold">Licencias .NET</div></td>
-              <td>.NET 9, EF Core, ASP.NET Identity — todos MIT / open source.</td>
-              <td><span class="info-pill pill-green">Open Source</span></td>
-              <td class="price-col zero-price">$0</td>
-            </tr>
-            <tr>
-              <td><div class="fw-semibold">Secret Manager + IAM</div></td>
-              <td>Gestión segura de credenciales en GCP. Dentro del free tier.</td>
-              <td><span class="info-pill pill-green">GCP Free Tier</span></td>
-              <td class="price-col zero-price">$0</td>
-            </tr>
-            <tr class="subtotal-row">
-              <td colspan="3"><i class="fa-solid fa-circle-arrow-right me-2"></i>Subtotal nueva infraestructura</td>
-              <td class="price-col">~$1,300 / mes</td>
-            </tr>
-            <tr>
-              <td colspan="3">
-                <i class="fa-solid fa-arrow-trend-down me-2 text-success"></i>
-                <strong class="price-green">Ahorro vs. VPS actual</strong>
-                <small class="text-muted ms-2">($1,521 − $1,300)</small>
-              </td>
-              <td class="price-col price-green">~$221 / mes</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Comparativa visual -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
-          <div class="p-3 rounded-3 text-center" style="background:#fef2f2;border:1.5px solid #fca5a5">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#b91c1c;margin-bottom:8px">
-              <i class="fa-solid fa-server me-1"></i>Infraestructura Actual (VPS)
-            </div>
-            <div style="font-size:12px;color:#7f1d1d;line-height:1.9;text-align:left">
-              <div class="d-flex justify-content-between"><span>Servidor VPS</span><strong>$800</strong></div>
-              <div class="d-flex justify-content-between"><span>Base de datos</span><strong>$500</strong></div>
-              <div class="d-flex justify-content-between"><span>Almacenamiento</span><strong>$200</strong></div>
-              <div class="d-flex justify-content-between"><span>Dominio</span><strong>$21</strong></div>
-              <hr style="border-color:#fca5a5;margin:6px 0">
-              <div class="d-flex justify-content-between"><span><strong>Total / mes</strong></span><strong style="font-size:16px;color:#dc2626">$1,521 MXN</strong></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="p-3 rounded-3 text-center" style="background:#f0fdf4;border:1.5px solid #86efac">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#15803d;margin-bottom:8px">
-              <i class="fa-solid fa-cloud me-1"></i>Infraestructura Objetivo (Cloud Run)
-            </div>
-            <div style="font-size:12px;color:#14532d;line-height:1.9;text-align:left">
-              <div class="d-flex justify-content-between"><span>Cloud Run</span><strong>~$800</strong></div>
-              <div class="d-flex justify-content-between"><span>Cloud SQL</span><strong>~$500</strong></div>
-              <div class="d-flex justify-content-between"><span>Dominio</span><strong>$21</strong></div>
-              <div class="d-flex justify-content-between"><span>Almacenamiento / CDN</span><strong>~$0</strong></div>
-              <hr style="border-color:#86efac;margin:6px 0">
-              <div class="d-flex justify-content-between"><span><strong>Total / mes</strong></span><strong style="font-size:16px;color:#16a34a">~$1,300 MXN</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Info box -->
-      <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-3" style="background:#faf5ff;border:1px solid #ede9fe;font-size:13px">
-        <i class="fa-solid fa-circle-info mt-1" style="color:#7c3aed"></i>
-        <div style="color:#4c1d95">
-          <strong>Roadmap completo disponible:</strong> El plan de migración detalla 4 fases, stack tecnológico, modelos de datos EF Core, MCP tools para asistir la migración y cronograma semana a semana.
-          <a href="plan-migracion.html" style="color:#7c3aed;font-weight:600;margin-left:6px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver Plan de Migración completo</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECCIÓN 8: RESUMEN TOTAL ────────────────────── -->
+  <!-- ── SECCIÓN 7: RESUMEN ──────────────────────────── -->
   <div class="section-header">
     <div class="section-num" style="background:#0f172a"><i class="fa-solid fa-calculator"></i></div>
     <div>
-      <div class="section-title">8. Resumen de Inversión — Primer Año</div>
-      <div class="section-desc">Costo total estimado para la implementación y operación durante los primeros 12 meses · <em style="color:#64748b">Ver escenario con migración al pie.</em></div>
+      <div class="section-title">7. Resumen de Inversión</div>
+      <div class="section-desc">Consolidado de costos de implementación y operación del sistema</div>
     </div>
   </div>
 
   <div class="summary-card">
-    <div class="summary-title"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Proyección de Costos — Año 1</div>
-    <div class="summary-subtitle">Basado en Plan Estándar de soporte e integración de primera sucursal</div>
+    <div class="summary-title"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Propuesta de Inversión</div>
+    <div class="summary-subtitle">Desglose de costos para la implementación completa del sistema</div>
     <table class="summary-table">
       <tbody>
         <tr>
           <td>
-            <i class="fa-solid fa-server me-2" style="opacity:.6"></i>
-            Infraestructura en la nube
-          </td>
-          <td><span class="type-pill">Recurrente · 12 meses</span></td>
-          <td class="amount">$18,252 MXN</td>
-        </tr>
-        <tr>
-          <td>
-            <i class="fa-solid fa-robot me-2" style="opacity:.6"></i>
-            Claude Code Pro (Max Plan)
-          </td>
-          <td><span class="type-pill">Recurrente · 12 meses</span></td>
-          <td class="amount">$20,400 MXN</td>
-        </tr>
-        <tr>
-          <td>
-            <i class="fa-solid fa-building-flag me-2" style="opacity:.6"></i>
-            Integración primera sucursal
+            <i class="fa-solid fa-laptop-medical me-2" style="opacity:.6"></i>
+            Sistema FarmaAdmin completo
           </td>
           <td><span class="type-pill">Pago único</span></td>
-          <td class="amount">$25,000 MXN</td>
+          <td class="amount">$45,000 MXN</td>
+        </tr>
+        <tr>
+          <td>
+            <i class="fa-solid fa-globe me-2" style="opacity:.6"></i>
+            Dominio (.com.mx — 1 año)
+          </td>
+          <td><span class="type-pill">Anual · opcional</span></td>
+          <td class="amount">$400 MXN</td>
+        </tr>
+        <tr>
+          <td>
+            <i class="fa-solid fa-server me-2" style="opacity:.6"></i>
+            Hosting (plan según sucursales)
+          </td>
+          <td><span class="type-pill">Recurrente · mensual</span></td>
+          <td class="amount">desde $200 MXN/mes</td>
+        </tr>
+        <tr>
+          <td>
+            <i class="fa-solid fa-shield-check me-2" style="opacity:.6"></i>
+            Garantía y soporte inicial
+          </td>
+          <td><span class="type-pill">2 meses incluidos</span></td>
+          <td class="amount" style="color:#4ade80">$0 MXN</td>
         </tr>
         <tr>
           <td>
             <i class="fa-solid fa-headset me-2" style="opacity:.6"></i>
-            Soporte Plan Estándar
+            Soporte posterior (opcional)
           </td>
-          <td><span class="type-pill">Recurrente · 12 meses</span></td>
-          <td class="amount">$54,000 MXN</td>
+          <td><span class="type-pill">Por hora</span></td>
+          <td class="amount" style="opacity:.75">$300–$500 MXN/hr</td>
         </tr>
         <tr>
           <td>
-            <i class="fa-solid fa-code-branch me-2" style="opacity:.6"></i>
-            Nuevas funcionalidades
+            <i class="fa-solid fa-puzzle-piece me-2" style="opacity:.6"></i>
+            Nuevas funcionalidades (opcional)
           </td>
           <td><span class="type-pill">Variable</span></td>
-          <td class="amount" style="opacity:.7">Según requerimiento</td>
-        </tr>
-        <tr style="opacity:.7">
-          <td>
-            <i class="fa-brands fa-microsoft me-2" style="opacity:.6"></i>
-            Migración a .NET + Cloud Run <em style="font-size:11px;opacity:.8">(opcional)</em>
-          </td>
-          <td><span class="type-pill">Pago único</span></td>
-          <td class="amount">$45,000–$64,800 MXN</td>
+          <td class="amount" style="opacity:.75">$500–$3,000 MXN</td>
         </tr>
       </tbody>
     </table>
     <div class="summary-total">
       <div>
-        <div class="summary-total-label">Total estimado primer año</div>
-        <div class="summary-note">Sin incluir desarrollo de nuevas funcionalidades ni migración</div>
+        <div class="summary-total-label">Total inversión inicial</div>
+        <div class="summary-note">Sistema + dominio 1 año · IVA no incluido</div>
       </div>
       <div class="text-end">
-        <div class="summary-total-amount">$117,652</div>
-        <div style="font-size:14px;opacity:.75">MXN · IVA no incluido</div>
+        <div class="summary-total-amount">$45,400</div>
+        <div style="font-size:14px;opacity:.75">MXN</div>
       </div>
     </div>
-
-    <!-- Bloque escenario migración -->
     <div class="mt-4 p-3 rounded-3" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);font-size:13px;color:rgba(255,255,255,.9)">
-      <div class="d-flex align-items-start gap-2">
-        <i class="fa-brands fa-microsoft mt-1" style="opacity:.8"></i>
-        <div>
-          <strong>Escenario con migración:</strong> Primer año ~$162,652–$177,652 MXN (incluye desarrollo de migración + infra Cloud Run + soporte).
-          Desde el año 2, ahorro neto en infraestructura de <strong>~$2,652 MXN/año</strong> vs. VPS actual.
-          <a href="plan-migracion.html" style="color:rgba(255,255,255,.9);font-weight:600;margin-left:6px"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Ver Plan de Migración</a>
+      <div class="row g-3">
+        <div class="col-sm-4 text-center">
+          <div style="opacity:.7;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Pago único (sistema)</div>
+          <strong style="font-size:18px">$45,000 MXN</strong>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Desglose mensual recurrente -->
-  <div class="row g-3 mb-5">
-    <div class="col-12">
-      <div class="p-3 rounded-3" style="background:#fff;border:1px solid #e2e8f0">
-        <div style="font-size:13px;font-weight:600;color:#475569;margin-bottom:12px">
-          <i class="fa-solid fa-calendar-check me-2 text-primary"></i>Desglose mensual recurrente (a partir del mes 2)
+        <div class="col-sm-4 text-center" style="border-left:1px solid rgba(255,255,255,.2);border-right:1px solid rgba(255,255,255,.2)">
+          <div style="opacity:.7;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Costo recurrente mensual</div>
+          <strong style="font-size:18px">desde $200 MXN</strong>
         </div>
-        <div class="row g-3">
-          <div class="col-sm-4">
-            <div class="d-flex justify-content-between py-2 border-bottom">
-              <span style="font-size:13px;color:#64748b">Infraestructura</span>
-              <strong style="color:#0ea5e9">$1,521 MXN</strong>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="d-flex justify-content-between py-2 border-bottom">
-              <span style="font-size:13px;color:#64748b">Claude Code Pro</span>
-              <strong style="color:#7c3aed">$1,700 MXN</strong>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="d-flex justify-content-between py-2 border-bottom">
-              <span style="font-size:13px;color:#64748b">Soporte Estándar</span>
-              <strong style="color:#16a34a">$4,500 MXN</strong>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="d-flex justify-content-between pt-1">
-              <span style="font-size:13px;font-weight:600;color:#0f172a">Total mensual recurrente</span>
-              <strong style="font-size:16px;color:#2563eb">$7,721 MXN / mes</strong>
-            </div>
-          </div>
+        <div class="col-sm-4 text-center">
+          <div style="opacity:.7;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Garantía incluida</div>
+          <strong style="font-size:18px">2 meses</strong>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-7">
-      <div class="validity-note">
-        <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
-        <div>
-          <strong>Validez de la cotización:</strong> Esta propuesta es válida por <strong>30 días</strong> a partir del 4 de marzo de 2026.
-          Los precios están expresados en pesos mexicanos (MXN). IVA no incluido.
-          Tipo de cambio USD referencial: $17.00 MXN.
-        </div>
-      </div>
-    </div>
-    <div class="col-md-5">
-      <div class="contact-info">
-        <div class="contact-label">Información de contacto</div>
-        <div class="contact-item"><i class="fa-solid fa-user text-primary"></i>Desarrollador FarmaAdmin</div>
-        <div class="contact-item"><i class="fa-solid fa-envelope text-primary"></i>contacto@farmaadmin.com.mx</div>
-        <div class="contact-item"><i class="fa-solid fa-phone text-primary"></i>+52 (55) 0000-0000</div>
-        <div class="contact-item"><i class="fa-solid fa-globe text-primary"></i>www.farmaadmin.com.mx</div>
       </div>
     </div>
   </div>
 
   <!-- Botón imprimir -->
   <div class="text-center py-4 no-print">
-    <button class="btn btn-primary btn-lg px-5 rounded-pill" onclick="window.print()" style="font-weight:600">
-      <i class="fa-solid fa-print me-2"></i>Imprimir / Exportar PDF
-    </button>
+    
     <a href="dashboard.html" class="btn btn-outline-secondary btn-lg px-4 rounded-pill ms-3" style="font-weight:500">
       <i class="fa-solid fa-arrow-left me-2"></i>Volver al sistema
     </a>
@@ -1098,13 +781,5 @@
 </div><!-- /doc-body -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-(function(){
-  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
-  var c=localStorage.getItem('accentColor');
-  if(c){ document.documentElement.style.setProperty('--primary',c); }
-})();
-</script>
-<script src="sidebar-compact.js"></script>
 </body>
 </html>
