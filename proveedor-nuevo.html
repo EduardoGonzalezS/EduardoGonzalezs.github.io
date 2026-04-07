@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Proveedor — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item activo"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Nuevo proveedor</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span>
+          <a href="proveedores.html">Proveedores</a> <span>/</span>
+          <span>Nuevo</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+      <div class="contenedor-angosto">
+        <div class="formulario-rb">
+          <h3 class="form-seccion__titulo" style="margin-bottom: var(--sp-6);">🏪 Datos del proveedor</h3>
+
+          <form action="proveedores.html" method="get">
+
+            <fieldset style="margin-bottom: var(--sp-6);">
+              <legend>Información general</legend>
+              <div class="form-grid" style="padding-top: var(--sp-4);">
+                <div class="campo col-span-2">
+                  <label for="nombre-prov">Nombre del proveedor <span class="req">*</span></label>
+                  <input type="text" id="nombre-prov" name="nombre" placeholder="Ej: Abastecedora Regia S.A." required>
+                </div>
+                <div class="campo">
+                  <label for="categoria-prov">Categoría de productos <span class="req">*</span></label>
+                  <select id="categoria-prov" name="categoria" required>
+                    <option value="">Seleccionar</option>
+                    <option value="harinas">Harinas</option>
+                    <option value="lacteos">Lácteos</option>
+                    <option value="endulzantes">Endulzantes</option>
+                    <option value="esencias">Esencias y especias</option>
+                    <option value="chocolates">Chocolates</option>
+                    <option value="varios">Varios / General</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="tipo-prov">Tipo</label>
+                  <select id="tipo-prov" name="tipo">
+                    <option value="tienda">Tienda / Supermercado</option>
+                    <option value="mercado">Mercado local</option>
+                    <option value="mayorista">Mayorista</option>
+                    <option value="distribuidor">Distribuidor</option>
+                    <option value="directo">Fabricante directo</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset style="margin-bottom: var(--sp-6);">
+              <legend>Datos de contacto</legend>
+              <div class="form-grid" style="padding-top: var(--sp-4);">
+                <div class="campo">
+                  <label for="telefono-prov">Teléfono / WhatsApp</label>
+                  <input type="tel" id="telefono-prov" name="telefono" placeholder="Ej: 812-345-6789">
+                </div>
+                <div class="campo">
+                  <label for="email-prov">Correo electrónico</label>
+                  <input type="email" id="email-prov" name="email" placeholder="contacto@proveedor.com">
+                </div>
+                <div class="campo col-span-2">
+                  <label for="direccion-prov">Dirección / Ubicación</label>
+                  <input type="text" id="direccion-prov" name="direccion" placeholder="Ej: Costco Galerías, Monterrey">
+                </div>
+                <div class="campo">
+                  <label for="horario-prov">Horario de atención</label>
+                  <input type="text" id="horario-prov" name="horario" placeholder="Ej: Lun–Sáb 9am–8pm">
+                </div>
+                <div class="campo">
+                  <label for="web-prov">Sitio web</label>
+                  <input type="url" id="web-prov" name="web" placeholder="https://www.proveedor.com">
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset style="margin-bottom: var(--sp-6);">
+              <legend>Información de pago y compra</legend>
+              <div class="form-grid" style="padding-top: var(--sp-4);">
+                <div class="campo">
+                  <label for="forma-pago">Forma de pago</label>
+                  <select id="forma-pago" name="pago">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="tarjeta" selected>Tarjeta de débito/crédito</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="mixto">Mixto</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="entrega">¿Hace entregas a domicilio?</label>
+                  <select id="entrega" name="entrega">
+                    <option value="no">No — compra en tienda</option>
+                    <option value="si">Sí — entrega a domicilio</option>
+                    <option value="pedido">Sí — con pedido previo</option>
+                  </select>
+                </div>
+                <div class="campo col-span-2">
+                  <label for="notas-prov">Notas y observaciones</label>
+                  <textarea id="notas-prov" name="notas" placeholder="Ej: Solo acepta efectivo. Mejor precio los martes. Ofrece descuento por volumen mayor a 5kg..."></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form-acciones">
+              <button type="submit" class="btn btn-primario">✅ Guardar proveedor</button>
+              <a href="proveedores.html" class="btn btn-ghost">Cancelar</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+</body>
+</html>

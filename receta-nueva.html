@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Receta — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Inputs y selects dentro de la tabla de ingredientes */
+    .tabla-ing select,
+    .tabla-ing input[type="text"] {
+      border: 1.5px solid var(--borde);
+      border-radius: var(--radio-xs);
+      padding: 0.4rem 0.6rem;
+      font-family: var(--f-cuerpo);
+      font-size: var(--tx-sm);
+      background: var(--fondo-input);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .tabla-ing input[type="number"] {
+      border: 1.5px solid var(--borde);
+      border-radius: var(--radio-xs);
+      padding: 0.4rem 0.6rem;
+      font-family: var(--f-cuerpo);
+      font-size: var(--tx-sm);
+      background: var(--fondo-input);
+      width: 80px;
+      box-sizing: border-box;
+    }
+    /* Botón eliminar fila / paso */
+    .btn-eliminar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      color: var(--texto-muted);
+      cursor: pointer;
+      border-radius: var(--radio-xs);
+      font-size: 1rem;
+      line-height: 1;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .btn-eliminar:hover {
+      background: var(--peligro-suave);
+      color: var(--peligro);
+    }
+    /* Fila de un paso */
+    .paso-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-4);
+    }
+    .paso-item label {
+      min-width: 64px;
+      font-weight: 700;
+      color: var(--texto-suave);
+      font-size: var(--tx-sm);
+      white-space: nowrap;
+    }
+    /* Input de cada paso — más prominente */
+    .paso-item input[type="text"] {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      font-size: var(--tx-base);
+      border: 2px solid var(--borde);
+      border-radius: var(--radio-sm);
+      background: var(--fondo-input);
+      font-family: var(--f-cuerpo);
+      color: var(--texto);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      min-height: 48px;
+      line-height: 1.5;
+    }
+    .paso-item input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primario);
+      box-shadow: 0 0 0 3px var(--borde-focus);
+    }
+    .paso-item input[type="text"]::placeholder {
+      color: var(--texto-muted);
+      font-style: italic;
+    }
+    @media (max-width: 640px) {
+      .tabla-ing input[type="number"],
+      .tabla-ing input[type="text"] { width: 100%; }
+      .paso-item { align-items: flex-start; }
+      .paso-item label { padding-top: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item activo"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Nueva receta</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span>
+          <a href="index.html#recetas">Recetas</a> <span>/</span>
+          <span>Nueva</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+      <div class="contenedor-angosto">
+
+        <form action="index.html" method="get">
+
+          <!-- Sección 1: Información general -->
+          <div class="formulario-rb mb-6">
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">📋 Información general</h3>
+              <div class="form-grid">
+                <div class="campo col-span-2">
+                  <label for="nombre-receta">Nombre de la receta <span class="req">*</span></label>
+                  <input type="text" id="nombre-receta" name="nombre" placeholder="Ej: Galletas de canela con nuez" required>
+                </div>
+                <div class="campo">
+                  <label for="categoria-receta">Categoría <span class="req">*</span></label>
+                  <select id="categoria-receta" name="categoria" required>
+                    <option value="">Seleccionar categoría</option>
+                    <option value="galletas">Galletas</option>
+                    <option value="pasteles">Pasteles / Tartas</option>
+                    <option value="pan">Pan artesanal</option>
+                    <option value="roles">Roles / Conchas</option>
+                    <option value="brownies">Brownies / Cuadros</option>
+                    <option value="panques">Panqués / Muffins</option>
+                    <option value="otros">Otros</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="temporada">Temporada</label>
+                  <select id="temporada" name="temporada">
+                    <option value="todo">Todo el año</option>
+                    <option value="navidad">Navidad</option>
+                    <option value="san-valentin">San Valentín</option>
+                    <option value="dia-madres">Día de las Madres</option>
+                    <option value="halloween">Halloween</option>
+                    <option value="primavera">Primavera</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">⚖️ Rendimiento y horneado</h3>
+              <div class="form-grid">
+                <div class="campo">
+                  <label for="rendimiento">Rendimiento (piezas) <span class="req">*</span></label>
+                  <input type="number" id="rendimiento" name="rendimiento" placeholder="Ej: 24" min="1" required>
+                </div>
+                <div class="campo">
+                  <label for="peso-pieza">Peso por pieza (g)</label>
+                  <input type="number" id="peso-pieza" name="peso_pieza" placeholder="Ej: 35" min="0" step="0.1">
+                  <span class="campo__ayuda">Solo para productos individuales</span>
+                </div>
+                <div class="campo">
+                  <label for="temperatura">Temperatura de horno (°C)</label>
+                  <input type="number" id="temperatura" name="temperatura" placeholder="Ej: 175" min="100" max="280">
+                </div>
+                <div class="campo">
+                  <label for="tiempo-horno">Tiempo de horneado (min)</label>
+                  <input type="number" id="tiempo-horno" name="tiempo" placeholder="Ej: 18" min="1">
+                </div>
+                <div class="campo">
+                  <label for="dificultad">Dificultad</label>
+                  <select id="dificultad" name="dificultad">
+                    <option value="facil">⭐ Fácil</option>
+                    <option value="media" selected>⭐⭐ Media</option>
+                    <option value="dificil">⭐⭐⭐ Difícil</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="precio-venta">Precio de venta del lote ($) <span class="req">*</span></label>
+                  <input type="number" id="precio-venta" name="precio_venta" placeholder="Ej: 120.00" min="0" step="0.01" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 2: Ingredientes (dinámica) -->
+          <div class="formulario-rb mb-6">
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">🧂 Ingredientes de la receta</h3>
+
+              <div class="tabla-contenedor mb-4">
+                <div class="tabla-scroll">
+                  <table class="tabla-rb tabla-ing" id="tabla-ingredientes">
+                    <thead>
+                      <tr>
+                        <th style="width:36px">#</th>
+                        <th>Ingrediente</th>
+                        <th style="width:90px">Cantidad</th>
+                        <th style="width:80px">Unidad</th>
+                        <th style="width:36px"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-ingredientes">
+                      <!-- Fila 1 -->
+                      <tr>
+                        <td class="col-muted">1</td>
+                        <td><input type="text" list="lista-ingredientes" name="ing_1" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td><input type="number" name="cant_1" placeholder="0" min="0" step="0.1"></td>
+                        <td><select name="und_1">
+                          <option value="g">g</option>
+                          <option value="kg">kg</option>
+                          <option value="ml">ml</option>
+                          <option value="L">L</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarIngrediente(this)" title="Eliminar fila">🗑️</button></td>
+                      </tr>
+                      <!-- Fila 2 -->
+                      <tr>
+                        <td class="col-muted">2</td>
+                        <td><input type="text" list="lista-ingredientes" name="ing_2" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td><input type="number" name="cant_2" placeholder="0" min="0" step="0.1"></td>
+                        <td><select name="und_2">
+                          <option value="g">g</option>
+                          <option value="kg">kg</option>
+                          <option value="ml">ml</option>
+                          <option value="L">L</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarIngrediente(this)" title="Eliminar fila">🗑️</button></td>
+                      </tr>
+                      <!-- Fila 3 -->
+                      <tr>
+                        <td class="col-muted">3</td>
+                        <td><input type="text" list="lista-ingredientes" name="ing_3" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td><input type="number" name="cant_3" placeholder="0" min="0" step="0.1"></td>
+                        <td><select name="und_3">
+                          <option value="g">g</option>
+                          <option value="kg">kg</option>
+                          <option value="ml">ml</option>
+                          <option value="L">L</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarIngrediente(this)" title="Eliminar fila">🗑️</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Lista de ingredientes disponibles para búsqueda -->
+              <datalist id="lista-ingredientes">
+                <option value="Harina de trigo">
+                <option value="Harina para pastel">
+                <option value="Mantequilla sin sal">
+                <option value="Crema para batir">
+                <option value="Leche entera">
+                <option value="Azúcar estándar">
+                <option value="Azúcar glass">
+                <option value="Huevo blanco">
+                <option value="Extracto de vainilla">
+                <option value="Polvo para hornear">
+                <option value="Bicarbonato de sodio">
+                <option value="Sal fina">
+                <option value="Chispas de chocolate">
+                <option value="Chocolate oscuro 70%">
+                <option value="Nuez pacana">
+                <option value="Coco rallado">
+                <option value="Canela en polvo">
+                <option value="Queso crema">
+                <option value="Piloncillo">
+                <option value="Crema cheese">
+                <option value="Levadura seca">
+              </datalist>
+
+              <button type="button" onclick="agregarIngrediente()" class="btn btn-ghost btn-sm">
+                ➕ Agregar ingrediente
+              </button>
+
+              <!-- Empaque -->
+              <fieldset style="margin-top: var(--sp-6);">
+                <legend>Empaque</legend>
+                <div class="form-grid">
+                  <div class="campo">
+                    <label for="tipo-empaque">Tipo de empaque</label>
+                    <select id="tipo-empaque" name="empaque">
+                      <option value="ninguno">Sin empaque especial</option>
+                      <option value="bolsa" selected>Bolsa plástica</option>
+                      <option value="caja">Caja de cartón</option>
+                      <option value="cinta">Cinta y papel kraft</option>
+                      <option value="molde">Molde desechable</option>
+                    </select>
+                  </div>
+                  <div class="campo">
+                    <label for="costo-empaque">Costo del empaque ($)</label>
+                    <input type="number" id="costo-empaque" name="costo_empaque" placeholder="0.00" min="0" step="0.01">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <!-- Sección 3: Instrucciones (dinámica) -->
+          <div class="formulario-rb mb-6">
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">📝 Instrucciones paso a paso</h3>
+
+              <div id="lista-pasos">
+                <div class="paso-item">
+                  <label>Paso 1</label>
+                  <input type="text" name="paso_1" placeholder="Ej: Precalentar el horno a 175°C">
+                  <button type="button" class="btn-eliminar" onclick="eliminarPaso(this)" title="Eliminar paso">🗑️</button>
+                </div>
+                <div class="paso-item">
+                  <label>Paso 2</label>
+                  <input type="text" name="paso_2" placeholder="Ej: Acremar mantequilla con azúcar">
+                  <button type="button" class="btn-eliminar" onclick="eliminarPaso(this)" title="Eliminar paso">🗑️</button>
+                </div>
+                <div class="paso-item">
+                  <label>Paso 3</label>
+                  <input type="text" name="paso_3" placeholder="Ej: Agregar huevo y vainilla">
+                  <button type="button" class="btn-eliminar" onclick="eliminarPaso(this)" title="Eliminar paso">🗑️</button>
+                </div>
+              </div>
+
+              <button type="button" onclick="agregarPaso()" class="btn btn-ghost btn-sm" style="margin-top: var(--sp-2); margin-bottom: var(--sp-6);">
+                ➕ Agregar paso
+              </button>
+
+              <div class="campo">
+                <label for="notas-receta">Notas del chef / Consejos</label>
+                <textarea id="notas-receta" name="notas" placeholder="Trucos, sustituciones de ingredientes, observaciones importantes..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-acciones">
+            <button type="submit" class="btn btn-primario btn-lg">✅ Registrar receta</button>
+            <a href="index.html" class="btn btn-ghost">Cancelar</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item activo"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+<script>
+  const OPCIONES_UNIDADES = `
+    <option value="g">g</option>
+    <option value="kg">kg</option>
+    <option value="ml">ml</option>
+    <option value="L">L</option>
+    <option value="pza">pza</option>
+    <option value="cdita">cdita</option>
+    <option value="cda">cda</option>
+    <option value="taza">taza</option>
+  `;
+
+  // ── Ingredientes ────────────────────────────────────────────
+  function agregarIngrediente() {
+    const tbody = document.getElementById('tbody-ingredientes');
+    const n = tbody.rows.length + 1;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="col-muted">${n}</td>
+      <td><input type="text" list="lista-ingredientes" name="ing_${n}" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+      <td><input type="number" name="cant_${n}" placeholder="0" min="0" step="0.1"></td>
+      <td><select name="und_${n}">${OPCIONES_UNIDADES}</select></td>
+      <td><button type="button" class="btn-eliminar" onclick="eliminarIngrediente(this)" title="Eliminar fila">🗑️</button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelector('input[type="text"]').focus();
+  }
+
+  function eliminarIngrediente(btn) {
+    const tbody = document.getElementById('tbody-ingredientes');
+    if (tbody.rows.length <= 1) return; // mínimo 1 fila
+    btn.closest('tr').remove();
+    renumerarIngredientes();
+  }
+
+  function renumerarIngredientes() {
+    const filas = document.querySelectorAll('#tbody-ingredientes tr');
+    filas.forEach((tr, i) => {
+      const n = i + 1;
+      tr.cells[0].textContent = n;
+      tr.querySelector('input[name^="ing_"]').name  = `ing_${n}`;
+      tr.querySelector('input[name^="cant_"]').name = `cant_${n}`;
+      tr.querySelector('select[name^="und_"]').name = `und_${n}`;
+    });
+  }
+
+  // ── Pasos ───────────────────────────────────────────────────
+  function agregarPaso() {
+    const lista = document.getElementById('lista-pasos');
+    const n = lista.children.length + 1;
+    const div = document.createElement('div');
+    div.className = 'paso-item';
+    div.innerHTML = `
+      <label>Paso ${n}</label>
+      <input type="text" name="paso_${n}" placeholder="Describe este paso...">
+      <button type="button" class="btn-eliminar" onclick="eliminarPaso(this)" title="Eliminar paso">🗑️</button>
+    `;
+    lista.appendChild(div);
+    div.querySelector('input').focus();
+  }
+
+  function eliminarPaso(btn) {
+    const lista = document.getElementById('lista-pasos');
+    if (lista.children.length <= 1) return; // mínimo 1 paso
+    btn.closest('.paso-item').remove();
+    renumerarPasos();
+  }
+
+  function renumerarPasos() {
+    const pasos = document.querySelectorAll('.paso-item');
+    pasos.forEach((div, i) => {
+      const n = i + 1;
+      div.querySelector('label').textContent = `Paso ${n}`;
+      div.querySelector('input').name = `paso_${n}`;
+    });
+  }
+</script>
+
+</body>
+</html>

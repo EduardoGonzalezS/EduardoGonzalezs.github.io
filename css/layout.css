@@ -1,0 +1,515 @@
+/* ============================================================
+   RB Repostería — layout.css
+   Sidebar, header, grid de contenido, responsive, mobile nav
+   ============================================================ */
+
+/* ── Shell de la aplicación ────────────────────────────────── */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--fondo-sidebar);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+/* Logo / marca */
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-5);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar__logo-icono {
+  width: 40px;
+  height: 40px;
+  background: var(--primario);
+  border-radius: var(--radio-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  font-weight: 700;
+  color: var(--texto-blanco);
+  flex-shrink: 0;
+}
+
+.sidebar__logo-texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.sidebar__logo-titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  font-weight: 700;
+  color: var(--texto-blanco);
+}
+
+.sidebar__logo-sub {
+  font-size: var(--tx-xs);
+  color: var(--texto-sidebar);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Menú de navegación */
+.sidebar__nav {
+  flex: 1;
+  padding: var(--sp-4) 0;
+  overflow-y: auto;
+}
+
+.sidebar__seccion {
+  padding: var(--sp-4) var(--sp-5) var(--sp-2);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-muted);
+}
+
+.sidebar__item {
+  display: block;
+  padding: var(--sp-2) var(--sp-5);
+  color: var(--texto-sidebar);
+  font-size: var(--tx-sm);
+  font-weight: 500;
+  border-radius: 0;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.sidebar__item:hover {
+  background: rgba(255,255,255,0.07);
+  color: var(--texto-blanco);
+}
+
+.sidebar__item.activo {
+  background: var(--primario);
+  color: var(--texto-blanco);
+  font-weight: 700;
+}
+
+.sidebar__item.activo:hover {
+  background: var(--primario-hover);
+}
+
+.sidebar__item .icono {
+  font-size: 1.1em;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Footer del sidebar */
+.sidebar__footer {
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+  text-align: center;
+}
+
+/* ── Toggle mobile (CSS checkbox hack) ─────────────────────── */
+.menu-checkbox {
+  display: none;
+}
+
+.menu-btn {
+  display: none;
+  position: fixed;
+  top: var(--sp-4);
+  left: var(--sp-4);
+  z-index: 200;
+  background: var(--primario);
+  color: white;
+  border: none;
+  border-radius: var(--radio-sm);
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sombra-md);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+/* ── Área de contenido principal ───────────────────────────── */
+.contenido-principal {
+  margin-left: 240px;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header de página ───────────────────────────────────────── */
+.header-pagina {
+  background: var(--fondo-tarjeta);
+  border-bottom: 1px solid var(--borde);
+  padding: var(--sp-5) var(--sp-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-pagina__izq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.header-pagina__titulo {
+  font-size: var(--tx-xl);
+  font-weight: 700;
+  color: var(--texto);
+  font-family: var(--f-titulo);
+}
+
+.header-pagina__ruta {
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.header-pagina__ruta a {
+  color: var(--texto-muted);
+}
+
+.header-pagina__ruta a:hover {
+  color: var(--primario);
+}
+
+.header-pagina__der {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* ── Cuerpo de la página ────────────────────────────────────── */
+.cuerpo-pagina {
+  padding: var(--sp-8);
+  flex: 1;
+}
+
+/* ── Grid de tarjetas de recetas ────────────────────────────── */
+.grid-recetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: var(--sp-5);
+}
+
+/* ── Grid de estadísticas ───────────────────────────────────── */
+.grid-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+
+/* ── Layout de dos columnas ─────────────────────────────────── */
+.layout-2col {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.layout-2col-igual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-6);
+}
+
+/* ── Contenedor centrado (para formularios) ─────────────────── */
+.contenedor-angosto {
+  max-width: 720px;
+}
+
+.contenedor-medio {
+  max-width: 960px;
+}
+
+/* ── Sección con título ─────────────────────────────────────── */
+.seccion {
+  margin-bottom: var(--sp-8);
+}
+
+.seccion__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 2px solid var(--borde);
+}
+
+.seccion__titulo {
+  font-size: var(--tx-xl);
+  font-family: var(--f-titulo);
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.seccion__titulo::before {
+  content: '';
+  width: 4px;
+  height: 1.2em;
+  background: var(--primario);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ── Nav inferior mobile ────────────────────────────────────── */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--fondo-sidebar);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 100;
+  padding: var(--sp-2) 0 calc(var(--sp-2) + env(safe-area-inset-bottom));
+}
+
+.nav-mobile__lista {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 var(--sp-1);
+}
+
+.nav-mobile__lista::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-mobile__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--texto-sidebar);
+  font-size: var(--tx-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+  flex-shrink: 0;
+  min-width: 58px;
+}
+
+.nav-mobile__item:hover,
+.nav-mobile__item.activo {
+  color: var(--secundario);
+}
+
+.nav-mobile__icono {
+  font-size: 1.3rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .grid-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .layout-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: var(--sombra-hover);
+  }
+
+  .menu-checkbox:checked ~ .sidebar {
+    transform: translateX(0);
+  }
+
+  .menu-checkbox:checked ~ .overlay {
+    display: block;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  .contenido-principal {
+    margin-left: 0;
+    padding-bottom: 80px;
+  }
+
+  .nav-mobile {
+    display: block;
+  }
+
+  .header-pagina {
+    padding: var(--sp-3) var(--sp-4);
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    align-items: flex-start;
+  }
+
+  .header-pagina__titulo {
+    font-size: var(--tx-lg);
+  }
+
+  .header-pagina__ruta {
+    display: none;
+  }
+
+  .header-pagina__der {
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    width: 100%;
+  }
+
+  .header-pagina__der .btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 120px;
+  }
+
+  /* Esconder texto de fecha en header (solo texto plano) */
+  .header-pagina__der > span {
+    display: none;
+  }
+
+  .cuerpo-pagina {
+    padding: var(--sp-4);
+  }
+
+  .grid-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-3);
+  }
+
+  .grid-recetas {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .layout-2col-igual {
+    grid-template-columns: 1fr;
+  }
+
+  .seccion__cabecera {
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+
+  .seccion__titulo {
+    font-size: var(--tx-lg);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-recetas {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-2);
+  }
+
+  .contenedor-angosto,
+  .contenedor-medio {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2);
+  }
+
+  .cuerpo-pagina {
+    padding: var(--sp-3);
+  }
+
+  .header-pagina {
+    padding: var(--sp-3);
+  }
+
+  .seccion__titulo {
+    font-size: var(--tx-base);
+  }
+
+  .header-pagina__der .btn {
+    min-width: unset;
+    flex: 1;
+    justify-content: center;
+  }
+
+  h1 { font-size: var(--tx-xl); }
+  h2 { font-size: var(--tx-lg); }
+}
+
+/* ── Impresión ──────────────────────────────────────────────── */
+@media print {
+  .sidebar,
+  .header-pagina,
+  .nav-mobile,
+  .menu-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  .contenido-principal {
+    margin-left: 0;
+  }
+
+  .cuerpo-pagina {
+    padding: 0;
+  }
+
+  body {
+    background: white;
+  }
+}

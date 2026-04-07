@@ -1,0 +1,244 @@
+/* ============================================================
+   RB Repostería — styles.css
+   Variables CSS, reset, tipografía, utilidades
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@400;500;600;700;800&display=swap');
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  /* Fondos */
+  --fondo:             #FAF6F1;
+  --fondo-tarjeta:     #FFFDF9;
+  --fondo-sidebar:     #3D2B1F;
+  --fondo-header:      #5C3D2E;
+  --fondo-input:       #FDF8F3;
+
+  /* Texto */
+  --texto:             #2C1A0E;
+  --texto-suave:       #7A5C44;
+  --texto-muted:       #A08C7B;
+  --texto-claro:       #EDD9C3;
+  --texto-sidebar:     #D4B896;
+  --texto-blanco:      #FFFDF9;
+
+  /* Acentos */
+  --primario:          #C8773A;
+  --primario-hover:    #A85E25;
+  --primario-suave:    #F5E6D8;
+  --secundario:        #E8C99A;
+  --acento:            #D4A373;
+  --acento-suave:      #FAF0E4;
+
+  /* Categorías */
+  --galletas:          #F9D5A7;
+  --galletas-texto:    #7A4A00;
+  --pasteles:          #F2C4CE;
+  --pasteles-texto:    #7A1A2E;
+  --pan:               #C9E4CA;
+  --pan-texto:         #1A5C2E;
+  --roles:             #C9D4F0;
+  --roles-texto:       #1A2E7A;
+  --brownies:          #D4C4A8;
+  --brownies-texto:    #4A3000;
+
+  /* Estados */
+  --exito:             #6B9E78;
+  --exito-suave:       #D4EDDA;
+  --exito-texto:       #1E6B3A;
+  --alerta:            #E07B39;
+  --alerta-suave:      #FDE8D8;
+  --alerta-texto:      #7A3000;
+  --peligro:           #C0392B;
+  --peligro-suave:     #FADBD8;
+  --peligro-texto:     #7A0000;
+  --info:              #5B8DB8;
+  --info-suave:        #D6EAF8;
+  --info-texto:        #1A4A7A;
+
+  /* Bordes y sombras */
+  --radio:             12px;
+  --radio-sm:          6px;
+  --radio-xs:          4px;
+  --borde:             #E8DDD4;
+  --borde-focus:       rgba(200, 119, 58, 0.35);
+  --sombra:            0 2px 12px rgba(44, 26, 14, 0.08);
+  --sombra-md:         0 4px 20px rgba(44, 26, 14, 0.12);
+  --sombra-hover:      0 6px 24px rgba(44, 26, 14, 0.16);
+
+  /* Fuentes */
+  --f-titulo:          'Playfair Display', Georgia, serif;
+  --f-cuerpo:          'Nunito', 'Segoe UI', sans-serif;
+
+  /* Tamaños de texto */
+  --tx-xs:    0.70rem;
+  --tx-sm:    0.825rem;
+  --tx-base:  1rem;
+  --tx-lg:    1.125rem;
+  --tx-xl:    1.375rem;
+  --tx-2xl:   1.75rem;
+  --tx-3xl:   2.25rem;
+
+  /* Espaciado */
+  --sp-1:   0.25rem;
+  --sp-2:   0.5rem;
+  --sp-3:   0.75rem;
+  --sp-4:   1rem;
+  --sp-5:   1.25rem;
+  --sp-6:   1.5rem;
+  --sp-8:   2rem;
+  --sp-10:  2.5rem;
+  --sp-12:  3rem;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--f-cuerpo);
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--primario);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primario-hover);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* ── Tipografía ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-family: var(--f-titulo);
+  color: var(--texto);
+  line-height: 1.3;
+}
+
+h1 { font-size: var(--tx-3xl); font-weight: 700; }
+h2 { font-size: var(--tx-2xl); font-weight: 700; }
+h3 { font-size: var(--tx-xl);  font-weight: 600; }
+h4 { font-size: var(--tx-lg);  font-weight: 600; }
+h5 { font-size: var(--tx-base); font-weight: 600; }
+
+p {
+  color: var(--texto-suave);
+  font-size: var(--tx-base);
+}
+
+small {
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+}
+
+strong { font-weight: 700; }
+
+/* ── Utilidades ─────────────────────────────────────────────── */
+.texto-derecha  { text-align: right; }
+.texto-centro   { text-align: center; }
+.texto-izquierda { text-align: left; }
+
+.texto-primario { color: var(--primario); }
+.texto-exito    { color: var(--exito-texto); }
+.texto-alerta   { color: var(--alerta-texto); }
+.texto-peligro  { color: var(--peligro-texto); }
+.texto-muted    { color: var(--texto-muted); }
+.texto-suave    { color: var(--texto-suave); }
+
+.peso-normal  { font-weight: 400; }
+.peso-medio   { font-weight: 600; }
+.peso-negrita { font-weight: 700; }
+.peso-extra   { font-weight: 800; }
+
+.fuente-titulo { font-family: var(--f-titulo); }
+
+.tx-xs   { font-size: var(--tx-xs); }
+.tx-sm   { font-size: var(--tx-sm); }
+.tx-base { font-size: var(--tx-base); }
+.tx-lg   { font-size: var(--tx-lg); }
+.tx-xl   { font-size: var(--tx-xl); }
+.tx-2xl  { font-size: var(--tx-2xl); }
+
+.mayusculas { text-transform: uppercase; letter-spacing: 0.05em; }
+
+.flex        { display: flex; }
+.flex-col    { flex-direction: column; }
+.flex-centro { align-items: center; justify-content: center; }
+.flex-entre  { justify-content: space-between; }
+.flex-fin    { justify-content: flex-end; }
+.alinear-c   { align-items: center; }
+.flex-wrap   { flex-wrap: wrap; }
+.gap-2  { gap: var(--sp-2); }
+.gap-3  { gap: var(--sp-3); }
+.gap-4  { gap: var(--sp-4); }
+.gap-6  { gap: var(--sp-6); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: var(--sp-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--sp-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: var(--sp-5); }
+
+.w-full  { width: 100%; }
+.w-auto  { width: auto; }
+
+.mt-2  { margin-top: var(--sp-2); }
+.mt-4  { margin-top: var(--sp-4); }
+.mt-6  { margin-top: var(--sp-6); }
+.mt-8  { margin-top: var(--sp-8); }
+.mb-2  { margin-bottom: var(--sp-2); }
+.mb-4  { margin-bottom: var(--sp-4); }
+.mb-6  { margin-bottom: var(--sp-6); }
+.mb-8  { margin-bottom: var(--sp-8); }
+
+.p-4  { padding: var(--sp-4); }
+.p-6  { padding: var(--sp-6); }
+.p-8  { padding: var(--sp-8); }
+
+.oculto { display: none; }
+
+.separador {
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: var(--sp-6) 0;
+}
+
+/* ── Scroll personalizado ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--fondo); }
+::-webkit-scrollbar-thumb { background: var(--borde); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--acento); }
+
+/* ── Selección de texto ─────────────────────────────────────── */
+::selection {
+  background: var(--primario-suave);
+  color: var(--primario-hover);
+}
+
+/* ── Impresión ──────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+  a { color: black; }
+}

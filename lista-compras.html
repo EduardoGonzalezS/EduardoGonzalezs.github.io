@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Compras — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    @media print {
+      .tabla-rb thead { background: #3D2B1F !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .fila-total { background: #F5E6D8 !important; print-color-adjust: exact; }
+      .print-titulo {
+        display: block !important;
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-family: 'Playfair Display', serif;
+      }
+      .print-fecha {
+        display: block !important;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #7A5C44;
+        margin-bottom: 2rem;
+      }
+    }
+    .print-titulo, .print-fecha { display: none; }
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item activo"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Lista de Compras</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span> <span>Lista de compras</span>
+        </div>
+      </div>
+      <div class="header-pagina__der no-print">
+        <button onclick="window.print()" class="btn btn-primario btn-sm">🖨️ Imprimir lista</button>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+
+      <!-- Solo visible al imprimir -->
+      <span class="print-titulo">RB Repostería — Lista de Compras</span>
+      <span class="print-fecha">Generada el 07 de abril de 2026</span>
+
+      <!-- Alerta resumen -->
+      <div class="alerta alerta-alerta no-print">
+        <span class="alerta__icono">⚠️</span>
+        <div class="alerta__cuerpo">
+          <div class="alerta__titulo">3 ingredientes con stock bajo o agotado</div>
+          <div class="alerta__texto">Basado en el inventario actual y el stock mínimo recomendado para cada ingrediente.</div>
+        </div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="grid-stats" style="margin-bottom: var(--sp-6);">
+        <div class="tarjeta-stat tarjeta-stat--alerta">
+          <span class="tarjeta-stat__etiqueta">Ingredientes a comprar</span>
+          <span class="tarjeta-stat__numero">3</span>
+          <span class="tarjeta-stat__desc">en lista actual</span>
+        </div>
+        <div class="tarjeta-stat">
+          <span class="tarjeta-stat__etiqueta">Costo estimado</span>
+          <span class="tarjeta-stat__numero">$242</span>
+          <span class="tarjeta-stat__desc">compra sugerida</span>
+        </div>
+        <div class="tarjeta-stat tarjeta-stat--info">
+          <span class="tarjeta-stat__etiqueta">Proveedores</span>
+          <span class="tarjeta-stat__numero">2</span>
+          <span class="tarjeta-stat__desc">Costco + McCormick</span>
+        </div>
+      </div>
+
+      <!-- Lista principal -->
+      <section class="seccion">
+        <div class="seccion__cabecera">
+          <h2 class="seccion__titulo">Ingredientes urgentes</h2>
+        </div>
+
+        <div class="tabla-contenedor mb-6">
+          <div class="tabla-scroll">
+            <table class="tabla-rb">
+              <thead>
+                <tr>
+                  <th style="width: 36px;" class="no-print">✓</th>
+                  <th>Ingrediente</th>
+                  <th class="col-num">Stock actual</th>
+                  <th class="col-num">Mínimo</th>
+                  <th class="col-num">Sugerido comprar</th>
+                  <th>Proveedor</th>
+                  <th class="col-num">Precio aprox.</th>
+                  <th class="col-num">Total est.</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-print" style="text-align: center;">
+                    <input type="checkbox" class="tarjeta-compra__check">
+                  </td>
+                  <td>
+                    <strong>Harina de trigo</strong>
+                    <br><small style="color: var(--texto-muted);">Harinas — kg</small>
+                  </td>
+                  <td class="col-num" style="color: var(--peligro);">500 g</td>
+                  <td class="col-num col-muted">2,000 g</td>
+                  <td class="col-num"><strong>2 kg</strong></td>
+                  <td>Maseca / Costco</td>
+                  <td class="col-num">$28.00 / kg</td>
+                  <td class="col-num"><strong>$56.00</strong></td>
+                  <td><span class="badge badge-peligro">Muy bajo</span></td>
+                </tr>
+                <tr>
+                  <td class="no-print" style="text-align: center;">
+                    <input type="checkbox" class="tarjeta-compra__check">
+                  </td>
+                  <td>
+                    <strong>Mantequilla sin sal</strong>
+                    <br><small style="color: var(--texto-muted);">Lácteos — kg</small>
+                  </td>
+                  <td class="col-num" style="color: var(--peligro);">200 g</td>
+                  <td class="col-num col-muted">1,000 g</td>
+                  <td class="col-num"><strong>2 kg</strong></td>
+                  <td>Lala / Costco</td>
+                  <td class="col-num">$90.00 / kg</td>
+                  <td class="col-num"><strong>$180.00</strong></td>
+                  <td><span class="badge badge-peligro">Muy bajo</span></td>
+                </tr>
+                <tr>
+                  <td class="no-print" style="text-align: center;">
+                    <input type="checkbox" class="tarjeta-compra__check">
+                  </td>
+                  <td>
+                    <strong>Extracto de vainilla</strong>
+                    <br><small style="color: var(--texto-muted);">Esencias — ml</small>
+                  </td>
+                  <td class="col-num" style="color: var(--alerta);">30 ml</td>
+                  <td class="col-num col-muted">120 ml</td>
+                  <td class="col-num"><strong>120 ml</strong></td>
+                  <td>McCormick</td>
+                  <td class="col-num">$0.80 / ml</td>
+                  <td class="col-num"><strong>$96.00</strong></td>
+                  <td><span class="badge badge-alerta">Bajo</span></td>
+                </tr>
+                <tr class="fila-total">
+                  <td class="no-print"></td>
+                  <td colspan="6"><strong>TOTAL ESTIMADO DE COMPRA</strong></td>
+                  <td class="col-num" style="font-size: var(--tx-lg);"><strong>$332.00</strong></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stock bajo (no urgente) -->
+      <section class="seccion no-print">
+        <div class="seccion__cabecera">
+          <h2 class="seccion__titulo">En observación</h2>
+          <span style="font-size: var(--tx-xs); color: var(--texto-muted);">Stock suficiente por ahora, pero revisar pronto</span>
+        </div>
+
+        <div class="tabla-contenedor">
+          <div class="tabla-scroll">
+          <table class="tabla-rb">
+            <thead>
+              <tr>
+                <th>Ingrediente</th>
+                <th class="col-num">Stock actual</th>
+                <th class="col-num">Mínimo</th>
+                <th>Proveedor</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Nuez pacana</strong></td>
+                <td class="col-num">400 g</td>
+                <td class="col-num col-muted">500 g</td>
+                <td>Mercado</td>
+                <td><span class="badge badge-alerta">Pronto</span></td>
+              </tr>
+              <tr>
+                <td><strong>Queso crema</strong></td>
+                <td class="col-num">500 g</td>
+                <td class="col-num col-muted">500 g</td>
+                <td>Philadelphia</td>
+                <td><span class="badge badge-alerta">Límite</span></td>
+              </tr>
+              <tr>
+                <td><strong>Coco rallado</strong></td>
+                <td class="col-num">300 g</td>
+                <td class="col-num col-muted">400 g</td>
+                <td>Genérico</td>
+                <td><span class="badge badge-alerta">Bajo</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div><!-- /tabla-scroll -->
+        </div>
+      </section>
+
+      <!-- Nota de impresión -->
+      <div class="nota-chef no-print">
+        <p class="nota-chef__titulo">💡 Consejo</p>
+        <p>Usa <strong>Ctrl+P</strong> (o el botón "Imprimir lista") para obtener una versión limpia de esta lista. El diseño se ajusta automáticamente para impresión.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+</body>
+</html>

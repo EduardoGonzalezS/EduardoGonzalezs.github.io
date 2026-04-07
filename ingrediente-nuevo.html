@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar compra — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Tabla de productos de la compra */
+    .tabla-compra select,
+    .tabla-compra input[type="text"] {
+      border: 1.5px solid var(--borde);
+      border-radius: var(--radio-xs);
+      padding: 0.4rem 0.6rem;
+      font-family: var(--f-cuerpo);
+      font-size: var(--tx-sm);
+      background: var(--fondo-input);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .tabla-compra input[type="number"] {
+      border: 1.5px solid var(--borde);
+      border-radius: var(--radio-xs);
+      padding: 0.4rem 0.6rem;
+      font-family: var(--f-cuerpo);
+      font-size: var(--tx-sm);
+      background: var(--fondo-input);
+      width: 90px;
+      box-sizing: border-box;
+      text-align: right;
+    }
+    .tabla-compra .celda-total {
+      font-weight: 700;
+      color: var(--primario);
+      text-align: right;
+      white-space: nowrap;
+      font-size: var(--tx-sm);
+    }
+    /* Botón eliminar fila */
+    .btn-eliminar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      color: var(--texto-muted);
+      cursor: pointer;
+      border-radius: var(--radio-xs);
+      font-size: 1rem;
+      line-height: 1;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .btn-eliminar:hover {
+      background: var(--peligro-suave);
+      color: var(--peligro);
+    }
+    /* Fila de total general */
+    .fila-total-compra td {
+      background: var(--primario-suave);
+      border-top: 2px solid var(--primario);
+      font-weight: 700;
+    }
+    @media (max-width: 640px) {
+      .tabla-compra input[type="number"] { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item activo"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Registrar compra</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span>
+          <a href="ingredientes.html">Ingredientes</a> <span>/</span>
+          <span>Registrar compra</span>
+        </div>
+      </div>
+      <div class="header-pagina__der no-print">
+        <a href="historial-compras.html" class="btn btn-ghost btn-sm">📜 Ver historial</a>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+      <div class="contenedor-angosto">
+
+        <form action="historial-compras.html" method="get">
+
+          <!-- Sección 1: Datos generales de la compra -->
+          <div class="formulario-rb mb-6">
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">🧾 Datos de la compra</h3>
+              <div class="form-grid">
+                <div class="campo">
+                  <label for="fecha-compra">Fecha de compra <span class="req">*</span></label>
+                  <input type="date" id="fecha-compra" name="fecha" value="2026-04-07" required>
+                </div>
+                <div class="campo">
+                  <label for="lugar-compra">Lugar de compra <span class="req">*</span></label>
+                  <input type="text" id="lugar-compra" name="lugar"
+                    list="lista-lugares"
+                    placeholder="Ej: Costco, Walmart, Mercado…"
+                    autocomplete="off" required>
+                  <datalist id="lista-lugares">
+                    <option value="Costco Wholesale">
+                    <option value="Walmart">
+                    <option value="Soriana">
+                    <option value="Chedraui">
+                    <option value="Sam's Club">
+                    <option value="Mercado local">
+                    <option value="Super">
+                  </datalist>
+                </div>
+                <div class="campo col-span-2">
+                  <label for="obs-compra">Observaciones (opcional)</label>
+                  <textarea id="obs-compra" name="obs"
+                    placeholder="Ej: Precio subió vs compra anterior, encontré oferta 2x1, etc."
+                    rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 2: Productos comprados -->
+          <div class="formulario-rb mb-6">
+            <div class="form-seccion">
+              <h3 class="form-seccion__titulo">🧂 Productos comprados</h3>
+
+              <div class="tabla-contenedor mb-4">
+                <div class="tabla-scroll">
+                  <table class="tabla-rb tabla-compra" id="tabla-productos">
+                    <thead>
+                      <tr>
+                        <th style="width:32px">#</th>
+                        <th>Ingrediente</th>
+                        <th style="width:90px">Cantidad</th>
+                        <th style="width:75px">Unidad</th>
+                        <th style="width:100px">Precio / u.</th>
+                        <th style="width:90px">Total</th>
+                        <th style="width:32px"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-productos">
+                      <!-- Fila 1 -->
+                      <tr>
+                        <td class="col-muted">1</td>
+                        <td><input type="text" list="lista-ingredientes" name="prod_1" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
+                        <td><input type="number" name="cant_1" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+                        <td><select name="und_1">
+                          <option value="kg">kg</option>
+                          <option value="g">g</option>
+                          <option value="L">L</option>
+                          <option value="ml">ml</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><input type="number" name="precio_1" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+                        <td class="celda-total" id="total-fila-1">$0.00</td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+                      </tr>
+                      <!-- Fila 2 -->
+                      <tr>
+                        <td class="col-muted">2</td>
+                        <td><input type="text" list="lista-ingredientes" name="prod_2" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
+                        <td><input type="number" name="cant_2" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+                        <td><select name="und_2">
+                          <option value="kg">kg</option>
+                          <option value="g">g</option>
+                          <option value="L">L</option>
+                          <option value="ml">ml</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><input type="number" name="precio_2" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+                        <td class="celda-total" id="total-fila-2">$0.00</td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+                      </tr>
+                      <!-- Fila 3 -->
+                      <tr>
+                        <td class="col-muted">3</td>
+                        <td><input type="text" list="lista-ingredientes" name="prod_3" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
+                        <td><input type="number" name="cant_3" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+                        <td><select name="und_3">
+                          <option value="kg">kg</option>
+                          <option value="g">g</option>
+                          <option value="L">L</option>
+                          <option value="ml">ml</option>
+                          <option value="pza">pza</option>
+                          <option value="cdita">cdita</option>
+                          <option value="cda">cda</option>
+                          <option value="taza">taza</option>
+                        </select></td>
+                        <td><input type="number" name="precio_3" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+                        <td class="celda-total" id="total-fila-3">$0.00</td>
+                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+                      </tr>
+                      <!-- Fila total -->
+                      <tr class="fila-total-compra" id="fila-total">
+                        <td colspan="5" style="text-align:right; padding-right: var(--sp-4);">TOTAL DE ESTA COMPRA</td>
+                        <td class="celda-total" id="total-general" style="font-size: var(--tx-base);">$0.00</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Datalist de ingredientes -->
+              <datalist id="lista-ingredientes">
+                <option value="Harina de trigo">
+                <option value="Harina para pastel">
+                <option value="Mantequilla sin sal">
+                <option value="Crema para batir">
+                <option value="Leche entera">
+                <option value="Azúcar estándar">
+                <option value="Azúcar glass">
+                <option value="Huevo blanco">
+                <option value="Extracto de vainilla">
+                <option value="Polvo para hornear">
+                <option value="Bicarbonato de sodio">
+                <option value="Sal fina">
+                <option value="Chispas de chocolate">
+                <option value="Chocolate oscuro 70%">
+                <option value="Nuez pacana">
+                <option value="Coco rallado">
+                <option value="Canela en polvo">
+                <option value="Queso crema">
+                <option value="Piloncillo">
+                <option value="Levadura seca">
+              </datalist>
+
+              <button type="button" onclick="agregarProducto()" class="btn btn-ghost btn-sm">
+                ➕ Agregar producto
+              </button>
+            </div>
+          </div>
+
+          <!-- Sección 3 (colapsable): Registrar ingrediente nuevo -->
+          <details class="seccion-colapsable">
+            <summary>
+              <span>🆕</span> ¿El ingrediente no existe aún? Registrarlo aquí
+            </summary>
+            <div class="detalle-cuerpo">
+              <div class="form-grid">
+                <div class="campo col-span-2">
+                  <label for="nombre-nuevo">Nombre del ingrediente <span class="req">*</span></label>
+                  <input type="text" id="nombre-nuevo" name="nombre_nuevo" placeholder="Ej: Harina de trigo integral">
+                </div>
+                <div class="campo">
+                  <label for="categoria-nuevo">Categoría</label>
+                  <select id="categoria-nuevo" name="categoria_nueva">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="harinas">Harinas</option>
+                    <option value="lacteos">Lácteos</option>
+                    <option value="endulzantes">Endulzantes</option>
+                    <option value="huevos">Huevos</option>
+                    <option value="esencias">Esencias</option>
+                    <option value="extras">Extras / Otros</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="unidad-nuevo">Unidad de medida</label>
+                  <select id="unidad-nuevo" name="unidad_nueva">
+                    <option value="kg">Kilogramos (kg)</option>
+                    <option value="g">Gramos (g)</option>
+                    <option value="L">Litros (L)</option>
+                    <option value="ml">Mililitros (ml)</option>
+                    <option value="pza">Piezas (pza)</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="stock-min">Stock mínimo recomendado</label>
+                  <input type="number" id="stock-min" name="stock_minimo" placeholder="Ej: 1000" min="0">
+                  <span class="campo__ayuda">En la unidad seleccionada</span>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <div class="form-acciones" style="margin-top: var(--sp-6);">
+            <button type="submit" class="btn btn-primario btn-lg">✅ Guardar compra</button>
+            <a href="ingredientes.html" class="btn btn-ghost">Cancelar</a>
+          </div>
+
+        </form>
+
+        <!-- Nota informativa -->
+        <div class="alerta alerta-info mt-6">
+          <span class="alerta__icono">💡</span>
+          <div class="alerta__cuerpo">
+            <div class="alerta__titulo">Consejo</div>
+            <div class="alerta__texto">
+              Puedes registrar todos los productos de una misma salida de compra en una sola vez. El sistema guarda cada compra con su fecha y lugar, y actualiza automáticamente el precio más reciente de cada ingrediente.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+<script>
+  const OPCIONES_UNIDADES = `
+    <option value="kg">kg</option>
+    <option value="g">g</option>
+    <option value="L">L</option>
+    <option value="ml">ml</option>
+    <option value="pza">pza</option>
+    <option value="cdita">cdita</option>
+    <option value="cda">cda</option>
+    <option value="taza">taza</option>
+  `;
+
+  // ── Agregar / eliminar filas ────────────────────────────────
+  function agregarProducto() {
+    const tbody = document.getElementById('tbody-productos');
+    const filaTotal = document.getElementById('fila-total');
+    const n = tbody.querySelectorAll('tr:not(#fila-total)').length + 1;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="col-muted">${n}</td>
+      <td><input type="text" list="lista-ingredientes" name="prod_${n}" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
+      <td><input type="number" name="cant_${n}" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+      <td><select name="und_${n}">${OPCIONES_UNIDADES}</select></td>
+      <td><input type="number" name="precio_${n}" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+      <td class="celda-total" id="total-fila-${n}">$0.00</td>
+      <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+    `;
+    tbody.insertBefore(tr, filaTotal);
+    tr.querySelector('input[type="text"]').focus();
+  }
+
+  function eliminarProducto(btn) {
+    const tbody = document.getElementById('tbody-productos');
+    const filas = tbody.querySelectorAll('tr:not(#fila-total)');
+    if (filas.length <= 1) return;
+    btn.closest('tr').remove();
+    renumerarProductos();
+    actualizarTotalGeneral();
+  }
+
+  function renumerarProductos() {
+    const filas = document.querySelectorAll('#tbody-productos tr:not(#fila-total)');
+    filas.forEach((tr, i) => {
+      const n = i + 1;
+      tr.cells[0].textContent = n;
+      tr.querySelector('input[name^="prod_"]').name   = `prod_${n}`;
+      tr.querySelector('input[name^="cant_"]').name   = `cant_${n}`;
+      tr.querySelector('select[name^="und_"]').name   = `und_${n}`;
+      tr.querySelector('input[name^="precio_"]').name = `precio_${n}`;
+      const totalCell = tr.querySelector('.celda-total');
+      if (totalCell) totalCell.id = `total-fila-${n}`;
+    });
+  }
+
+  // ── Cálculo de totales ──────────────────────────────────────
+  function calcularFila(input) {
+    const tr = input.closest('tr');
+    const cant   = parseFloat(tr.querySelector('input[name^="cant_"]').value)   || 0;
+    const precio = parseFloat(tr.querySelector('input[name^="precio_"]').value) || 0;
+    const subtotal = cant * precio;
+    const celda = tr.querySelector('.celda-total');
+    if (celda) celda.textContent = '$' + subtotal.toFixed(2);
+    actualizarTotalGeneral();
+  }
+
+  function actualizarTotalGeneral() {
+    const celdas = document.querySelectorAll('#tbody-productos tr:not(#fila-total) .celda-total');
+    let total = 0;
+    celdas.forEach(c => {
+      total += parseFloat(c.textContent.replace('$', '')) || 0;
+    });
+    document.getElementById('total-general').textContent = '$' + total.toFixed(2);
+  }
+</script>
+
+</body>
+</html>

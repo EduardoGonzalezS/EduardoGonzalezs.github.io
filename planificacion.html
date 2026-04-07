@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planificación de Producción — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item activo"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Planificación de producción</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span> <span>Planificación</span>
+        </div>
+      </div>
+      <div class="header-pagina__der no-print">
+        <button onclick="window.print()" class="btn btn-ghost btn-sm">🖨️ Imprimir plan</button>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+
+      <!-- Semana actual -->
+      <div class="alerta alerta-info no-print" style="margin-bottom: var(--sp-6);">
+        <span class="alerta__icono">📅</span>
+        <div class="alerta__cuerpo">
+          <div class="alerta__titulo">Semana del 07 al 13 de abril de 2026</div>
+          <div class="alerta__texto">Planifica los lotes de producción para esta semana. Los costos e ingresos se calculan con base en los precios de insumos actuales.</div>
+        </div>
+      </div>
+
+      <!-- Formulario de lotes -->
+      <div class="layout-2col">
+
+        <div>
+          <section class="seccion">
+            <div class="seccion__cabecera">
+              <h2 class="seccion__titulo">¿Qué producir esta semana?</h2>
+            </div>
+
+            <div class="formulario-rb">
+              <form>
+                <div class="tabla-contenedor mb-4">
+                  <div class="tabla-scroll">
+                  <table class="tabla-rb">
+                    <thead>
+                      <tr>
+                        <th>Receta</th>
+                        <th class="col-num" style="width: 90px;">Lotes</th>
+                        <th class="col-num">Piezas</th>
+                        <th class="col-num">Costo</th>
+                        <th class="col-num">Ingreso est.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong>🍪 Galletas de Mantequilla</strong>
+                          <br><small style="color: var(--texto-muted);">24 pzas / lote — $50.91 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_galletas" value="2" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num">48</td>
+                        <td class="col-num">$101.82</td>
+                        <td class="col-num" style="color: var(--exito-texto);">$240.00</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🌀 Roles de Canela</strong>
+                          <br><small style="color: var(--texto-muted);">12 pzas / lote — $85.20 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_roles" value="1" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num">12</td>
+                        <td class="col-num">$85.20</td>
+                        <td class="col-num" style="color: var(--exito-texto);">$180.00</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🎂 Pastel de Chocolate</strong>
+                          <br><small style="color: var(--texto-muted);">1 kg / lote — $145.00 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_pastel" value="1" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num">1</td>
+                        <td class="col-num">$145.00</td>
+                        <td class="col-num" style="color: var(--exito-texto);">$320.00</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🍞 Pan Artesanal de Nuez</strong>
+                          <br><small style="color: var(--texto-muted);">6 pzas / lote — $62.00 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_pan" value="0" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num col-muted">0</td>
+                        <td class="col-num col-muted">—</td>
+                        <td class="col-num col-muted">—</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🍫 Brownies de Nuez</strong>
+                          <br><small style="color: var(--texto-muted);">16 pzas / lote — $92.00 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_brownies" value="0" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num col-muted">0</td>
+                        <td class="col-num col-muted">—</td>
+                        <td class="col-num col-muted">—</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🥐 Cuernitos de Vainilla</strong>
+                          <br><small style="color: var(--texto-muted);">20 pzas / lote — $55.80 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_cuernitos" value="1" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num">20</td>
+                        <td class="col-num">$55.80</td>
+                        <td class="col-num" style="color: var(--exito-texto);">$140.00</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🌟 Polvorones de Nuez</strong>
+                          <br><small style="color: var(--texto-muted);">30 pzas / lote — $72.00 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_polvorones" value="0" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num col-muted">0</td>
+                        <td class="col-num col-muted">—</td>
+                        <td class="col-num col-muted">—</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>🍌 Panqué de Plátano</strong>
+                          <br><small style="color: var(--texto-muted);">1 pieza / lote — $38.50 c/u</small>
+                        </td>
+                        <td class="col-num">
+                          <input type="number" name="lotes_panque" value="0" min="0" max="10"
+                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
+                        </td>
+                        <td class="col-num col-muted">0</td>
+                        <td class="col-num col-muted">—</td>
+                        <td class="col-num col-muted">—</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div><!-- /tabla-scroll -->
+                </div>
+
+                <div class="form-acciones">
+                  <button type="submit" class="btn btn-primario">📊 Actualizar plan</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+
+        <!-- Panel de resumen -->
+        <div>
+          <section class="seccion">
+            <div class="seccion__cabecera">
+              <h2 class="seccion__titulo">Resumen semanal</h2>
+            </div>
+
+            <!-- Panel de totales -->
+            <div class="panel-costos mb-6">
+              <h4 class="panel-costos__titulo">📊 Plan semana 07–13 abr</h4>
+
+              <div class="panel-costos__fila">
+                <span class="panel-costos__label">Lotes a producir</span>
+                <span class="panel-costos__valor">5</span>
+              </div>
+              <div class="panel-costos__fila">
+                <span class="panel-costos__label">Piezas totales</span>
+                <span class="panel-costos__valor">81 pzas</span>
+              </div>
+              <div class="panel-costos__fila panel-costos__fila--total">
+                <span class="panel-costos__label">Costo total</span>
+                <span class="panel-costos__valor">$387.82</span>
+              </div>
+              <div class="panel-costos__fila" style="margin-top: var(--sp-3);">
+                <span class="panel-costos__label">Ingreso estimado</span>
+                <span class="panel-costos__valor" style="color: var(--secundario); font-size: var(--tx-xl);">$880.00</span>
+              </div>
+              <div class="panel-costos__margen">
+                <div class="panel-costos__margen-num" style="color: var(--exito-suave);">$492.18</div>
+                <div class="panel-costos__margen-label">Ganancia estimada de la semana</div>
+                <div class="barra-margen" style="margin-top: var(--sp-3);">
+                  <div class="barra-margen__pista">
+                    <div class="barra-margen__relleno" style="width: 56%;"></div>
+                  </div>
+                  <div class="barra-margen__etiquetas">
+                    <span>Costo</span>
+                    <span>Margen: 56%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desglose por receta -->
+            <div class="tarjeta mb-6">
+              <h4 class="tarjeta__titulo">📋 Desglose por receta</h4>
+              <div class="tabla-contenedor mt-4">
+                <div class="tabla-scroll">
+                <table class="tabla-rb" style="font-size: var(--tx-xs);">
+                  <thead>
+                    <tr>
+                      <th>Receta</th>
+                      <th class="col-num">Lotes</th>
+                      <th class="col-num">Piezas</th>
+                      <th class="col-num">Costo</th>
+                      <th class="col-num">Ingreso</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>🍪 Galletas</td>
+                      <td class="col-num">2</td>
+                      <td class="col-num">48</td>
+                      <td class="col-num">$101.82</td>
+                      <td class="col-num" style="color: var(--exito-texto);">$240.00</td>
+                    </tr>
+                    <tr>
+                      <td>🌀 Roles</td>
+                      <td class="col-num">1</td>
+                      <td class="col-num">12</td>
+                      <td class="col-num">$85.20</td>
+                      <td class="col-num" style="color: var(--exito-texto);">$180.00</td>
+                    </tr>
+                    <tr>
+                      <td>🎂 Pastel</td>
+                      <td class="col-num">1</td>
+                      <td class="col-num">1</td>
+                      <td class="col-num">$145.00</td>
+                      <td class="col-num" style="color: var(--exito-texto);">$320.00</td>
+                    </tr>
+                    <tr>
+                      <td>🥐 Cuernitos</td>
+                      <td class="col-num">1</td>
+                      <td class="col-num">20</td>
+                      <td class="col-num">$55.80</td>
+                      <td class="col-num" style="color: var(--exito-texto);">$140.00</td>
+                    </tr>
+                    <tr class="fila-total">
+                      <td><strong>TOTAL</strong></td>
+                      <td class="col-num"><strong>5</strong></td>
+                      <td class="col-num"><strong>81</strong></td>
+                      <td class="col-num"><strong>$387.82</strong></td>
+                      <td class="col-num"><strong style="color: var(--exito-texto);">$880.00</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div><!-- /tabla-scroll -->
+              </div>
+            </div>
+
+            <!-- Alerta de ingredientes faltantes -->
+            <div class="alerta alerta-alerta no-print">
+              <span class="alerta__icono">⚠️</span>
+              <div class="alerta__cuerpo">
+                <div class="alerta__titulo">Ingredientes insuficientes para este plan</div>
+                <div class="alerta__texto">
+                  Harina de trigo y Mantequilla sin sal están por debajo del stock necesario.
+                  <a href="lista-compras.html" style="font-weight: 700; display: block; margin-top: 4px;">Ver lista de compras →</a>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        </div>
+
+      </div><!-- /layout-2col -->
+
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+</body>
+</html>

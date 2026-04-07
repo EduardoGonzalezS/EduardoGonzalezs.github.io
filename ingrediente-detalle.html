@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mantequilla sin sal — Historial de precios — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item activo"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Mantequilla sin sal</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span>
+          <a href="ingredientes.html">Ingredientes</a> <span>/</span>
+          <span>Mantequilla sin sal</span>
+        </div>
+      </div>
+      <div class="header-pagina__der no-print">
+        <a href="ingrediente-nuevo.html" class="btn btn-primario btn-sm">🛒 Registrar nueva compra</a>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+
+      <div class="layout-2col">
+
+        <!-- Columna izquierda -->
+        <div>
+
+          <!-- Info actual del ingrediente -->
+          <div class="tarjeta mb-6">
+            <h4 class="tarjeta__titulo">🧂 Información del ingrediente</h4>
+            <div class="info-receta">
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Categoría</span>
+                <span class="info-receta__valor"><span class="badge badge-info">Lácteos</span></span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Unidad de medida</span>
+                <span class="info-receta__valor">Kilogramos (kg)</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Proveedor principal</span>
+                <span class="info-receta__valor"><a href="proveedores.html">Lala S.A. de C.V.</a></span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Precio actual</span>
+                <span class="info-receta__valor" style="color: var(--primario); font-size: var(--tx-lg);">$90.00 / kg</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Precio por gramo</span>
+                <span class="info-receta__valor">$0.090 / g</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Stock actual</span>
+                <span class="info-receta__valor">
+                  <div class="indicador-stock stock-agotado">
+                    <span class="indicador-stock__punto"></span> 200 g (muy bajo)
+                  </div>
+                </span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Stock mínimo</span>
+                <span class="info-receta__valor">1,000 g</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label">Última compra</span>
+                <span class="info-receta__valor" style="color: var(--texto-muted); font-size: var(--tx-xs);">07 abr 2026 — Costco</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historial de precios tabla -->
+          <section class="seccion">
+            <div class="seccion__cabecera">
+              <h3 class="seccion__titulo">Historial de precios</h3>
+            </div>
+            <div class="tabla-contenedor">
+              <div class="tabla-scroll">
+              <table class="tabla-rb">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th class="col-num">Precio / kg</th>
+                    <th class="col-num">Cantidad</th>
+                    <th class="col-num">Total pagado</th>
+                    <th>Lugar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="fila-destacada">
+                    <td><strong>07 abr 2026</strong> <span class="badge badge-exito" style="font-size: 0.6rem;">Actual</span></td>
+                    <td class="col-num"><strong>$90.00</strong></td>
+                    <td class="col-num">2 kg</td>
+                    <td class="col-num">$180.00</td>
+                    <td>Costco</td>
+                  </tr>
+                  <tr>
+                    <td>15 feb 2026</td>
+                    <td class="col-num">$88.00</td>
+                    <td class="col-num">1 kg</td>
+                    <td class="col-num">$88.00</td>
+                    <td>Walmart</td>
+                  </tr>
+                  <tr>
+                    <td>03 ene 2026</td>
+                    <td class="col-num">$85.00</td>
+                    <td class="col-num">2 kg</td>
+                    <td class="col-num">$170.00</td>
+                    <td>Costco</td>
+                  </tr>
+                  <tr>
+                    <td>20 nov 2025</td>
+                    <td class="col-num">$82.00</td>
+                    <td class="col-num">1 kg</td>
+                    <td class="col-num">$82.00</td>
+                    <td>Walmart</td>
+                  </tr>
+                  <tr>
+                    <td>05 oct 2025</td>
+                    <td class="col-num">$80.00</td>
+                    <td class="col-num">3 kg</td>
+                    <td class="col-num">$240.00</td>
+                    <td>Costco</td>
+                  </tr>
+                  <tr>
+                    <td>22 ago 2025</td>
+                    <td class="col-num">$78.00</td>
+                    <td class="col-num">2 kg</td>
+                    <td class="col-num">$156.00</td>
+                    <td>Walmart</td>
+                  </tr>
+                  <tr class="fila-total">
+                    <td colspan="2"><strong>Variación total (ago 25 – abr 26)</strong></td>
+                    <td colspan="3" style="text-align: right; color: var(--peligro-texto);">
+                      <strong>+$12.00 / kg (+15.4%)</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div><!-- /tabla-scroll -->
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Columna derecha: gráfica y recetas relacionadas -->
+        <div>
+
+          <!-- Gráfica de barras CSS -->
+          <div class="tarjeta mb-6">
+            <h4 class="tarjeta__titulo">📈 Tendencia de precio</h4>
+            <div class="grafica-barras">
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">ago 2025</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 65%;">
+                    <span class="grafica-barras__valor-barra">$78</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$78.00</span>
+              </div>
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">oct 2025</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 70%;">
+                    <span class="grafica-barras__valor-barra">$80</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$80.00</span>
+              </div>
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">nov 2025</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 75%;">
+                    <span class="grafica-barras__valor-barra">$82</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$82.00</span>
+              </div>
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">ene 2026</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 82%;">
+                    <span class="grafica-barras__valor-barra">$85</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$85.00</span>
+              </div>
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">feb 2026</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 88%;">
+                    <span class="grafica-barras__valor-barra">$88</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$88.00</span>
+              </div>
+              <div class="grafica-barras__fila">
+                <span class="grafica-barras__etiqueta">abr 2026</span>
+                <div class="grafica-barras__pista">
+                  <div class="grafica-barras__relleno" style="width: 95%;">
+                    <span class="grafica-barras__valor-barra">$90</span>
+                  </div>
+                </div>
+                <span class="grafica-barras__valor">$90.00</span>
+              </div>
+            </div>
+            <div class="alerta alerta-alerta mt-4" style="font-size: var(--tx-xs);">
+              <span class="alerta__icono">📊</span>
+              <div class="alerta__cuerpo">
+                <div class="alerta__titulo">Tendencia al alza</div>
+                <div class="alerta__texto">El precio ha subido 15.4% en 8 meses. Considera comprar mayor volumen cuando baje.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recetas que usan este ingrediente -->
+          <div class="tarjeta">
+            <h4 class="tarjeta__titulo">📖 Recetas que lo usan</h4>
+            <div class="info-receta">
+              <div class="info-receta__fila">
+                <span class="info-receta__label"><a href="receta-detalle.html">Galletas de Mantequilla</a></span>
+                <span class="info-receta__valor" style="color: var(--texto-muted);">150 g / lote</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label"><a href="receta-detalle.html">Roles de Canela</a></span>
+                <span class="info-receta__valor" style="color: var(--texto-muted);">200 g / lote</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label"><a href="receta-detalle.html">Pastel de Chocolate</a></span>
+                <span class="info-receta__valor" style="color: var(--texto-muted);">300 g / lote</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label"><a href="receta-detalle.html">Cuernitos de Vainilla</a></span>
+                <span class="info-receta__valor" style="color: var(--texto-muted);">120 g / lote</span>
+              </div>
+              <div class="info-receta__fila">
+                <span class="info-receta__label"><a href="receta-detalle.html">Polvorones de Nuez</a></span>
+                <span class="info-receta__valor" style="color: var(--texto-muted);">250 g / lote</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+</body>
+</html>

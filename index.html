@@ -3,354 +3,427 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farmacéutico MK — Iniciar Sesión</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --font: 'Inter', sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: var(--font);
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #0d2d5e 0%, #1a4a8a 45%, #2563eb 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Background decoration */
-    body::before {
-      content: '';
-      position: fixed;
-      width: 600px; height: 600px;
-      background: rgba(255,255,255,.03);
-      border-radius: 50%;
-      top: -200px; right: -200px;
-    }
-    body::after {
-      content: '';
-      position: fixed;
-      width: 400px; height: 400px;
-      background: rgba(255,255,255,.04);
-      border-radius: 50%;
-      bottom: -150px; left: -100px;
-    }
-
-    /* Floating pills decoration */
-    .deco-pill {
-      position: fixed;
-      background: rgba(255,255,255,.06);
-      border-radius: 50px;
-      animation: floatPill 8s ease-in-out infinite;
-    }
-    .deco-pill:nth-child(1) { width: 80px; height: 30px; top: 15%; left: 8%; animation-delay: 0s; }
-    .deco-pill:nth-child(2) { width: 50px; height: 20px; top: 60%; right: 10%; animation-delay: 2s; }
-    .deco-pill:nth-child(3) { width: 100px; height: 35px; bottom: 20%; left: 15%; animation-delay: 4s; }
-    .deco-pill:nth-child(4) { width: 60px; height: 22px; top: 30%; right: 20%; animation-delay: 1s; }
-
-    @keyframes floatPill {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: .6; }
-      50% { transform: translateY(-15px) rotate(5deg); opacity: 1; }
-    }
-
-    /* Login card */
-    .login-wrapper {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 420px;
-      padding: 20px;
-    }
-
-    .login-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 40px 40px 36px;
-      box-shadow: 0 25px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.1);
-    }
-
-    .brand-header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-    .brand-logo {
-      width: 64px; height: 64px;
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
-      border-radius: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(37,99,235,.35);
-    }
-    .brand-logo i {
-      font-size: 26px;
-      color: #fff;
-    }
-    .brand-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: #1e293b;
-      margin-bottom: 4px;
-    }
-    .brand-sub {
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .form-group { margin-bottom: 18px; }
-    .form-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 7px;
-    }
-    .input-wrapper {
-      position: relative;
-    }
-    .input-wrapper .input-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-      font-size: 14px;
-    }
-    .input-wrapper .form-control {
-      padding-left: 38px;
-      padding-right: 12px;
-      height: 44px;
-      border-radius: 10px;
-      border: 1.5px solid #e2e8f0;
-      font-size: 14px;
-      font-family: var(--font);
-      color: #1e293b;
-      transition: border-color .2s, box-shadow .2s;
-      width: 100%;
-    }
-    .input-wrapper .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
-    }
-    .input-wrapper .toggle-pass {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: #94a3b8;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 0;
-    }
-    .input-wrapper .toggle-pass:hover { color: #475569; }
-
-    .form-options {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-    .form-check-label {
-      font-size: 13px;
-      color: #374151;
-    }
-    .forgot-link {
-      font-size: 13px;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .forgot-link:hover { text-decoration: underline; }
-
-    .btn-login {
-      width: 100%;
-      height: 46px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      font-family: var(--font);
-      cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(37,99,235,.4);
-    }
-    .btn-login:active { transform: translateY(0); }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-    .divider-line { flex: 1; height: 1px; background: #e2e8f0; }
-    .divider-text { font-size: 12px; color: #94a3b8; font-weight: 500; }
-
-    .branch-hint {
-      text-align: center;
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 14px;
-    }
-    .branch-hint strong { color: #64748b; }
-
-    /* Sucursales pills at bottom */
-    .sucursales-info {
-      text-align: center;
-      margin-top: 24px;
-    }
-    .sucursales-info p {
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-      margin-bottom: 10px;
-    }
-    .sucursal-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-    }
-    .sucursal-pill {
-      padding: 4px 12px;
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 20px;
-      font-size: 11px;
-      color: rgba(255,255,255,.7);
-    }
-
-    @media (max-width: 480px) {
-      .login-card {
-        padding: 28px 24px 24px;
-      }
-    }
-  </style>
+  <title>RB Repostería — Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-  <!-- Decorative floating pills -->
-  <div class="deco-pill"></div>
-  <div class="deco-pill"></div>
-  <div class="deco-pill"></div>
-  <div class="deco-pill"></div>
+<!-- Toggle mobile -->
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn" title="Abrir menú">☰</label>
+<label for="menu-toggle" class="overlay"></label>
 
-  <div class="login-wrapper">
-    <!-- Login Card -->
-    <div class="login-card">
-      <div class="brand-header">
-        <div class="brand-logo">
-          <i class="fa-solid fa-pills"></i>
-        </div>
-        <div class="brand-title">Farmacéutico MK</div>
-        <div class="brand-sub">Sistema de Administración de Farmacias</div>
-      </div>
+<div class="app">
 
-      <form action="dashboard.html">
-        <div class="form-group">
-          <label class="form-label" for="usuario">Usuario</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-user input-icon"></i>
-            <input type="text" class="form-control" id="usuario"
-                   placeholder="Tu nombre de usuario" value="admin">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="password">Contraseña</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock input-icon"></i>
-            <input type="password" class="form-control" id="password"
-                   placeholder="••••••••" value="••••••••">
-            <button type="button" class="toggle-pass" onclick="togglePassword()">
-              <i class="fa-solid fa-eye" id="eyeIcon"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="form-options">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="remember" checked>
-            <label class="form-check-label" for="remember">Recordar sesión</label>
-          </div>
-          <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
-        </div>
-
-        <button type="submit" class="btn-login">
-          <i class="fa-solid fa-right-to-bracket"></i>
-          Iniciar Sesión
-        </button>
-      </form>
-
-      <div class="divider">
-        <div class="divider-line"></div>
-        <span class="divider-text">ACCESO SEGURO</span>
-        <div class="divider-line"></div>
-      </div>
-
-      <div class="branch-hint">
-        <strong>8 Sucursales</strong> activas en el sistema &nbsp;·&nbsp;
-        <i class="fa-solid fa-shield-halved text-success"></i>
-        Conexión cifrada
+  <!-- ── Sidebar ───────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
       </div>
     </div>
 
-    <!-- Sucursales info below card -->
-    <div class="sucursales-info">
-      <p>Red de farmacias activas</p>
-      <div class="sucursal-pills">
-        <span class="sucursal-pill">Sucursal Central</span>
-        <span class="sucursal-pill">Norte</span>
-        <span class="sucursal-pill">Sur</span>
-        <span class="sucursal-pill">Este</span>
-        <span class="sucursal-pill">Oeste</span>
-        <span class="sucursal-pill">Plaza Mayor</span>
-        <span class="sucursal-pill">Universitaria</span>
-        <span class="sucursal-pill">Industrial</span>
-      </div>
-    </div>
-  </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item activo">
+        <span class="icono">🏠</span> Inicio
+      </a>
 
-  <script>
-    function togglePassword() {
-      const input = document.getElementById('password');
-      const icon = document.getElementById('eyeIcon');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
-      } else {
-        input.type = 'password';
-        icon.className = 'fa-solid fa-eye';
-      }
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-  (function(){
-    if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
-    var c=localStorage.getItem('accentColor');
-    if(c){ document.documentElement.style.setProperty('--primary',c); }
-  })();
-  </script>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item">
+        <span class="icono">📖</span> Ver todas
+      </a>
+      <a href="receta-nueva.html" class="sidebar__item">
+        <span class="icono">➕</span> Nueva receta
+      </a>
+
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item">
+        <span class="icono">🧂</span> Catálogo
+      </a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item">
+        <span class="icono">🛒</span> Registrar compra
+      </a>
+      <a href="historial-compras.html" class="sidebar__item">
+        <span class="icono">📜</span> Historial de compras
+      </a>
+
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item">
+        <span class="icono">🏪</span> Directorio
+      </a>
+      <a href="proveedor-nuevo.html" class="sidebar__item">
+        <span class="icono">➕</span> Nuevo proveedor
+      </a>
+
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item">
+        <span class="icono">📋</span> Lista de compras
+      </a>
+      <a href="planificacion.html" class="sidebar__item">
+        <span class="icono">📅</span> Planificación
+      </a>
+    </nav>
+
+    <div class="sidebar__footer">
+      RB Repostería &copy; 2026
+    </div>
+  </aside>
+
+  <!-- ── Contenido principal ──────────────────────────────── -->
+  <main class="contenido-principal">
+
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Dashboard</h1>
+        <div class="header-pagina__ruta">
+          <span>Inicio</span>
+        </div>
+      </div>
+      <div class="header-pagina__der">
+        <span style="font-size: var(--tx-sm); color: var(--texto-muted);">Lunes, 07 de abril de 2026</span>
+        <a href="receta-nueva.html" class="btn btn-primario btn-sm no-print">
+          ➕ Nueva receta
+        </a>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+
+      <!-- Alerta de stock bajo -->
+      <div class="alerta alerta-alerta no-print">
+        <span class="alerta__icono">⚠️</span>
+        <div class="alerta__cuerpo">
+          <div class="alerta__titulo">3 ingredientes con stock bajo</div>
+          <div class="alerta__texto">
+            Harina de trigo (500g restantes), Mantequilla sin sal (200g), Extracto de vainilla (30ml).
+            <a href="lista-compras.html" style="font-weight:700; margin-left: 6px;">Ver lista de compras →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjetas de estadísticas -->
+      <div class="grid-stats">
+        <div class="tarjeta-stat">
+          <span class="tarjeta-stat__etiqueta">Recetas</span>
+          <span class="tarjeta-stat__numero">12</span>
+          <span class="tarjeta-stat__desc">recetas registradas</span>
+        </div>
+        <div class="tarjeta-stat tarjeta-stat--info">
+          <span class="tarjeta-stat__etiqueta">Ingredientes</span>
+          <span class="tarjeta-stat__numero">34</span>
+          <span class="tarjeta-stat__desc">insumos en catálogo</span>
+        </div>
+        <div class="tarjeta-stat tarjeta-stat--exito">
+          <span class="tarjeta-stat__etiqueta">Proveedores</span>
+          <span class="tarjeta-stat__numero">8</span>
+          <span class="tarjeta-stat__desc">proveedores activos</span>
+        </div>
+        <div class="tarjeta-stat tarjeta-stat--alerta">
+          <span class="tarjeta-stat__etiqueta">Stock bajo</span>
+          <span class="tarjeta-stat__numero">3</span>
+          <span class="tarjeta-stat__desc">ingredientes por agotarse</span>
+        </div>
+      </div>
+
+      <!-- Sección: Recetas -->
+      <section class="seccion" id="recetas">
+        <div class="seccion__cabecera">
+          <h2 class="seccion__titulo">Recetas</h2>
+          <a href="receta-nueva.html" class="btn btn-secundario btn-sm no-print">➕ Nueva receta</a>
+        </div>
+
+        <div class="grid-recetas">
+
+          <!-- Galletas de Mantequilla -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🍪</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-galletas">Galletas</span>
+                <span class="badge badge-neutral">24 piezas</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Galletas de Mantequilla</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$50.91</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$120.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 58% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Roles de Canela -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🌀</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-roles">Roles</span>
+                <span class="badge badge-neutral">12 piezas</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Roles de Canela</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$85.20</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$180.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 53% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Pastel de Chocolate -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🎂</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-pasteles">Pasteles</span>
+                <span class="badge badge-neutral">1 kg</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Pastel de Chocolate</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$145.00</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$320.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 55% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Pan Artesanal de Nuez -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🍞</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-pan">Pan</span>
+                <span class="badge badge-neutral">6 piezas</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Pan Artesanal de Nuez</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$62.00</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$130.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 52% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Cuernitos de Vainilla -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🥐</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-galletas">Galletas</span>
+                <span class="badge badge-neutral">20 piezas</span>
+                <span class="badge badge-info">San Valentín</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Cuernitos de Vainilla</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$55.80</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$140.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 60% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Brownies de Nuez -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🍫</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-brownies">Brownies</span>
+                <span class="badge badge-neutral">16 piezas</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Brownies de Nuez</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$92.00</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$200.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 54% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Panqué de Plátano -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">🍌</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-pasteles">Panqués</span>
+                <span class="badge badge-neutral">1 pieza</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Panqué de Plátano</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$38.50</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$90.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 57% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+          <!-- Polvorones de Nuez -->
+          <a href="receta-detalle.html" class="tarjeta-receta">
+            <div class="tarjeta-receta__imagen-placeholder">⭐</div>
+            <div class="tarjeta-receta__cuerpo">
+              <div class="tarjeta-receta__meta">
+                <span class="badge badge-galletas">Galletas</span>
+                <span class="badge badge-neutral">30 piezas</span>
+                <span class="badge badge-info">Navidad</span>
+              </div>
+              <h3 class="tarjeta-receta__nombre">Polvorones de Nuez</h3>
+              <div class="tarjeta-receta__costos">
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Costo lote</span>
+                  <span class="tarjeta-receta__costo-valor">$72.00</span>
+                </div>
+                <div class="tarjeta-receta__costo-item">
+                  <span class="tarjeta-receta__costo-label">Precio venta</span>
+                  <span class="tarjeta-receta__costo-valor precio-venta">$160.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta-receta__footer">
+              <span class="tarjeta-receta__margen">✅ 55% margen</span>
+              <span class="tarjeta-receta__link">Ver receta →</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Sección: Ingredientes con stock bajo -->
+      <section class="seccion no-print">
+        <div class="seccion__cabecera">
+          <h2 class="seccion__titulo">⚠️ Stock bajo</h2>
+          <a href="lista-compras.html" class="btn btn-alerta btn-sm"
+             style="background: var(--alerta-suave); color: var(--alerta-texto); border-color: var(--alerta);">
+            Ver lista de compras
+          </a>
+        </div>
+
+        <div class="tabla-contenedor">
+          <div class="tabla-scroll">
+            <table class="tabla-rb">
+              <thead>
+                <tr>
+                  <th>Ingrediente</th>
+                  <th>Stock actual</th>
+                  <th>Mínimo recomendado</th>
+                  <th>Estado</th>
+                  <th class="no-print">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Harina de trigo</strong></td>
+                  <td>500 g</td>
+                  <td>2,000 g</td>
+                  <td><span class="badge badge-peligro">Muy bajo</span></td>
+                  <td class="no-print">
+                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Mantequilla sin sal</strong></td>
+                  <td>200 g</td>
+                  <td>1,000 g</td>
+                  <td><span class="badge badge-peligro">Muy bajo</span></td>
+                  <td class="no-print">
+                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Extracto de vainilla</strong></td>
+                  <td>30 ml</td>
+                  <td>120 ml</td>
+                  <td><span class="badge badge-alerta">Bajo</span></td>
+                  <td class="no-print">
+                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /cuerpo-pagina -->
+  </main>
+</div><!-- /app -->
+
+<!-- Nav inferior mobile -->
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
 </body>
 </html>

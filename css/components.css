@@ -1,0 +1,1471 @@
+/* ============================================================
+   RB Repostería — components.css
+   Tarjetas, tablas, badges, botones, formularios, alertas
+   ============================================================ */
+
+/* ── Botones ────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radio-sm);
+  font-family: var(--f-cuerpo);
+  font-size: var(--tx-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.12s, box-shadow 0.18s;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primario {
+  background: var(--primario);
+  color: var(--texto-blanco);
+  border-color: var(--primario);
+}
+
+.btn-primario:hover {
+  background: var(--primario-hover);
+  border-color: var(--primario-hover);
+  color: var(--texto-blanco);
+  box-shadow: 0 4px 12px rgba(200, 119, 58, 0.35);
+}
+
+.btn-secundario {
+  background: transparent;
+  color: var(--primario);
+  border-color: var(--primario);
+}
+
+.btn-secundario:hover {
+  background: var(--primario-suave);
+  color: var(--primario-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--texto-suave);
+  border-color: var(--borde);
+}
+
+.btn-ghost:hover {
+  background: var(--fondo);
+  color: var(--texto);
+  border-color: var(--acento);
+}
+
+.btn-peligro {
+  background: var(--peligro-suave);
+  color: var(--peligro);
+  border-color: var(--peligro);
+}
+
+.btn-peligro:hover {
+  background: var(--peligro);
+  color: white;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: var(--tx-xs);
+}
+
+.btn-lg {
+  padding: 0.875rem 2rem;
+  font-size: var(--tx-base);
+}
+
+/* ── Badges / Etiquetas ─────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge-galletas  { background: var(--galletas);  color: var(--galletas-texto); }
+.badge-pasteles  { background: var(--pasteles);  color: var(--pasteles-texto); }
+.badge-pan       { background: var(--pan);       color: var(--pan-texto); }
+.badge-roles     { background: var(--roles);     color: var(--roles-texto); }
+.badge-brownies  { background: var(--brownies);  color: var(--brownies-texto); }
+
+.badge-exito   { background: var(--exito-suave);  color: var(--exito-texto); }
+.badge-alerta  { background: var(--alerta-suave); color: var(--alerta-texto); }
+.badge-peligro { background: var(--peligro-suave);color: var(--peligro-texto); }
+.badge-info    { background: var(--info-suave);   color: var(--info-texto); }
+.badge-neutral { background: var(--fondo);        color: var(--texto-muted);
+                 border: 1px solid var(--borde); }
+
+/* ── Tarjetas estadísticas (dashboard) ──────────────────────── */
+.tarjeta-stat {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--primario);
+  padding: var(--sp-5) var(--sp-6);
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.tarjeta-stat--exito   { border-left-color: var(--exito); }
+.tarjeta-stat--alerta  { border-left-color: var(--alerta); }
+.tarjeta-stat--info    { border-left-color: var(--info); }
+
+.tarjeta-stat__etiqueta {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-muted);
+}
+
+.tarjeta-stat__numero {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-2xl);
+  font-weight: 700;
+  color: var(--primario);
+  line-height: 1;
+}
+
+.tarjeta-stat--exito .tarjeta-stat__numero { color: var(--exito); }
+.tarjeta-stat--alerta .tarjeta-stat__numero { color: var(--alerta); }
+.tarjeta-stat--info .tarjeta-stat__numero { color: var(--info); }
+
+.tarjeta-stat__desc {
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+}
+
+/* ── Tarjetas de recetas ────────────────────────────────────── */
+.tarjeta-receta {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tarjeta-receta:hover {
+  box-shadow: var(--sombra-hover);
+  transform: translateY(-3px);
+}
+
+.tarjeta-receta__imagen {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: var(--acento-suave);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.tarjeta-receta__imagen-placeholder {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, var(--secundario) 0%, var(--acento-suave) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  flex-shrink: 0;
+}
+
+.tarjeta-receta__cuerpo {
+  padding: var(--sp-5);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.tarjeta-receta__nombre {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  font-weight: 600;
+  color: var(--texto);
+  line-height: 1.3;
+}
+
+.tarjeta-receta__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.tarjeta-receta__costos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+  margin-top: auto;
+}
+
+.tarjeta-receta__costo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tarjeta-receta__costo-label {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-muted);
+}
+
+.tarjeta-receta__costo-valor {
+  font-size: var(--tx-lg);
+  font-weight: 700;
+  color: var(--texto);
+  font-family: var(--f-titulo);
+}
+
+.tarjeta-receta__costo-valor.precio-venta {
+  color: var(--primario);
+}
+
+.tarjeta-receta__footer {
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--primario-suave);
+  border-top: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tarjeta-receta__margen {
+  font-size: var(--tx-sm);
+  font-weight: 700;
+  color: var(--exito-texto);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.tarjeta-receta__link {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  color: var(--primario);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+/* ── Tarjetas informativas ──────────────────────────────────── */
+.tarjeta {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+  padding: var(--sp-6);
+}
+
+.tarjeta--destacada {
+  border-color: var(--primario);
+  border-width: 2px;
+  background: linear-gradient(135deg, var(--fondo-tarjeta) 0%, var(--primario-suave) 100%);
+}
+
+.tarjeta__titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* Tarjeta de proveedor */
+.tarjeta-proveedor {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: box-shadow 0.2s;
+}
+
+.tarjeta-proveedor:hover {
+  box-shadow: var(--sombra-md);
+}
+
+.tarjeta-proveedor__nombre {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-xl);
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.tarjeta-proveedor__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3) var(--sp-6);
+}
+
+.tarjeta-proveedor__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tarjeta-proveedor__label {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-muted);
+}
+
+.tarjeta-proveedor__valor {
+  font-size: var(--tx-sm);
+  color: var(--texto);
+  font-weight: 500;
+}
+
+/* ── Tablas ─────────────────────────────────────────────────── */
+.tabla-contenedor {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.tabla-rb {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--tx-sm);
+}
+
+.tabla-rb thead {
+  background: var(--fondo-header);
+}
+
+.tabla-rb thead th {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  font-family: var(--f-cuerpo);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--secundario);
+  white-space: nowrap;
+}
+
+.tabla-rb thead th.col-num {
+  text-align: right;
+}
+
+.tabla-rb tbody tr {
+  border-bottom: 1px solid var(--borde);
+  transition: background 0.12s;
+}
+
+.tabla-rb tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-rb tbody tr:hover {
+  background: #FFF5EC;
+}
+
+.tabla-rb td {
+  padding: 0.75rem 1rem;
+  color: var(--texto);
+  vertical-align: middle;
+}
+
+.tabla-rb td.col-num {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla-rb td.col-muted {
+  color: var(--texto-muted);
+}
+
+.tabla-rb .fila-total {
+  background: var(--primario-suave);
+  border-top: 2px solid var(--primario);
+}
+
+.tabla-rb .fila-total td {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.tabla-rb .fila-subtotal {
+  background: var(--fondo);
+}
+
+.tabla-rb .fila-destacada {
+  background: var(--acento-suave);
+}
+
+/* Scroll horizontal en mobile */
+.tabla-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Formularios ────────────────────────────────────────────── */
+.formulario-rb {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+  padding: var(--sp-8);
+}
+
+.form-seccion {
+  margin-bottom: var(--sp-8);
+}
+
+.form-seccion:last-child {
+  margin-bottom: 0;
+}
+
+.form-seccion__titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4) var(--sp-6);
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--sp-4) var(--sp-5);
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.col-span-3 {
+  grid-column: span 3;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.campo label {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-suave);
+}
+
+.campo label .req {
+  color: var(--primario);
+  margin-left: 2px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  padding: 0.625rem 0.875rem;
+  font-family: var(--f-cuerpo);
+  font-size: var(--tx-base);
+  color: var(--texto);
+  background: var(--fondo-input);
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: var(--primario);
+  box-shadow: 0 0 0 3px var(--borde-focus);
+  outline: none;
+  background: var(--fondo-tarjeta);
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: var(--texto-muted);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.campo select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23A08C7B' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.5rem;
+}
+
+.campo__ayuda {
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+  margin-top: -var(--sp-1);
+}
+
+.form-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--borde);
+  margin-top: var(--sp-6);
+}
+
+/* ── Details/Summary (collapsibles nativos) ─────────────────── */
+details.seccion-colapsable {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  margin-bottom: var(--sp-4);
+  overflow: hidden;
+}
+
+details.seccion-colapsable summary {
+  padding: var(--sp-4) var(--sp-6);
+  font-family: var(--f-titulo);
+  font-size: var(--tx-base);
+  font-weight: 600;
+  color: var(--texto);
+  cursor: pointer;
+  background: var(--fondo);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  list-style: none;
+  transition: background 0.15s;
+}
+
+details.seccion-colapsable summary::-webkit-details-marker {
+  display: none;
+}
+
+details.seccion-colapsable summary::after {
+  content: '▸';
+  margin-left: auto;
+  color: var(--texto-muted);
+  transition: transform 0.2s;
+}
+
+details.seccion-colapsable[open] summary::after {
+  transform: rotate(90deg);
+}
+
+details.seccion-colapsable[open] summary {
+  border-bottom-color: var(--borde);
+  background: var(--primario-suave);
+}
+
+details.seccion-colapsable .detalle-cuerpo {
+  padding: var(--sp-6);
+}
+
+/* ── Alertas y banners ──────────────────────────────────────── */
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--radio-sm);
+  border-left: 4px solid;
+  margin-bottom: var(--sp-5);
+}
+
+.alerta-exito   { background: var(--exito-suave);  border-color: var(--exito);  }
+.alerta-alerta  { background: var(--alerta-suave);  border-color: var(--alerta); }
+.alerta-peligro { background: var(--peligro-suave); border-color: var(--peligro);}
+.alerta-info    { background: var(--info-suave);    border-color: var(--info);   }
+
+.alerta__icono {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.alerta__cuerpo {
+  flex: 1;
+}
+
+.alerta__titulo {
+  font-weight: 700;
+  font-size: var(--tx-sm);
+  color: var(--texto);
+  margin-bottom: var(--sp-1);
+}
+
+.alerta__texto {
+  font-size: var(--tx-sm);
+  color: var(--texto-suave);
+}
+
+/* ── Nota del chef ──────────────────────────────────────────── */
+.nota-chef {
+  border-left: 4px solid var(--acento);
+  background: var(--acento-suave);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: 0 var(--radio-sm) var(--radio-sm) 0;
+  margin: var(--sp-4) 0;
+}
+
+.nota-chef__titulo {
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+  margin-bottom: var(--sp-2);
+}
+
+.nota-chef p,
+.nota-chef li {
+  font-family: var(--f-titulo);
+  font-style: italic;
+  font-size: var(--tx-sm);
+  color: var(--texto-suave);
+  line-height: 1.6;
+}
+
+.nota-chef ul {
+  padding-left: var(--sp-4);
+  list-style: disc;
+}
+
+.nota-chef ul li {
+  margin-bottom: var(--sp-1);
+}
+
+/* ── Panel de costos (receta detalle) ───────────────────────── */
+.panel-costos {
+  background: var(--fondo-header);
+  border-radius: var(--radio);
+  padding: var(--sp-6);
+  color: var(--texto-blanco);
+  box-shadow: var(--sombra-md);
+}
+
+.panel-costos__titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-lg);
+  color: var(--secundario);
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.panel-costos__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: var(--tx-sm);
+}
+
+.panel-costos__fila:last-child {
+  border-bottom: none;
+}
+
+.panel-costos__label {
+  color: var(--texto-sidebar);
+  font-weight: 500;
+}
+
+.panel-costos__valor {
+  font-weight: 700;
+  color: var(--texto-blanco);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-costos__fila--total {
+  padding-top: var(--sp-3);
+  margin-top: var(--sp-2);
+  border-top: 2px solid rgba(255,255,255,0.2) !important;
+  border-bottom: none;
+}
+
+.panel-costos__fila--total .panel-costos__label {
+  font-size: var(--tx-base);
+  font-weight: 700;
+  color: var(--secundario);
+}
+
+.panel-costos__fila--total .panel-costos__valor {
+  font-size: var(--tx-xl);
+  color: var(--secundario);
+  font-family: var(--f-titulo);
+}
+
+.panel-costos__margen {
+  text-align: center;
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.panel-costos__margen-num {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-3xl);
+  font-weight: 700;
+  color: var(--exito-suave);
+  line-height: 1;
+}
+
+.panel-costos__margen-label {
+  font-size: var(--tx-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-sidebar);
+  margin-top: var(--sp-1);
+}
+
+/* ── Barra de margen visual ─────────────────────────────────── */
+.barra-margen {
+  margin-top: var(--sp-4);
+}
+
+.barra-margen__pista {
+  height: 10px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.barra-margen__relleno {
+  height: 100%;
+  background: linear-gradient(90deg, var(--exito-suave) 0%, #A8E6B8 100%);
+  border-radius: 99px;
+}
+
+.barra-margen__etiquetas {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--tx-xs);
+  color: var(--texto-sidebar);
+  margin-top: var(--sp-1);
+}
+
+/* ── Gráfica de barras CSS (historial de precios) ───────────── */
+.grafica-barras {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+
+.grafica-barras__fila {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.grafica-barras__etiqueta {
+  font-size: var(--tx-xs);
+  color: var(--texto-suave);
+  font-weight: 600;
+  text-align: right;
+}
+
+.grafica-barras__pista {
+  height: 28px;
+  background: var(--fondo);
+  border-radius: var(--radio-xs);
+  overflow: hidden;
+  border: 1px solid var(--borde);
+}
+
+.grafica-barras__relleno {
+  height: 100%;
+  background: linear-gradient(90deg, var(--acento) 0%, var(--primario) 100%);
+  border-radius: var(--radio-xs);
+  display: flex;
+  align-items: center;
+  padding-left: var(--sp-3);
+  min-width: 40px;
+  transition: width 0.4s ease;
+}
+
+.grafica-barras__valor-barra {
+  font-size: var(--tx-xs);
+  color: white;
+  font-weight: 700;
+}
+
+.grafica-barras__valor {
+  font-size: var(--tx-sm);
+  font-weight: 700;
+  color: var(--primario);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Pasos de instrucciones ─────────────────────────────────── */
+.lista-pasos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  counter-reset: paso;
+}
+
+.lista-pasos__item {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: flex-start;
+  padding: var(--sp-4);
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  counter-increment: paso;
+}
+
+.lista-pasos__numero {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: var(--primario);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--tx-sm);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.lista-pasos__texto {
+  font-size: var(--tx-base);
+  color: var(--texto-suave);
+  line-height: 1.6;
+  padding-top: var(--sp-1);
+}
+
+/* ── Tabla de escalado de receta ────────────────────────────── */
+.tabla-escalado {
+  font-size: var(--tx-sm);
+}
+
+.tabla-escalado thead th:not(:first-child) {
+  text-align: center;
+}
+
+.tabla-escalado td:not(:first-child) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Info de receta (grid lateral) ─────────────────────────── */
+.info-receta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.info-receta__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--borde);
+  font-size: var(--tx-sm);
+}
+
+.info-receta__fila:last-child {
+  border-bottom: none;
+}
+
+.info-receta__label {
+  color: var(--texto-muted);
+  font-weight: 600;
+  font-size: var(--tx-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.info-receta__valor {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+/* ── Hero de receta ─────────────────────────────────────────── */
+.hero-receta {
+  background: linear-gradient(135deg, var(--fondo-header) 0%, var(--fondo-sidebar) 100%);
+  border-radius: var(--radio);
+  padding: var(--sp-8);
+  margin-bottom: var(--sp-6);
+  color: var(--texto-blanco);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  box-shadow: var(--sombra-md);
+}
+
+.hero-receta__emoji {
+  font-size: 4.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.hero-receta__info {
+  flex: 1;
+}
+
+.hero-receta__nombre {
+  font-family: var(--f-titulo);
+  font-size: var(--tx-3xl);
+  font-weight: 700;
+  color: var(--texto-blanco);
+  line-height: 1.2;
+  margin-bottom: var(--sp-3);
+}
+
+.hero-receta__badges {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-3);
+}
+
+.hero-receta__rendimiento {
+  display: flex;
+  gap: var(--sp-6);
+  margin-top: var(--sp-4);
+}
+
+.hero-receta__dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hero-receta__dato-num {
+  font-size: var(--tx-xl);
+  font-weight: 800;
+  color: var(--secundario);
+  font-family: var(--f-titulo);
+}
+
+.hero-receta__dato-label {
+  font-size: var(--tx-xs);
+  color: var(--texto-sidebar);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Indicador de stock ─────────────────────────────────────── */
+.indicador-stock {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+}
+
+.indicador-stock__punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stock-bueno  .indicador-stock__punto { background: var(--exito); }
+.stock-bajo   .indicador-stock__punto { background: var(--alerta); }
+.stock-agotado .indicador-stock__punto { background: var(--peligro); }
+
+.stock-bueno  { color: var(--exito-texto); }
+.stock-bajo   { color: var(--alerta-texto); }
+.stock-agotado { color: var(--peligro-texto); }
+
+/* ── Paginación / links de acción ───────────────────────────── */
+.acciones-tabla {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+/* ── Breadcrumb ─────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--tx-xs);
+  color: var(--texto-muted);
+  margin-bottom: var(--sp-4);
+}
+
+.breadcrumb a {
+  color: var(--texto-muted);
+}
+
+.breadcrumb a:hover {
+  color: var(--primario);
+}
+
+.breadcrumb__sep {
+  color: var(--borde);
+}
+
+/* ── Fieldset ───────────────────────────────────────────────── */
+fieldset {
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+
+legend {
+  font-size: var(--tx-sm);
+  font-weight: 700;
+  color: var(--texto-suave);
+  padding: 0 var(--sp-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Lista de compras ───────────────────────────────────────── */
+.tarjeta-compra {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  padding: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  transition: box-shadow 0.15s;
+}
+
+.tarjeta-compra:hover {
+  box-shadow: var(--sombra);
+}
+
+.tarjeta-compra__check {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primario);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ── Responsive formularios y componentes ───────────────────── */
+@media (max-width: 640px) {
+  /* Formularios */
+  .form-grid,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .col-span-2,
+  .col-span-3 {
+    grid-column: span 1;
+  }
+
+  .formulario-rb {
+    padding: var(--sp-4);
+  }
+
+  .form-seccion__titulo {
+    font-size: var(--tx-base);
+  }
+
+  .form-acciones {
+    flex-wrap: wrap;
+  }
+
+  .form-acciones .btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 100px;
+  }
+
+  /* Hero receta */
+  .hero-receta {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--sp-5);
+    gap: var(--sp-3);
+  }
+
+  .hero-receta__emoji {
+    font-size: 2.5rem;
+  }
+
+  .hero-receta__nombre {
+    font-size: var(--tx-2xl);
+  }
+
+  .hero-receta__rendimiento {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .hero-receta__dato-num {
+    font-size: var(--tx-lg);
+  }
+
+  /* Panel costos */
+  .panel-costos {
+    padding: var(--sp-4);
+  }
+
+  .panel-costos__fila--total .panel-costos__valor {
+    font-size: var(--tx-lg);
+  }
+
+  .panel-costos__margen-num {
+    font-size: var(--tx-2xl);
+  }
+
+  /* Gráfica de barras */
+  .grafica-barras__fila {
+    grid-template-columns: 70px 1fr 65px;
+    gap: var(--sp-2);
+  }
+
+  /* Pasos de instrucciones */
+  .lista-pasos__item {
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+  }
+
+  .lista-pasos__texto {
+    font-size: var(--tx-sm);
+  }
+
+  /* Proveedor */
+  .tarjeta-proveedor__info {
+    grid-template-columns: 1fr;
+  }
+
+  /* Info receta */
+  .info-receta__fila {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  /* Tarjeta receta — compactar en columna única */
+  .tarjeta-receta__imagen,
+  .tarjeta-receta__imagen-placeholder {
+    height: 140px;
+  }
+
+  .tarjeta-receta__imagen-placeholder {
+    font-size: 2.8rem;
+  }
+
+  .tarjeta-receta__cuerpo {
+    padding: var(--sp-4);
+  }
+
+  .tarjeta-receta__costo-valor {
+    font-size: var(--tx-base);
+  }
+
+  .tarjeta-receta__footer {
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  /* Inputs dentro de tablas (override inline styles) */
+  .tabla-rb select,
+  .tabla-rb input[type="number"],
+  .tabla-rb input[type="text"] {
+    width: 100% !important;
+    min-width: unset !important;
+    box-sizing: border-box;
+  }
+
+  /* Collapsibles */
+  details.seccion-colapsable summary {
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--tx-sm);
+  }
+
+  .detalle-cuerpo {
+    padding: var(--sp-4);
+  }
+
+  /* Fieldset */
+  fieldset {
+    padding: var(--sp-4);
+  }
+
+  /* Alertas */
+  .alerta {
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .alerta__icono {
+    display: none;
+  }
+
+  /* Badges - ligeramente más pequeños */
+  .badge {
+    font-size: 0.62rem;
+    padding: 0.15em 0.55em;
+  }
+
+  /* Botones de acciones en tabla */
+  .acciones-tabla .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Gráfica barras */
+  .grafica-barras__fila {
+    grid-template-columns: 60px 1fr 55px;
+  }
+
+  .grafica-barras__pista {
+    height: 22px;
+  }
+
+  .grafica-barras__valor-barra {
+    font-size: 0.6rem;
+  }
+
+  /* Stats */
+  .tarjeta-stat {
+    padding: var(--sp-4);
+  }
+
+  .tarjeta-stat__numero {
+    font-size: var(--tx-xl);
+  }
+
+  .tarjeta-stat__etiqueta {
+    font-size: 0.65rem;
+  }
+
+  /* Tarjeta receta — reducción adicional en pantallas muy pequeñas */
+  .tarjeta-receta__imagen,
+  .tarjeta-receta__imagen-placeholder {
+    height: 110px;
+  }
+
+  .tarjeta-receta__imagen-placeholder {
+    font-size: 2.2rem;
+  }
+
+  .tarjeta-receta__cuerpo {
+    padding: var(--sp-3);
+  }
+
+  .tarjeta-receta__nombre {
+    font-size: var(--tx-base);
+  }
+
+  .tarjeta-receta__footer {
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  /* Tablas */
+  .tabla-rb {
+    font-size: var(--tx-xs);
+  }
+
+  .tabla-rb thead th {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .tabla-rb td {
+    padding: 0.5rem 0.5rem;
+  }
+
+  /* Hero */
+  .hero-receta {
+    padding: var(--sp-4);
+    border-radius: var(--radio-sm);
+  }
+
+  .hero-receta__emoji {
+    font-size: 2rem;
+  }
+
+  .hero-receta__nombre {
+    font-size: var(--tx-xl);
+  }
+
+  /* Panel costos */
+  .panel-costos {
+    padding: var(--sp-3);
+  }
+
+  .panel-costos__titulo {
+    font-size: var(--tx-base);
+    margin-bottom: var(--sp-3);
+    padding-bottom: var(--sp-2);
+  }
+
+  .panel-costos__fila {
+    font-size: var(--tx-xs);
+    padding: var(--sp-1) 0;
+  }
+
+  .panel-costos__margen-num {
+    font-size: var(--tx-xl);
+  }
+
+  /* Pasos */
+  .lista-pasos__numero {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: var(--tx-xs);
+  }
+
+  .lista-pasos__texto {
+    font-size: var(--tx-xs);
+  }
+
+  /* Tarjetas */
+  .tarjeta {
+    padding: var(--sp-4);
+  }
+
+  /* Nota chef */
+  .nota-chef {
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .nota-chef p,
+  .nota-chef li {
+    font-size: var(--tx-xs);
+  }
+
+  /* Botones */
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: var(--tx-xs);
+  }
+
+  .btn-lg {
+    padding: 0.625rem 1.25rem;
+    font-size: var(--tx-sm);
+  }
+
+  .btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  /* Info fila - stack en pantallas muy pequeñas */
+  .info-receta__fila {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Tarjeta proveedor */
+  .tarjeta-proveedor {
+    padding: var(--sp-4);
+  }
+
+  /* Fieldset */
+  fieldset {
+    padding: var(--sp-3);
+  }
+
+  /* Botones de acción — ocupan ancho completo en móvil muy pequeño */
+  .form-acciones .btn {
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  /* Inputs dentro de tablas — refuerzo para pantallas muy pequeñas */
+  .tabla-rb select,
+  .tabla-rb input[type="number"],
+  .tabla-rb input[type="text"] {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+
+  /* Collapsibles — padding más compacto */
+  details.seccion-colapsable summary {
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .detalle-cuerpo {
+    padding: var(--sp-3);
+  }
+}
+
+/* ── Impresión ──────────────────────────────────────────────── */
+@media print {
+  .tarjeta-receta,
+  .tarjeta,
+  .tabla-contenedor {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .btn,
+  .no-print {
+    display: none !important;
+  }
+
+  .hero-receta {
+    background: #f5f5f5;
+    color: black;
+    print-color-adjust: exact;
+  }
+}
