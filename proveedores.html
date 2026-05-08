@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -58,254 +60,8 @@
 
     <div class="cuerpo-pagina">
 
-      <div class="grid-3">
-
-        <!-- Lala -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🥛</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">Lala S.A. de C.V.</h3>
-              <span class="badge badge-info">Lácteos</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Teléfono</span>
-              <span class="tarjeta-proveedor__valor">800-890-5252</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Sitio web</span>
-              <span class="tarjeta-proveedor__valor">lala.com.mx</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Mantequilla, Crema, Leche (3)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">07 abr 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$488.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Donde comprar</span>
-              <span class="tarjeta-proveedor__valor">Costco / Walmart</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
-        <!-- Nestlé -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🍫</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">Nestlé México</h3>
-              <span class="badge badge-brownies">Chocolates</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Teléfono</span>
-              <span class="tarjeta-proveedor__valor">800-737-6353</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Sitio web</span>
-              <span class="tarjeta-proveedor__valor">nestle.com.mx</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Chispas de chocolate (1)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">20 mar 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$176.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Donde comprar</span>
-              <span class="tarjeta-proveedor__valor">Walmart / Sam's</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
-        <!-- McCormick -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🌿</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">McCormick</h3>
-              <span class="badge badge-peligro">Esencias</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Teléfono</span>
-              <span class="tarjeta-proveedor__valor">800-900-2400</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Sitio web</span>
-              <span class="tarjeta-proveedor__valor">mccormick.com.mx</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Vainilla, Almendra (2)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">15 feb 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$144.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Donde comprar</span>
-              <span class="tarjeta-proveedor__valor">Walmart / Chedraui</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
-        <!-- Zucarmex -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🍬</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">Zucarmex</h3>
-              <span class="badge badge-exito">Endulzantes</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Teléfono</span>
-              <span class="tarjeta-proveedor__valor">—</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Sitio web</span>
-              <span class="tarjeta-proveedor__valor">zucarmex.com</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Azúcar estándar, Azúcar glass (2)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">01 abr 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$120.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Donde comprar</span>
-              <span class="tarjeta-proveedor__valor">Costco / Sam's</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
-        <!-- Maseca -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🌾</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">Maseca / Gruma</h3>
-              <span class="badge badge-neutral">Harinas</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Teléfono</span>
-              <span class="tarjeta-proveedor__valor">—</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Sitio web</span>
-              <span class="tarjeta-proveedor__valor">maseca.com</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Harina de trigo (1)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">07 abr 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$56.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Donde comprar</span>
-              <span class="tarjeta-proveedor__valor">Costco / Walmart</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
-        <!-- Mercado local -->
-        <div class="tarjeta-proveedor">
-          <div style="display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-3);">
-            <span style="font-size: 2rem;">🏪</span>
-            <div>
-              <h3 class="tarjeta-proveedor__nombre">Mercado local</h3>
-              <span class="badge badge-neutral">Varios</span>
-            </div>
-          </div>
-          <div class="tarjeta-proveedor__info">
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Dirección</span>
-              <span class="tarjeta-proveedor__valor">Mercado Municipal</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Horario</span>
-              <span class="tarjeta-proveedor__valor">7am – 3pm, lun–sáb</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Ingredientes</span>
-              <span class="tarjeta-proveedor__valor">Nuez, Piloncillo, Coco (3)</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Última compra</span>
-              <span class="tarjeta-proveedor__valor">02 abr 2026</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Total comprado</span>
-              <span class="tarjeta-proveedor__valor" style="color: var(--primario); font-weight: 700;">$310.00</span>
-            </div>
-            <div class="tarjeta-proveedor__campo">
-              <span class="tarjeta-proveedor__label">Notas</span>
-              <span class="tarjeta-proveedor__valor">Pago solo en efectivo</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--sp-3); display: flex; gap: var(--sp-2);">
-            <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
-            <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-          </div>
-        </div>
-
+      <div id="grid-proveedores" class="grid-3">
+        <div style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando proveedores...</div>
       </div>
     </div>
   </main>
@@ -323,5 +79,16 @@
   </ul>
 </nav>
 
+<script>
+  async function cargarProveedores() {
+    try {
+      const proveedores = await getData('proveedores');
+      document.getElementById('grid-proveedores').innerHTML = renderProveedores(proveedores);
+    } catch (e) {
+      mostrarError('grid-proveedores', e.message, cargarProveedores);
+    }
+  }
+  cargarProveedores();
+</script>
 </body>
 </html>

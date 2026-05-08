@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -60,7 +62,7 @@
         <div class="formulario-rb">
           <h3 class="form-seccion__titulo" style="margin-bottom: var(--sp-6);">🏪 Datos del proveedor</h3>
 
-          <form action="proveedores.html" method="get">
+          <form id="form-proveedor">
 
             <fieldset style="margin-bottom: var(--sp-6);">
               <legend>Información general</legend>
@@ -171,5 +173,33 @@
   </ul>
 </nav>
 
+<script>
+  document.getElementById('form-proveedor').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '⏳ Guardando...';
+    try {
+      await postData('proveedores', {
+        nombre:    document.getElementById('nombre-prov').value.trim(),
+        categoria: document.getElementById('categoria-prov').value,
+        tipo:      document.getElementById('tipo-prov').value,
+        telefono:  document.getElementById('telefono-prov').value.trim(),
+        email:     document.getElementById('email-prov').value.trim(),
+        direccion: document.getElementById('direccion-prov').value.trim(),
+        horario:   document.getElementById('horario-prov').value.trim(),
+        web:       document.getElementById('web-prov').value.trim(),
+        pago:      document.getElementById('forma-pago').value,
+        entrega:   document.getElementById('entrega').value,
+        notas:     document.getElementById('notas-prov').value.trim()
+      });
+      window.location.href = 'proveedores.html';
+    } catch (err) {
+      alert('Error al guardar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '✅ Guardar proveedor';
+    }
+  });
+</script>
 </body>
 </html>

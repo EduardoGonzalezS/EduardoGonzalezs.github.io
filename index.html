@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -85,7 +87,7 @@
         </div>
       </div>
       <div class="header-pagina__der">
-        <span style="font-size: var(--tx-sm); color: var(--texto-muted);">Lunes, 07 de abril de 2026</span>
+        <span id="fecha-hoy" style="font-size: var(--tx-sm); color: var(--texto-muted);"></span>
         <a href="receta-nueva.html" class="btn btn-primario btn-sm no-print">
           ➕ Nueva receta
         </a>
@@ -94,38 +96,29 @@
 
     <div class="cuerpo-pagina">
 
-      <!-- Alerta de stock bajo -->
-      <div class="alerta alerta-alerta no-print">
-        <span class="alerta__icono">⚠️</span>
-        <div class="alerta__cuerpo">
-          <div class="alerta__titulo">3 ingredientes con stock bajo</div>
-          <div class="alerta__texto">
-            Harina de trigo (500g restantes), Mantequilla sin sal (200g), Extracto de vainilla (30ml).
-            <a href="lista-compras.html" style="font-weight:700; margin-left: 6px;">Ver lista de compras →</a>
-          </div>
-        </div>
-      </div>
+      <!-- Alerta de stock bajo (dinámica) -->
+      <div id="banner-stock"></div>
 
       <!-- Tarjetas de estadísticas -->
       <div class="grid-stats">
         <div class="tarjeta-stat">
           <span class="tarjeta-stat__etiqueta">Recetas</span>
-          <span class="tarjeta-stat__numero">12</span>
+          <span class="tarjeta-stat__numero" id="stat-recetas">—</span>
           <span class="tarjeta-stat__desc">recetas registradas</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--info">
           <span class="tarjeta-stat__etiqueta">Ingredientes</span>
-          <span class="tarjeta-stat__numero">34</span>
+          <span class="tarjeta-stat__numero" id="stat-ingredientes">—</span>
           <span class="tarjeta-stat__desc">insumos en catálogo</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--exito">
           <span class="tarjeta-stat__etiqueta">Proveedores</span>
-          <span class="tarjeta-stat__numero">8</span>
+          <span class="tarjeta-stat__numero" id="stat-proveedores">—</span>
           <span class="tarjeta-stat__desc">proveedores activos</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--alerta">
           <span class="tarjeta-stat__etiqueta">Stock bajo</span>
-          <span class="tarjeta-stat__numero">3</span>
+          <span class="tarjeta-stat__numero" id="stat-stock">—</span>
           <span class="tarjeta-stat__desc">ingredientes por agotarse</span>
         </div>
       </div>
@@ -137,218 +130,8 @@
           <a href="receta-nueva.html" class="btn btn-secundario btn-sm no-print">➕ Nueva receta</a>
         </div>
 
-        <div class="grid-recetas">
-
-          <!-- Galletas de Mantequilla -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🍪</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-galletas">Galletas</span>
-                <span class="badge badge-neutral">24 piezas</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Galletas de Mantequilla</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$50.91</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$120.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 58% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Roles de Canela -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🌀</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-roles">Roles</span>
-                <span class="badge badge-neutral">12 piezas</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Roles de Canela</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$85.20</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$180.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 53% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Pastel de Chocolate -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🎂</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-pasteles">Pasteles</span>
-                <span class="badge badge-neutral">1 kg</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Pastel de Chocolate</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$145.00</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$320.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 55% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Pan Artesanal de Nuez -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🍞</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-pan">Pan</span>
-                <span class="badge badge-neutral">6 piezas</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Pan Artesanal de Nuez</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$62.00</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$130.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 52% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Cuernitos de Vainilla -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🥐</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-galletas">Galletas</span>
-                <span class="badge badge-neutral">20 piezas</span>
-                <span class="badge badge-info">San Valentín</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Cuernitos de Vainilla</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$55.80</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$140.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 60% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Brownies de Nuez -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🍫</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-brownies">Brownies</span>
-                <span class="badge badge-neutral">16 piezas</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Brownies de Nuez</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$92.00</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$200.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 54% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Panqué de Plátano -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">🍌</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-pasteles">Panqués</span>
-                <span class="badge badge-neutral">1 pieza</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Panqué de Plátano</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$38.50</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$90.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 57% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
-          <!-- Polvorones de Nuez -->
-          <a href="receta-detalle.html" class="tarjeta-receta">
-            <div class="tarjeta-receta__imagen-placeholder">⭐</div>
-            <div class="tarjeta-receta__cuerpo">
-              <div class="tarjeta-receta__meta">
-                <span class="badge badge-galletas">Galletas</span>
-                <span class="badge badge-neutral">30 piezas</span>
-                <span class="badge badge-info">Navidad</span>
-              </div>
-              <h3 class="tarjeta-receta__nombre">Polvorones de Nuez</h3>
-              <div class="tarjeta-receta__costos">
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Costo lote</span>
-                  <span class="tarjeta-receta__costo-valor">$72.00</span>
-                </div>
-                <div class="tarjeta-receta__costo-item">
-                  <span class="tarjeta-receta__costo-label">Precio venta</span>
-                  <span class="tarjeta-receta__costo-valor precio-venta">$160.00</span>
-                </div>
-              </div>
-            </div>
-            <div class="tarjeta-receta__footer">
-              <span class="tarjeta-receta__margen">✅ 55% margen</span>
-              <span class="tarjeta-receta__link">Ver receta →</span>
-            </div>
-          </a>
-
+        <div id="grid-recetas" class="grid-recetas">
+          <div style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando recetas...</div>
         </div>
       </section>
 
@@ -374,34 +157,8 @@
                   <th class="no-print">Acción</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Harina de trigo</strong></td>
-                  <td>500 g</td>
-                  <td>2,000 g</td>
-                  <td><span class="badge badge-peligro">Muy bajo</span></td>
-                  <td class="no-print">
-                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>Mantequilla sin sal</strong></td>
-                  <td>200 g</td>
-                  <td>1,000 g</td>
-                  <td><span class="badge badge-peligro">Muy bajo</span></td>
-                  <td class="no-print">
-                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>Extracto de vainilla</strong></td>
-                  <td>30 ml</td>
-                  <td>120 ml</td>
-                  <td><span class="badge badge-alerta">Bajo</span></td>
-                  <td class="no-print">
-                    <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
-                  </td>
-                </tr>
+              <tbody id="tbody-stock-bajo">
+                <tr><td colspan="5" style="text-align:center;color:var(--texto-muted);">⏳ Cargando...</td></tr>
               </tbody>
             </table>
           </div>
@@ -425,5 +182,42 @@
   </ul>
 </nav>
 
+<script>
+  // Fecha actual en el header
+  const fechaHoy = new Date();
+  const opcionesFecha = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById('fecha-hoy').textContent =
+    fechaHoy.toLocaleDateString('es-MX', opcionesFecha)
+      .replace(/^\w/, c => c.toUpperCase());
+
+  async function cargarDashboard() {
+    mostrarCargando('grid-recetas', 'Cargando recetas...');
+    try {
+      const [recetas, ingredientes, proveedores] = await Promise.all([
+        getData('recetas'),
+        getData('ingredientes'),
+        getData('proveedores'),
+      ]);
+
+      // Recetas
+      document.getElementById('grid-recetas').innerHTML = renderTarjetasRecetas(recetas);
+      document.getElementById('stat-recetas').textContent = recetas.length;
+
+      // Ingredientes y stock
+      const bajos = getStockBajo(ingredientes);
+      document.getElementById('stat-ingredientes').textContent = ingredientes.length;
+      document.getElementById('stat-stock').textContent = bajos.length;
+      document.getElementById('banner-stock').innerHTML = renderAlertaBanner(bajos);
+      document.getElementById('tbody-stock-bajo').innerHTML = renderTablaStockBajo(bajos);
+
+      // Proveedores
+      document.getElementById('stat-proveedores').textContent = proveedores.length;
+    } catch (e) {
+      mostrarError('grid-recetas', e.message, cargarDashboard);
+    }
+  }
+
+  cargarDashboard();
+</script>
 </body>
 </html>

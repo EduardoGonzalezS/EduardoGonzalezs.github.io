@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -46,11 +48,11 @@
   <main class="contenido-principal">
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Mantequilla sin sal</h1>
+        <h1 class="header-pagina__titulo" id="titulo-ingrediente">Cargando...</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a> <span>/</span>
           <a href="ingredientes.html">Ingredientes</a> <span>/</span>
-          <span>Mantequilla sin sal</span>
+          <span id="nombre-breadcrumb-ing">...</span>
         </div>
       </div>
       <div class="header-pagina__der no-print">
@@ -59,229 +61,7 @@
     </header>
 
     <div class="cuerpo-pagina">
-
-      <div class="layout-2col">
-
-        <!-- Columna izquierda -->
-        <div>
-
-          <!-- Info actual del ingrediente -->
-          <div class="tarjeta mb-6">
-            <h4 class="tarjeta__titulo">🧂 Información del ingrediente</h4>
-            <div class="info-receta">
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Categoría</span>
-                <span class="info-receta__valor"><span class="badge badge-info">Lácteos</span></span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Unidad de medida</span>
-                <span class="info-receta__valor">Kilogramos (kg)</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Proveedor principal</span>
-                <span class="info-receta__valor"><a href="proveedores.html">Lala S.A. de C.V.</a></span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Precio actual</span>
-                <span class="info-receta__valor" style="color: var(--primario); font-size: var(--tx-lg);">$90.00 / kg</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Precio por gramo</span>
-                <span class="info-receta__valor">$0.090 / g</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Stock actual</span>
-                <span class="info-receta__valor">
-                  <div class="indicador-stock stock-agotado">
-                    <span class="indicador-stock__punto"></span> 200 g (muy bajo)
-                  </div>
-                </span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Stock mínimo</span>
-                <span class="info-receta__valor">1,000 g</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Última compra</span>
-                <span class="info-receta__valor" style="color: var(--texto-muted); font-size: var(--tx-xs);">07 abr 2026 — Costco</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Historial de precios tabla -->
-          <section class="seccion">
-            <div class="seccion__cabecera">
-              <h3 class="seccion__titulo">Historial de precios</h3>
-            </div>
-            <div class="tabla-contenedor">
-              <div class="tabla-scroll">
-              <table class="tabla-rb">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th class="col-num">Precio / kg</th>
-                    <th class="col-num">Cantidad</th>
-                    <th class="col-num">Total pagado</th>
-                    <th>Lugar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="fila-destacada">
-                    <td><strong>07 abr 2026</strong> <span class="badge badge-exito" style="font-size: 0.6rem;">Actual</span></td>
-                    <td class="col-num"><strong>$90.00</strong></td>
-                    <td class="col-num">2 kg</td>
-                    <td class="col-num">$180.00</td>
-                    <td>Costco</td>
-                  </tr>
-                  <tr>
-                    <td>15 feb 2026</td>
-                    <td class="col-num">$88.00</td>
-                    <td class="col-num">1 kg</td>
-                    <td class="col-num">$88.00</td>
-                    <td>Walmart</td>
-                  </tr>
-                  <tr>
-                    <td>03 ene 2026</td>
-                    <td class="col-num">$85.00</td>
-                    <td class="col-num">2 kg</td>
-                    <td class="col-num">$170.00</td>
-                    <td>Costco</td>
-                  </tr>
-                  <tr>
-                    <td>20 nov 2025</td>
-                    <td class="col-num">$82.00</td>
-                    <td class="col-num">1 kg</td>
-                    <td class="col-num">$82.00</td>
-                    <td>Walmart</td>
-                  </tr>
-                  <tr>
-                    <td>05 oct 2025</td>
-                    <td class="col-num">$80.00</td>
-                    <td class="col-num">3 kg</td>
-                    <td class="col-num">$240.00</td>
-                    <td>Costco</td>
-                  </tr>
-                  <tr>
-                    <td>22 ago 2025</td>
-                    <td class="col-num">$78.00</td>
-                    <td class="col-num">2 kg</td>
-                    <td class="col-num">$156.00</td>
-                    <td>Walmart</td>
-                  </tr>
-                  <tr class="fila-total">
-                    <td colspan="2"><strong>Variación total (ago 25 – abr 26)</strong></td>
-                    <td colspan="3" style="text-align: right; color: var(--peligro-texto);">
-                      <strong>+$12.00 / kg (+15.4%)</strong>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              </div><!-- /tabla-scroll -->
-            </div>
-          </section>
-
-        </div>
-
-        <!-- Columna derecha: gráfica y recetas relacionadas -->
-        <div>
-
-          <!-- Gráfica de barras CSS -->
-          <div class="tarjeta mb-6">
-            <h4 class="tarjeta__titulo">📈 Tendencia de precio</h4>
-            <div class="grafica-barras">
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">ago 2025</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 65%;">
-                    <span class="grafica-barras__valor-barra">$78</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$78.00</span>
-              </div>
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">oct 2025</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 70%;">
-                    <span class="grafica-barras__valor-barra">$80</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$80.00</span>
-              </div>
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">nov 2025</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 75%;">
-                    <span class="grafica-barras__valor-barra">$82</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$82.00</span>
-              </div>
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">ene 2026</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 82%;">
-                    <span class="grafica-barras__valor-barra">$85</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$85.00</span>
-              </div>
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">feb 2026</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 88%;">
-                    <span class="grafica-barras__valor-barra">$88</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$88.00</span>
-              </div>
-              <div class="grafica-barras__fila">
-                <span class="grafica-barras__etiqueta">abr 2026</span>
-                <div class="grafica-barras__pista">
-                  <div class="grafica-barras__relleno" style="width: 95%;">
-                    <span class="grafica-barras__valor-barra">$90</span>
-                  </div>
-                </div>
-                <span class="grafica-barras__valor">$90.00</span>
-              </div>
-            </div>
-            <div class="alerta alerta-alerta mt-4" style="font-size: var(--tx-xs);">
-              <span class="alerta__icono">📊</span>
-              <div class="alerta__cuerpo">
-                <div class="alerta__titulo">Tendencia al alza</div>
-                <div class="alerta__texto">El precio ha subido 15.4% en 8 meses. Considera comprar mayor volumen cuando baje.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recetas que usan este ingrediente -->
-          <div class="tarjeta">
-            <h4 class="tarjeta__titulo">📖 Recetas que lo usan</h4>
-            <div class="info-receta">
-              <div class="info-receta__fila">
-                <span class="info-receta__label"><a href="receta-detalle.html">Galletas de Mantequilla</a></span>
-                <span class="info-receta__valor" style="color: var(--texto-muted);">150 g / lote</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label"><a href="receta-detalle.html">Roles de Canela</a></span>
-                <span class="info-receta__valor" style="color: var(--texto-muted);">200 g / lote</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label"><a href="receta-detalle.html">Pastel de Chocolate</a></span>
-                <span class="info-receta__valor" style="color: var(--texto-muted);">300 g / lote</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label"><a href="receta-detalle.html">Cuernitos de Vainilla</a></span>
-                <span class="info-receta__valor" style="color: var(--texto-muted);">120 g / lote</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label"><a href="receta-detalle.html">Polvorones de Nuez</a></span>
-                <span class="info-receta__valor" style="color: var(--texto-muted);">250 g / lote</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      <div id="cuerpo-ingrediente" style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando...</div>
     </div>
   </main>
 </div>
@@ -298,5 +78,79 @@
   </ul>
 </nav>
 
+
+<script>
+  async function cargarIngrediente() {
+    const nombre = urlParam('nombre');
+    if (!nombre) {
+      document.getElementById('cuerpo-ingrediente').innerHTML =
+        '<p style="text-align:center;color:var(--peligro);">No se especificó un ingrediente. <a href="ingredientes.html">Ver catálogo →</a></p>';
+      return;
+    }
+    try {
+      const [ingredientes, todosDetalle] = await Promise.all([
+        getData('ingredientes'),
+        getData('compras_detalle')
+      ]);
+      const ing = ingredientes.find(i => i.nombre === nombre);
+      if (!ing) throw new Error('Ingrediente no encontrado: ' + nombre);
+
+      document.title = nombre + ' — RB Repostería';
+      document.getElementById('titulo-ingrediente').textContent = nombre;
+      document.getElementById('nombre-breadcrumb-ing').textContent = nombre;
+
+      const historial = todosDetalle.filter(d => d.ingrediente === nombre);
+      const graficaHtml = renderGraficaPrecios(historial);
+
+      let tendencia = '';
+      if (historial.length >= 2) {
+        const sorted = [...historial].sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+        const primero = Number(sorted[0].precio_unitario);
+        const ultimo  = Number(sorted[sorted.length - 1].precio_unitario);
+        const diff = ultimo - primero;
+        const pct  = primero > 0 ? Math.round(Math.abs(diff) / primero * 100) : 0;
+        if (diff > 0)
+          tendencia = `<div class="alerta alerta-alerta mt-4" style="font-size:var(--tx-xs);"><span class="alerta__icono">📊</span><div class="alerta__cuerpo"><div class="alerta__titulo">Tendencia al alza</div><div class="alerta__texto">El precio ha subido ${pct}% desde el primer registro.</div></div></div>`;
+        else if (diff < 0)
+          tendencia = `<div class="alerta alerta-info mt-4" style="font-size:var(--tx-xs);"><span class="alerta__icono">📉</span><div class="alerta__cuerpo"><div class="alerta__titulo">Tendencia a la baja</div><div class="alerta__texto">El precio ha bajado ${pct}%.</div></div></div>`;
+      }
+
+      document.getElementById('cuerpo-ingrediente').innerHTML = `
+        <div class="layout-2col">
+          <div>
+            <div class="tarjeta mb-6">
+              <h4 class="tarjeta__titulo">🧂 Información del ingrediente</h4>
+              <div class="info-receta">${renderInfoIngrediente(ing)}</div>
+            </div>
+            <section class="seccion">
+              <div class="seccion__cabecera"><h3 class="seccion__titulo">Historial de precios</h3></div>
+              <div class="tabla-contenedor"><div class="tabla-scroll">
+                <table class="tabla-rb">
+                  <thead><tr>
+                    <th>Fecha</th>
+                    <th class="col-num">Precio / ${ing.unidad}</th>
+                    <th class="col-num">Cantidad</th>
+                    <th class="col-num">Total pagado</th>
+                    <th>Lugar</th>
+                  </tr></thead>
+                  <tbody>${renderHistorialPrecios(historial)}</tbody>
+                </table>
+              </div></div>
+            </section>
+          </div>
+          <div>
+            <div class="tarjeta mb-6">
+              <h4 class="tarjeta__titulo">📈 Tendencia de precio</h4>
+              <div class="grafica-barras">${graficaHtml}</div>
+              ${tendencia}
+            </div>
+          </div>
+        </div>`;
+    } catch (e) {
+      mostrarError('cuerpo-ingrediente', e.message, cargarIngrediente);
+    }
+  }
+  cargarIngrediente();
+</script>
 </body>
 </html>

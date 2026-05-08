@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
   <style>
     /* Tabla de productos de la compra */
     .tabla-compra select,
@@ -124,7 +126,7 @@
     <div class="cuerpo-pagina">
       <div class="contenedor-angosto">
 
-        <form action="historial-compras.html" method="get">
+        <form id="form-compra">
 
           <!-- Sección 1: Datos generales de la compra -->
           <div class="formulario-rb mb-6">
@@ -133,7 +135,7 @@
               <div class="form-grid">
                 <div class="campo">
                   <label for="fecha-compra">Fecha de compra <span class="req">*</span></label>
-                  <input type="date" id="fecha-compra" name="fecha" value="2026-04-07" required>
+                  <input type="date" id="fecha-compra" name="fecha" required>
                 </div>
                 <div class="campo">
                   <label for="lugar-compra">Lugar de compra <span class="req">*</span></label>
@@ -249,29 +251,7 @@
                 </div>
               </div>
 
-              <!-- Datalist de ingredientes -->
-              <datalist id="lista-ingredientes">
-                <option value="Harina de trigo">
-                <option value="Harina para pastel">
-                <option value="Mantequilla sin sal">
-                <option value="Crema para batir">
-                <option value="Leche entera">
-                <option value="Azúcar estándar">
-                <option value="Azúcar glass">
-                <option value="Huevo blanco">
-                <option value="Extracto de vainilla">
-                <option value="Polvo para hornear">
-                <option value="Bicarbonato de sodio">
-                <option value="Sal fina">
-                <option value="Chispas de chocolate">
-                <option value="Chocolate oscuro 70%">
-                <option value="Nuez pacana">
-                <option value="Coco rallado">
-                <option value="Canela en polvo">
-                <option value="Queso crema">
-                <option value="Piloncillo">
-                <option value="Levadura seca">
-              </datalist>
+              <datalist id="lista-ingredientes"></datalist>
 
               <button type="button" onclick="agregarProducto()" class="btn btn-ghost btn-sm">
                 ➕ Agregar producto
@@ -357,6 +337,67 @@
 </nav>
 
 <script>
+  // Set today as default date and populate ingredient datalist
+  document.getElementById('fecha-compra').value = new Date().toISOString().slice(0, 10);
+  getData('ingredientes').then(ings => {
+    document.getElementById('lista-ingredientes').innerHTML = renderDatalistIngredientes(ings);
+  }).catch(() => {});
+
+  document.getElementById('form-compra').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '⏳ Guardando...';
+    try {
+      const fecha = document.getElementById('fecha-compra').value;
+      const lugar = document.getElementById('lugar-compra').value.trim();
+      const obs   = document.getElementById('obs-compra').value.trim();
+
+      // Collect product rows (skip total row)
+      const filas = document.querySelectorAll('#tbody-productos tr:not(#fila-total)');
+      const detalle = [];
+      filas.forEach(tr => {
+        const ing    = tr.cells[1].querySelector('input')?.value?.trim();
+        const cant   = parseFloat(tr.cells[2].querySelector('input')?.value) || 0;
+        const unidad = tr.cells[3].querySelector('select')?.value;
+        const precio = parseFloat(tr.cells[4].querySelector('input')?.value) || 0;
+        if (ing && cant > 0 && precio > 0) {
+          detalle.push({ ingrediente: ing, cantidad: cant, unidad, precio_unitario: precio, subtotal: cant * precio });
+        }
+      });
+
+      if (detalle.length === 0) {
+        alert('Agrega al menos un producto con cantidad y precio.');
+        btn.disabled = false;
+        btn.textContent = '✅ Guardar compra';
+        return;
+      }
+
+      // Register new ingredient if filled
+      const nombreNuevo = document.getElementById('nombre-nuevo').value.trim();
+      if (nombreNuevo) {
+        await postData('ingredientes', {
+          nombre:       nombreNuevo,
+          categoria:    document.getElementById('categoria-nuevo').value,
+          unidad:       document.getElementById('unidad-nuevo').value,
+          stock_minimo: parseFloat(document.getElementById('stock-min').value) || 0,
+          stock_actual: 0,
+          precio_actual: 0,
+          precio_por_base: 0,
+          proveedor: ''
+        });
+      }
+
+      const total = detalle.reduce((s, d) => s + d.subtotal, 0);
+      await postData('compra', { fecha, lugar, obs, total, detalle });
+      window.location.href = 'historial-compras.html';
+    } catch (err) {
+      alert('Error al guardar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '✅ Guardar compra';
+    }
+  });
+
   const OPCIONES_UNIDADES = `
     <option value="kg">kg</option>
     <option value="g">g</option>

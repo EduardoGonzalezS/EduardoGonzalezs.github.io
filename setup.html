@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de configuración — RB Repostería</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* ── Estilos exclusivos de esta página ── */
+    .setup-paso {
+      background: var(--fondo-card);
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      margin-bottom: var(--sp-6);
+      overflow: hidden;
+    }
+    .setup-paso__header {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding: var(--sp-4) var(--sp-6);
+      background: var(--fondo-app);
+      border-bottom: 1px solid var(--borde);
+    }
+    .setup-paso__num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primario);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .setup-paso__num.completado {
+      background: var(--exito);
+    }
+    .setup-paso__titulo {
+      font-family: var(--f-titulo);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--texto-principal);
+      margin: 0;
+    }
+    .setup-paso__sub {
+      font-size: 0.82rem;
+      color: var(--texto-muted);
+      margin: 0;
+    }
+    .setup-paso__cuerpo {
+      padding: var(--sp-6);
+    }
+    .setup-paso__cuerpo p,
+    .setup-paso__cuerpo li {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--texto-principal);
+      margin-bottom: var(--sp-2);
+    }
+    .setup-paso__cuerpo ol,
+    .setup-paso__cuerpo ul {
+      padding-left: var(--sp-6);
+      margin-bottom: var(--sp-4);
+    }
+
+    /* Bloque de código copiable */
+    .bloque-codigo {
+      position: relative;
+      background: #1e1e2e;
+      border-radius: var(--radio-sm);
+      margin: var(--sp-3) 0;
+      overflow: hidden;
+    }
+    .bloque-codigo__etiqueta {
+      font-size: 0.72rem;
+      color: #888;
+      padding: var(--sp-2) var(--sp-4);
+      border-bottom: 1px solid #2e2e3e;
+      font-family: monospace;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bloque-codigo__contenido {
+      padding: var(--sp-4);
+      overflow-x: auto;
+    }
+    .bloque-codigo__contenido code,
+    .bloque-codigo__contenido pre {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      color: #cdd6f4;
+      white-space: pre;
+      display: block;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .bloque-codigo code .hl-key   { color: #89dceb; }
+    .bloque-codigo code .hl-val   { color: #a6e3a1; }
+    .bloque-codigo code .hl-str   { color: #f9e2af; }
+    .bloque-codigo code .hl-cmt   { color: #6c7086; font-style: italic; }
+    .btn-copiar {
+      font-size: 0.72rem;
+      padding: 2px 10px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #888;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: monospace;
+      transition: all .15s;
+    }
+    .btn-copiar:hover { background: #333; color: #cdd6f4; border-color: #666; }
+    .btn-copiar.copiado { color: var(--exito); border-color: var(--exito); }
+
+    /* Tabla de headers */
+    .tabla-headers {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-bottom: var(--sp-4);
+    }
+    .tabla-headers th {
+      background: var(--fondo-app);
+      padding: var(--sp-2) var(--sp-3);
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid var(--borde);
+      color: var(--texto-principal);
+    }
+    .tabla-headers td {
+      padding: var(--sp-2) var(--sp-3);
+      border: 1px solid var(--borde);
+      vertical-align: top;
+    }
+    .tabla-headers td:first-child {
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--primario);
+      font-family: monospace;
+    }
+    .tabla-headers .cols {
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--texto-muted);
+      line-height: 1.7;
+    }
+    .col-chip {
+      display: inline-block;
+      background: #1e1e2e;
+      color: #a6e3a1;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin: 2px 2px 2px 0;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
+
+    /* Checklist interactiva */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      padding: var(--sp-2) 0;
+      border-bottom: 1px solid var(--borde);
+      cursor: pointer;
+      margin: 0 !important;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: var(--primario);
+      margin-top: 2px;
+    }
+    .checklist li label {
+      cursor: pointer;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .checklist li.hecho label {
+      color: var(--texto-muted);
+      text-decoration: line-through;
+    }
+
+    /* Alerta info */
+    .info-box {
+      background: var(--info-suave, #e8f4fd);
+      border-left: 3px solid var(--info);
+      border-radius: var(--radio-sm);
+      padding: var(--sp-3) var(--sp-4);
+      font-size: 0.85rem;
+      color: var(--texto-principal);
+      margin: var(--sp-3) 0;
+      line-height: 1.55;
+    }
+    .info-box strong { color: var(--info); }
+
+    .warn-box {
+      background: #fef9e7;
+      border-left: 3px solid var(--alerta);
+      border-radius: var(--radio-sm);
+      padding: var(--sp-3) var(--sp-4);
+      font-size: 0.85rem;
+      color: var(--texto-principal);
+      margin: var(--sp-3) 0;
+      line-height: 1.55;
+    }
+
+    /* Indicador de progreso */
+    .progreso-setup {
+      background: var(--fondo-card);
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: var(--sp-4) var(--sp-6);
+      margin-bottom: var(--sp-6);
+    }
+    .progreso-setup__titulo {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--texto-muted);
+      margin-bottom: var(--sp-2);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .progreso-barra {
+      height: 8px;
+      background: var(--fondo-app);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progreso-barra__relleno {
+      height: 100%;
+      background: var(--exito);
+      border-radius: 99px;
+      transition: width .4s ease;
+      width: 0%;
+    }
+    .progreso-num {
+      font-size: 0.82rem;
+      color: var(--texto-muted);
+      margin-top: var(--sp-1);
+    }
+
+    /* Badge de tiempo estimado */
+    .tiempo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primario-suave);
+      color: var(--primario);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+
+    @media (max-width: 768px) {
+      .setup-paso__cuerpo { padding: var(--sp-4); }
+      .tabla-headers { font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn" title="Abrir menú">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Gestión interna</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+      <span class="sidebar__seccion">Sistema</span>
+      <a href="setup.html" class="sidebar__item activo"><span class="icono">⚙️</span> Configuración</a>
+    </nav>
+    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+  </aside>
+
+  <!-- ── Contenido ── -->
+  <main class="contenido-principal">
+
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">⚙️ Configuración de base de datos</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Configuración</span>
+        </div>
+      </div>
+      <div class="header-pagina__der no-print">
+        <span class="tiempo-badge">⏱️ ~20 min</span>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+
+      <!-- Introducción -->
+      <div class="alerta alerta-info" style="margin-bottom:var(--sp-6);">
+        <span class="alerta__icono">☁️</span>
+        <div class="alerta__cuerpo">
+          <div class="alerta__titulo">¿Para qué sirve esto?</div>
+          <div class="alerta__texto">
+            Esta guía conecta el sitio con <strong>Google Sheets</strong> como base de datos real.
+            Una vez configurado, todo lo que captures en el sitio (recetas, compras, proveedores)
+            se guardará en la nube y estará disponible desde cualquier dispositivo.
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progreso-setup" id="bloque-progreso">
+        <div class="progreso-setup__titulo">Tu progreso</div>
+        <div class="progreso-barra">
+          <div class="progreso-barra__relleno" id="barra-progreso"></div>
+        </div>
+        <div class="progreso-num" id="texto-progreso">0 de 5 pasos completados</div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           PASO 1: Crear Google Sheets
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="paso-1">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" id="num-1">1</div>
+          <div>
+            <p class="setup-paso__titulo">Crear el Google Sheets</p>
+            <p class="setup-paso__sub">Crea la hoja de cálculo con 6 pestañas y sus columnas</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+
+          <ol>
+            <li>Ve a <strong><a href="https://sheets.google.com" target="_blank">sheets.google.com</a></strong> e inicia sesión con tu cuenta de Google.</li>
+            <li>Crea una hoja nueva: clic en <strong>+ En blanco</strong>.</li>
+            <li>Cambia el nombre al archivo (clic en "Hoja de cálculo sin título"): escribe <strong>RB Repostería</strong>.</li>
+            <li>Agrega las 6 pestañas de abajo y pega los headers exactamente como aparecen.</li>
+          </ol>
+
+          <div class="info-box">
+            <strong>Cómo agregar pestañas:</strong> clic derecho en la pestaña inferior → "Insertar hoja" o clic en el botón <strong>+</strong> al final de las pestañas. Los nombres deben ser exactamente como aparecen (sin mayúsculas, sin acentos).
+          </div>
+
+          <!-- Tabla de pestañas -->
+          <table class="tabla-headers">
+            <thead>
+              <tr>
+                <th style="width:160px">Pestaña</th>
+                <th>Columnas (copiar en la fila 1)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>recetas</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">nombre</span><span class="col-chip">emoji</span><span class="col-chip">categoria</span><span class="col-chip">temporada</span><span class="col-chip">rendimiento</span><span class="col-chip">peso_pieza</span><span class="col-chip">temperatura</span><span class="col-chip">tiempo</span><span class="col-chip">dificultad</span><span class="col-chip">precio_venta</span><span class="col-chip">empaque</span><span class="col-chip">costo_empaque</span><span class="col-chip">costo_total</span><span class="col-chip">pasos</span><span class="col-chip">notas</span><span class="col-chip">created_at</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "recetas"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-recetas')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-recetas">id	nombre	emoji	categoria	temporada	rendimiento	peso_pieza	temperatura	tiempo	dificultad	precio_venta	empaque	costo_empaque	costo_total	pasos	notas	created_at</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>ingredientes</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">nombre</span><span class="col-chip">categoria</span><span class="col-chip">unidad</span><span class="col-chip">precio_actual</span><span class="col-chip">precio_por_base</span><span class="col-chip">proveedor</span><span class="col-chip">stock_actual</span><span class="col-chip">stock_minimo</span><span class="col-chip">updated_at</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "ingredientes"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-ingredientes')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-ingredientes">id	nombre	categoria	unidad	precio_actual	precio_por_base	proveedor	stock_actual	stock_minimo	updated_at</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>compras</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">fecha</span><span class="col-chip">lugar</span><span class="col-chip">observaciones</span><span class="col-chip">total</span><span class="col-chip">created_at</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "compras"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-compras')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-compras">id	fecha	lugar	observaciones	total	created_at</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>compras_detalle</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">compra_id</span><span class="col-chip">ingrediente</span><span class="col-chip">cantidad</span><span class="col-chip">unidad</span><span class="col-chip">precio_unitario</span><span class="col-chip">subtotal</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "compras_detalle"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-detalle')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-detalle">id	compra_id	ingrediente	cantidad	unidad	precio_unitario	subtotal</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>proveedores</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">nombre</span><span class="col-chip">categoria</span><span class="col-chip">tipo</span><span class="col-chip">telefono</span><span class="col-chip">email</span><span class="col-chip">direccion</span><span class="col-chip">horario</span><span class="col-chip">web</span><span class="col-chip">pago</span><span class="col-chip">entrega</span><span class="col-chip">notas</span><span class="col-chip">created_at</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "proveedores"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-proveedores')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-proveedores">id	nombre	categoria	tipo	telefono	email	direccion	horario	web	pago	entrega	notas	created_at</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>recetas_ingredientes</td>
+                <td>
+                  <div class="cols">
+                    <span class="col-chip">id</span><span class="col-chip">receta_id</span><span class="col-chip">ingrediente_nombre</span><span class="col-chip">cantidad</span><span class="col-chip">unidad</span><span class="col-chip">costo_linea</span>
+                  </div>
+                  <div class="bloque-codigo" style="margin-top:var(--sp-2)">
+                    <div class="bloque-codigo__etiqueta">
+                      <span>Pegar en A1 de la pestaña "recetas_ingredientes"</span>
+                      <button class="btn-copiar" onclick="copiar(this, 'hdr-ri')">copiar</button>
+                    </div>
+                    <div class="bloque-codigo__contenido">
+                      <code id="hdr-ri">id	receta_id	ingrediente_nombre	cantidad	unidad	costo_linea</code>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="margin-top:var(--sp-4)"><strong>Obtén el ID del Spreadsheet.</strong> Está en la URL del navegador entre <code>/d/</code> y <code>/edit</code>:</p>
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__contenido">
+              <code>https://docs.google.com/spreadsheets/d/<span style="color:#f38ba8;font-weight:700;">1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms</span>/edit</code>
+            </div>
+          </div>
+          <p>Guarda ese ID — lo necesitarás en el siguiente paso.</p>
+
+          <ul class="checklist" id="check-1">
+            <li><input type="checkbox"><label>Spreadsheet creado y nombrado "RB Repostería"</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>recetas</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>ingredientes</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>compras</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>compras_detalle</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>proveedores</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>Pestaña <code>recetas_ingredientes</code> con headers en fila 1</label></li>
+            <li><input type="checkbox"><label>ID del Spreadsheet copiado y guardado</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           PASO 2: Crear el Apps Script
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="paso-2">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" id="num-2">2</div>
+          <div>
+            <p class="setup-paso__titulo">Crear el Apps Script</p>
+            <p class="setup-paso__sub">Copia el código de la API en el editor de Google</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+          <ol>
+            <li>Abre <strong><a href="https://script.google.com" target="_blank">script.google.com</a></strong> → clic en <strong>"Nuevo proyecto"</strong>.</li>
+            <li>Borra todo el código que aparece por defecto (selecciona todo → Supr).</li>
+            <li>
+              Abre el archivo <strong><code>apps-script-code.js</code></strong> que está en la carpeta del sitio,
+              selecciona todo su contenido (Ctrl+A) y pégalo en el editor.
+            </li>
+            <li>
+              En la línea 1 del código, reemplaza <code style="color:#f38ba8">TU_SPREADSHEET_ID_AQUI</code>
+              con el ID que copiaste en el paso anterior:
+            </li>
+          </ol>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__etiqueta"><span>Antes (línea 1 del script)</span></div>
+            <div class="bloque-codigo__contenido">
+              <code><span class="hl-key">const</span> <span class="hl-val">SHEET_ID</span> = <span class="hl-str">'TU_SPREADSHEET_ID_AQUI'</span>;</code>
+            </div>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__etiqueta"><span>Después (con tu ID real)</span></div>
+            <div class="bloque-codigo__contenido">
+              <code><span class="hl-key">const</span> <span class="hl-val">SHEET_ID</span> = <span class="hl-str">'1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms'</span>; <span class="hl-cmt">// ← tu ID aquí</span></code>
+            </div>
+          </div>
+
+          <ol start="5">
+            <li>Guarda el proyecto: <strong>Ctrl+S</strong> (o Archivo → Guardar). Puedes nombrarlo "RB API".</li>
+          </ol>
+
+          <ul class="checklist" id="check-2">
+            <li><input type="checkbox"><label>Proyecto nuevo creado en script.google.com</label></li>
+            <li><input type="checkbox"><label>Código de <code>apps-script-code.js</code> pegado</label></li>
+            <li><input type="checkbox"><label><code>SHEET_ID</code> reemplazado con el ID real del Spreadsheet</label></li>
+            <li><input type="checkbox"><label>Proyecto guardado (Ctrl+S)</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           PASO 3: Desplegar como Web App
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="paso-3">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" id="num-3">3</div>
+          <div>
+            <p class="setup-paso__titulo">Desplegar como Web App</p>
+            <p class="setup-paso__sub">Publica el script como API accesible desde el sitio</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+          <ol>
+            <li>En el editor de Apps Script, clic en el botón azul <strong>"Implementar"</strong> (arriba a la derecha).</li>
+            <li>Selecciona <strong>"Nueva implementación"</strong>.</li>
+            <li>Clic en el ícono de engranaje ⚙️ junto a "Seleccionar tipo" → elige <strong>"Aplicación web"</strong>.</li>
+            <li>
+              Configura los campos:
+              <ul style="margin-top:var(--sp-2)">
+                <li><strong>Descripción:</strong> <code>RB Repostería API</code> (o cualquier texto)</li>
+                <li><strong>Ejecutar como:</strong> <code>Yo (tu-correo@gmail.com)</code></li>
+                <li><strong>Quién tiene acceso:</strong> <code>Cualquier persona</code> ← <em>importante</em></li>
+              </ul>
+            </li>
+            <li>Clic en <strong>"Implementar"</strong>.</li>
+            <li>
+              Google pedirá que <strong>autorices permisos</strong>. Sigue los pasos:
+              <ul style="margin-top:var(--sp-2)">
+                <li>Clic en "Autorizar acceso"</li>
+                <li>Selecciona tu cuenta de Google</li>
+                <li>Es posible que aparezca "Google no verificó esta app" → clic en "Configuración avanzada" → "Ir a RB API (no seguro)"</li>
+                <li>Clic en "Permitir"</li>
+              </ul>
+            </li>
+            <li>
+              Al terminar, aparecerá una pantalla con la <strong>URL de la aplicación web</strong>. Cópiala. Termina en <code>/exec</code>:
+            </li>
+          </ol>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__contenido">
+              <code>https://script.google.com/macros/s/<span style="color:#f38ba8">AKfycby...TuIdLargo</span>/exec</code>
+            </div>
+          </div>
+
+          <div class="warn-box">
+            ⚠️ <strong>Guarda esa URL ahora.</strong> Si cierras la ventana, puedes recuperarla desde Implementar → Administrar implementaciones → copiar la URL del tipo "Aplicación web".
+          </div>
+
+          <div class="info-box">
+            <strong>¿Por qué "Cualquier persona"?</strong> El sitio es HTML estático, no tiene servidor propio para autenticar. La URL del script actúa como clave de acceso. Mientras no compartas esa URL públicamente, los datos están seguros.
+          </div>
+
+          <ul class="checklist" id="check-3">
+            <li><input type="checkbox"><label>Implementación creada como "Aplicación web"</label></li>
+            <li><input type="checkbox"><label>Permisos autorizados correctamente</label></li>
+            <li><input type="checkbox"><label>URL /exec copiada y guardada en un lugar seguro</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           PASO 4: Conectar el sitio
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="paso-4">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" id="num-4">4</div>
+          <div>
+            <p class="setup-paso__titulo">Conectar el sitio con la API</p>
+            <p class="setup-paso__sub">Pega la URL en js/api.js para que el sitio se conecte</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+          <ol>
+            <li>Abre el archivo <strong><code>js/api.js</code></strong> en la carpeta del sitio (con cualquier editor de texto).</li>
+            <li>Busca la línea 3 que dice <code>TU_URL_APPS_SCRIPT_AQUI</code>.</li>
+            <li>Reemplaza esa cadena con la URL <code>/exec</code> que copiaste en el paso anterior:</li>
+          </ol>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__etiqueta"><span>js/api.js — línea 3 (antes)</span></div>
+            <div class="bloque-codigo__contenido">
+              <code><span class="hl-key">const</span> <span class="hl-val">API_URL</span> = <span class="hl-str">'TU_URL_APPS_SCRIPT_AQUI'</span>;</code>
+            </div>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__etiqueta"><span>js/api.js — línea 3 (después)</span></div>
+            <div class="bloque-codigo__contenido">
+              <code><span class="hl-key">const</span> <span class="hl-val">API_URL</span> = <span class="hl-str">'https://script.google.com/macros/s/AKfycby.../exec'</span>;</code>
+            </div>
+          </div>
+
+          <ol start="4">
+            <li>Guarda el archivo.</li>
+          </ol>
+
+          <ul class="checklist" id="check-4">
+            <li><input type="checkbox"><label>Archivo <code>js/api.js</code> abierto</label></li>
+            <li><input type="checkbox"><label>URL de Apps Script pegada en la línea 3</label></li>
+            <li><input type="checkbox"><label>Archivo guardado</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           PASO 5: Verificar
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="paso-5">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" id="num-5">5</div>
+          <div>
+            <p class="setup-paso__titulo">Verificar que todo funciona</p>
+            <p class="setup-paso__sub">Prueba la conexión y registra tu primer dato</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+
+          <p><strong>Prueba 1 — Verificar la API directamente:</strong></p>
+          <p>Abre en el navegador la URL de tu App Script con <code>?entity=recetas</code> al final:</p>
+
+          <div class="bloque-codigo">
+            <div class="bloque-codigo__contenido">
+              <code>https://script.google.com/macros/s/<span style="color:#f38ba8">TU_ID</span>/exec?entity=recetas</code>
+            </div>
+          </div>
+
+          <p>Debes ver <code>[]</code> (arreglo vacío en JSON). Si ves eso, la API funciona correctamente.</p>
+
+          <div class="warn-box">
+            Si ves una página de error HTML de Google (no JSON), el problema más común es que el acceso no está configurado como "Cualquier persona". Regresa al paso 3 y crea una <em>nueva</em> implementación con esa configuración.
+          </div>
+
+          <p style="margin-top:var(--sp-4)"><strong>Prueba 2 — Registrar el primer ingrediente:</strong></p>
+          <ol>
+            <li>Ve a <a href="ingrediente-nuevo.html"><strong>Registrar compra</strong></a>.</li>
+            <li>Llena la fecha, lugar y al menos un producto con precio.</li>
+            <li>Clic en <strong>"Guardar compra"</strong>.</li>
+            <li>Abre tu Google Sheets → pestaña <code>compras</code>. Debe aparecer una fila nueva.</li>
+            <li>Revisa también la pestaña <code>compras_detalle</code> e <code>ingredientes</code>.</li>
+          </ol>
+
+          <p style="margin-top:var(--sp-4)"><strong>Prueba 3 — Verificar lectura en el sitio:</strong></p>
+          <ol>
+            <li>Ve a <a href="ingredientes.html"><strong>Catálogo de ingredientes</strong></a>.</li>
+            <li>Debe aparecer el ingrediente que acabas de registrar en la tabla.</li>
+            <li>Si ves "Sin ingredientes registrados", espera 5 segundos y recarga — la primera carga puede tardar un poco.</li>
+          </ol>
+
+          <div class="info-box">
+            <strong>Nota sobre velocidad:</strong> La primera petición al Apps Script puede tardar 3-5 segundos porque Google "despierta" el servidor. Las peticiones siguientes son más rápidas.
+          </div>
+
+          <ul class="checklist" id="check-5">
+            <li><input type="checkbox"><label>La URL <code>?entity=recetas</code> devuelve <code>[]</code> en el navegador</label></li>
+            <li><input type="checkbox"><label>Se registró una compra de prueba desde el sitio</label></li>
+            <li><input type="checkbox"><label>La fila apareció en Google Sheets correctamente</label></li>
+            <li><input type="checkbox"><label>El ingrediente aparece en la página de catálogo</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           ÉXITO
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" id="bloque-exito" style="display:none;border-color:var(--exito)">
+        <div class="setup-paso__header" style="background:var(--exito-suave, #f0fdf4)">
+          <div class="setup-paso__num completado">✓</div>
+          <div>
+            <p class="setup-paso__titulo" style="color:var(--exito)">¡Configuración completada!</p>
+            <p class="setup-paso__sub">El sitio está conectado con Google Sheets.</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+          <p>El sistema está listo. Desde ahora todos los datos que captures en el sitio se guardan en la nube y se pueden ver desde cualquier dispositivo.</p>
+          <div class="form-acciones" style="margin-top:var(--sp-4)">
+            <a href="index.html" class="btn btn-primario">🏠 Ir al inicio</a>
+            <a href="ingrediente-nuevo.html" class="btn btn-secundario">🛒 Registrar primera compra</a>
+            <a href="receta-nueva.html" class="btn btn-ghost">📖 Crear primera receta</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           RESOLUCIÓN DE PROBLEMAS
+      ══════════════════════════════════════════════════════ -->
+      <div class="setup-paso" style="margin-top:var(--sp-8)">
+        <div class="setup-paso__header">
+          <div class="setup-paso__num" style="background:var(--texto-muted)">?</div>
+          <div>
+            <p class="setup-paso__titulo">Solución de problemas comunes</p>
+            <p class="setup-paso__sub">Si algo no funciona, revisa estos casos</p>
+          </div>
+        </div>
+        <div class="setup-paso__cuerpo">
+
+          <p><strong>❌ La página muestra "Error de conexión"</strong></p>
+          <ul>
+            <li>Verifica que la URL en <code>js/api.js</code> esté completa y termine en <code>/exec</code> (no <code>/dev</code>).</li>
+            <li>Asegúrate de que la implementación sea tipo "Aplicación web" con acceso "Cualquier persona".</li>
+            <li>Abre la URL directamente en el navegador — si muestra HTML de error de Google, el acceso no está bien configurado.</li>
+          </ul>
+
+          <p style="margin-top:var(--sp-4)"><strong>❌ Guarda pero los datos no aparecen en Sheets</strong></p>
+          <ul>
+            <li>Verifica que el <code>SHEET_ID</code> en el Apps Script sea correcto (sin espacios ni caracteres extra).</li>
+            <li>Confirma que los nombres de las pestañas en Sheets son exactamente <code>recetas</code>, <code>ingredientes</code>, etc. (todo minúscula, sin acentos).</li>
+            <li>En el editor de Apps Script, busca el menú <strong>Ejecuciones</strong> para ver si hay errores con detalles.</li>
+          </ul>
+
+          <p style="margin-top:var(--sp-4)"><strong>❌ Modifiqué el código pero los cambios no funcionan</strong></p>
+          <ul>
+            <li>Cada cambio en el Apps Script requiere una <strong>nueva implementación</strong>. Ve a Implementar → Nueva implementación (no "Administrar implementaciones existentes").</li>
+            <li>Actualiza la URL en <code>js/api.js</code> con la nueva URL si cambió.</li>
+          </ul>
+
+          <p style="margin-top:var(--sp-4)"><strong>❌ "Google no verificó esta app" al autorizar</strong></p>
+          <ul>
+            <li>Esto es normal para scripts personales. Clic en "Configuración avanzada" → "Ir a [nombre del script] (no seguro)" → "Permitir".</li>
+            <li>Solo aparece la primera vez o si cambias los permisos.</li>
+          </ul>
+
+          <p style="margin-top:var(--sp-4)"><strong>❌ Los costos de las recetas salen en $0.00</strong></p>
+          <ul>
+            <li>El costo se calcula con el campo <code>precio_por_base</code> de cada ingrediente. Este campo se llena automáticamente cuando registras una compra de ese ingrediente.</li>
+            <li>Registra al menos una compra de cada ingrediente antes de crear recetas.</li>
+          </ul>
+
+        </div>
+      </div>
+
+    </div><!-- /cuerpo-pagina -->
+  </main>
+</div><!-- /app -->
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+  </ul>
+</nav>
+
+<script>
+  // ── Botón copiar ─────────────────────────────────────────────
+  function copiar(btn, id) {
+    const texto = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(texto).then(() => {
+      btn.textContent = '¡copiado!';
+      btn.classList.add('copiado');
+      setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copiado'); }, 2000);
+    }).catch(() => {
+      // fallback para navegadores sin clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = texto;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '¡copiado!';
+      btn.classList.add('copiado');
+      setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copiado'); }, 2000);
+    });
+  }
+
+  // ── Checklist interactiva + barra de progreso ────────────────
+  const TOTAL_PASOS = 5;
+  const CHECKS_POR_PASO = {
+    1: document.querySelectorAll('#check-1 input[type="checkbox"]').length,
+    2: document.querySelectorAll('#check-2 input[type="checkbox"]').length,
+    3: document.querySelectorAll('#check-3 input[type="checkbox"]').length,
+    4: document.querySelectorAll('#check-4 input[type="checkbox"]').length,
+    5: document.querySelectorAll('#check-5 input[type="checkbox"]').length,
+  };
+
+  function actualizarProgreso() {
+    let pasosCompletos = 0;
+    for (let p = 1; p <= TOTAL_PASOS; p++) {
+      const checks = document.querySelectorAll(`#check-${p} input[type="checkbox"]`);
+      const todos = Array.from(checks).every(c => c.checked);
+      document.getElementById(`num-${p}`).classList.toggle('completado', todos);
+      if (todos) pasosCompletos++;
+    }
+    const pct = Math.round(pasosCompletos / TOTAL_PASOS * 100);
+    document.getElementById('barra-progreso').style.width = pct + '%';
+    document.getElementById('texto-progreso').textContent =
+      pasosCompletos + ' de ' + TOTAL_PASOS + ' pasos completados';
+    document.getElementById('bloque-exito').style.display =
+      pasosCompletos === TOTAL_PASOS ? 'block' : 'none';
+
+    // Persistir en localStorage
+    const estado = {};
+    for (let p = 1; p <= TOTAL_PASOS; p++) {
+      document.querySelectorAll(`#check-${p} input[type="checkbox"]`).forEach((cb, i) => {
+        estado[`p${p}_${i}`] = cb.checked;
+      });
+    }
+    try { localStorage.setItem('rb_setup_progress', JSON.stringify(estado)); } catch {}
+  }
+
+  // Restaurar estado guardado
+  try {
+    const guardado = JSON.parse(localStorage.getItem('rb_setup_progress') || '{}');
+    for (let p = 1; p <= TOTAL_PASOS; p++) {
+      document.querySelectorAll(`#check-${p} input[type="checkbox"]`).forEach((cb, i) => {
+        if (guardado[`p${p}_${i}`]) cb.checked = true;
+        cb.closest('li').classList.toggle('hecho', cb.checked);
+      });
+    }
+  } catch {}
+
+  // Wiring de checkboxes
+  for (let p = 1; p <= TOTAL_PASOS; p++) {
+    document.querySelectorAll(`#check-${p} input[type="checkbox"]`).forEach(cb => {
+      cb.addEventListener('change', function () {
+        this.closest('li').classList.toggle('hecho', this.checked);
+        actualizarProgreso();
+      });
+    });
+  }
+
+  actualizarProgreso();
+</script>
+</body>
+</html>

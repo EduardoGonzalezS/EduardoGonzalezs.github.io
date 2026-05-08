@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -62,7 +64,7 @@
       <div class="alerta alerta-info no-print" style="margin-bottom: var(--sp-6);">
         <span class="alerta__icono">📅</span>
         <div class="alerta__cuerpo">
-          <div class="alerta__titulo">Semana del 07 al 13 de abril de 2026</div>
+          <div class="alerta__titulo" id="semana-actual">Cargando...</div>
           <div class="alerta__texto">Planifica los lotes de producción para esta semana. Los costos e ingresos se calculan con base en los precios de insumos actuales.</div>
         </div>
       </div>
@@ -90,112 +92,10 @@
                         <th class="col-num">Ingreso est.</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <strong>🍪 Galletas de Mantequilla</strong>
-                          <br><small style="color: var(--texto-muted);">24 pzas / lote — $50.91 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_galletas" value="2" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num">48</td>
-                        <td class="col-num">$101.82</td>
-                        <td class="col-num" style="color: var(--exito-texto);">$240.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🌀 Roles de Canela</strong>
-                          <br><small style="color: var(--texto-muted);">12 pzas / lote — $85.20 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_roles" value="1" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num">12</td>
-                        <td class="col-num">$85.20</td>
-                        <td class="col-num" style="color: var(--exito-texto);">$180.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🎂 Pastel de Chocolate</strong>
-                          <br><small style="color: var(--texto-muted);">1 kg / lote — $145.00 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_pastel" value="1" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num">1</td>
-                        <td class="col-num">$145.00</td>
-                        <td class="col-num" style="color: var(--exito-texto);">$320.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🍞 Pan Artesanal de Nuez</strong>
-                          <br><small style="color: var(--texto-muted);">6 pzas / lote — $62.00 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_pan" value="0" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num col-muted">0</td>
-                        <td class="col-num col-muted">—</td>
-                        <td class="col-num col-muted">—</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🍫 Brownies de Nuez</strong>
-                          <br><small style="color: var(--texto-muted);">16 pzas / lote — $92.00 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_brownies" value="0" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num col-muted">0</td>
-                        <td class="col-num col-muted">—</td>
-                        <td class="col-num col-muted">—</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🥐 Cuernitos de Vainilla</strong>
-                          <br><small style="color: var(--texto-muted);">20 pzas / lote — $55.80 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_cuernitos" value="1" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num">20</td>
-                        <td class="col-num">$55.80</td>
-                        <td class="col-num" style="color: var(--exito-texto);">$140.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🌟 Polvorones de Nuez</strong>
-                          <br><small style="color: var(--texto-muted);">30 pzas / lote — $72.00 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_polvorones" value="0" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num col-muted">0</td>
-                        <td class="col-num col-muted">—</td>
-                        <td class="col-num col-muted">—</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>🍌 Panqué de Plátano</strong>
-                          <br><small style="color: var(--texto-muted);">1 pieza / lote — $38.50 c/u</small>
-                        </td>
-                        <td class="col-num">
-                          <input type="number" name="lotes_panque" value="0" min="0" max="10"
-                            style="width: 60px; text-align: center; border: 1.5px solid var(--borde); border-radius: var(--radio-xs); padding: 0.3rem; font-size: var(--tx-sm); background: var(--fondo-input);">
-                        </td>
-                        <td class="col-num col-muted">0</td>
-                        <td class="col-num col-muted">—</td>
-                        <td class="col-num col-muted">—</td>
-                      </tr>
+                    <tbody id="tbody-plan">
+                      <tr><td colspan="5" style="text-align:center;color:var(--texto-muted);padding:var(--sp-6);">⏳ Cargando recetas...</td></tr>
                     </tbody>
+
                   </table>
                   </div><!-- /tabla-scroll -->
                 </div>
@@ -217,26 +117,26 @@
 
             <!-- Panel de totales -->
             <div class="panel-costos mb-6">
-              <h4 class="panel-costos__titulo">📊 Plan semana 07–13 abr</h4>
+              <h4 class="panel-costos__titulo" id="titulo-plan">📊 Plan de la semana</h4>
 
               <div class="panel-costos__fila">
                 <span class="panel-costos__label">Lotes a producir</span>
-                <span class="panel-costos__valor">5</span>
+                <span class="panel-costos__valor" id="res-lotes">0</span>
               </div>
               <div class="panel-costos__fila">
                 <span class="panel-costos__label">Piezas totales</span>
-                <span class="panel-costos__valor">81 pzas</span>
+                <span class="panel-costos__valor" id="res-piezas">0 pzas</span>
               </div>
               <div class="panel-costos__fila panel-costos__fila--total">
                 <span class="panel-costos__label">Costo total</span>
-                <span class="panel-costos__valor">$387.82</span>
+                <span class="panel-costos__valor" id="res-costo">$0.00</span>
               </div>
               <div class="panel-costos__fila" style="margin-top: var(--sp-3);">
                 <span class="panel-costos__label">Ingreso estimado</span>
-                <span class="panel-costos__valor" style="color: var(--secundario); font-size: var(--tx-xl);">$880.00</span>
+                <span class="panel-costos__valor" style="color: var(--secundario); font-size: var(--tx-xl);" id="res-ingreso">$0.00</span>
               </div>
               <div class="panel-costos__margen">
-                <div class="panel-costos__margen-num" style="color: var(--exito-suave);">$492.18</div>
+                <div class="panel-costos__margen-num" style="color: var(--exito-suave);" id="res-ganancia">$0.00</div>
                 <div class="panel-costos__margen-label">Ganancia estimada de la semana</div>
                 <div class="barra-margen" style="margin-top: var(--sp-3);">
                   <div class="barra-margen__pista">
@@ -244,7 +144,7 @@
                   </div>
                   <div class="barra-margen__etiquetas">
                     <span>Costo</span>
-                    <span>Margen: 56%</span>
+                    <span id="res-margen">Margen: 0%</span>
                   </div>
                 </div>
               </div>
@@ -265,43 +165,10 @@
                       <th class="col-num">Ingreso</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>🍪 Galletas</td>
-                      <td class="col-num">2</td>
-                      <td class="col-num">48</td>
-                      <td class="col-num">$101.82</td>
-                      <td class="col-num" style="color: var(--exito-texto);">$240.00</td>
-                    </tr>
-                    <tr>
-                      <td>🌀 Roles</td>
-                      <td class="col-num">1</td>
-                      <td class="col-num">12</td>
-                      <td class="col-num">$85.20</td>
-                      <td class="col-num" style="color: var(--exito-texto);">$180.00</td>
-                    </tr>
-                    <tr>
-                      <td>🎂 Pastel</td>
-                      <td class="col-num">1</td>
-                      <td class="col-num">1</td>
-                      <td class="col-num">$145.00</td>
-                      <td class="col-num" style="color: var(--exito-texto);">$320.00</td>
-                    </tr>
-                    <tr>
-                      <td>🥐 Cuernitos</td>
-                      <td class="col-num">1</td>
-                      <td class="col-num">20</td>
-                      <td class="col-num">$55.80</td>
-                      <td class="col-num" style="color: var(--exito-texto);">$140.00</td>
-                    </tr>
-                    <tr class="fila-total">
-                      <td><strong>TOTAL</strong></td>
-                      <td class="col-num"><strong>5</strong></td>
-                      <td class="col-num"><strong>81</strong></td>
-                      <td class="col-num"><strong>$387.82</strong></td>
-                      <td class="col-num"><strong style="color: var(--exito-texto);">$880.00</strong></td>
-                    </tr>
+                  <tbody id="tbody-desglose">
+                    <tr><td colspan="5" style="text-align:center;color:var(--texto-muted);">Ajusta los lotes para ver el desglose.</td></tr>
                   </tbody>
+
                 </table>
                 </div><!-- /tabla-scroll -->
               </div>
@@ -340,5 +207,101 @@
   </ul>
 </nav>
 
+
+<script>
+  // Set week header dynamically
+  (function() {
+    const hoy = new Date();
+    const diaSemana = hoy.getDay();
+    const lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() - ((diaSemana + 6) % 7));
+    const domingo = new Date(lunes);
+    domingo.setDate(lunes.getDate() + 6);
+    const opts = { day: 'numeric', month: 'long' };
+    document.getElementById('semana-actual').textContent =
+      'Semana del ' + lunes.toLocaleDateString('es-MX', opts) +
+      ' al ' + domingo.toLocaleDateString('es-MX', { ...opts, year: 'numeric' });
+  })();
+
+  function actualizarPlan(inp) {
+    const filas = document.querySelectorAll('#tbody-plan tr');
+    let totalLotes = 0, totalPiezas = 0, totalCosto = 0, totalIngreso = 0;
+    const desglose = [];
+    filas.forEach(tr => {
+      const input = tr.querySelector('input[type="number"]');
+      if (!input) return;
+      const lotes   = parseInt(input.value) || 0;
+      const costo   = parseFloat(input.dataset.costo) || 0;
+      const ingreso = parseFloat(input.dataset.ingreso) || 0;
+      const rend    = parseInt(input.dataset.rend) || 0;
+      const piezas  = lotes * rend;
+      const costoT  = lotes * costo;
+      const ingrT   = lotes * ingreso;
+      // Update row cells
+      tr.querySelector('.plan-piezas').textContent  = piezas || 0;
+      tr.querySelector('.plan-costo').textContent   = lotes > 0 ? '$' + costoT.toFixed(2) : '—';
+      tr.querySelector('.plan-ingreso').textContent = lotes > 0 ? '$' + ingrT.toFixed(2) : '—';
+      tr.querySelector('.plan-costo').style.color   = '';
+      tr.querySelector('.plan-ingreso').style.color = lotes > 0 ? 'var(--exito-texto)' : '';
+      if (lotes > 0) {
+        totalLotes   += lotes;
+        totalPiezas  += piezas;
+        totalCosto   += costoT;
+        totalIngreso += ingrT;
+        desglose.push({ nombre: tr.cells[0].querySelector('strong')?.textContent || '—', lotes, piezas, costoT, ingrT });
+      }
+    });
+    const ganancia = totalIngreso - totalCosto;
+    const margen = totalIngreso > 0 ? Math.round(ganancia / totalIngreso * 100) : 0;
+    document.getElementById('res-lotes').textContent   = totalLotes;
+    document.getElementById('res-piezas').textContent  = totalPiezas + ' pzas';
+    document.getElementById('res-costo').textContent   = '$' + totalCosto.toFixed(2);
+    document.getElementById('res-ingreso').textContent = '$' + totalIngreso.toFixed(2);
+    document.getElementById('res-ganancia').textContent= '$' + ganancia.toFixed(2);
+    document.getElementById('res-margen').textContent  = 'Margen: ' + margen + '%';
+    // Update desglose table
+    const tbody = document.getElementById('tbody-desglose');
+    if (desglose.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--texto-muted);">Ajusta los lotes para ver el desglose.</td></tr>';
+    } else {
+      tbody.innerHTML = desglose.map(d => `
+        <tr>
+          <td>${d.nombre}</td>
+          <td class="col-num">${d.lotes}</td>
+          <td class="col-num">${d.piezas}</td>
+          <td class="col-num">$${d.costoT.toFixed(2)}</td>
+          <td class="col-num" style="color:var(--exito-texto);">$${d.ingrT.toFixed(2)}</td>
+        </tr>`).join('') + `
+        <tr class="fila-total">
+          <td><strong>TOTAL</strong></td>
+          <td class="col-num"><strong>${totalLotes}</strong></td>
+          <td class="col-num"><strong>${totalPiezas}</strong></td>
+          <td class="col-num"><strong>$${totalCosto.toFixed(2)}</strong></td>
+          <td class="col-num"><strong style="color:var(--exito-texto);">$${totalIngreso.toFixed(2)}</strong></td>
+        </tr>`;
+    }
+  }
+
+  async function cargarPlanificacion() {
+    try {
+      const recetas = await getData('recetas');
+      document.getElementById('tbody-plan').innerHTML = renderPlanificacionFilas(recetas);
+      // Wire up oninput on newly rendered inputs
+      document.querySelectorAll('#tbody-plan input[type="number"]').forEach(inp => {
+        inp.addEventListener('input', () => actualizarPlan(inp));
+      });
+    } catch (e) {
+      mostrarError('tbody-plan', e.message, cargarPlanificacion);
+    }
+  }
+
+  // Prevent form default submit; use JS instead
+  document.querySelector('.formulario-rb form').addEventListener('submit', e => {
+    e.preventDefault();
+    actualizarPlan();
+  });
+
+  cargarPlanificacion();
+</script>
 </body>
 </html>

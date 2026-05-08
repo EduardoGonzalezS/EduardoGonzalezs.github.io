@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
   <style>
     @media print {
       .tabla-rb thead { background: #3D2B1F !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
@@ -81,33 +83,26 @@
 
       <!-- Solo visible al imprimir -->
       <span class="print-titulo">RB Repostería — Lista de Compras</span>
-      <span class="print-fecha">Generada el 07 de abril de 2026</span>
+      <span class="print-fecha" id="print-fecha">Generada el ...</span>
 
-      <!-- Alerta resumen -->
-      <div class="alerta alerta-alerta no-print">
-        <span class="alerta__icono">⚠️</span>
-        <div class="alerta__cuerpo">
-          <div class="alerta__titulo">3 ingredientes con stock bajo o agotado</div>
-          <div class="alerta__texto">Basado en el inventario actual y el stock mínimo recomendado para cada ingrediente.</div>
-        </div>
-      </div>
+      <div id="alerta-compras"></div>
 
       <!-- Estadísticas -->
       <div class="grid-stats" style="margin-bottom: var(--sp-6);">
         <div class="tarjeta-stat tarjeta-stat--alerta">
           <span class="tarjeta-stat__etiqueta">Ingredientes a comprar</span>
-          <span class="tarjeta-stat__numero">3</span>
+          <span class="tarjeta-stat__numero" id="stat-a-comprar">—</span>
           <span class="tarjeta-stat__desc">en lista actual</span>
         </div>
         <div class="tarjeta-stat">
           <span class="tarjeta-stat__etiqueta">Costo estimado</span>
-          <span class="tarjeta-stat__numero">$242</span>
+          <span class="tarjeta-stat__numero" id="stat-costo-est">—</span>
           <span class="tarjeta-stat__desc">compra sugerida</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--info">
           <span class="tarjeta-stat__etiqueta">Proveedores</span>
-          <span class="tarjeta-stat__numero">2</span>
-          <span class="tarjeta-stat__desc">Costco + McCormick</span>
+          <span class="tarjeta-stat__numero" id="stat-prov-dist">—</span>
+          <span class="tarjeta-stat__desc">proveedores distintos</span>
         </div>
       </div>
 
@@ -133,61 +128,8 @@
                   <th>Estado</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="no-print" style="text-align: center;">
-                    <input type="checkbox" class="tarjeta-compra__check">
-                  </td>
-                  <td>
-                    <strong>Harina de trigo</strong>
-                    <br><small style="color: var(--texto-muted);">Harinas — kg</small>
-                  </td>
-                  <td class="col-num" style="color: var(--peligro);">500 g</td>
-                  <td class="col-num col-muted">2,000 g</td>
-                  <td class="col-num"><strong>2 kg</strong></td>
-                  <td>Maseca / Costco</td>
-                  <td class="col-num">$28.00 / kg</td>
-                  <td class="col-num"><strong>$56.00</strong></td>
-                  <td><span class="badge badge-peligro">Muy bajo</span></td>
-                </tr>
-                <tr>
-                  <td class="no-print" style="text-align: center;">
-                    <input type="checkbox" class="tarjeta-compra__check">
-                  </td>
-                  <td>
-                    <strong>Mantequilla sin sal</strong>
-                    <br><small style="color: var(--texto-muted);">Lácteos — kg</small>
-                  </td>
-                  <td class="col-num" style="color: var(--peligro);">200 g</td>
-                  <td class="col-num col-muted">1,000 g</td>
-                  <td class="col-num"><strong>2 kg</strong></td>
-                  <td>Lala / Costco</td>
-                  <td class="col-num">$90.00 / kg</td>
-                  <td class="col-num"><strong>$180.00</strong></td>
-                  <td><span class="badge badge-peligro">Muy bajo</span></td>
-                </tr>
-                <tr>
-                  <td class="no-print" style="text-align: center;">
-                    <input type="checkbox" class="tarjeta-compra__check">
-                  </td>
-                  <td>
-                    <strong>Extracto de vainilla</strong>
-                    <br><small style="color: var(--texto-muted);">Esencias — ml</small>
-                  </td>
-                  <td class="col-num" style="color: var(--alerta);">30 ml</td>
-                  <td class="col-num col-muted">120 ml</td>
-                  <td class="col-num"><strong>120 ml</strong></td>
-                  <td>McCormick</td>
-                  <td class="col-num">$0.80 / ml</td>
-                  <td class="col-num"><strong>$96.00</strong></td>
-                  <td><span class="badge badge-alerta">Bajo</span></td>
-                </tr>
-                <tr class="fila-total">
-                  <td class="no-print"></td>
-                  <td colspan="6"><strong>TOTAL ESTIMADO DE COMPRA</strong></td>
-                  <td class="col-num" style="font-size: var(--tx-lg);"><strong>$332.00</strong></td>
-                  <td></td>
-                </tr>
+              <tbody id="tbody-urgentes">
+                <tr><td colspan="9" style="text-align:center;color:var(--texto-muted);padding:var(--sp-6);">⏳ Cargando...</td></tr>
               </tbody>
             </table>
           </div>
@@ -213,28 +155,8 @@
                 <th>Estado</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><strong>Nuez pacana</strong></td>
-                <td class="col-num">400 g</td>
-                <td class="col-num col-muted">500 g</td>
-                <td>Mercado</td>
-                <td><span class="badge badge-alerta">Pronto</span></td>
-              </tr>
-              <tr>
-                <td><strong>Queso crema</strong></td>
-                <td class="col-num">500 g</td>
-                <td class="col-num col-muted">500 g</td>
-                <td>Philadelphia</td>
-                <td><span class="badge badge-alerta">Límite</span></td>
-              </tr>
-              <tr>
-                <td><strong>Coco rallado</strong></td>
-                <td class="col-num">300 g</td>
-                <td class="col-num col-muted">400 g</td>
-                <td>Genérico</td>
-                <td><span class="badge badge-alerta">Bajo</span></td>
-              </tr>
+            <tbody id="tbody-observacion">
+              <tr><td colspan="5" style="text-align:center;color:var(--texto-muted);padding:var(--sp-4);">⏳ Cargando...</td></tr>
             </tbody>
           </table>
           </div><!-- /tabla-scroll -->
@@ -263,5 +185,41 @@
   </ul>
 </nav>
 
+
+<script>
+  document.getElementById('print-fecha').textContent =
+    'Generada el ' + new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  async function cargarListaCompras() {
+    try {
+      const ingredientes = await getData('ingredientes');
+      const resultado = renderListaCompras(ingredientes);
+
+      const { urgentes, observacion, rowsUrgentes, rowsObs, totalEst } = resultado;
+
+      document.getElementById('stat-a-comprar').textContent = urgentes.length;
+      document.getElementById('stat-costo-est').textContent = '$' + Math.round(totalEst);
+      const provs = [...new Set(urgentes.map(i => i.proveedor).filter(Boolean))];
+      document.getElementById('stat-prov-dist').textContent = provs.length || '—';
+
+      if (urgentes.length) {
+        document.getElementById('alerta-compras').innerHTML = `
+          <div class="alerta alerta-alerta no-print">
+            <span class="alerta__icono">⚠️</span>
+            <div class="alerta__cuerpo">
+              <div class="alerta__titulo">${urgentes.length} ingrediente${urgentes.length !== 1 ? 's' : ''} con stock bajo o agotado</div>
+              <div class="alerta__texto">Basado en el inventario actual y el stock mínimo recomendado.</div>
+            </div>
+          </div>`;
+      }
+
+      document.getElementById('tbody-urgentes').innerHTML = rowsUrgentes;
+      document.getElementById('tbody-observacion').innerHTML = rowsObs;
+    } catch (e) {
+      mostrarError('tbody-urgentes', e.message, cargarListaCompras);
+    }
+  }
+  cargarListaCompras();
+</script>
 </body>
 </html>

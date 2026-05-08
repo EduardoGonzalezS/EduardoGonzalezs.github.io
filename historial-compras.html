@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -173,23 +175,23 @@
       <div class="grid-stats" style="margin-bottom: var(--sp-6);">
         <div class="tarjeta-stat">
           <span class="tarjeta-stat__etiqueta">Viajes de compra</span>
-          <span class="tarjeta-stat__numero">13</span>
-          <span class="tarjeta-stat__desc">ago 2025 – abr 2026</span>
+          <span class="tarjeta-stat__numero" id="stat-viajes">—</span>
+          <span class="tarjeta-stat__desc" id="stat-viajes-rango">—</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--alerta">
           <span class="tarjeta-stat__etiqueta">Total gastado</span>
-          <span class="tarjeta-stat__numero">$1,709</span>
-          <span class="tarjeta-stat__desc">16 productos</span>
+          <span class="tarjeta-stat__numero" id="stat-total-gastado">—</span>
+          <span class="tarjeta-stat__desc" id="stat-total-prods">—</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--info">
           <span class="tarjeta-stat__etiqueta">Ingredientes distintos</span>
-          <span class="tarjeta-stat__numero">8</span>
+          <span class="tarjeta-stat__numero" id="stat-distintos">—</span>
           <span class="tarjeta-stat__desc">insumos comprados</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--exito">
           <span class="tarjeta-stat__etiqueta">Más comprado</span>
-          <span class="tarjeta-stat__numero">6×</span>
-          <span class="tarjeta-stat__desc">Mantequilla sin sal</span>
+          <span class="tarjeta-stat__numero" id="stat-mas-veces">—</span>
+          <span class="tarjeta-stat__desc" id="stat-mas-nombre">—</span>
         </div>
       </div>
 
@@ -199,534 +201,10 @@
           <h2 class="seccion__titulo">Historial por viaje</h2>
         </div>
 
-        <!-- 07 abr 2026 — Costco -->
-        <details class="viaje-compra" open>
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">07 abr 2026</span>
-              <span class="viaje-compra__lugar">📍 Costco</span>
-              <span class="badge badge-exito" style="font-size:0.65rem;">Reciente</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">2 productos</span>
-              <span class="viaje-compra__total">$236.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Harina de trigo</a></td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num">$28.00 / kg</td>
-                  <td class="col-num">$56.00</td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num">$90.00 / kg</td>
-                  <td class="col-num">$180.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$236.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
+        <div id="historial-viajes">
+          <div style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando historial...</div>
+        </div>
 
-        <!-- 01 abr 2026 — Varios -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">01 abr 2026</span>
-              <span class="viaje-compra__lugar">📍 Varios</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">2 productos</span>
-              <span class="viaje-compra__total">$125.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th>Lugar</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Azúcar glass</td>
-                  <td style="color:var(--texto-muted); font-size:var(--tx-xs);">Sam's Club</td>
-                  <td class="col-num">1 kg</td>
-                  <td class="col-num">$35.00 / kg</td>
-                  <td class="col-num">$35.00</td>
-                </tr>
-                <tr>
-                  <td>Nuez pacana</td>
-                  <td style="color:var(--texto-muted); font-size:var(--tx-xs);">Mercado local</td>
-                  <td class="col-num">500 g</td>
-                  <td class="col-num">$180.00 / kg</td>
-                  <td class="col-num">$90.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="4">Subtotal</td>
-                  <td class="col-num">$125.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 28 mar 2026 — Walmart -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">28 mar 2026</span>
-              <span class="viaje-compra__lugar">📍 Walmart</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$60.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Chispas de chocolate</td>
-                  <td class="col-num">500 g</td>
-                  <td class="col-num">$120.00 / kg</td>
-                  <td class="col-num">$60.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$60.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 20 mar 2026 — Soriana -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">20 mar 2026</span>
-              <span class="viaje-compra__lugar">📍 Soriana</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$135.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Huevo blanco</td>
-                  <td class="col-num">30 pza</td>
-                  <td class="col-num">$4.50 / pza</td>
-                  <td class="col-num">$135.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$135.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 15 feb 2026 — Walmart -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">15 feb 2026</span>
-              <span class="viaje-compra__lugar">📍 Walmart</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$88.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">1 kg</td>
-                  <td class="col-num">$88.00 / kg</td>
-                  <td class="col-num">$88.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$88.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 10 feb 2026 — Chedraui -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">10 feb 2026</span>
-              <span class="viaje-compra__lugar">📍 Chedraui</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$96.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Extracto de vainilla</td>
-                  <td class="col-num">120 ml</td>
-                  <td class="col-num">$0.80 / ml</td>
-                  <td class="col-num">$96.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$96.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 03 ene 2026 — Costco -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">03 ene 2026</span>
-              <span class="viaje-compra__lugar">📍 Costco</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">2 productos</span>
-              <span class="viaje-compra__total">$310.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num">$85.00 / kg</td>
-                  <td class="col-num">$170.00</td>
-                </tr>
-                <tr>
-                  <td>Harina de trigo</td>
-                  <td class="col-num">5 kg</td>
-                  <td class="col-num">$28.00 / kg</td>
-                  <td class="col-num">$140.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$310.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 20 dic 2025 — Walmart -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">20 dic 2025</span>
-              <span class="viaje-compra__lugar">📍 Walmart</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$44.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Azúcar estándar</td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num">$22.00 / kg</td>
-                  <td class="col-num">$44.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$44.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 15 dic 2025 — Mercado local -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">15 dic 2025</span>
-              <span class="viaje-compra__lugar">📍 Mercado local</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$175.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Nuez pacana</td>
-                  <td class="col-num">1 kg</td>
-                  <td class="col-num">$175.00 / kg</td>
-                  <td class="col-num">$175.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$175.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 20 nov 2025 — Walmart -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">20 nov 2025</span>
-              <span class="viaje-compra__lugar">📍 Walmart</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$82.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">1 kg</td>
-                  <td class="col-num">$82.00 / kg</td>
-                  <td class="col-num">$82.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$82.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 10 nov 2025 — Super -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">10 nov 2025</span>
-              <span class="viaje-compra__lugar">📍 Super</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$12.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Polvo para hornear</td>
-                  <td class="col-num">200 g</td>
-                  <td class="col-num">$60.00 / kg</td>
-                  <td class="col-num">$12.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$12.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 05 oct 2025 — Costco -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">05 oct 2025</span>
-              <span class="viaje-compra__lugar">📍 Costco</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$240.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">3 kg</td>
-                  <td class="col-num">$80.00 / kg</td>
-                  <td class="col-num">$240.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$240.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
-        <!-- 22 ago 2025 — Walmart -->
-        <details class="viaje-compra">
-          <summary>
-            <span class="viaje-compra__flecha">▶</span>
-            <span class="viaje-compra__cabecera-info">
-              <span class="viaje-compra__fecha">22 ago 2025</span>
-              <span class="viaje-compra__lugar">📍 Walmart</span>
-            </span>
-            <span class="viaje-compra__meta">
-              <span class="viaje-compra__nprod">1 producto</span>
-              <span class="viaje-compra__total">$156.00</span>
-            </span>
-          </summary>
-          <div class="viaje-compra__detalle">
-            <table class="tabla-viaje">
-              <thead>
-                <tr>
-                  <th>Ingrediente</th>
-                  <th class="col-num">Cantidad</th>
-                  <th class="col-num">Precio / u</th>
-                  <th class="col-num">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num">$78.00 / kg</td>
-                  <td class="col-num">$156.00</td>
-                </tr>
-                <tr class="fila-subtotal">
-                  <td colspan="3">Subtotal</td>
-                  <td class="col-num">$156.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
 
       </section>
 
@@ -749,71 +227,7 @@
                   <th class="col-num">Última compra</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Mantequilla sin sal</strong></a></td>
-                  <td class="col-num">6</td>
-                  <td class="col-num">11 kg</td>
-                  <td class="col-num"><strong>$916.00</strong></td>
-                  <td class="col-num">$83.27 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">07 abr 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Harina de trigo</strong></td>
-                  <td class="col-num">2</td>
-                  <td class="col-num">7 kg</td>
-                  <td class="col-num"><strong>$196.00</strong></td>
-                  <td class="col-num">$28.00 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">07 abr 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Nuez pacana</strong></td>
-                  <td class="col-num">2</td>
-                  <td class="col-num">1.5 kg</td>
-                  <td class="col-num"><strong>$265.00</strong></td>
-                  <td class="col-num">$176.67 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">01 abr 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Huevo blanco</strong></td>
-                  <td class="col-num">1</td>
-                  <td class="col-num">30 pza</td>
-                  <td class="col-num"><strong>$135.00</strong></td>
-                  <td class="col-num">$4.50 / pza</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">20 mar 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Extracto de vainilla</strong></td>
-                  <td class="col-num">1</td>
-                  <td class="col-num">120 ml</td>
-                  <td class="col-num"><strong>$96.00</strong></td>
-                  <td class="col-num">$0.80 / ml</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">10 feb 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Chispas de chocolate</strong></td>
-                  <td class="col-num">1</td>
-                  <td class="col-num">500 g</td>
-                  <td class="col-num"><strong>$60.00</strong></td>
-                  <td class="col-num">$120.00 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">28 mar 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Azúcar glass</strong></td>
-                  <td class="col-num">1</td>
-                  <td class="col-num">1 kg</td>
-                  <td class="col-num"><strong>$35.00</strong></td>
-                  <td class="col-num">$35.00 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">01 abr 2026</td>
-                </tr>
-                <tr>
-                  <td><strong>Azúcar estándar</strong></td>
-                  <td class="col-num">1</td>
-                  <td class="col-num">2 kg</td>
-                  <td class="col-num"><strong>$44.00</strong></td>
-                  <td class="col-num">$22.00 / kg</td>
-                  <td class="col-num" style="color:var(--texto-muted); font-size:var(--tx-xs);">20 dic 2025</td>
-                </tr>
+              <tbody id="tbody-resumen">
               </tbody>
             </table>
           </div>
@@ -836,5 +250,40 @@
   </ul>
 </nav>
 
+
+<script>
+  async function cargarHistorial() {
+    try {
+      const [compras, detalle] = await Promise.all([
+        getData('compras'),
+        getData('compras_detalle')
+      ]);
+
+      document.getElementById('stat-viajes').textContent = compras.length;
+      const totalGastado = compras.reduce((s, c) => s + (parseFloat(c.total) || 0), 0);
+      document.getElementById('stat-total-gastado').textContent = fmtMoneda(totalGastado);
+      document.getElementById('stat-total-prods').textContent = detalle.length + ' productos comprados';
+      const distintos = [...new Set(detalle.map(d => d.ingrediente))].length;
+      document.getElementById('stat-distintos').textContent = distintos;
+      if (compras.length) {
+        const fechas = compras.map(c => c.fecha).sort();
+        document.getElementById('stat-viajes-rango').textContent =
+          formatFecha(fechas[0]) + ' — ' + formatFecha(fechas[fechas.length - 1]);
+      }
+      const conteo = {};
+      detalle.forEach(d => { conteo[d.ingrediente] = (conteo[d.ingrediente] || 0) + 1; });
+      const topNombre = Object.keys(conteo).sort((a, b) => conteo[b] - conteo[a])[0];
+      if (topNombre) {
+        document.getElementById('stat-mas-veces').textContent = conteo[topNombre] + 'x';
+        document.getElementById('stat-mas-nombre').textContent = topNombre;
+      }
+      document.getElementById('historial-viajes').innerHTML = renderHistorialCompras(compras, detalle);
+      document.getElementById('tbody-resumen').innerHTML = renderResumenPorIngrediente(detalle);
+    } catch (e) {
+      mostrarError('historial-viajes', e.message, cargarHistorial);
+    }
+  }
+  cargarHistorial();
+</script>
 </body>
 </html>

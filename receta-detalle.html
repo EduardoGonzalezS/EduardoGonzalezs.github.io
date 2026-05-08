@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -50,13 +52,13 @@
 
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Galletas de Mantequilla</h1>
+        <h1 class="header-pagina__titulo" id="titulo-receta">Cargando...</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a>
           <span class="breadcrumb__sep">/</span>
           <a href="index.html#recetas">Recetas</a>
           <span class="breadcrumb__sep">/</span>
-          <span>Galletas de Mantequilla</span>
+          <span id="nombre-breadcrumb">...</span>
         </div>
       </div>
       <div class="header-pagina__der no-print">
@@ -66,376 +68,9 @@
     </header>
 
     <div class="cuerpo-pagina">
+      <div id="cuerpo-receta" style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando receta...</div>
+    </div>
 
-      <!-- Hero -->
-      <div class="hero-receta">
-        <div class="hero-receta__emoji">🍪</div>
-        <div class="hero-receta__info">
-          <h2 class="hero-receta__nombre">Galletas de Mantequilla</h2>
-          <div class="hero-receta__badges">
-            <span class="badge badge-galletas">Galletas</span>
-            <span class="badge badge-neutral">Todo el año</span>
-          </div>
-          <div class="hero-receta__rendimiento">
-            <div class="hero-receta__dato">
-              <span class="hero-receta__dato-num">24</span>
-              <span class="hero-receta__dato-label">Piezas</span>
-            </div>
-            <div class="hero-receta__dato">
-              <span class="hero-receta__dato-num">35 g</span>
-              <span class="hero-receta__dato-label">Peso / pieza</span>
-            </div>
-            <div class="hero-receta__dato">
-              <span class="hero-receta__dato-num">840 g</span>
-              <span class="hero-receta__dato-label">Peso total</span>
-            </div>
-            <div class="hero-receta__dato">
-              <span class="hero-receta__dato-num">18 min</span>
-              <span class="hero-receta__dato-label">Horno a 175°C</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Layout de dos columnas -->
-      <div class="layout-2col">
-
-        <!-- Columna izquierda: ingredientes, escala, instrucciones -->
-        <div>
-
-          <!-- Tabla de ingredientes y costos -->
-          <section class="seccion">
-            <div class="seccion__cabecera">
-              <h3 class="seccion__titulo">Ingredientes y costos</h3>
-            </div>
-            <div class="tabla-contenedor">
-              <div class="tabla-scroll">
-                <table class="tabla-rb">
-                  <thead>
-                    <tr>
-                      <th>Ingrediente</th>
-                      <th class="col-num">Cantidad</th>
-                      <th>Unidad</th>
-                      <th class="col-num">Precio unitario</th>
-                      <th class="col-num">Costo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Harina de trigo</a></td>
-                      <td class="col-num">250</td>
-                      <td class="col-muted">g</td>
-                      <td class="col-num col-muted">$0.028/g</td>
-                      <td class="col-num"><strong>$7.00</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Mantequilla sin sal</a></td>
-                      <td class="col-num">150</td>
-                      <td class="col-muted">g</td>
-                      <td class="col-num col-muted">$0.090/g</td>
-                      <td class="col-num"><strong>$13.50</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Azúcar glass</a></td>
-                      <td class="col-num">80</td>
-                      <td class="col-muted">g</td>
-                      <td class="col-num col-muted">$0.035/g</td>
-                      <td class="col-num"><strong>$2.80</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Huevo blanco</a></td>
-                      <td class="col-num">1</td>
-                      <td class="col-muted">pza</td>
-                      <td class="col-num col-muted">$3.50/pza</td>
-                      <td class="col-num"><strong>$3.50</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Extracto de vainilla</a></td>
-                      <td class="col-num">5</td>
-                      <td class="col-muted">ml</td>
-                      <td class="col-num col-muted">$0.80/ml</td>
-                      <td class="col-num"><strong>$4.00</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Sal fina</a></td>
-                      <td class="col-num">2</td>
-                      <td class="col-muted">g</td>
-                      <td class="col-num col-muted">$0.005/g</td>
-                      <td class="col-num"><strong>$0.01</strong></td>
-                    </tr>
-                    <tr>
-                      <td><a href="ingrediente-detalle.html">Chispas de chocolate</a></td>
-                      <td class="col-num">100</td>
-                      <td class="col-muted">g</td>
-                      <td class="col-num col-muted">$0.176/g</td>
-                      <td class="col-num"><strong>$17.60</strong></td>
-                    </tr>
-                    <tr class="fila-subtotal">
-                      <td colspan="4"><strong>Subtotal ingredientes</strong></td>
-                      <td class="col-num"><strong>$48.41</strong></td>
-                    </tr>
-                    <tr>
-                      <td>Bolsa de empaque</td>
-                      <td class="col-num">1</td>
-                      <td class="col-muted">pza</td>
-                      <td class="col-num col-muted">$2.50/pza</td>
-                      <td class="col-num"><strong>$2.50</strong></td>
-                    </tr>
-                    <tr class="fila-total">
-                      <td colspan="4"><strong>COSTO TOTAL DEL LOTE</strong></td>
-                      <td class="col-num" style="font-size: var(--tx-lg);"><strong>$50.91</strong></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          <!-- Tabla de escalado -->
-          <section class="seccion">
-            <div class="seccion__cabecera">
-              <h3 class="seccion__titulo">Escalado de receta</h3>
-            </div>
-            <div class="tabla-contenedor">
-              <div class="tabla-scroll">
-                <table class="tabla-rb tabla-escalado">
-                  <thead>
-                    <tr>
-                      <th>Ingrediente</th>
-                      <th>1 lote</th>
-                      <th>2 lotes</th>
-                      <th>3 lotes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Harina de trigo</td>
-                      <td>250 g</td>
-                      <td>500 g</td>
-                      <td>750 g</td>
-                    </tr>
-                    <tr>
-                      <td>Mantequilla sin sal</td>
-                      <td>150 g</td>
-                      <td>300 g</td>
-                      <td>450 g</td>
-                    </tr>
-                    <tr>
-                      <td>Azúcar glass</td>
-                      <td>80 g</td>
-                      <td>160 g</td>
-                      <td>240 g</td>
-                    </tr>
-                    <tr>
-                      <td>Huevo blanco</td>
-                      <td>1 pza</td>
-                      <td>2 pzas</td>
-                      <td>3 pzas</td>
-                    </tr>
-                    <tr>
-                      <td>Extracto de vainilla</td>
-                      <td>5 ml</td>
-                      <td>10 ml</td>
-                      <td>15 ml</td>
-                    </tr>
-                    <tr>
-                      <td>Chispas de chocolate</td>
-                      <td>100 g</td>
-                      <td>200 g</td>
-                      <td>300 g</td>
-                    </tr>
-                    <tr class="fila-destacada">
-                      <td><strong>Piezas</strong></td>
-                      <td><strong>24</strong></td>
-                      <td><strong>48</strong></td>
-                      <td><strong>72</strong></td>
-                    </tr>
-                    <tr class="fila-total">
-                      <td><strong>Costo total</strong></td>
-                      <td><strong>$50.91</strong></td>
-                      <td><strong>$101.82</strong></td>
-                      <td><strong>$152.73</strong></td>
-                    </tr>
-                    <tr class="fila-destacada">
-                      <td>Ingreso estimado</td>
-                      <td>$120.00</td>
-                      <td>$240.00</td>
-                      <td>$360.00</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          <!-- Instrucciones paso a paso -->
-          <section class="seccion">
-            <div class="seccion__cabecera">
-              <h3 class="seccion__titulo">Instrucciones</h3>
-            </div>
-            <ol class="lista-pasos">
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">1</span>
-                <p class="lista-pasos__texto">Precalentar el horno a <strong>175°C</strong>. Preparar charola con papel encerado o tapete de silicón.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">2</span>
-                <p class="lista-pasos__texto">Acremar la <strong>mantequilla a temperatura ambiente</strong> con el azúcar glass hasta obtener una mezcla pálida y esponjosa (aprox. 3 minutos).</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">3</span>
-                <p class="lista-pasos__texto">Agregar el <strong>huevo</strong> y el <strong>extracto de vainilla</strong>. Mezclar bien hasta incorporar completamente.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">4</span>
-                <p class="lista-pasos__texto">Incorporar la <strong>harina</strong> y la <strong>sal</strong> poco a poco. Mezclar solo hasta integrar, no sobrebatir para evitar que queden duras.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">5</span>
-                <p class="lista-pasos__texto">Agregar las <strong>chispas de chocolate</strong> y mezclar con espátula con movimientos envolventes.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">6</span>
-                <p class="lista-pasos__texto">Pesar porciones de <strong>35 g</strong> cada una. Formar bolitas y colocar en la charola con separación de al menos 4 cm.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">7</span>
-                <p class="lista-pasos__texto">Hornear <strong>16 a 18 minutos</strong> hasta que las orillas estén ligeramente doradas. El centro puede verse suave, se endurece al enfriar.</p>
-              </li>
-              <li class="lista-pasos__item">
-                <span class="lista-pasos__numero">8</span>
-                <p class="lista-pasos__texto">Dejar enfriar completamente sobre rejilla antes de empacar o vender. El sabor mejora al día siguiente.</p>
-              </li>
-            </ol>
-
-            <!-- Notas del chef -->
-            <div class="nota-chef mt-6">
-              <p class="nota-chef__titulo">📝 Notas del chef</p>
-              <ul>
-                <li>Usar mantequilla a temperatura ambiente para mejor incorporación — nunca derretida.</li>
-                <li>Si la masa está muy blanda, refrigerar 20 minutos antes de formar las bolitas.</li>
-                <li>Rinde mejor con harina marca "Selecta" o "Siete Leguas".</li>
-                <li>Para galletas más crujientes, hornear 2 minutos adicionales.</li>
-                <li>Duran hasta 7 días en recipiente hermético a temperatura ambiente.</li>
-              </ul>
-            </div>
-          </section>
-
-        </div>
-
-        <!-- Columna derecha: información general y costos -->
-        <div>
-
-          <!-- Info general de la receta -->
-          <div class="tarjeta mb-6">
-            <h4 class="tarjeta__titulo">📋 Información general</h4>
-            <div class="info-receta">
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Categoría</span>
-                <span class="info-receta__valor"><span class="badge badge-galletas">Galletas</span></span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Rendimiento</span>
-                <span class="info-receta__valor">24 piezas</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Peso por pieza</span>
-                <span class="info-receta__valor">35 g</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Peso total del lote</span>
-                <span class="info-receta__valor">840 g</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Temperatura de horno</span>
-                <span class="info-receta__valor">175°C</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Tiempo de horneado</span>
-                <span class="info-receta__valor">16 – 18 minutos</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Dificultad</span>
-                <span class="info-receta__valor">⭐⭐ Media</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Temporada</span>
-                <span class="info-receta__valor">Todo el año</span>
-              </div>
-              <div class="info-receta__fila">
-                <span class="info-receta__label">Última actualización</span>
-                <span class="info-receta__valor" style="color: var(--texto-muted); font-size: var(--tx-xs);">10 mar 2026</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel de costos -->
-          <div class="panel-costos mb-6">
-            <h4 class="panel-costos__titulo">💰 Costos y precios</h4>
-
-            <div class="panel-costos__fila">
-              <span class="panel-costos__label">Costo ingredientes</span>
-              <span class="panel-costos__valor">$48.41</span>
-            </div>
-            <div class="panel-costos__fila">
-              <span class="panel-costos__label">Costo empaque</span>
-              <span class="panel-costos__valor">$2.50</span>
-            </div>
-            <div class="panel-costos__fila panel-costos__fila--total">
-              <span class="panel-costos__label">Costo total lote</span>
-              <span class="panel-costos__valor">$50.91</span>
-            </div>
-
-            <div class="panel-costos__fila" style="margin-top: var(--sp-3);">
-              <span class="panel-costos__label">Costo por pieza</span>
-              <span class="panel-costos__valor">$2.12</span>
-            </div>
-            <div class="panel-costos__fila">
-              <span class="panel-costos__label">Precio de venta / pieza</span>
-              <span class="panel-costos__valor" style="color: var(--secundario); font-size: var(--tx-lg);">$5.00</span>
-            </div>
-            <div class="panel-costos__fila">
-              <span class="panel-costos__label">Precio de venta lote</span>
-              <span class="panel-costos__valor" style="color: var(--secundario); font-size: var(--tx-xl);">$120.00</span>
-            </div>
-            <div class="panel-costos__fila">
-              <span class="panel-costos__label">Ganancia neta</span>
-              <span class="panel-costos__valor" style="color: var(--exito-suave);">$69.09</span>
-            </div>
-
-            <div class="panel-costos__margen">
-              <div class="panel-costos__margen-num">58%</div>
-              <div class="panel-costos__margen-label">Margen de ganancia</div>
-              <div class="barra-margen" style="margin-top: var(--sp-3);">
-                <div class="barra-margen__pista">
-                  <div class="barra-margen__relleno" style="width: 58%;"></div>
-                </div>
-                <div class="barra-margen__etiquetas">
-                  <span>Costo: $50.91</span>
-                  <span>Venta: $120.00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Acciones -->
-          <div class="tarjeta no-print" style="display: flex; flex-direction: column; gap: var(--sp-3);">
-            <h4 class="tarjeta__titulo">⚡ Acciones</h4>
-            <a href="planificacion.html" class="btn btn-primario w-full" style="justify-content: center;">
-              📅 Agregar a planeación
-            </a>
-            <a href="receta-nueva.html" class="btn btn-secundario w-full" style="justify-content: center;">
-              ✏️ Editar receta
-            </a>
-            <button onclick="window.print()" class="btn btn-ghost w-full" style="justify-content: center;">
-              🖨️ Imprimir receta
-            </button>
-          </div>
-
-        </div>
-      </div><!-- /layout-2col -->
-
-    </div><!-- /cuerpo-pagina -->
   </main>
 </div><!-- /app -->
 
@@ -451,5 +86,40 @@
   </ul>
 </nav>
 
+<script>
+  async function cargarReceta() {
+    const id = urlParam('id');
+    if (!id) {
+      document.getElementById('cuerpo-receta').innerHTML =
+        '<p style="text-align:center;color:var(--peligro);">No se especificó una receta. <a href="index.html">Ir al inicio →</a></p>';
+      return;
+    }
+    try {
+      const [recetas, ingData] = await Promise.all([
+        getData('recetas'),
+        getData('recetas_ingredientes', { receta_id: id })
+      ]);
+      const r = recetas.find(x => String(x.id) === String(id));
+      if (!r) throw new Error('Receta no encontrada');
+
+      document.title = r.nombre + ' — RB Repostería';
+      document.getElementById('titulo-receta').textContent = r.nombre;
+      document.getElementById('nombre-breadcrumb').textContent = r.nombre;
+
+      const { filas, subtotal } = renderIngredientesReceta(ingData);
+      const costoTotal = subtotal + Number(r.costo_empaque || 0);
+
+      document.getElementById('cuerpo-receta').innerHTML =
+        renderHeroReceta(r) +
+        '<div class="layout-2col">' +
+          '<div>' + renderColIzqReceta(r, ingData, filas, subtotal, costoTotal) + '</div>' +
+          '<div>' + renderColDerReceta(r, costoTotal) + '</div>' +
+        '</div>';
+    } catch (e) {
+      mostrarError('cuerpo-receta', e.message, cargarReceta);
+    }
+  }
+  cargarReceta();
+</script>
 </body>
 </html>

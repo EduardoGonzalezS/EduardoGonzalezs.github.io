@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
 </head>
 <body>
 
@@ -62,17 +64,17 @@
       <div class="grid-stats" style="margin-bottom: var(--sp-6);">
         <div class="tarjeta-stat">
           <span class="tarjeta-stat__etiqueta">Total ingredientes</span>
-          <span class="tarjeta-stat__numero">34</span>
+          <span class="tarjeta-stat__numero" id="stat-total">—</span>
           <span class="tarjeta-stat__desc">en catálogo</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--exito">
           <span class="tarjeta-stat__etiqueta">Stock suficiente</span>
-          <span class="tarjeta-stat__numero">31</span>
+          <span class="tarjeta-stat__numero" id="stat-buenos">—</span>
           <span class="tarjeta-stat__desc">ingredientes</span>
         </div>
         <div class="tarjeta-stat tarjeta-stat--alerta">
           <span class="tarjeta-stat__etiqueta">Stock bajo</span>
-          <span class="tarjeta-stat__numero">3</span>
+          <span class="tarjeta-stat__numero" id="stat-bajos">—</span>
           <span class="tarjeta-stat__desc">requieren compra pronto</span>
         </div>
       </div>
@@ -99,314 +101,8 @@
                   <th class="no-print">Acción</th>
                 </tr>
               </thead>
-              <tbody>
-
-                <!-- HARINAS -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Harina de trigo</strong></a></td>
-                  <td><span class="badge badge-neutral">Harinas</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$28.00 / kg</td>
-                  <td class="col-num col-muted">$0.028 / g</td>
-                  <td>Maseca</td>
-                  <td>
-                    <div class="indicador-stock stock-agotado">
-                      <span class="indicador-stock__punto"></span> 500 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Comprar</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Harina para pastel</strong></a></td>
-                  <td><span class="badge badge-neutral">Harinas</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$32.00 / kg</td>
-                  <td class="col-num col-muted">$0.032 / g</td>
-                  <td>Selecta</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 3 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Fécula de maíz</strong></a></td>
-                  <td><span class="badge badge-neutral">Harinas</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$22.00 / kg</td>
-                  <td class="col-num col-muted">$0.022 / g</td>
-                  <td>Maizena</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 1.5 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
-                <!-- LÁCTEOS -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Mantequilla sin sal</strong></a></td>
-                  <td><span class="badge badge-info">Lácteos</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$90.00 / kg</td>
-                  <td class="col-num col-muted">$0.090 / g</td>
-                  <td>Lala</td>
-                  <td>
-                    <div class="indicador-stock stock-agotado">
-                      <span class="indicador-stock__punto"></span> 200 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Comprar</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Crema para batir</strong></a></td>
-                  <td><span class="badge badge-info">Lácteos</span></td>
-                  <td class="col-muted">litro</td>
-                  <td class="col-num">$45.00 / L</td>
-                  <td class="col-num col-muted">$0.045 / ml</td>
-                  <td>Lala</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 2 L
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Leche entera</strong></a></td>
-                  <td><span class="badge badge-info">Lácteos</span></td>
-                  <td class="col-muted">litro</td>
-                  <td class="col-num">$22.00 / L</td>
-                  <td class="col-num col-muted">$0.022 / ml</td>
-                  <td>Local</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 3 L
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Queso crema</strong></a></td>
-                  <td><span class="badge badge-info">Lácteos</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$78.00 / kg</td>
-                  <td class="col-num col-muted">$0.078 / g</td>
-                  <td>Philadelphia</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 500 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
-                <!-- ENDULZANTES -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Azúcar estándar</strong></a></td>
-                  <td><span class="badge badge-exito">Endulzantes</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$25.00 / kg</td>
-                  <td class="col-num col-muted">$0.025 / g</td>
-                  <td>Zucarmex</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 5 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Azúcar glass</strong></a></td>
-                  <td><span class="badge badge-exito">Endulzantes</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$35.00 / kg</td>
-                  <td class="col-num col-muted">$0.035 / g</td>
-                  <td>Zucarmex</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 2 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Piloncillo</strong></a></td>
-                  <td><span class="badge badge-exito">Endulzantes</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$30.00 / kg</td>
-                  <td class="col-num col-muted">$0.030 / g</td>
-                  <td>Mercado</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 1 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
-                <!-- HUEVOS -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Huevo blanco</strong></a></td>
-                  <td><span class="badge badge-alerta">Huevos</span></td>
-                  <td class="col-muted">pieza</td>
-                  <td class="col-num">$3.50 / pza</td>
-                  <td class="col-num col-muted">$3.50 / pza</td>
-                  <td>Rancho local</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 24 pzas
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
-                <!-- ESENCIAS -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Extracto de vainilla</strong></a></td>
-                  <td><span class="badge badge-peligro">Esencias</span></td>
-                  <td class="col-muted">ml</td>
-                  <td class="col-num">$0.80 / ml</td>
-                  <td class="col-num col-muted">$0.80 / ml</td>
-                  <td>McCormick</td>
-                  <td>
-                    <div class="indicador-stock stock-bajo">
-                      <span class="indicador-stock__punto"></span> 30 ml
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Comprar</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Esencia de almendra</strong></a></td>
-                  <td><span class="badge badge-peligro">Esencias</span></td>
-                  <td class="col-muted">ml</td>
-                  <td class="col-num">$1.20 / ml</td>
-                  <td class="col-num col-muted">$1.20 / ml</td>
-                  <td>McCormick</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 120 ml
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Canela en polvo</strong></a></td>
-                  <td><span class="badge badge-peligro">Esencias</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$200.00 / kg</td>
-                  <td class="col-num col-muted">$0.200 / g</td>
-                  <td>Comari</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 200 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
-                <!-- LEUDANTES/EXTRAS -->
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Polvo para hornear</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$120.00 / kg</td>
-                  <td class="col-num col-muted">$0.120 / g</td>
-                  <td>Clavel</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 500 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Bicarbonato de sodio</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$35.00 / kg</td>
-                  <td class="col-num col-muted">$0.035 / g</td>
-                  <td>Genérico</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 300 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Sal fina</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$5.00 / kg</td>
-                  <td class="col-num col-muted">$0.005 / g</td>
-                  <td>La Fina</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 1 kg
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Chocolate oscuro 70%</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$180.00 / kg</td>
-                  <td class="col-num col-muted">$0.180 / g</td>
-                  <td>Abuelita</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 800 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Chispas de chocolate</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$176.00 / kg</td>
-                  <td class="col-num col-muted">$0.176 / g</td>
-                  <td>Nestlé</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 600 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Nuez pacana</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$280.00 / kg</td>
-                  <td class="col-num col-muted">$0.280 / g</td>
-                  <td>Mercado</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 400 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-                <tr>
-                  <td><a href="ingrediente-detalle.html"><strong>Coco rallado</strong></a></td>
-                  <td><span class="badge badge-neutral">Extras</span></td>
-                  <td class="col-muted">kg</td>
-                  <td class="col-num">$95.00 / kg</td>
-                  <td class="col-num col-muted">$0.095 / g</td>
-                  <td>Genérico</td>
-                  <td>
-                    <div class="indicador-stock stock-bueno">
-                      <span class="indicador-stock__punto"></span> 300 g
-                    </div>
-                  </td>
-                  <td class="no-print"><a href="ingrediente-detalle.html" class="btn btn-sm btn-ghost">Historial</a></td>
-                </tr>
-
+              <tbody id="tbody-ingredientes">
+                <tr><td colspan="8" style="text-align:center;color:var(--texto-muted);">⏳ Cargando...</td></tr>
               </tbody>
             </table>
           </div>
@@ -429,5 +125,21 @@
   </ul>
 </nav>
 
+<script>
+  async function cargarIngredientes() {
+    mostrarCargando('tbody-ingredientes', 'Cargando ingredientes...');
+    try {
+      const ingredientes = await getData('ingredientes');
+      const bajos = getStockBajo(ingredientes);
+      document.getElementById('stat-total').textContent = ingredientes.length;
+      document.getElementById('stat-buenos').textContent = ingredientes.length - bajos.length;
+      document.getElementById('stat-bajos').textContent = bajos.length;
+      document.getElementById('tbody-ingredientes').innerHTML = renderTablaIngredientes(ingredientes);
+    } catch (e) {
+      mostrarError('tbody-ingredientes', e.message, cargarIngredientes);
+    }
+  }
+  cargarIngredientes();
+</script>
 </body>
 </html>

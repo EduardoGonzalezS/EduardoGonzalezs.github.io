@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
   <style>
     /* Inputs y selects dentro de la tabla de ingredientes */
     .tabla-ing select,
@@ -147,7 +149,7 @@
     <div class="cuerpo-pagina">
       <div class="contenedor-angosto">
 
-        <form action="index.html" method="get">
+        <form id="form-receta">
 
           <!-- Sección 1: Información general -->
           <div class="formulario-rb mb-6">
@@ -295,30 +297,7 @@
                 </div>
               </div>
 
-              <!-- Lista de ingredientes disponibles para búsqueda -->
-              <datalist id="lista-ingredientes">
-                <option value="Harina de trigo">
-                <option value="Harina para pastel">
-                <option value="Mantequilla sin sal">
-                <option value="Crema para batir">
-                <option value="Leche entera">
-                <option value="Azúcar estándar">
-                <option value="Azúcar glass">
-                <option value="Huevo blanco">
-                <option value="Extracto de vainilla">
-                <option value="Polvo para hornear">
-                <option value="Bicarbonato de sodio">
-                <option value="Sal fina">
-                <option value="Chispas de chocolate">
-                <option value="Chocolate oscuro 70%">
-                <option value="Nuez pacana">
-                <option value="Coco rallado">
-                <option value="Canela en polvo">
-                <option value="Queso crema">
-                <option value="Piloncillo">
-                <option value="Crema cheese">
-                <option value="Levadura seca">
-              </datalist>
+              <datalist id="lista-ingredientes"></datalist>
 
               <button type="button" onclick="agregarIngrediente()" class="btn btn-ghost btn-sm">
                 ➕ Agregar ingrediente
@@ -482,5 +461,57 @@
   }
 </script>
 
+<script>
+  // Populate ingredient datalist from API
+  getData('ingredientes').then(ings => {
+    document.getElementById('lista-ingredientes').innerHTML = renderDatalistIngredientes(ings);
+  }).catch(() => {});
+
+  document.getElementById('form-receta').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '⏳ Guardando...';
+    try {
+      // Collect ingredients
+      const ingRows = document.querySelectorAll('#tbody-ingredientes tr');
+      const ingredientes = [];
+      ingRows.forEach(tr => {
+        const nombre_ing = tr.cells[1].querySelector('input')?.value?.trim();
+        const cantidad   = parseFloat(tr.cells[2].querySelector('input')?.value) || 0;
+        const unidad     = tr.cells[3].querySelector('select')?.value;
+        if (nombre_ing && cantidad > 0) ingredientes.push({ ingrediente_nombre: nombre_ing, cantidad, unidad });
+      });
+
+      // Collect steps
+      const pasos = [];
+      document.querySelectorAll('#lista-pasos .paso-item input[type="text"]').forEach(inp => {
+        if (inp.value.trim()) pasos.push(inp.value.trim());
+      });
+
+      await postData('receta', {
+        nombre:       document.getElementById('nombre-receta').value.trim(),
+        categoria:    document.getElementById('categoria-receta').value,
+        temporada:    document.getElementById('temporada').value,
+        rendimiento:  parseInt(document.getElementById('rendimiento').value) || 0,
+        peso_pieza:   parseFloat(document.getElementById('peso-pieza').value) || 0,
+        temperatura:  parseInt(document.getElementById('temperatura').value) || 0,
+        tiempo:       parseInt(document.getElementById('tiempo-horno').value) || 0,
+        dificultad:   document.getElementById('dificultad').value,
+        precio_venta: parseFloat(document.getElementById('precio-venta').value) || 0,
+        empaque:      document.getElementById('tipo-empaque').value,
+        costo_empaque: parseFloat(document.getElementById('costo-empaque').value) || 0,
+        notas:        document.getElementById('notas-receta').value.trim(),
+        ingredientes,
+        pasos
+      });
+      window.location.href = 'index.html';
+    } catch (err) {
+      alert('Error al guardar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '✅ Registrar receta';
+    }
+  });
+</script>
 </body>
 </html>
