@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar compra — RB Repostería</title>
+  <title>Registrar compra — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
+  <script src="js/combobox.js"></script>
   <style>
     /* Tabla de productos de la compra */
     .tabla-compra select,
@@ -82,10 +85,10 @@
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -96,6 +99,7 @@
       <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item activo"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -105,17 +109,17 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <main class="contenido-principal">
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Registrar compra</h1>
+        <h1 class="header-pagina__titulo" id="titulo-pagina">Registrar compra</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a> <span>/</span>
           <a href="ingredientes.html">Ingredientes</a> <span>/</span>
-          <span>Registrar compra</span>
+          <span id="ruta-modo">Registrar compra</span>
         </div>
       </div>
       <div class="header-pagina__der no-print">
@@ -139,19 +143,12 @@
                 </div>
                 <div class="campo">
                   <label for="lugar-compra">Lugar de compra <span class="req">*</span></label>
-                  <input type="text" id="lugar-compra" name="lugar"
-                    list="lista-lugares"
-                    placeholder="Ej: Costco, Walmart, Mercado…"
-                    autocomplete="off" required>
-                  <datalist id="lista-lugares">
-                    <option value="Costco Wholesale">
-                    <option value="Walmart">
-                    <option value="Soriana">
-                    <option value="Chedraui">
-                    <option value="Sam's Club">
-                    <option value="Mercado local">
-                    <option value="Super">
-                  </datalist>
+                  <div class="combobox" id="combobox-lugar">
+                    <input type="text" id="lugar-compra" name="lugar" class="combobox__input"
+                      placeholder="Buscar proveedor…"
+                      autocomplete="off" required>
+                    <ul class="combobox__lista" role="listbox" hidden></ul>
+                  </div>
                 </div>
                 <div class="campo col-span-2">
                   <label for="obs-compra">Observaciones (opcional)</label>
@@ -168,7 +165,7 @@
             <div class="form-seccion">
               <h3 class="form-seccion__titulo">🧂 Productos comprados</h3>
 
-              <div class="tabla-contenedor mb-4">
+              <div class="tabla-contenedor tabla-contenedor--overflow mb-4">
                 <div class="tabla-scroll">
                   <table class="tabla-rb tabla-compra" id="tabla-productos">
                     <thead>
@@ -185,10 +182,15 @@
                     <tbody id="tbody-productos">
                       <!-- Fila 1 -->
                       <tr>
-                        <td class="col-muted">1</td>
-                        <td><input type="text" list="lista-ingredientes" name="prod_1" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
-                        <td><input type="number" name="cant_1" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
-                        <td><select name="und_1">
+                        <td class="col-muted" data-label="#">1</td>
+                        <td data-label="Ingrediente">
+                          <div class="combobox">
+                            <input type="text" class="combobox__input" name="prod_1" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)">
+                            <ul class="combobox__lista" role="listbox" hidden></ul>
+                          </div>
+                        </td>
+                        <td data-label="Cantidad"><input type="number" name="cant_1" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+                        <td data-label="Unidad"><select name="und_1">
                           <option value="kg">kg</option>
                           <option value="g">g</option>
                           <option value="L">L</option>
@@ -198,52 +200,14 @@
                           <option value="cda">cda</option>
                           <option value="taza">taza</option>
                         </select></td>
-                        <td><input type="number" name="precio_1" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
-                        <td class="celda-total" id="total-fila-1">$0.00</td>
-                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
-                      </tr>
-                      <!-- Fila 2 -->
-                      <tr>
-                        <td class="col-muted">2</td>
-                        <td><input type="text" list="lista-ingredientes" name="prod_2" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
-                        <td><input type="number" name="cant_2" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
-                        <td><select name="und_2">
-                          <option value="kg">kg</option>
-                          <option value="g">g</option>
-                          <option value="L">L</option>
-                          <option value="ml">ml</option>
-                          <option value="pza">pza</option>
-                          <option value="cdita">cdita</option>
-                          <option value="cda">cda</option>
-                          <option value="taza">taza</option>
-                        </select></td>
-                        <td><input type="number" name="precio_2" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
-                        <td class="celda-total" id="total-fila-2">$0.00</td>
-                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
-                      </tr>
-                      <!-- Fila 3 -->
-                      <tr>
-                        <td class="col-muted">3</td>
-                        <td><input type="text" list="lista-ingredientes" name="prod_3" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
-                        <td><input type="number" name="cant_3" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
-                        <td><select name="und_3">
-                          <option value="kg">kg</option>
-                          <option value="g">g</option>
-                          <option value="L">L</option>
-                          <option value="ml">ml</option>
-                          <option value="pza">pza</option>
-                          <option value="cdita">cdita</option>
-                          <option value="cda">cda</option>
-                          <option value="taza">taza</option>
-                        </select></td>
-                        <td><input type="number" name="precio_3" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
-                        <td class="celda-total" id="total-fila-3">$0.00</td>
-                        <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+                        <td data-label="Precio / u."><input type="number" name="precio_1" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+                        <td class="celda-total" id="total-fila-1" data-label="Total">$0.00</td>
+                        <td data-label=""><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
                       </tr>
                       <!-- Fila total -->
                       <tr class="fila-total-compra" id="fila-total">
                         <td colspan="5" style="text-align:right; padding-right: var(--sp-4);">TOTAL DE ESTA COMPRA</td>
-                        <td class="celda-total" id="total-general" style="font-size: var(--tx-base);">$0.00</td>
+                        <td class="celda-total" id="total-general" data-label="Total" style="font-size: var(--tx-base);">$0.00</td>
                         <td></td>
                       </tr>
                     </tbody>
@@ -251,59 +215,20 @@
                 </div>
               </div>
 
-              <datalist id="lista-ingredientes"></datalist>
-
               <button type="button" onclick="agregarProducto()" class="btn btn-ghost btn-sm">
                 ➕ Agregar producto
               </button>
+
+              <p class="aviso-info">
+                💡 ¿Falta un ingrediente en la lista? <a href="producto-nuevo.html">Regístralo primero →</a>
+              </p>
             </div>
           </div>
 
-          <!-- Sección 3 (colapsable): Registrar ingrediente nuevo -->
-          <details class="seccion-colapsable">
-            <summary>
-              <span>🆕</span> ¿El ingrediente no existe aún? Registrarlo aquí
-            </summary>
-            <div class="detalle-cuerpo">
-              <div class="form-grid">
-                <div class="campo col-span-2">
-                  <label for="nombre-nuevo">Nombre del ingrediente <span class="req">*</span></label>
-                  <input type="text" id="nombre-nuevo" name="nombre_nuevo" placeholder="Ej: Harina de trigo integral">
-                </div>
-                <div class="campo">
-                  <label for="categoria-nuevo">Categoría</label>
-                  <select id="categoria-nuevo" name="categoria_nueva">
-                    <option value="">Seleccionar categoría</option>
-                    <option value="harinas">Harinas</option>
-                    <option value="lacteos">Lácteos</option>
-                    <option value="endulzantes">Endulzantes</option>
-                    <option value="huevos">Huevos</option>
-                    <option value="esencias">Esencias</option>
-                    <option value="extras">Extras / Otros</option>
-                  </select>
-                </div>
-                <div class="campo">
-                  <label for="unidad-nuevo">Unidad de medida</label>
-                  <select id="unidad-nuevo" name="unidad_nueva">
-                    <option value="kg">Kilogramos (kg)</option>
-                    <option value="g">Gramos (g)</option>
-                    <option value="L">Litros (L)</option>
-                    <option value="ml">Mililitros (ml)</option>
-                    <option value="pza">Piezas (pza)</option>
-                  </select>
-                </div>
-                <div class="campo">
-                  <label for="stock-min">Stock mínimo recomendado</label>
-                  <input type="number" id="stock-min" name="stock_minimo" placeholder="Ej: 1000" min="0">
-                  <span class="campo__ayuda">En la unidad seleccionada</span>
-                </div>
-              </div>
-            </div>
-          </details>
-
           <div class="form-acciones" style="margin-top: var(--sp-6);">
-            <button type="submit" class="btn btn-primario btn-lg">✅ Guardar compra</button>
+            <button type="submit" id="btn-submit" class="btn btn-primario btn-lg">✅ Guardar compra</button>
             <a href="ingredientes.html" class="btn btn-ghost">Cancelar</a>
+            <button type="button" id="btn-eliminar-compra" class="btn btn-peligro" style="display:none;margin-left:auto;" onclick="eliminarCompraActual()">🗑️ Eliminar compra</button>
           </div>
 
         </form>
@@ -333,19 +258,100 @@
     <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 
 <script>
-  // Set today as default date and populate ingredient datalist
+  // Detección de modo edición vs registro nuevo
+  const editarId = urlParam('id');
+  const modoEditar = !!editarId;
+
+  // Set today as default date and load catálogos para los combobox
   document.getElementById('fecha-compra').value = new Date().toISOString().slice(0, 10);
+
+  let CATALOGO_INGREDIENTES = [];
+  let CATALOGO_PROVEEDORES = [];
+  const fuenteIngredientes = () => CATALOGO_INGREDIENTES;
+  const fuenteProveedores  = () => CATALOGO_PROVEEDORES;
+
+  // Inicializa los combobox de las filas iniciales y del lugar de compra
+  Combobox.init(document.getElementById('tbody-productos'), fuenteIngredientes);
+  Combobox.init(document.getElementById('combobox-lugar'), fuenteProveedores);
+
   getData('ingredientes').then(ings => {
-    document.getElementById('lista-ingredientes').innerHTML = renderDatalistIngredientes(ings);
+    CATALOGO_INGREDIENTES = (ings || []).map(i => i && i.nombre ? i.nombre : i).filter(Boolean);
   }).catch(() => {});
+
+  getData('proveedores').then(provs => {
+    CATALOGO_PROVEEDORES = (provs || []).map(p => p && p.nombre ? p.nombre : p).filter(Boolean);
+  }).catch(() => {});
+
+  // Modo edición: ajusta UI y carga la compra existente
+  if (modoEditar) {
+    document.title = 'Editar compra — Repostería Belén';
+    document.getElementById('titulo-pagina').textContent = 'Editar compra';
+    document.getElementById('ruta-modo').textContent = 'Editar';
+    document.getElementById('btn-submit').textContent = '💾 Guardar cambios';
+    document.getElementById('btn-eliminar-compra').style.display = '';
+
+    Promise.all([
+      getData('compras'),
+      getData('compras_detalle', { compra_id: editarId })
+    ]).then(([compras, detalle]) => {
+      const compra = (compras || []).find(c => String(c.id) === String(editarId));
+      if (!compra) {
+        alert('Compra no encontrada.');
+        window.location.href = 'historial-compras.html';
+        return;
+      }
+      document.getElementById('fecha-compra').value = String(compra.fecha || '').slice(0, 10);
+      document.getElementById('lugar-compra').value = compra.lugar || '';
+      document.getElementById('obs-compra').value   = compra.observaciones || compra.obs || '';
+
+      // Limpia la fila vacía inicial y carga una fila por línea
+      const tbody = document.getElementById('tbody-productos');
+      tbody.querySelectorAll('tr:not(#fila-total)').forEach(tr => tr.remove());
+      const lineas = (detalle || []);
+      if (!lineas.length) {
+        agregarProducto();
+      } else {
+        lineas.forEach((d, i) => {
+          agregarProducto();
+          const filas = tbody.querySelectorAll('tr:not(#fila-total)');
+          const tr = filas[filas.length - 1];
+          tr.querySelector('input[name^="prod_"]').value   = d.ingrediente || '';
+          tr.querySelector('input[name^="cant_"]').value   = d.cantidad || '';
+          const sel = tr.querySelector('select[name^="und_"]');
+          if (sel) sel.value = d.unidad || sel.value;
+          tr.querySelector('input[name^="precio_"]').value = d.precio_unitario || '';
+          calcularFila(tr.querySelector('input[name^="prod_"]'));
+        });
+      }
+    }).catch(err => {
+      alert('Error al cargar la compra: ' + err.message);
+    });
+  }
+
+  async function eliminarCompraActual() {
+    if (!confirm('¿Seguro que quieres eliminar esta compra?\n\nSe ajustará el stock de los ingredientes y se recalcularán sus precios actuales. Esta acción no se puede deshacer.')) return;
+    const btn = document.getElementById('btn-eliminar-compra');
+    btn.disabled = true;
+    btn.textContent = '⏳ Eliminando...';
+    try {
+      await postData('compra', { id: editarId, _action: 'delete' });
+      window.location.href = 'historial-compras.html';
+    } catch (err) {
+      alert('Error al eliminar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '🗑️ Eliminar compra';
+    }
+  }
 
   document.getElementById('form-compra').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('button[type="submit"]');
+    const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = '⏳ Guardando...';
     try {
@@ -369,32 +375,45 @@
       if (detalle.length === 0) {
         alert('Agrega al menos un producto con cantidad y precio.');
         btn.disabled = false;
-        btn.textContent = '✅ Guardar compra';
+        btn.textContent = textoOriginal;
         return;
       }
 
-      // Register new ingredient if filled
-      const nombreNuevo = document.getElementById('nombre-nuevo').value.trim();
-      if (nombreNuevo) {
-        await postData('ingredientes', {
-          nombre:       nombreNuevo,
-          categoria:    document.getElementById('categoria-nuevo').value,
-          unidad:       document.getElementById('unidad-nuevo').value,
-          stock_minimo: parseFloat(document.getElementById('stock-min').value) || 0,
-          stock_actual: 0,
-          precio_actual: 0,
-          precio_por_base: 0,
-          proveedor: ''
-        });
+      // Si el lugar de compra no existe en el directorio, lo registramos primero
+      const existeProveedor = lugar && CATALOGO_PROVEEDORES.some(
+        p => String(p).trim().toLowerCase() === lugar.toLowerCase()
+      );
+      if (lugar && !existeProveedor) {
+        try {
+          await postData('proveedores', {
+            nombre:    lugar,
+            categoria: 'varios',
+            tipo:      'tienda',
+            telefono:  '',
+            email:     '',
+            direccion: '',
+            horario:   '',
+            web:       '',
+            pago:      'efectivo',
+            entrega:   'no',
+            notas:     'Registrado automáticamente al capturar una compra. Edita los datos en Proveedores.'
+          });
+          CATALOGO_PROVEEDORES.push(lugar);
+        } catch (errProv) {
+          // No bloquea el guardado de la compra si falla el alta del proveedor
+          console.warn('No se pudo registrar el proveedor automáticamente:', errProv);
+        }
       }
 
       const total = detalle.reduce((s, d) => s + d.subtotal, 0);
-      await postData('compra', { fecha, lugar, obs, total, detalle });
+      const payload = { fecha, lugar, obs, total, detalle };
+      if (modoEditar) payload.id = editarId;
+      await postData('compra', payload);
       window.location.href = 'historial-compras.html';
     } catch (err) {
       alert('Error al guardar: ' + err.message);
       btn.disabled = false;
-      btn.textContent = '✅ Guardar compra';
+      btn.textContent = textoOriginal;
     }
   });
 
@@ -417,15 +436,21 @@
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="col-muted">${n}</td>
-      <td><input type="text" list="lista-ingredientes" name="prod_${n}" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)"></td>
-      <td><input type="number" name="cant_${n}" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
-      <td><select name="und_${n}">${OPCIONES_UNIDADES}</select></td>
-      <td><input type="number" name="precio_${n}" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
-      <td class="celda-total" id="total-fila-${n}">$0.00</td>
-      <td><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
+      <td class="col-muted" data-label="#">${n}</td>
+      <td data-label="Ingrediente">
+        <div class="combobox">
+          <input type="text" class="combobox__input" name="prod_${n}" placeholder="Buscar ingrediente…" autocomplete="off" oninput="calcularFila(this)">
+          <ul class="combobox__lista" role="listbox" hidden></ul>
+        </div>
+      </td>
+      <td data-label="Cantidad"><input type="number" name="cant_${n}" placeholder="0" min="0" step="0.001" oninput="calcularFila(this)"></td>
+      <td data-label="Unidad"><select name="und_${n}">${OPCIONES_UNIDADES}</select></td>
+      <td data-label="Precio / u."><input type="number" name="precio_${n}" placeholder="0.00" min="0" step="0.01" oninput="calcularFila(this)"></td>
+      <td class="celda-total" id="total-fila-${n}" data-label="Total">$0.00</td>
+      <td data-label=""><button type="button" class="btn-eliminar" onclick="eliminarProducto(this)" title="Eliminar">🗑️</button></td>
     `;
     tbody.insertBefore(tr, filaTotal);
+    Combobox.init(tr, fuenteIngredientes);
     tr.querySelector('input[type="text"]').focus();
   }
 

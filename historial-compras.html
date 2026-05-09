@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Historial de Compras — RB Repostería</title>
+  <title>Historial de Compras — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
 </head>
@@ -19,10 +21,10 @@
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -33,6 +35,7 @@
       <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item activo"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -42,7 +45,7 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <main class="contenido-principal">
@@ -164,10 +167,19 @@
           background: var(--fondo-tarjeta);
           padding-top: var(--sp-3);
         }
+        .viaje-compra__acciones {
+          display: flex;
+          gap: var(--sp-2);
+          padding-top: var(--sp-3);
+          margin-top: var(--sp-3);
+          border-top: 1px dashed var(--borde);
+          flex-wrap: wrap;
+        }
         @media (max-width: 640px) {
           .viaje-compra summary { padding: var(--sp-3) var(--sp-4); }
           .viaje-compra__detalle { padding: var(--sp-3) var(--sp-3); overflow-x: auto; }
           .viaje-compra__fecha { font-size: var(--tx-sm); }
+          .viaje-compra__acciones .btn { flex: 1; justify-content: center; }
         }
       </style>
 
@@ -205,6 +217,9 @@
           <div style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ Cargando historial...</div>
         </div>
 
+        <div id="contenedor-mostrar-mas" class="no-print" style="text-align:center; margin-top: var(--sp-4); display:none;">
+          <button type="button" id="btn-mostrar-mas" class="btn btn-ghost" onclick="mostrarMasCompras()">Mostrar más (5)</button>
+        </div>
 
       </section>
 
@@ -247,43 +262,85 @@
     <li><a href="historial-compras.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 
 
 <script>
+  const PASO_MOSTRAR = 5;
+  let LIMITE_MOSTRAR = PASO_MOSTRAR;
+  let COMPRAS_TODAS = [];
+  let DETALLE_TODAS = [];
+
   async function cargarHistorial() {
     try {
       const [compras, detalle] = await Promise.all([
         getData('compras'),
         getData('compras_detalle')
       ]);
+      COMPRAS_TODAS = compras || [];
+      DETALLE_TODAS = detalle || [];
+      LIMITE_MOSTRAR = PASO_MOSTRAR;
 
-      document.getElementById('stat-viajes').textContent = compras.length;
-      const totalGastado = compras.reduce((s, c) => s + (parseFloat(c.total) || 0), 0);
+      document.getElementById('stat-viajes').textContent = COMPRAS_TODAS.length;
+      const totalGastado = COMPRAS_TODAS.reduce((s, c) => s + (parseFloat(c.total) || 0), 0);
       document.getElementById('stat-total-gastado').textContent = fmtMoneda(totalGastado);
-      document.getElementById('stat-total-prods').textContent = detalle.length + ' productos comprados';
-      const distintos = [...new Set(detalle.map(d => d.ingrediente))].length;
+      document.getElementById('stat-total-prods').textContent = DETALLE_TODAS.length + ' productos comprados';
+      const distintos = [...new Set(DETALLE_TODAS.map(d => d.ingrediente))].length;
       document.getElementById('stat-distintos').textContent = distintos;
-      if (compras.length) {
-        const fechas = compras.map(c => c.fecha).sort();
+      if (COMPRAS_TODAS.length) {
+        const fechas = COMPRAS_TODAS.map(c => c.fecha).sort();
         document.getElementById('stat-viajes-rango').textContent =
           formatFecha(fechas[0]) + ' — ' + formatFecha(fechas[fechas.length - 1]);
       }
       const conteo = {};
-      detalle.forEach(d => { conteo[d.ingrediente] = (conteo[d.ingrediente] || 0) + 1; });
+      DETALLE_TODAS.forEach(d => { conteo[d.ingrediente] = (conteo[d.ingrediente] || 0) + 1; });
       const topNombre = Object.keys(conteo).sort((a, b) => conteo[b] - conteo[a])[0];
       if (topNombre) {
         document.getElementById('stat-mas-veces').textContent = conteo[topNombre] + 'x';
         document.getElementById('stat-mas-nombre').textContent = topNombre;
       }
-      document.getElementById('historial-viajes').innerHTML = renderHistorialCompras(compras, detalle);
-      document.getElementById('tbody-resumen').innerHTML = renderResumenPorIngrediente(detalle);
+
+      refrescarHistorial();
+      document.getElementById('tbody-resumen').innerHTML = renderResumenPorIngrediente(DETALLE_TODAS);
     } catch (e) {
       mostrarError('historial-viajes', e.message, cargarHistorial);
     }
   }
+
+  function refrescarHistorial() {
+    document.getElementById('historial-viajes').innerHTML =
+      renderHistorialCompras(COMPRAS_TODAS, DETALLE_TODAS, LIMITE_MOSTRAR);
+
+    const cont = document.getElementById('contenedor-mostrar-mas');
+    const btn  = document.getElementById('btn-mostrar-mas');
+    const total = COMPRAS_TODAS.length;
+    if (LIMITE_MOSTRAR >= total) {
+      cont.style.display = 'none';
+    } else {
+      cont.style.display = '';
+      const restantes = total - LIMITE_MOSTRAR;
+      btn.textContent = 'Mostrar más (' + Math.min(PASO_MOSTRAR, restantes) + ')';
+    }
+  }
+
+  function mostrarMasCompras() {
+    LIMITE_MOSTRAR += PASO_MOSTRAR;
+    refrescarHistorial();
+  }
+
   cargarHistorial();
+
+  async function eliminarCompra(id) {
+    if (!confirm('¿Seguro que quieres eliminar esta compra?\n\nSe ajustará el stock de los ingredientes y se recalcularán sus precios actuales.')) return;
+    try {
+      await postData('compra', { id, _action: 'delete' });
+      location.reload();
+    } catch (err) {
+      alert('Error al eliminar: ' + err.message);
+    }
+  }
 </script>
 </body>
 </html>

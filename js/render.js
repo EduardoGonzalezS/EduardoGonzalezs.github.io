@@ -217,18 +217,19 @@ function renderListaCompras(ingredientes) {
 
 // ── Historial de compras ──────────────────────────────────────────────────────
 
-function renderHistorialCompras(compras, detalle) {
+function renderHistorialCompras(compras, detalle, limit) {
   if (!compras.length) {
     return '<p style="color:var(--texto-muted);padding:var(--sp-4);">No hay compras registradas aún.</p>';
   }
   const sorted = [...compras].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  const visibles = (typeof limit === 'number' && limit > 0) ? sorted.slice(0, limit) : sorted;
   const detalleMap = {};
   detalle.forEach(d => {
     if (!detalleMap[d.compra_id]) detalleMap[d.compra_id] = [];
     detalleMap[d.compra_id].push(d);
   });
 
-  return sorted.map((c, idx) => {
+  return visibles.map((c, idx) => {
     const items = detalleMap[c.id] || [];
     const nProd = items.length;
     const total = items.reduce((s, i) => s + Number(i.subtotal || 0), 0);
@@ -273,6 +274,10 @@ function renderHistorialCompras(compras, detalle) {
               </tr>
             </tbody>
           </table>
+          <div class="viaje-compra__acciones no-print">
+            <a href="ingrediente-nuevo.html?id=${encodeURIComponent(c.id)}" class="btn btn-sm btn-ghost">✏️ Editar</a>
+            <button type="button" class="btn btn-sm btn-peligro" onclick="eliminarCompra('${c.id}')">🗑️ Eliminar</button>
+          </div>
         </div>
       </details>`;
   }).join('');
@@ -329,8 +334,8 @@ function renderProveedores(proveedores) {
         <div class="tarjeta-proveedor__info">
           ${tel}${web}${dir}${hor}${notas}
         </div>
-        <div style="margin-top:var(--sp-3);display:flex;gap:var(--sp-2);">
-          <a href="ingredientes.html" class="btn btn-sm btn-ghost">Ver ingredientes</a>
+        <div style="margin-top:var(--sp-3);display:flex;gap:var(--sp-2);flex-wrap:wrap;">
+          <a href="proveedor-nuevo.html?id=${encodeURIComponent(p.id)}" class="btn btn-sm btn-ghost">✏️ Editar</a>
           <a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Registrar compra</a>
         </div>
       </div>`;

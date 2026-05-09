@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva Receta — RB Repostería</title>
+  <title>Nueva Receta — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
+  <script src="js/combobox.js"></script>
   <style>
     /* Inputs y selects dentro de la tabla de ingredientes */
     .tabla-ing select,
@@ -108,10 +111,10 @@
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -122,6 +125,7 @@
       <a href="receta-nueva.html" class="sidebar__item activo"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -131,17 +135,17 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <main class="contenido-principal">
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Nueva receta</h1>
+        <h1 class="header-pagina__titulo" id="titulo-pagina">Nueva receta</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a> <span>/</span>
           <a href="index.html#recetas">Recetas</a> <span>/</span>
-          <span>Nueva</span>
+          <span id="ruta-modo">Nueva</span>
         </div>
       </div>
     </header>
@@ -228,7 +232,7 @@
             <div class="form-seccion">
               <h3 class="form-seccion__titulo">🧂 Ingredientes de la receta</h3>
 
-              <div class="tabla-contenedor mb-4">
+              <div class="tabla-contenedor tabla-contenedor--overflow mb-4">
                 <div class="tabla-scroll">
                   <table class="tabla-rb tabla-ing" id="tabla-ingredientes">
                     <thead>
@@ -244,7 +248,12 @@
                       <!-- Fila 1 -->
                       <tr>
                         <td class="col-muted">1</td>
-                        <td><input type="text" list="lista-ingredientes" name="ing_1" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td>
+                          <div class="combobox">
+                            <input type="text" class="combobox__input" name="ing_1" placeholder="Buscar ingrediente…" autocomplete="off">
+                            <ul class="combobox__lista" role="listbox" hidden></ul>
+                          </div>
+                        </td>
                         <td><input type="number" name="cant_1" placeholder="0" min="0" step="0.1"></td>
                         <td><select name="und_1">
                           <option value="g">g</option>
@@ -261,7 +270,12 @@
                       <!-- Fila 2 -->
                       <tr>
                         <td class="col-muted">2</td>
-                        <td><input type="text" list="lista-ingredientes" name="ing_2" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td>
+                          <div class="combobox">
+                            <input type="text" class="combobox__input" name="ing_2" placeholder="Buscar ingrediente…" autocomplete="off">
+                            <ul class="combobox__lista" role="listbox" hidden></ul>
+                          </div>
+                        </td>
                         <td><input type="number" name="cant_2" placeholder="0" min="0" step="0.1"></td>
                         <td><select name="und_2">
                           <option value="g">g</option>
@@ -278,7 +292,12 @@
                       <!-- Fila 3 -->
                       <tr>
                         <td class="col-muted">3</td>
-                        <td><input type="text" list="lista-ingredientes" name="ing_3" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+                        <td>
+                          <div class="combobox">
+                            <input type="text" class="combobox__input" name="ing_3" placeholder="Buscar ingrediente…" autocomplete="off">
+                            <ul class="combobox__lista" role="listbox" hidden></ul>
+                          </div>
+                        </td>
                         <td><input type="number" name="cant_3" placeholder="0" min="0" step="0.1"></td>
                         <td><select name="und_3">
                           <option value="g">g</option>
@@ -296,8 +315,6 @@
                   </table>
                 </div>
               </div>
-
-              <datalist id="lista-ingredientes"></datalist>
 
               <button type="button" onclick="agregarIngrediente()" class="btn btn-ghost btn-sm">
                 ➕ Agregar ingrediente
@@ -361,8 +378,9 @@
           </div>
 
           <div class="form-acciones">
-            <button type="submit" class="btn btn-primario btn-lg">✅ Registrar receta</button>
+            <button type="submit" id="btn-submit" class="btn btn-primario btn-lg">✅ Registrar receta</button>
             <a href="index.html" class="btn btn-ghost">Cancelar</a>
+            <button type="button" id="btn-eliminar-receta" class="btn btn-peligro" style="display:none;margin-left:auto;" onclick="eliminarRecetaActual()">🗑️ Eliminar receta</button>
           </div>
 
         </form>
@@ -380,6 +398,7 @@
     <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 
@@ -402,12 +421,18 @@
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="col-muted">${n}</td>
-      <td><input type="text" list="lista-ingredientes" name="ing_${n}" placeholder="Buscar o escribir ingrediente..." autocomplete="off"></td>
+      <td>
+        <div class="combobox">
+          <input type="text" class="combobox__input" name="ing_${n}" placeholder="Buscar ingrediente…" autocomplete="off">
+          <ul class="combobox__lista" role="listbox" hidden></ul>
+        </div>
+      </td>
       <td><input type="number" name="cant_${n}" placeholder="0" min="0" step="0.1"></td>
       <td><select name="und_${n}">${OPCIONES_UNIDADES}</select></td>
       <td><button type="button" class="btn-eliminar" onclick="eliminarIngrediente(this)" title="Eliminar fila">🗑️</button></td>
     `;
     tbody.appendChild(tr);
+    Combobox.init(tr, fuenteIngredientes);
     tr.querySelector('input[type="text"]').focus();
   }
 
@@ -462,14 +487,110 @@
 </script>
 
 <script>
-  // Populate ingredient datalist from API
+  // Detección de modo edición
+  const editarId = urlParam('id');
+  const modoEditar = !!editarId;
+
+  // Catálogo de ingredientes para el combobox
+  let CATALOGO_INGREDIENTES = [];
+  const fuenteIngredientes = () => CATALOGO_INGREDIENTES;
+
+  // Inicializa los combobox de las filas iniciales
+  Combobox.init(document.getElementById('tbody-ingredientes'), fuenteIngredientes);
+
   getData('ingredientes').then(ings => {
-    document.getElementById('lista-ingredientes').innerHTML = renderDatalistIngredientes(ings);
+    CATALOGO_INGREDIENTES = (ings || []).map(i => i && i.nombre ? i.nombre : i).filter(Boolean);
   }).catch(() => {});
+
+  // Modo edición: ajusta UI y carga la receta existente
+  if (modoEditar) {
+    document.title = 'Editar receta — Repostería Belén';
+    document.getElementById('titulo-pagina').textContent = 'Editar receta';
+    document.getElementById('ruta-modo').textContent = 'Editar';
+    document.getElementById('btn-submit').textContent = '💾 Guardar cambios';
+    document.getElementById('btn-eliminar-receta').style.display = '';
+
+    Promise.all([
+      getData('recetas'),
+      getData('recetas_ingredientes', { receta_id: editarId })
+    ]).then(([recetas, ings]) => {
+      const r = (recetas || []).find(x => String(x.id) === String(editarId));
+      if (!r) {
+        alert('Receta no encontrada.');
+        window.location.href = 'index.html#recetas';
+        return;
+      }
+      // Información general
+      document.getElementById('nombre-receta').value   = r.nombre || '';
+      document.getElementById('categoria-receta').value = r.categoria || '';
+      document.getElementById('temporada').value        = r.temporada || 'todo';
+      document.getElementById('rendimiento').value      = r.rendimiento || '';
+      document.getElementById('peso-pieza').value       = r.peso_pieza || '';
+      document.getElementById('temperatura').value      = r.temperatura || '';
+      document.getElementById('tiempo-horno').value     = r.tiempo || '';
+      document.getElementById('dificultad').value       = r.dificultad || 'media';
+      document.getElementById('precio-venta').value     = r.precio_venta || '';
+      document.getElementById('tipo-empaque').value     = r.empaque || 'bolsa';
+      document.getElementById('costo-empaque').value    = r.costo_empaque || '';
+      document.getElementById('notas-receta').value     = r.notas || '';
+
+      // Ingredientes — reemplaza filas iniciales con las de la receta
+      const tbodyIng = document.getElementById('tbody-ingredientes');
+      tbodyIng.querySelectorAll('tr').forEach(tr => tr.remove());
+      const lineas = ings || [];
+      if (!lineas.length) {
+        agregarIngrediente();
+      } else {
+        lineas.forEach(d => {
+          agregarIngrediente();
+          const filas = tbodyIng.querySelectorAll('tr');
+          const tr = filas[filas.length - 1];
+          tr.querySelector('input[name^="ing_"]').value  = d.ingrediente_nombre || '';
+          tr.querySelector('input[name^="cant_"]').value = d.cantidad || '';
+          const sel = tr.querySelector('select[name^="und_"]');
+          if (sel) sel.value = d.unidad || sel.value;
+        });
+      }
+
+      // Pasos — reconstruye desde el campo string separado por '|'
+      const pasosStr = String(r.pasos || '');
+      const pasos = pasosStr ? pasosStr.split('|').map(s => s.trim()).filter(Boolean) : [];
+      const lista = document.getElementById('lista-pasos');
+      lista.innerHTML = '';
+      if (!pasos.length) {
+        agregarPaso();
+      } else {
+        pasos.forEach(texto => {
+          agregarPaso();
+          const items = lista.querySelectorAll('.paso-item');
+          const div = items[items.length - 1];
+          div.querySelector('input').value = texto;
+        });
+      }
+    }).catch(err => {
+      alert('Error al cargar la receta: ' + err.message);
+    });
+  }
+
+  async function eliminarRecetaActual() {
+    if (!confirm('¿Seguro que quieres eliminar esta receta?\n\nSe borrará también la lista de ingredientes asociada. Esta acción no se puede deshacer.')) return;
+    const btn = document.getElementById('btn-eliminar-receta');
+    btn.disabled = true;
+    btn.textContent = '⏳ Eliminando...';
+    try {
+      await postData('receta', { id: editarId, _action: 'delete' });
+      window.location.href = 'index.html#recetas';
+    } catch (err) {
+      alert('Error al eliminar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '🗑️ Eliminar receta';
+    }
+  }
 
   document.getElementById('form-receta').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('button[type="submit"]');
+    const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = '⏳ Guardando...';
     try {
@@ -489,7 +610,7 @@
         if (inp.value.trim()) pasos.push(inp.value.trim());
       });
 
-      await postData('receta', {
+      const payload = {
         nombre:       document.getElementById('nombre-receta').value.trim(),
         categoria:    document.getElementById('categoria-receta').value,
         temporada:    document.getElementById('temporada').value,
@@ -504,12 +625,16 @@
         notas:        document.getElementById('notas-receta').value.trim(),
         ingredientes,
         pasos
-      });
-      window.location.href = 'index.html';
+      };
+      if (modoEditar) payload.id = editarId;
+      await postData('receta', payload);
+      window.location.href = modoEditar
+        ? 'receta-detalle.html?id=' + encodeURIComponent(editarId)
+        : 'index.html';
     } catch (err) {
       alert('Error al guardar: ' + err.message);
       btn.disabled = false;
-      btn.textContent = '✅ Registrar receta';
+      btn.textContent = textoOriginal;
     }
   });
 </script>

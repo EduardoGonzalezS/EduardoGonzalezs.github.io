@@ -1,11 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch",
-      "Bash(ls:*)",
-      "Bash(python3:*)",
-      "Bash(node:*)",
-      "Bash(grep:*)"
+      "Bash(dir -R)"
     ]
   }
 }

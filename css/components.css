@@ -399,7 +399,7 @@
 }
 
 .tabla-rb tbody tr:hover {
-  background: #FFF5EC;
+  background: var(--acento-suave);
 }
 
 .tabla-rb td {
@@ -1446,6 +1446,203 @@ legend {
 
   .detalle-cuerpo {
     padding: var(--sp-3);
+  }
+}
+
+/* ── Combobox (búsqueda con lista filtrable) ────────────────── */
+.combobox {
+  position: relative;
+  width: 100%;
+}
+
+.combobox__input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.combobox__lista {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--fondo-tarjeta);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  box-shadow: var(--sombra-md, 0 6px 18px rgba(0,0,0,0.12));
+  z-index: 1000;
+}
+
+/* Permitir que el dropdown escape del card de la tabla */
+.tabla-contenedor--overflow {
+  overflow: visible;
+}
+
+.tabla-contenedor--overflow > .tabla-scroll {
+  overflow: visible;
+}
+
+.combobox__item {
+  padding: 0.55rem 0.85rem;
+  font-size: var(--tx-sm);
+  color: var(--texto);
+  cursor: pointer;
+  border-bottom: 1px solid var(--borde);
+}
+
+.combobox__item:last-child {
+  border-bottom: none;
+}
+
+.combobox__item.activo,
+.combobox__item:hover {
+  background: var(--primario-suave);
+  color: var(--primario-hover);
+}
+
+.combobox__item--vacio {
+  color: var(--texto-muted);
+  font-style: italic;
+  cursor: default;
+}
+
+.combobox__item--vacio:hover {
+  background: transparent;
+  color: var(--texto-muted);
+}
+
+/* ── Logo del sidebar — soporta emoji o iniciales ───────────── */
+.sidebar__logo-icono {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* ── Aviso compacto (link contextual) ───────────────────────── */
+.aviso-info {
+  background: var(--primario-suave);
+  border-left: 3px solid var(--primario);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radio-sm);
+  font-size: var(--tx-sm);
+  color: var(--texto);
+  margin: var(--sp-4) 0;
+}
+
+.aviso-info a {
+  color: var(--primario);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.aviso-info a:hover {
+  text-decoration: underline;
+}
+
+/* ── Tabla "Productos comprados" — cards en móvil ───────────── */
+@media (max-width: 640px) {
+  .tabla-compra thead { display: none; }
+
+  .tabla-compra,
+  .tabla-compra tbody,
+  .tabla-compra tr,
+  .tabla-compra td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-compra tbody tr {
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: var(--sp-3);
+    margin-bottom: var(--sp-3);
+    background: var(--fondo-tarjeta);
+    box-shadow: var(--sombra);
+  }
+
+  .tabla-compra tbody tr:hover {
+    background: var(--fondo-tarjeta);
+  }
+
+  .tabla-compra td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+    border: none;
+  }
+
+  .tabla-compra td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--texto-muted);
+    font-size: var(--tx-xs);
+    flex: 0 0 38%;
+  }
+
+  /* Oculta numeración y botón eliminar de su label */
+  .tabla-compra td.col-muted {
+    display: none;
+  }
+
+  .tabla-compra td:last-child {
+    justify-content: flex-end;
+  }
+
+  .tabla-compra td:last-child::before {
+    display: none;
+  }
+
+  /* Inputs grandes y tappables */
+  .tabla-compra td input[type="text"],
+  .tabla-compra td input[type="number"],
+  .tabla-compra td select,
+  .tabla-compra td .combobox,
+  .tabla-compra td .combobox__input {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    min-height: 44px;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .tabla-compra td .combobox__input {
+    min-height: 44px;
+  }
+
+  .tabla-compra .celda-total {
+    font-size: var(--tx-base);
+  }
+
+  /* Fila TOTAL — tarjeta destacada */
+  .tabla-compra .fila-total-compra {
+    background: var(--primario-suave);
+    border: 2px solid var(--primario);
+  }
+
+  .tabla-compra .fila-total-compra td {
+    padding: var(--sp-2) 0;
+  }
+
+  .tabla-compra .fila-total-compra td[colspan] {
+    text-align: left !important;
+    padding-right: 0 !important;
+    font-weight: 700;
+  }
+
+  .tabla-compra .fila-total-compra td[colspan]::before {
+    display: none;
+  }
+
+  .tabla-compra .fila-total-compra td:empty {
+    display: none;
   }
 }
 

@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuevo Proveedor — RB Repostería</title>
+  <title>Nuevo Proveedor — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
 </head>
@@ -19,10 +21,10 @@
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -33,6 +35,7 @@
       <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -42,17 +45,17 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <main class="contenido-principal">
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Nuevo proveedor</h1>
+        <h1 class="header-pagina__titulo" id="titulo-form">Nuevo proveedor</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a> <span>/</span>
           <a href="proveedores.html">Proveedores</a> <span>/</span>
-          <span>Nuevo</span>
+          <span id="ruta-modo">Nuevo</span>
         </div>
       </div>
     </header>
@@ -60,7 +63,7 @@
     <div class="cuerpo-pagina">
       <div class="contenedor-angosto">
         <div class="formulario-rb">
-          <h3 class="form-seccion__titulo" style="margin-bottom: var(--sp-6);">🏪 Datos del proveedor</h3>
+          <h3 class="form-seccion__titulo" id="form-titulo" style="margin-bottom: var(--sp-6);">🏪 Datos del proveedor</h3>
 
           <form id="form-proveedor">
 
@@ -150,7 +153,7 @@
             </fieldset>
 
             <div class="form-acciones">
-              <button type="submit" class="btn btn-primario">✅ Guardar proveedor</button>
+              <button type="submit" id="btn-guardar" class="btn btn-primario">✅ Guardar proveedor</button>
               <a href="proveedores.html" class="btn btn-ghost">Cancelar</a>
             </div>
 
@@ -170,17 +173,52 @@
     <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 
 <script>
+  const editarId = urlParam('id');
+  const modoEditar = !!editarId;
+
+  if (modoEditar) {
+    document.title = 'Editar proveedor — Repostería Belén';
+    document.getElementById('titulo-form').textContent = 'Editar proveedor';
+    document.getElementById('ruta-modo').textContent = 'Editar';
+    document.getElementById('form-titulo').textContent = '🏪 Editar datos del proveedor';
+    document.getElementById('btn-guardar').textContent = '💾 Guardar cambios';
+
+    getData('proveedores').then(provs => {
+      const prov = (provs || []).find(p => String(p.id) === String(editarId));
+      if (!prov) {
+        alert('Proveedor no encontrado.');
+        window.location.href = 'proveedores.html';
+        return;
+      }
+      document.getElementById('nombre-prov').value    = prov.nombre    || '';
+      document.getElementById('categoria-prov').value = prov.categoria || '';
+      document.getElementById('tipo-prov').value      = prov.tipo      || 'tienda';
+      document.getElementById('telefono-prov').value  = prov.telefono  || '';
+      document.getElementById('email-prov').value     = prov.email     || '';
+      document.getElementById('direccion-prov').value = prov.direccion || '';
+      document.getElementById('horario-prov').value   = prov.horario   || '';
+      document.getElementById('web-prov').value       = prov.web       || '';
+      document.getElementById('forma-pago').value     = prov.pago      || 'efectivo';
+      document.getElementById('entrega').value        = prov.entrega   || 'no';
+      document.getElementById('notas-prov').value     = prov.notas     || '';
+    }).catch(err => {
+      alert('Error al cargar el proveedor: ' + err.message);
+    });
+  }
+
   document.getElementById('form-proveedor').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('button[type="submit"]');
+    const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = '⏳ Guardando...';
     try {
-      await postData('proveedores', {
+      const payload = {
         nombre:    document.getElementById('nombre-prov').value.trim(),
         categoria: document.getElementById('categoria-prov').value,
         tipo:      document.getElementById('tipo-prov').value,
@@ -192,12 +230,14 @@
         pago:      document.getElementById('forma-pago').value,
         entrega:   document.getElementById('entrega').value,
         notas:     document.getElementById('notas-prov').value.trim()
-      });
+      };
+      if (modoEditar) payload.id = editarId;
+      await postData('proveedores', payload);
       window.location.href = 'proveedores.html';
     } catch (err) {
       alert('Error al guardar: ' + err.message);
       btn.disabled = false;
-      btn.textContent = '✅ Guardar proveedor';
+      btn.textContent = textoOriginal;
     }
   });
 </script>

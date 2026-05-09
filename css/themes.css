@@ -1,0 +1,211 @@
+/* ============================================================
+   RB Repostería — themes.css
+   Cuatro paletas claras intercambiables. Solo redefine acentos
+   (--primario, --primario-hover, --primario-suave, --acento,
+    --acento-suave, --borde-focus). El resto del esquema cremoso/
+   marrón (sidebar, fondos, badges de categoría, alertas) se
+   conserva tal cual de styles.css.
+   ============================================================ */
+
+:root[data-theme="terracotta"] {
+  --primario:        #C8773A;
+  --primario-hover:  #A85E25;
+  --primario-suave:  #F5E6D8;
+  --acento:          #D4A373;
+  --acento-suave:    #FAF0E4;
+  --borde-focus:     rgba(200, 119, 58, 0.35);
+  --fondo-sidebar:   #3D2B1F;       /* sidebar desktop + nav-mobile */
+  --fondo-header:    #5C3D2E;       /* tabla thead, panel costos, hero receta */
+  --info:            #5B8DB8;        /* default — banners semánticos */
+  --info-suave:      #D6EAF8;
+  --info-texto:      #1A4A7A;
+}
+
+:root[data-theme="rosa"] {
+  --primario:        #D86A8C;
+  --primario-hover:  #B84B73;
+  --primario-suave:  #FCE4EC;
+  --acento:          #E89DAA;
+  --acento-suave:    #FCEFF3;
+  --borde-focus:     rgba(216, 106, 140, 0.35);
+  --fondo-sidebar:   #3D1B30;        /* burgundy muy oscuro */
+  --fondo-header:    #5E2C46;        /* burgundy oscuro */
+  --info:            #C25C82;        /* alertas info en tono del tema */
+  --info-suave:      #FBE3EC;
+  --info-texto:      #6E1F40;
+}
+
+:root[data-theme="lila"] {
+  --primario:        #9C7AC9;
+  --primario-hover:  #7A5BAB;
+  --primario-suave:  #EFE5FA;
+  --acento:          #B79CDB;
+  --acento-suave:    #F5EFFB;
+  --borde-focus:     rgba(156, 122, 201, 0.35);
+  --fondo-sidebar:   #2A1F3D;        /* berenjena muy oscuro */
+  --fondo-header:    #3F2E5C;        /* berenjena oscuro */
+  --info:            #8567B5;
+  --info-suave:      #ECE3F7;
+  --info-texto:      #3E2A66;
+}
+
+:root[data-theme="amarillo"] {
+  --primario:        #D4A841;
+  --primario-hover:  #B08A1F;
+  --primario-suave:  #FBF1CF;
+  --acento:          #E0BF6E;
+  --acento-suave:    #FBF6E2;
+  --borde-focus:     rgba(212, 168, 65, 0.35);
+  --fondo-sidebar:   #3D2D14;        /* mostaza muy oscuro */
+  --fondo-header:    #5C4623;        /* mostaza oscuro */
+  --info:            #B08A1F;
+  --info-suave:      #FAEFC2;
+  --info-texto:      #5C4623;
+}
+
+/* ── Switch de tema (header) ─────────────────────────────────── */
+.theme-switch {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: padding 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Estado colapsado — solo el swatch activo es visible */
+.theme-switch:not(.open) {
+  gap: 0;
+  padding: 6px;
+}
+
+.theme-switch:not(.open) .theme-swatch:not(.activo) {
+  display: none;
+}
+
+/* Sutil pista de "se puede abrir" en el swatch activo cuando está colapsado */
+.theme-switch:not(.open) .theme-swatch.activo {
+  cursor: pointer;
+}
+
+.theme-switch:not(.open) .theme-swatch.activo::after {
+  border-style: dashed;
+  animation: themeRingPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes themeRingPulse {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%      { transform: scale(1.15); opacity: 0.5; }
+}
+
+/* Apertura escalonada de los demás swatches */
+.theme-switch.open .theme-swatch:not(.activo) {
+  animation: themeSwatchIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.theme-switch.open .theme-swatch:nth-of-type(1) { animation-delay: 0.00s; }
+.theme-switch.open .theme-swatch:nth-of-type(2) { animation-delay: 0.05s; }
+.theme-switch.open .theme-swatch:nth-of-type(3) { animation-delay: 0.10s; }
+.theme-switch.open .theme-swatch:nth-of-type(4) { animation-delay: 0.15s; }
+
+@keyframes themeSwatchIn {
+  0%   { opacity: 0; transform: scale(0.3) translateX(-12px); }
+  60%  { opacity: 1; transform: scale(1.15) translateX(0);    }
+  100% { opacity: 1; transform: scale(1) translateX(0);       }
+}
+
+.theme-swatch {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+  /* `color` se redefine por swatch — se reusa en glow, ring y focus */
+}
+
+/* Brillo "highlight" tipo gota arriba-izquierda */
+.theme-swatch::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 34%;
+  height: 34%;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+/* Anillo exterior animado para el swatch activo */
+.theme-swatch::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+  transform: scale(0.65);
+  transition: opacity 0.25s ease,
+              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.theme-swatch:hover {
+  transform: translateY(-2px) scale(1.12);
+  box-shadow: 0 6px 14px currentColor;
+}
+
+.theme-swatch:active {
+  transform: scale(0.92);
+  transition-duration: 0.08s;
+}
+
+.theme-swatch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--fondo-tarjeta), 0 0 0 5px currentColor;
+}
+
+.theme-swatch.activo {
+  transform: scale(1.08);
+}
+
+.theme-swatch.activo::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Cada swatch lleva fondo en gradiente (relieve) y `color` para glow/ring */
+.theme-swatch--terracotta {
+  background: linear-gradient(135deg, #E5965B 0%, #C8773A 60%, #A85E25 100%);
+  color: #C8773A;
+}
+.theme-swatch--rosa {
+  background: linear-gradient(135deg, #F08FB0 0%, #D86A8C 60%, #B84B73 100%);
+  color: #D86A8C;
+}
+.theme-swatch--lila {
+  background: linear-gradient(135deg, #B89BDF 0%, #9C7AC9 60%, #7A5BAB 100%);
+  color: #9C7AC9;
+}
+.theme-swatch--amarillo {
+  background: linear-gradient(135deg, #ECC55F 0%, #D4A841 60%, #B08A1F 100%);
+  color: #D4A841;
+}
+
+@media (max-width: 640px) {
+  .theme-switch { padding: 5px 8px; gap: 8px; }
+  .theme-swatch { width: 22px; height: 22px; }
+}
+
+@media print {
+  .theme-switch { display: none !important; }
+}

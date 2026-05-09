@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proveedores — RB Repostería</title>
+  <title>Proveedores — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
 </head>
@@ -19,10 +21,10 @@
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -33,6 +35,7 @@
       <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -42,7 +45,7 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <main class="contenido-principal">
@@ -76,6 +79,7 @@
     <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 

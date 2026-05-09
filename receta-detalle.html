@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galletas de Mantequilla — RB Repostería</title>
+  <title>Galletas de Mantequilla — Repostería Belén</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/render.js"></script>
 </head>
@@ -21,10 +23,10 @@
   <!-- ── Sidebar ───────────────────────────────────────────── -->
   <aside class="sidebar">
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icono">RB</div>
+      <div class="sidebar__logo-icono">🧁</div>
       <div class="sidebar__logo-texto">
         <span class="sidebar__logo-titulo">Repostería</span>
-        <span class="sidebar__logo-sub">Gestión interna</span>
+        <span class="sidebar__logo-sub">Belén</span>
       </div>
     </div>
     <nav class="sidebar__nav">
@@ -35,6 +37,7 @@
       <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
       <span class="sidebar__seccion">Ingredientes</span>
       <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo ingrediente</a>
       <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
       <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
       <span class="sidebar__seccion">Proveedores</span>
@@ -44,7 +47,7 @@
       <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
       <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
     </nav>
-    <div class="sidebar__footer">RB Repostería &copy; 2026</div>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
   </aside>
 
   <!-- ── Contenido ─────────────────────────────────────────── -->
@@ -63,7 +66,8 @@
       </div>
       <div class="header-pagina__der no-print">
         <button onclick="window.print()" class="btn btn-ghost btn-sm">🖨️ Imprimir</button>
-        <a href="receta-nueva.html" class="btn btn-secundario btn-sm">✏️ Editar</a>
+        <a id="btn-editar-receta" href="receta-nueva.html" class="btn btn-secundario btn-sm">✏️ Editar</a>
+        <button type="button" id="btn-eliminar-receta" class="btn btn-peligro btn-sm" onclick="eliminarRecetaActual()">🗑️ Eliminar</button>
       </div>
     </header>
 
@@ -83,6 +87,7 @@
     <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
     <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
     <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
   </ul>
 </nav>
 
@@ -102,9 +107,10 @@
       const r = recetas.find(x => String(x.id) === String(id));
       if (!r) throw new Error('Receta no encontrada');
 
-      document.title = r.nombre + ' — RB Repostería';
+      document.title = r.nombre + ' — Repostería Belén';
       document.getElementById('titulo-receta').textContent = r.nombre;
       document.getElementById('nombre-breadcrumb').textContent = r.nombre;
+      document.getElementById('btn-editar-receta').href = 'receta-nueva.html?id=' + encodeURIComponent(id);
 
       const { filas, subtotal } = renderIngredientesReceta(ingData);
       const costoTotal = subtotal + Number(r.costo_empaque || 0);
@@ -120,6 +126,23 @@
     }
   }
   cargarReceta();
+
+  async function eliminarRecetaActual() {
+    const id = urlParam('id');
+    if (!id) return;
+    if (!confirm('¿Seguro que quieres eliminar esta receta?\n\nSe borrará también la lista de ingredientes asociada. Esta acción no se puede deshacer.')) return;
+    const btn = document.getElementById('btn-eliminar-receta');
+    btn.disabled = true;
+    btn.textContent = '⏳ Eliminando...';
+    try {
+      await postData('receta', { id, _action: 'delete' });
+      window.location.href = 'index.html#recetas';
+    } catch (err) {
+      alert('Error al eliminar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '🗑️ Eliminar';
+    }
+  }
 </script>
 </body>
 </html>

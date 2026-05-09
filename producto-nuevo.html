@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo ingrediente — Repostería Belén</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-checkbox">
+<label for="menu-toggle" class="menu-btn">☰</label>
+<label for="menu-toggle" class="overlay"></label>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icono">🧁</div>
+      <div class="sidebar__logo-texto">
+        <span class="sidebar__logo-titulo">Repostería</span>
+        <span class="sidebar__logo-sub">Belén</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <span class="sidebar__seccion">Principal</span>
+      <a href="index.html" class="sidebar__item"><span class="icono">🏠</span> Inicio</a>
+      <span class="sidebar__seccion">Recetas</span>
+      <a href="index.html#recetas" class="sidebar__item"><span class="icono">📖</span> Ver todas</a>
+      <a href="receta-nueva.html" class="sidebar__item"><span class="icono">➕</span> Nueva receta</a>
+      <span class="sidebar__seccion">Ingredientes</span>
+      <a href="ingredientes.html" class="sidebar__item"><span class="icono">🧂</span> Catálogo</a>
+      <a href="producto-nuevo.html" class="sidebar__item activo"><span class="icono">➕</span> Nuevo ingrediente</a>
+      <a href="ingrediente-nuevo.html" class="sidebar__item"><span class="icono">🛒</span> Registrar compra</a>
+      <a href="historial-compras.html" class="sidebar__item"><span class="icono">📜</span> Historial de compras</a>
+      <span class="sidebar__seccion">Proveedores</span>
+      <a href="proveedores.html" class="sidebar__item"><span class="icono">🏪</span> Directorio</a>
+      <a href="proveedor-nuevo.html" class="sidebar__item"><span class="icono">➕</span> Nuevo proveedor</a>
+      <span class="sidebar__seccion">Herramientas</span>
+      <a href="lista-compras.html" class="sidebar__item"><span class="icono">📋</span> Lista de compras</a>
+      <a href="planificacion.html" class="sidebar__item"><span class="icono">📅</span> Planificación</a>
+    </nav>
+    <div class="sidebar__footer">Repostería Belén &copy; 2026</div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="header-pagina">
+      <div class="header-pagina__izq">
+        <h1 class="header-pagina__titulo">Nuevo ingrediente</h1>
+        <div class="header-pagina__ruta">
+          <a href="index.html">Inicio</a> <span>/</span>
+          <a href="ingredientes.html">Ingredientes</a> <span>/</span>
+          <span>Nuevo</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cuerpo-pagina">
+      <div class="contenedor-angosto">
+        <div class="formulario-rb">
+          <h3 class="form-seccion__titulo" style="margin-bottom: var(--sp-6);">🧂 Datos del ingrediente</h3>
+
+          <form id="form-ingrediente">
+            <div class="form-grid">
+              <div class="campo col-span-2">
+                <label for="nombre-ing">Nombre del ingrediente <span class="req">*</span></label>
+                <input type="text" id="nombre-ing" name="nombre" placeholder="Ej: Harina de trigo integral" required>
+              </div>
+              <div class="campo">
+                <label for="categoria-ing">Categoría</label>
+                <select id="categoria-ing" name="categoria">
+                  <option value="">Seleccionar categoría</option>
+                  <option value="harinas">Harinas</option>
+                  <option value="lacteos">Lácteos</option>
+                  <option value="endulzantes">Endulzantes</option>
+                  <option value="huevos">Huevos</option>
+                  <option value="esencias">Esencias</option>
+                  <option value="extras">Extras / Otros</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="unidad-ing">Unidad de medida</label>
+                <select id="unidad-ing" name="unidad">
+                  <option value="kg">Kilogramos (kg)</option>
+                  <option value="g">Gramos (g)</option>
+                  <option value="L">Litros (L)</option>
+                  <option value="ml">Mililitros (ml)</option>
+                  <option value="pza">Piezas (pza)</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="stock-min-ing">Stock mínimo recomendado</label>
+                <input type="number" id="stock-min-ing" name="stock_minimo" placeholder="Ej: 1000" min="0" step="0.01">
+                <span class="campo__ayuda">En la unidad seleccionada</span>
+              </div>
+              <div class="campo">
+                <label for="proveedor-ing">Proveedor sugerido</label>
+                <input type="text" id="proveedor-ing" name="proveedor" placeholder="Ej: Costco, Walmart…">
+              </div>
+            </div>
+
+            <div class="form-acciones">
+              <button type="submit" class="btn btn-primario btn-lg">✅ Registrar ingrediente</button>
+              <a href="ingredientes.html" class="btn btn-ghost">Cancelar</a>
+            </div>
+          </form>
+        </div>
+
+        <div class="alerta alerta-info mt-6">
+          <span class="alerta__icono">💡</span>
+          <div class="alerta__cuerpo">
+            <div class="alerta__titulo">Tip</div>
+            <div class="alerta__texto">
+              Una vez registrado, podrás seleccionar este ingrediente en
+              <a href="ingrediente-nuevo.html">Registrar compra</a> y en
+              <a href="receta-nueva.html">Nueva receta</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="nav-mobile no-print">
+  <ul class="nav-mobile__lista">
+    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
+    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
+    <li><a href="ingredientes.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
+    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
+    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
+    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
+    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
+    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
+  </ul>
+</nav>
+
+<script>
+  document.getElementById('form-ingrediente').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '⏳ Guardando...';
+    try {
+      const nombre = document.getElementById('nombre-ing').value.trim();
+      if (!nombre) {
+        alert('El nombre del ingrediente es obligatorio.');
+        btn.disabled = false;
+        btn.textContent = '✅ Registrar ingrediente';
+        return;
+      }
+      await postData('ingredientes', {
+        nombre,
+        categoria:    document.getElementById('categoria-ing').value,
+        unidad:       document.getElementById('unidad-ing').value,
+        stock_minimo: parseFloat(document.getElementById('stock-min-ing').value) || 0,
+        stock_actual: 0,
+        precio_actual: 0,
+        precio_por_base: 0,
+        proveedor:    document.getElementById('proveedor-ing').value.trim()
+      });
+      window.location.href = 'ingredientes.html';
+    } catch (err) {
+      alert('Error al guardar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '✅ Registrar ingrediente';
+    }
+  });
+</script>
+</body>
+</html>
