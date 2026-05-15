@@ -84,7 +84,7 @@ function renderTarjetasRecetas(recetas) {
 
 function renderTablaIngredientes(ingredientes) {
   if (!ingredientes.length) {
-    return '<tr><td colspan="8" style="text-align:center;color:var(--texto-muted);padding:var(--sp-6);">Sin ingredientes registrados.</td></tr>';
+    return '<tr><td colspan="7" style="text-align:center;color:var(--texto-muted);padding:var(--sp-6);">Sin ingredientes registrados.</td></tr>';
   }
   return ingredientes.map(ing => {
     const sc = stockClass(ing.stock_actual, ing.stock_minimo);
@@ -106,7 +106,6 @@ function renderTablaIngredientes(ingredientes) {
         <td class="col-muted">${ing.unidad}</td>
         <td class="col-num">${fmtMoneda(ing.precio_actual)} / ${ing.unidad}</td>
         <td class="col-num col-muted">${fmtMoneda(ing.precio_por_base)} / g</td>
-        <td>${ing.proveedor || '—'}</td>
         <td>
           <div class="indicador-stock ${sc}">
             <span class="indicador-stock__punto"></span> ${ing.stock_actual} ${ing.unidad}
@@ -462,14 +461,16 @@ function renderGraficaPrecios(historial) {
 function renderIngredientesReceta(ingredientes) {
   let subtotal = 0;
   const filas = ingredientes.map(i => {
-    const costo = Number(i.costo_linea || 0);
+    const costo    = Number(i.costo_linea || 0);
+    const cantidad = Number(i.cantidad) || 0;
+    const pxUnidad = cantidad > 0 ? costo / cantidad : 0;
     subtotal += costo;
     return `
       <tr>
         <td><a href="ingrediente-detalle.html?nombre=${encodeURIComponent(i.ingrediente_nombre)}">${i.ingrediente_nombre}</a></td>
         <td class="col-num">${i.cantidad}</td>
         <td class="col-muted">${i.unidad}</td>
-        <td class="col-num col-muted">${fmtMoneda(i.precio_unitario)}/${i.unidad}</td>
+        <td class="col-num col-muted">${fmtMoneda(pxUnidad)}/${i.unidad}</td>
         <td class="col-num"><strong>${fmtMoneda(costo)}</strong></td>
       </tr>`;
   }).join('');
