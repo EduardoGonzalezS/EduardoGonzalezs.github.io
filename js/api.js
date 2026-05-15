@@ -34,7 +34,16 @@ async function postData(entity, data) {
 
 function mostrarCargando(id, msg = 'Cargando datos...') {
   const el = document.getElementById(id);
-  if (el) el.innerHTML = `<div style="padding:var(--sp-8);text-align:center;color:var(--texto-muted);">⏳ ${msg}</div>`;
+  if (!el) return;
+  const spinnerHtml = `
+    <div class="spinner-rb">
+      <div class="spinner-rb__circulo"></div>
+      <div class="spinner-rb__icono">🧁</div>
+      <div class="spinner-rb__texto">${msg}</div>
+    </div>`;
+  el.innerHTML = el.tagName === 'TBODY'
+    ? `<tr><td colspan="99" style="padding:0;border:none;">${spinnerHtml}</td></tr>`
+    : spinnerHtml;
 }
 
 function mostrarError(id, msg, reintentar) {
@@ -50,6 +59,66 @@ function mostrarError(id, msg, reintentar) {
       </div>
     </div>`;
   if (reintentar) document.getElementById(btnId)?.addEventListener('click', reintentar);
+}
+
+// ── Modales de confirmación / alerta ─────────────────────────────────────────
+
+function _getModal() {
+  let dlg = document.getElementById('rb-modal');
+  if (!dlg) {
+    dlg = document.createElement('dialog');
+    dlg.id = 'rb-modal';
+    dlg.className = 'modal-rb';
+    dlg.innerHTML = `
+      <div class="modal-rb__cuerpo">
+        <div class="modal-rb__icono" id="rb-modal-icono"></div>
+        <h3 class="modal-rb__titulo" id="rb-modal-titulo"></h3>
+        <p class="modal-rb__mensaje" id="rb-modal-mensaje"></p>
+        <div class="modal-rb__acciones">
+          <button type="button" class="btn btn-ghost" id="rb-modal-cancelar">Cancelar</button>
+          <button type="button" class="btn" id="rb-modal-aceptar">Aceptar</button>
+        </div>
+      </div>`;
+    document.body.appendChild(dlg);
+  }
+  return dlg;
+}
+
+function modalConfirmar(titulo, mensaje) {
+  return new Promise(resolve => {
+    const dlg = _getModal();
+    document.getElementById('rb-modal-icono').textContent = '⚠️';
+    document.getElementById('rb-modal-titulo').textContent = titulo;
+    document.getElementById('rb-modal-mensaje').textContent = mensaje;
+    const btnCancelar = document.getElementById('rb-modal-cancelar');
+    const btnAceptar  = document.getElementById('rb-modal-aceptar');
+    btnCancelar.style.display = '';
+    btnAceptar.className = 'btn btn-peligro';
+    btnAceptar.textContent = 'Eliminar';
+    const cleanup = result => { dlg.close(); resolve(result); };
+    btnCancelar.onclick = () => cleanup(false);
+    btnAceptar.onclick  = () => cleanup(true);
+    dlg.oncancel = () => resolve(false);
+    dlg.showModal();
+  });
+}
+
+function modalAlerta(titulo, mensaje, tipo = 'info') {
+  return new Promise(resolve => {
+    const dlg = _getModal();
+    const iconos = { info: 'ℹ️', exito: '✅', error: '❌', alerta: '⚠️' };
+    document.getElementById('rb-modal-icono').textContent = iconos[tipo] || 'ℹ️';
+    document.getElementById('rb-modal-titulo').textContent = titulo;
+    document.getElementById('rb-modal-mensaje').textContent = mensaje;
+    const btnCancelar = document.getElementById('rb-modal-cancelar');
+    const btnAceptar  = document.getElementById('rb-modal-aceptar');
+    btnCancelar.style.display = 'none';
+    btnAceptar.className = tipo === 'error' ? 'btn btn-peligro' : 'btn btn-primario';
+    btnAceptar.textContent = 'Aceptar';
+    btnAceptar.onclick = () => { dlg.close(); resolve(); };
+    dlg.oncancel = () => resolve();
+    dlg.showModal();
+  });
 }
 
 // ── Utilidades generales ─────────────────────────────────────────────────────

@@ -51,12 +51,15 @@
   <main class="contenido-principal">
     <header class="header-pagina">
       <div class="header-pagina__izq">
-        <h1 class="header-pagina__titulo">Nuevo ingrediente</h1>
+        <h1 class="header-pagina__titulo" id="titulo-pagina">Nuevo ingrediente</h1>
         <div class="header-pagina__ruta">
           <a href="index.html">Inicio</a> <span>/</span>
           <a href="ingredientes.html">Ingredientes</a> <span>/</span>
-          <span>Nuevo</span>
+          <span id="breadcrumb-estado">Nuevo</span>
         </div>
+      </div>
+      <div class="header-pagina__der no-print" id="acciones-header" style="display:none;">
+        <button type="button" id="btn-eliminar-ing" class="btn btn-peligro btn-sm" onclick="eliminarIngredienteActual()">🗑️ Eliminar</button>
       </div>
     </header>
 
@@ -105,13 +108,13 @@
             </div>
 
             <div class="form-acciones">
-              <button type="submit" class="btn btn-primario btn-lg">✅ Registrar ingrediente</button>
+              <button type="submit" id="btn-submit" class="btn btn-primario btn-lg">✅ Registrar ingrediente</button>
               <a href="ingredientes.html" class="btn btn-ghost">Cancelar</a>
             </div>
           </form>
         </div>
 
-        <div class="alerta alerta-info mt-6">
+        <div class="alerta alerta-info mt-6" id="alerta-tip">
           <span class="alerta__icono">💡</span>
           <div class="alerta__cuerpo">
             <div class="alerta__titulo">Tip</div>
@@ -127,50 +130,125 @@
   </main>
 </div>
 
-<nav class="nav-mobile no-print">
-  <ul class="nav-mobile__lista">
-    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
-    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
-    <li><a href="ingredientes.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
-    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
-    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
-    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
-    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
-    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
-  </ul>
-</nav>
+<div class="fab-nav no-print">
+  <button class="fab-nav__btn" id="fabNavBtn" aria-label="Menú de navegación" aria-expanded="false">🧁</button>
+  <nav class="fab-nav__menu" id="fabNavMenu" aria-hidden="true">
+    <ul class="fab-nav__lista">
+      <li><a href="index.html" class="fab-nav__item"><span class="fab-nav__icono">🏠</span>Inicio</a></li>
+      <li><a href="index.html#recetas" class="fab-nav__item"><span class="fab-nav__icono">📖</span>Recetas</a></li>
+      <li><a href="ingredientes.html" class="fab-nav__item activo"><span class="fab-nav__icono">🧂</span>Insumos</a></li>
+      <li><a href="ingrediente-nuevo.html" class="fab-nav__item"><span class="fab-nav__icono">🛒</span>Registrar</a></li>
+      <li><a href="historial-compras.html" class="fab-nav__item"><span class="fab-nav__icono">📜</span>Historial</a></li>
+      <li><a href="lista-compras.html" class="fab-nav__item"><span class="fab-nav__icono">📋</span>Compras</a></li>
+      <li><a href="planificacion.html" class="fab-nav__item"><span class="fab-nav__icono">📅</span>Planif.</a></li>
+      <li><a href="proveedores.html" class="fab-nav__item"><span class="fab-nav__icono">🏪</span>Provs.</a></li>
+    </ul>
+  </nav>
+</div>
 
 <script>
+  const editarId = urlParam('id');
+
+  if (editarId) {
+    document.getElementById('titulo-pagina').textContent = 'Editar ingrediente';
+    document.getElementById('breadcrumb-estado').textContent = 'Editar';
+    document.getElementById('btn-submit').textContent = '💾 Guardar cambios';
+    document.getElementById('acciones-header').style.display = '';
+    document.getElementById('alerta-tip').style.display = 'none';
+
+    getData('ingredientes').then(ings => {
+      const ing = ings.find(i => String(i.id) === String(editarId));
+      if (!ing) {
+        modalAlerta('Error', 'Ingrediente no encontrado.', 'error');
+        return;
+      }
+      document.getElementById('nombre-ing').value      = ing.nombre    || '';
+      document.getElementById('categoria-ing').value   = ing.categoria || '';
+      document.getElementById('unidad-ing').value      = ing.unidad    || 'kg';
+      document.getElementById('stock-min-ing').value   = ing.stock_minimo || '';
+      document.getElementById('proveedor-ing').value   = ing.proveedor || '';
+    }).catch(err => {
+      modalAlerta('Error de conexión', 'Error al cargar el ingrediente: ' + err.message, 'error');
+    });
+  }
+
   document.getElementById('form-ingrediente').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = this.querySelector('button[type="submit"]');
+    const btn = document.getElementById('btn-submit');
     btn.disabled = true;
     btn.textContent = '⏳ Guardando...';
     try {
       const nombre = document.getElementById('nombre-ing').value.trim();
       if (!nombre) {
-        alert('El nombre del ingrediente es obligatorio.');
+        await modalAlerta('Campo requerido', 'El nombre del ingrediente es obligatorio.', 'alerta');
         btn.disabled = false;
-        btn.textContent = '✅ Registrar ingrediente';
+        btn.textContent = editarId ? '💾 Guardar cambios' : '✅ Registrar ingrediente';
         return;
       }
-      await postData('ingredientes', {
+      const payload = {
         nombre,
         categoria:    document.getElementById('categoria-ing').value,
         unidad:       document.getElementById('unidad-ing').value,
         stock_minimo: parseFloat(document.getElementById('stock-min-ing').value) || 0,
-        stock_actual: 0,
-        precio_actual: 0,
-        precio_por_base: 0,
         proveedor:    document.getElementById('proveedor-ing').value.trim()
-      });
+      };
+      if (editarId) {
+        payload.id = editarId;
+      } else {
+        payload.stock_actual    = 0;
+        payload.precio_actual   = 0;
+        payload.precio_por_base = 0;
+      }
+      await postData('ingredientes', payload);
       window.location.href = 'ingredientes.html';
     } catch (err) {
-      alert('Error al guardar: ' + err.message);
+      await modalAlerta('Error al guardar', err.message, 'error');
       btn.disabled = false;
-      btn.textContent = '✅ Registrar ingrediente';
+      btn.textContent = editarId ? '💾 Guardar cambios' : '✅ Registrar ingrediente';
     }
   });
+
+  async function eliminarIngredienteActual() {
+    const ok = await modalConfirmar('Eliminar ingrediente', '¿Seguro que quieres eliminar este ingrediente? Esta acción no se puede deshacer.');
+    if (!ok) return;
+    const btn = document.getElementById('btn-eliminar-ing');
+    btn.disabled = true;
+    btn.textContent = '⏳ Eliminando...';
+    try {
+      await postData('ingredientes', { id: editarId, _action: 'delete' });
+      window.location.href = 'ingredientes.html';
+    } catch (err) {
+      await modalAlerta('Error al eliminar', err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = '🗑️ Eliminar';
+    }
+  }
+
+  (function() {
+    const btn = document.getElementById('fabNavBtn');
+    const menu = document.getElementById('fabNavMenu');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('abierto', !open);
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.fab-nav')) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+  })();
 </script>
 </body>
 </html>

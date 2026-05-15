@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir -R)"
+      "Bash(dir -R)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\esgonza\\\\Downloads\\\\RB-20260509T015305Z-3-001\\\\RB\" -Recurse -Force)",
+      "Bash(Select-Object -First 50)",
+      "Bash(Format-Table FullName)"
     ]
   }
 }

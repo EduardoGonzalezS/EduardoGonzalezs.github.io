@@ -65,6 +65,11 @@ function doPost(e) {
       return jsonResponse(handleReceta(ss, data));
     }
 
+    // Eliminación directa de ingrediente
+    if (entity === 'ingredientes' && data && data._action === 'delete' && data.id) {
+      return jsonResponse(handleIngredienteDelete(ss, data.id));
+    }
+
     // Inserción / actualización directa (proveedores, ingredientes)
     const sheet = ss.getSheetByName(entity);
     if (!sheet) return jsonResponse({ error: 'Pestaña no encontrada: ' + entity });
@@ -196,6 +201,16 @@ function handleCompraUpdate(ss, data) {
   recalcPreciosIngredientes(ss, afectados);
 
   return { ok: true, compra_id: compraId, updated: true };
+}
+
+// ── Handler: eliminar ingrediente ───────────────────────────────────────────
+
+function handleIngredienteDelete(ss, id) {
+  const sheet = ss.getSheetByName('ingredientes');
+  if (!sheet) return { error: 'Pestaña ingredientes no encontrada' };
+  const count = deleteRowsByField(sheet, 'id', id);
+  if (count === 0) return { error: 'No se encontró el ingrediente id=' + id };
+  return { ok: true, id: id, deleted: true };
 }
 
 // ── Handler: eliminar compra ─────────────────────────────────────────────────
@@ -443,12 +458,16 @@ function handleRecetaUpdate(ss, data) {
 // ── Handler: eliminar receta ─────────────────────────────────────────────────
 
 function handleRecetaDelete(ss, data) {
-  const recetaId  = data.id;
-  const shRecetas = ss.getSheetByName('recetas');
-  const shRI      = ss.getSheetByName('recetas_ingredientes');
+  var recetaId  = String(data.id).trim();
+  var shRecetas = ss.getSheetByName('recetas');
+  var shRI      = ss.getSheetByName('recetas_ingredientes');
 
   deleteRowsByField(shRI, 'receta_id', recetaId);
-  deleteRowsByField(shRecetas, 'id', recetaId);
+  var deletedCount = deleteRowsByField(shRecetas, 'id', recetaId);
+
+  if (deletedCount === 0) {
+    return { error: 'No se encontró la receta id=' + recetaId + '. Es posible que ya haya sido eliminada.' };
+  }
 
   return { ok: true, receta_id: recetaId, deleted: true };
 }

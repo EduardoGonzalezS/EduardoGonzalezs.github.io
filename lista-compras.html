@@ -132,7 +132,13 @@
                 </tr>
               </thead>
               <tbody id="tbody-urgentes">
-                <tr><td colspan="9" style="text-align:center;color:var(--texto-muted);padding:var(--sp-6);">⏳ Cargando...</td></tr>
+                <tr><td colspan="9" style="padding:0;border:none;">
+                  <div class="spinner-rb">
+                    <div class="spinner-rb__circulo"></div>
+                    <div class="spinner-rb__icono">🧁</div>
+                    <div class="spinner-rb__texto">Cargando...</div>
+                  </div>
+                </td></tr>
               </tbody>
             </table>
           </div>
@@ -159,7 +165,13 @@
               </tr>
             </thead>
             <tbody id="tbody-observacion">
-              <tr><td colspan="5" style="text-align:center;color:var(--texto-muted);padding:var(--sp-4);">⏳ Cargando...</td></tr>
+              <tr><td colspan="5" style="padding:0;border:none;">
+                <div class="spinner-rb">
+                  <div class="spinner-rb__circulo"></div>
+                  <div class="spinner-rb__icono">🧁</div>
+                  <div class="spinner-rb__texto">Cargando...</div>
+                </div>
+              </td></tr>
             </tbody>
           </table>
           </div><!-- /tabla-scroll -->
@@ -176,18 +188,21 @@
   </main>
 </div>
 
-<nav class="nav-mobile no-print">
-  <ul class="nav-mobile__lista">
-    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
-    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
-    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
-    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
-    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
-    <li><a href="lista-compras.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">📋</span>Compras</a></li>
-    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
-    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
-  </ul>
-</nav>
+<div class="fab-nav no-print">
+  <button class="fab-nav__btn" id="fabNavBtn" aria-label="Menú de navegación" aria-expanded="false">🧁</button>
+  <nav class="fab-nav__menu" id="fabNavMenu" aria-hidden="true">
+    <ul class="fab-nav__lista">
+      <li><a href="index.html" class="fab-nav__item"><span class="fab-nav__icono">🏠</span>Inicio</a></li>
+      <li><a href="index.html#recetas" class="fab-nav__item"><span class="fab-nav__icono">📖</span>Recetas</a></li>
+      <li><a href="ingredientes.html" class="fab-nav__item"><span class="fab-nav__icono">🧂</span>Insumos</a></li>
+      <li><a href="ingrediente-nuevo.html" class="fab-nav__item"><span class="fab-nav__icono">🛒</span>Registrar</a></li>
+      <li><a href="historial-compras.html" class="fab-nav__item"><span class="fab-nav__icono">📜</span>Historial</a></li>
+      <li><a href="lista-compras.html" class="fab-nav__item activo"><span class="fab-nav__icono">📋</span>Compras</a></li>
+      <li><a href="planificacion.html" class="fab-nav__item"><span class="fab-nav__icono">📅</span>Planif.</a></li>
+      <li><a href="proveedores.html" class="fab-nav__item"><span class="fab-nav__icono">🏪</span>Provs.</a></li>
+    </ul>
+  </nav>
+</div>
 
 
 <script>
@@ -224,6 +239,32 @@
     }
   }
   cargarListaCompras();
+
+  (function() {
+    const btn = document.getElementById('fabNavBtn');
+    const menu = document.getElementById('fabNavMenu');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('abierto', !open);
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.fab-nav')) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+  })();
 </script>
 </body>
 </html>

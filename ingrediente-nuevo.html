@@ -249,18 +249,21 @@
   </main>
 </div>
 
-<nav class="nav-mobile no-print">
-  <ul class="nav-mobile__lista">
-    <li><a href="index.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏠</span>Inicio</a></li>
-    <li><a href="index.html#recetas" class="nav-mobile__item"><span class="nav-mobile__icono">📖</span>Recetas</a></li>
-    <li><a href="ingredientes.html" class="nav-mobile__item"><span class="nav-mobile__icono">🧂</span>Insumos</a></li>
-    <li><a href="ingrediente-nuevo.html" class="nav-mobile__item activo"><span class="nav-mobile__icono">🛒</span>Registrar</a></li>
-    <li><a href="historial-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📜</span>Historial</a></li>
-    <li><a href="lista-compras.html" class="nav-mobile__item"><span class="nav-mobile__icono">📋</span>Compras</a></li>
-    <li><a href="planificacion.html" class="nav-mobile__item"><span class="nav-mobile__icono">📅</span>Planif.</a></li>
-    <li><a href="proveedores.html" class="nav-mobile__item"><span class="nav-mobile__icono">🏪</span>Provs.</a></li>
-  </ul>
-</nav>
+<div class="fab-nav no-print">
+  <button class="fab-nav__btn" id="fabNavBtn" aria-label="Menú de navegación" aria-expanded="false">🧁</button>
+  <nav class="fab-nav__menu" id="fabNavMenu" aria-hidden="true">
+    <ul class="fab-nav__lista">
+      <li><a href="index.html" class="fab-nav__item"><span class="fab-nav__icono">🏠</span>Inicio</a></li>
+      <li><a href="index.html#recetas" class="fab-nav__item"><span class="fab-nav__icono">📖</span>Recetas</a></li>
+      <li><a href="ingredientes.html" class="fab-nav__item"><span class="fab-nav__icono">🧂</span>Insumos</a></li>
+      <li><a href="ingrediente-nuevo.html" class="fab-nav__item activo"><span class="fab-nav__icono">🛒</span>Registrar</a></li>
+      <li><a href="historial-compras.html" class="fab-nav__item"><span class="fab-nav__icono">📜</span>Historial</a></li>
+      <li><a href="lista-compras.html" class="fab-nav__item"><span class="fab-nav__icono">📋</span>Compras</a></li>
+      <li><a href="planificacion.html" class="fab-nav__item"><span class="fab-nav__icono">📅</span>Planif.</a></li>
+      <li><a href="proveedores.html" class="fab-nav__item"><span class="fab-nav__icono">🏪</span>Provs.</a></li>
+    </ul>
+  </nav>
+</div>
 
 <script>
   // Detección de modo edición vs registro nuevo
@@ -298,10 +301,10 @@
     Promise.all([
       getData('compras'),
       getData('compras_detalle', { compra_id: editarId })
-    ]).then(([compras, detalle]) => {
+    ]).then(async ([compras, detalle]) => {
       const compra = (compras || []).find(c => String(c.id) === String(editarId));
       if (!compra) {
-        alert('Compra no encontrada.');
+        await modalAlerta('Error', 'Compra no encontrada.', 'error');
         window.location.href = 'historial-compras.html';
         return;
       }
@@ -328,13 +331,14 @@
           calcularFila(tr.querySelector('input[name^="prod_"]'));
         });
       }
-    }).catch(err => {
-      alert('Error al cargar la compra: ' + err.message);
+    }).catch(async err => {
+      await modalAlerta('Error de conexión', 'Error al cargar la compra: ' + err.message, 'error');
     });
   }
 
   async function eliminarCompraActual() {
-    if (!confirm('¿Seguro que quieres eliminar esta compra?\n\nSe ajustará el stock de los ingredientes y se recalcularán sus precios actuales. Esta acción no se puede deshacer.')) return;
+    const ok = await modalConfirmar('Eliminar compra', '¿Seguro que quieres eliminar esta compra?\n\nSe ajustará el stock de los ingredientes y se recalcularán sus precios actuales. Esta acción no se puede deshacer.');
+    if (!ok) return;
     const btn = document.getElementById('btn-eliminar-compra');
     btn.disabled = true;
     btn.textContent = '⏳ Eliminando...';
@@ -342,7 +346,7 @@
       await postData('compra', { id: editarId, _action: 'delete' });
       window.location.href = 'historial-compras.html';
     } catch (err) {
-      alert('Error al eliminar: ' + err.message);
+      await modalAlerta('Error al eliminar', err.message, 'error');
       btn.disabled = false;
       btn.textContent = '🗑️ Eliminar compra';
     }
@@ -373,7 +377,7 @@
       });
 
       if (detalle.length === 0) {
-        alert('Agrega al menos un producto con cantidad y precio.');
+        await modalAlerta('Campos incompletos', 'Agrega al menos un producto con cantidad y precio.', 'alerta');
         btn.disabled = false;
         btn.textContent = textoOriginal;
         return;
@@ -411,11 +415,37 @@
       await postData('compra', payload);
       window.location.href = 'historial-compras.html';
     } catch (err) {
-      alert('Error al guardar: ' + err.message);
+      await modalAlerta('Error al guardar', err.message, 'error');
       btn.disabled = false;
       btn.textContent = textoOriginal;
     }
   });
+
+  (function() {
+    const btn = document.getElementById('fabNavBtn');
+    const menu = document.getElementById('fabNavMenu');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('abierto', !open);
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.fab-nav')) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('abierto');
+      }
+    });
+  })();
 
   const OPCIONES_UNIDADES = `
     <option value="kg">kg</option>

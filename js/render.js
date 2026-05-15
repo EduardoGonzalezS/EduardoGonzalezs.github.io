@@ -90,9 +90,15 @@ function renderTablaIngredientes(ingredientes) {
     const sc = stockClass(ing.stock_actual, ing.stock_minimo);
     const badge = BADGE_ING[ing.categoria] || 'badge-neutral';
     const catLabel = LABEL_ING[ing.categoria] || ing.categoria || '—';
-    const accion = sc !== 'stock-bueno'
-      ? `<a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario">Comprar</a>`
-      : `<a href="ingrediente-detalle.html?nombre=${encodeURIComponent(ing.nombre)}" class="btn btn-sm btn-ghost">Historial</a>`;
+    const btnComprar = sc !== 'stock-bueno'
+      ? `<a href="ingrediente-nuevo.html" class="btn btn-sm btn-secundario" title="Registrar compra">🛒</a>` : '';
+    const accion = `
+      <div style="display:flex;gap:4px;flex-wrap:wrap;">
+        <a href="ingrediente-detalle.html?nombre=${encodeURIComponent(ing.nombre)}" class="btn btn-sm btn-ghost" title="Ver historial">📊</a>
+        <a href="producto-nuevo.html?id=${encodeURIComponent(ing.id)}" class="btn btn-sm btn-secundario" title="Editar">✏️</a>
+        <button class="btn btn-sm btn-peligro" onclick="eliminarIngrediente('${ing.id}','${ing.nombre.replace(/'/g, "\\'")}')">🗑️</button>
+        ${btnComprar}
+      </div>`;
     return `
       <tr>
         <td><a href="ingrediente-detalle.html?nombre=${encodeURIComponent(ing.nombre)}"><strong>${ing.nombre}</strong></a></td>
@@ -221,7 +227,7 @@ function renderHistorialCompras(compras, detalle, limit) {
   if (!compras.length) {
     return '<p style="color:var(--texto-muted);padding:var(--sp-4);">No hay compras registradas aún.</p>';
   }
-  const sorted = [...compras].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  const sorted = [...compras].sort((a, b) => Number(b.id) - Number(a.id));
   const visibles = (typeof limit === 'number' && limit > 0) ? sorted.slice(0, limit) : sorted;
   const detalleMap = {};
   detalle.forEach(d => {
