@@ -1,1836 +1,1969 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japón 2026 — Itinerarios</title>
+  <meta name="description" content="Itinerarios de Tokio, Kioto y Osaka — Noviembre 2026">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=Noto+Serif+JP:wght@300;400&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    img, picture, video, canvas, svg { display: block; max-width: 100%; }
+    input, button, textarea, select { font: inherit; }
+    p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+    ul, ol { list-style: none; }
+    a { text-decoration: none; color: inherit; }
+    button { background: none; border: none; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
 
-1	<!DOCTYPE html> 
-2	<html lang="es"> 
-3	<head> 
-4	  <meta charset="UTF-8"> 
-5	  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-6	  <title>Japón 2026 — Itinerarios</title> 
-7	  <meta name="description" content="Itinerarios de Tokio, Kioto y Osaka — Noviembre 2026"> 
-8	  <link rel="preconnect" href="https://fonts.googleapis.com"> 
-9	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-10	  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet"> 
-11	  <style> 
-12	    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } 
-13	    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; } 
-14	    body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; } 
-15	    img, picture, video, canvas, svg { display: block; max-width: 100%; } 
-16	    input, button, textarea, select { font: inherit; } 
-17	    p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; } 
-18	    ul, ol { list-style: none; } 
-19	    a { text-decoration: none; color: inherit; } 
-20	    button { background: none; border: none; cursor: pointer; } 
-21	    @media (prefers-reduced-motion: reduce) { 
-22	      *, *::before, *::after { 
-23	        animation-duration: 0.01ms !important; 
-24	        animation-iteration-count: 1 !important; 
-25	        transition-duration: 0.01ms !important; 
-26	        scroll-behavior: auto !important; 
-27	      } 
-28	    } 
-29	 
-30	    :root { 
-31	      --color-ink:           #1a1a2e; 
-32	      --color-ink-light:     #2d2d4a; 
-33	      --color-paper:         #faf8f5; 
-34	      --color-crimson:       #c0392b; 
-35	      --color-crimson-light: #e74c3c; 
-36	      --color-gold:          #c9a84c; 
-37	      --color-gold-light:    #e8c97a; 
-38	      --color-sakura:        #f4a7b9; 
-39	      --color-matcha:        #5c7a5c; 
-40	      --color-indigo:        #2c3e6b; 
-41	      --color-indigo-light:  #3d5499; 
-42	      --color-fog:           #e0dbd4; 
-43	      --color-muted:         #8a8070; 
-44	      --font-display: 'Cinzel', serif; 
-45	      --font-serif:   'Noto Serif JP', serif; 
-46	      --font-body:    'Inter', system-ui, sans-serif; 
-47	      --space-xs:   4px; 
-48	      --space-sm:   8px; 
-49	      --space-md:   16px; 
-50	      --space-lg:   24px; 
-51	      --space-xl:   40px; 
-52	      --space-2xl:  64px; 
-53	      --radius-sm:   4px; 
-54	      --radius-md:   10px; 
-55	      --radius-lg:   20px; 
-56	      --radius-pill: 999px; 
-57	      --shadow-sm:   0 2px 12px rgba(26,26,46,0.08); 
-58	      --shadow-md:   0 4px 24px rgba(26,26,46,0.12); 
-59	      --shadow-xl:   0 16px 64px rgba(26,26,46,0.22); 
-60	      --z-sticky: 100; 
-61	      --z-modal:  300; 
-62	    } 
-63	 
-64	    body { 
-65	      font-family: var(--font-body); 
-66	      background: var(--color-paper); 
-67	      color: var(--color-ink); 
-68	      max-width: 480px; 
-69	      margin-inline: auto; 
-70	      min-height: 100dvh; 
-71	      overflow-x: hidden; 
-72	    } 
-73	 
-74	    /* ── Header ── */ 
-75	    .iti-header { 
-76	      background: var(--color-ink); 
-77	      padding: var(--space-lg) var(--space-md) var(--space-md); 
-78	      position: relative; 
-79	      overflow: hidden; 
-80	    } 
-81	    .iti-header::before { 
-82	      content: attr(data-kanji); 
-83	      position: absolute; 
-84	      right: -0.1em; 
-85	      top: -0.15em; 
-86	      font-family: var(--font-serif); 
-87	      font-size: 9rem; 
-88	      color: rgba(255,255,255,0.04); 
-89	      pointer-events: none; 
-90	      line-height: 1; 
-91	      transition: content 300ms; 
-92	    } 
-93	    .iti-header__back { 
-94	      display: inline-flex; 
-95	      align-items: center; 
-96	      gap: 6px; 
-97	      color: rgba(255,255,255,0.55); 
-98	      font-size: 0.75rem; 
-99	      font-weight: 500; 
-100	      letter-spacing: 0.05em; 
-101	      margin-bottom: var(--space-md); 
-102	      transition: color 180ms; 
-103	    } 
-104	    .iti-header__back:hover { color: var(--color-gold-light); } 
-105	    .iti-header__jp { 
-106	      display: block; 
-107	      font-family: var(--font-serif); 
-108	      font-weight: 300; 
-109	      font-size: 0.875rem; 
-110	      color: var(--color-gold); 
-111	      letter-spacing: 0.3em; 
-112	      margin-bottom: 4px; 
-113	      transition: opacity 200ms; 
-114	    } 
-115	    .iti-header__title { 
-116	      font-family: var(--font-display); 
-117	      font-size: 2.25rem; 
-118	      font-weight: 700; 
-119	      color: #fff; 
-120	      letter-spacing: 0.15em; 
-121	      line-height: 1; 
-122	      margin-bottom: 6px; 
-123	      transition: opacity 200ms; 
-124	    } 
-125	    .iti-header__sub { 
-126	      font-size: 0.75rem; 
-127	      color: rgba(255,255,255,0.45); 
-128	      letter-spacing: 0.12em; 
-129	      text-transform: uppercase; 
-130	    } 
-131	    .iti-header__divider { 
-132	      height: 1px; 
-133	      background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%); 
-134	      margin-top: var(--space-md); 
-135	      opacity: 0.5; 
-136	    } 
-137	 
-138	    /* ── Sticky Nav ── */ 
-139	    .sticky-nav { 
-140	      position: sticky; 
-141	      top: 0; 
-142	      z-index: var(--z-sticky); 
-143	      background: var(--color-ink); 
-144	    } 
-145	 
-146	    /* ── City Tabs ── */ 
-147	    .city-tabs { 
-148	      display: flex; 
-149	      border-bottom: 1px solid rgba(255,255,255,0.06); 
-150	    } 
-151	    .city-tab { 
-152	      flex: 1; 
-153	      display: flex; 
-154	      flex-direction: column; 
-155	      align-items: center; 
-156	      padding: 10px 8px 8px; 
-157	      border-bottom: 2px solid transparent; 
-158	      color: rgba(255,255,255,0.4); 
-159	      cursor: pointer; 
-160	      transition: color 180ms, border-color 180ms; 
-161	      -webkit-tap-highlight-color: transparent; 
-162	    } 
-163	    .city-tab.active { color: #fff; border-bottom-color: var(--color-crimson); } 
-164	    .city-tab:hover:not(.active) { color: rgba(255,255,255,0.7); } 
-165	    .city-tab__jp { 
-166	      font-family: var(--font-serif); 
-167	      font-size: 0.9rem; 
-168	      color: var(--color-gold); 
-169	      line-height: 1; 
-170	      margin-bottom: 2px; 
-171	    } 
-172	    .city-tab__name { 
-173	      font-family: var(--font-display); 
-174	      font-size: 0.625rem; 
-175	      font-weight: 700; 
-176	      letter-spacing: 0.12em; 
-177	      color: inherit; 
-178	    } 
-179	    .city-tab__days { 
-180	      font-size: 0.5rem; 
-181	      letter-spacing: 0.06em; 
-182	      color: rgba(255,255,255,0.3); 
-183	      margin-top: 2px; 
-184	    } 
-185	    .city-tab.active .city-tab__days { color: rgba(255,255,255,0.5); } 
-186	 
-187	    /* ── Day Tab Groups ── */ 
-188	    .day-tabs-group { 
-189	      display: none; 
-190	      overflow-x: auto; 
-191	      scrollbar-width: none; 
-192	      border-bottom: 1px solid rgba(255,255,255,0.08); 
-193	    } 
-194	    .day-tabs-group.active { display: flex; } 
-195	    .day-tabs-group::-webkit-scrollbar { display: none; } 
-196	    .day-tab { 
-197	      flex: 1; 
-198	      min-width: 0; 
-199	      background: none; 
-200	      border: none; 
-201	      border-bottom: 2px solid transparent; 
-202	      color: rgba(255,255,255,0.45); 
-203	      font-family: var(--font-body); 
-204	      font-size: 0.75rem; 
-205	      font-weight: 600; 
-206	      letter-spacing: 0.04em; 
-207	      padding: 12px 8px; 
-208	      cursor: pointer; 
-209	      white-space: nowrap; 
-210	      transition: color 180ms, border-color 180ms; 
-211	      -webkit-tap-highlight-color: transparent; 
-212	    } 
-213	    .day-tab.active { color: #fff; border-bottom-color: var(--color-gold); } 
-214	    .day-tab:hover:not(.active) { color: rgba(255,255,255,0.75); } 
-215	 
-216	    /* ── Day Panels ── */ 
-217	    .day-panel { display: none; padding: var(--space-md) var(--space-md) var(--space-2xl); } 
-218	    .day-panel.active { display: block; } 
-219	    .day-panel__heading { 
-220	      display: flex; 
-221	      align-items: baseline; 
-222	      gap: 10px; 
-223	      margin-bottom: var(--space-lg); 
-224	      padding-bottom: var(--space-sm); 
-225	      border-bottom: 1px solid var(--color-fog); 
-226	    } 
-227	    .day-panel__num { 
-228	      font-family: var(--font-display); 
-229	      font-size: 3rem; 
-230	      font-weight: 700; 
-231	      color: var(--color-crimson); 
-232	      opacity: 0.15; 
-233	      line-height: 1; 
-234	    } 
-235	    .day-panel__label { 
-236	      font-family: var(--font-display); 
-237	      font-size: 1rem; 
-238	      font-weight: 600; 
-239	      color: var(--color-ink); 
-240	      letter-spacing: 0.1em; 
-241	    } 
-242	 
-243	    /* ── Timeline ── */ 
-244	    .timeline { display: flex; flex-direction: column; } 
-245	    .attraction-card { 
-246	      display: grid; 
-247	      grid-template-columns: 52px 1fr; 
-248	      gap: 0 var(--space-sm); 
-249	      margin-bottom: var(--space-md); 
-250	    } 
-251	    .attraction-card__time-col { 
-252	      display: flex; 
-253	      flex-direction: column; 
-254	      align-items: center; 
-255	      padding-top: 4px; 
-256	    } 
-257	    .time-block { 
-258	      display: flex; 
-259	      flex-direction: column; 
-260	      align-items: center; 
-261	      gap: 2px; 
-262	    } 
-263	    .time-block__emoji { font-size: 1.25rem; line-height: 1; } 
-264	    .time-block__label { 
-265	      font-size: 0.55rem; 
-266	      font-weight: 600; 
-267	      letter-spacing: 0.06em; 
-268	      text-transform: uppercase; 
-269	      text-align: center; 
-270	      color: var(--color-muted); 
-271	      line-height: 1.2; 
-272	    } 
-273	    .timeline-line { 
-274	      width: 1px; 
-275	      flex: 1; 
-276	      min-height: 20px; 
-277	      background: var(--color-fog); 
-278	      margin-top: 6px; 
-279	    } 
-280	    .attraction-card:last-child .timeline-line { display: none; } 
-281	    .attraction-card__body { 
-282	      background: #fff; 
-283	      border-radius: var(--radius-md); 
-284	      box-shadow: var(--shadow-sm); 
-285	      border: 1px solid var(--color-fog); 
-286	      padding: var(--space-md); 
-287	      margin-bottom: var(--space-md); 
-288	    } 
-289	    .attraction-card__top { 
-290	      display: flex; 
-291	      flex-wrap: wrap; 
-292	      align-items: flex-start; 
-293	      gap: 6px; 
-294	      margin-bottom: var(--space-sm); 
-295	    } 
-296	    .attraction-card__name { 
-297	      font-family: var(--font-serif); 
-298	      font-size: 0.9375rem; 
-299	      font-weight: 400; 
-300	      color: var(--color-ink); 
-301	      line-height: 1.3; 
-302	      flex: 1 1 100%; 
-303	    } 
-304	    .attraction-card__notes { 
-305	      font-size: 0.8125rem; 
-306	      color: var(--color-muted); 
-307	      line-height: 1.55; 
-308	      margin-bottom: var(--space-md); 
-309	    } 
-310	 
-311	    /* ── Type Badges ── */ 
-312	    .type-badge { 
-313	      display: inline-block; 
-314	      border-radius: var(--radius-pill); 
-315	      padding: 2px 10px; 
-316	      font-size: 0.6rem; 
-317	      font-weight: 700; 
-318	      letter-spacing: 0.08em; 
-319	      text-transform: uppercase; 
-320	      white-space: nowrap; 
-321	    } 
-322	    .type-badge--santuario, .type-badge--tienda { 
-323	      background: rgba(192,57,43,0.1); color: var(--color-crimson); 
-324	    } 
-325	    .type-badge--museo, .type-badge--castillo, .type-badge--mirador, .type-badge--templo { 
-326	      background: rgba(44,62,107,0.1); color: var(--color-indigo); 
-327	    } 
-328	    .type-badge--jardin, .type-badge--parque, .type-badge--excursion, .type-badge--acuario { 
-329	      background: rgba(92,122,92,0.1); color: var(--color-matcha); 
-330	    } 
-331	    .type-badge--mercado, .type-badge--atraccion, .type-badge--escultura { 
-332	      background: rgba(201,168,76,0.12); color: #9a7a2a; 
-333	    } 
-334	    .type-badge--barrio, .type-badge--parque-tematico, .type-badge--creperia, .type-badge--geek, .type-badge--teatro { 
-335	      background: rgba(244,167,185,0.2); color: #b56070; 
-336	    } 
-337	 
-338	    /* ── Map Button ── */ 
-339	    .map-btn { 
-340	      display: flex; 
-341	      align-items: center; 
-342	      justify-content: center; 
-343	      gap: 6px; 
-344	      width: 100%; 
-345	      background: transparent; 
-346	      border: 1px solid var(--color-indigo); 
-347	      color: var(--color-indigo); 
-348	      border-radius: var(--radius-md); 
-349	      padding: 8px var(--space-md); 
-350	      font-family: var(--font-body); 
-351	      font-size: 0.8rem; 
-352	      font-weight: 600; 
-353	      letter-spacing: 0.03em; 
-354	      cursor: pointer; 
-355	      transition: background 180ms, color 180ms, transform 100ms; 
-356	      -webkit-tap-highlight-color: transparent; 
-357	    } 
-358	    .map-btn:hover { background: var(--color-indigo); color: #fff; } 
-359	    .map-btn:active { transform: scale(0.97); } 
-360	 
-361	    /* ── Full-Day Card ── */ 
-362	    .fullday-card { 
-363	      background: var(--color-ink); 
-364	      border-radius: var(--radius-lg); 
-365	      overflow: hidden; 
-366	      box-shadow: var(--shadow-md); 
-367	      margin-bottom: var(--space-md); 
-368	    } 
-369	    .fullday-card__banner { 
-370	      padding: var(--space-xl) var(--space-md) var(--space-md); 
-371	      background: linear-gradient(135deg, var(--color-ink) 60%, var(--color-indigo-light) 100%); 
-372	      position: relative; 
-373	      text-align: center; 
-374	    } 
-375	    .fullday-card__banner::before { 
-376	      content: attr(data-emoji); 
-377	      position: absolute; 
-378	      font-size: 5rem; 
-379	      opacity: 0.12; 
-380	      top: 50%; 
-381	      left: 50%; 
-382	      transform: translate(-50%, -50%); 
-383	      pointer-events: none; 
-384	    } 
-385	    .fullday-card__time { 
-386	      display: inline-flex; 
-387	      align-items: center; 
-388	      gap: 6px; 
-389	      background: rgba(255,255,255,0.1); 
-390	      border-radius: var(--radius-pill); 
-391	      padding: 4px 12px; 
-392	      font-size: 0.65rem; 
-393	      font-weight: 700; 
-394	      letter-spacing: 0.1em; 
-395	      text-transform: uppercase; 
-396	      color: var(--color-gold); 
-397	      margin-bottom: var(--space-sm); 
-398	    } 
-399	    .fullday-card__name { 
-400	      font-family: var(--font-serif); 
-401	      font-size: 1.375rem; 
-402	      font-weight: 400; 
-403	      color: #fff; 
-404	      line-height: 1.3; 
-405	      margin-bottom: var(--space-sm); 
-406	      position: relative; 
-407	    } 
-408	    .fullday-card__body { 
-409	      padding: var(--space-md); 
-410	      background: rgba(255,255,255,0.04); 
-411	    } 
-412	    .fullday-card__notes { 
-413	      font-size: 0.8125rem; 
-414	      color: rgba(255,255,255,0.65); 
-415	      line-height: 1.6; 
-416	      margin-bottom: var(--space-md); 
-417	    } 
-418	    .fullday-card .type-badge { 
-419	      background: rgba(255,255,255,0.1); 
-420	      color: rgba(255,255,255,0.7); 
-421	      margin-bottom: var(--space-md); 
-422	      display: inline-block; 
-423	    } 
-424	    .fullday-card .map-btn { 
-425	      border-color: rgba(255,255,255,0.3); 
-426	      color: rgba(255,255,255,0.85); 
-427	    } 
-428	    .fullday-card .map-btn:hover { 
-429	      background: rgba(255,255,255,0.12); 
-430	      color: #fff; 
-431	    } 
-432	 
-433	    /* ── Map Modal ── */ 
-434	    .map-modal { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; } 
-435	    .map-modal[hidden] { display: none; } 
-436	    .map-modal.is-open { pointer-events: auto; } 
-437	    .map-modal__overlay { 
-438	      position: absolute; 
-439	      inset: 0; 
-440	      background: rgba(0,0,0,0); 
-441	      transition: background 360ms ease; 
-442	    } 
-443	    .map-modal.is-open .map-modal__overlay { background: rgba(0,0,0,0.6); } 
-444	    .map-modal__drawer { 
-445	      position: absolute; 
-446	      bottom: 0; 
-447	      left: 50%; 
-448	      transform: translateX(-50%) translateY(100%); 
-449	      width: 100%; 
-450	      max-width: 480px; 
-451	      height: 78dvh; 
-452	      background: var(--color-ink); 
-453	      border-radius: 20px 20px 0 0; 
-454	      display: flex; 
-455	      flex-direction: column; 
-456	      overflow: hidden; 
-457	      box-shadow: 0 -8px 40px rgba(0,0,0,0.4); 
-458	      transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1); 
-459	    } 
-460	    .map-modal.is-open .map-modal__drawer { transform: translateX(-50%) translateY(0); } 
-461	    .map-modal__handle { 
-462	      width: 36px; height: 4px; 
-463	      background: rgba(255,255,255,0.2); 
-464	      border-radius: 2px; 
-465	      margin: 10px auto 0; 
-466	      flex-shrink: 0; 
-467	    } 
-468	    .map-modal__header { 
-469	      display: flex; 
-470	      align-items: center; 
-471	      gap: var(--space-sm); 
-472	      padding: var(--space-sm) var(--space-md); 
-473	      flex-shrink: 0; 
-474	    } 
-475	    .map-modal__pin { font-size: 1rem; flex-shrink: 0; } 
-476	    .map-modal__place-name { 
-477	      flex: 1; 
-478	      font-family: var(--font-serif); 
-479	      font-size: 0.9375rem; 
-480	      color: #fff; 
-481	      white-space: nowrap; 
-482	      overflow: hidden; 
-483	      text-overflow: ellipsis; 
-484	    } 
-485	    .map-modal__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; } 
-486	    .map-modal__open-link { 
-487	      display: inline-flex; 
-488	      align-items: center; 
-489	      gap: 4px; 
-490	      background: rgba(255,255,255,0.08); 
-491	      border: none; 
-492	      border-radius: var(--radius-pill); 
-493	      color: rgba(255,255,255,0.7); 
-494	      font-family: var(--font-body); 
-495	      font-size: 0.7rem; 
-496	      font-weight: 600; 
-497	      padding: 5px 10px; 
-498	      cursor: pointer; 
-499	      transition: background 180ms, color 180ms; 
-500	    } 
-501	    .map-modal__open-link:hover { background: rgba(255,255,255,0.15); color: #fff; } 
-502	    .map-modal__close { 
-503	      width: 32px; height: 32px; 
-504	      border-radius: 50%; 
-505	      background: rgba(255,255,255,0.1); 
-506	      border: none; 
-507	      color: rgba(255,255,255,0.8); 
-508	      cursor: pointer; 
-509	      display: flex; 
-510	      align-items: center; 
-511	      justify-content: center; 
-512	      flex-shrink: 0; 
-513	      transition: background 180ms; 
-514	    } 
-515	    .map-modal__close:hover { background: rgba(255,255,255,0.2); color: #fff; } 
-516	    .map-modal__iframe-wrap { flex: 1; position: relative; background: var(--color-ink-light); } 
-517	    .map-modal__loading { 
-518	      position: absolute; inset: 0; 
-519	      display: flex; flex-direction: column; 
-520	      align-items: center; justify-content: center; 
-521	      gap: var(--space-sm); 
-522	      color: rgba(255,255,255,0.4); 
-523	      font-size: 0.8125rem; 
-524	      pointer-events: none; 
-525	      transition: opacity 300ms; 
-526	    } 
-527	    .map-modal__spinner { 
-528	      width: 28px; height: 28px; 
-529	      border: 2px solid rgba(255,255,255,0.1); 
-530	      border-top-color: var(--color-gold); 
-531	      border-radius: 50%; 
-532	      animation: spin 0.8s linear infinite; 
-533	    } 
-534	    @keyframes spin { to { transform: rotate(360deg); } } 
-535	    .map-modal__iframe { 
-536	      position: absolute; inset: 0; 
-537	      width: 100%; height: 100%; 
-538	      border: none; opacity: 0; 
-539	      transition: opacity 300ms; 
-540	    } 
-541	    .map-modal__iframe.loaded { opacity: 1; } 
-542	 
-543	    @media (min-width: 481px) { 
-544	      body { box-shadow: var(--shadow-xl); min-height: 100vh; } 
-545	    } 
-546	  </style> 
-547	</head> 
-548	<body> 
-549	 
-550	<!-- SVG Sprite --> 
-551	<svg hidden aria-hidden="true" focusable="false" style="position:absolute"> 
-552	  <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"> 
-553	    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/> 
-554	  </symbol> 
-555	  <symbol id="ic-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"> 
-556	    <polyline points="15 18 9 12 15 6"/> 
-557	  </symbol> 
-558	  <symbol id="ic-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"> 
-559	    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/> 
-560	    <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/> 
-561	  </symbol> 
-562	  <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"> 
-563	    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/> 
-564	  </symbol> 
-565	</svg> 
-566	 
-567	<header class="iti-header" data-kanji="東"> 
-568	  <a class="iti-header__back" href="../index.html#itinerary"> 
-569	    <svg width="14" height="14" aria-hidden="true"><use href="#ic-back"/></svg> 
-570	    Japan 2026 
-571	  </a> 
-572	  <span class="iti-header__jp" id="header-jp">東京</span> 
-573	  <h1 class="iti-header__title" id="header-title">TOKIO</h1> 
-574	  <p class="iti-header__sub" id="header-sub">Itinerario · 5 Días · Nov 2026</p> 
-575	  <div class="iti-header__divider"></div> 
-576	</header> 
-577	 
-578	<div class="sticky-nav"> 
-579	  <div class="city-tabs" role="tablist" aria-label="Ciudad"> 
-580	    <button class="city-tab active" data-city="tokio" role="tab" aria-selected="true"> 
-581	      <span class="city-tab__jp">東京</span> 
-582	      <span class="city-tab__name">TOKIO</span> 
-583	      <span class="city-tab__days">5 días</span> 
-584	    </button> 
-585	    <button class="city-tab" data-city="kioto" role="tab" aria-selected="false"> 
-586	      <span class="city-tab__jp">京都</span> 
-587	      <span class="city-tab__name">KIOTO</span> 
-588	      <span class="city-tab__days">4 días</span> 
-589	    </button> 
-590	    <button class="city-tab" data-city="osaka" role="tab" aria-selected="false"> 
-591	      <span class="city-tab__jp">大阪</span> 
-592	      <span class="city-tab__name">OSAKA</span> 
-593	      <span class="city-tab__days">5 días</span> 
-594	    </button> 
-595	  </div> 
-596	 
-597	  <nav class="day-tabs-group active" id="daytabs-tokio" aria-label="Días de Tokio"> 
-598	    <button class="day-tab active" data-city="tokio" data-day="1">Día 1</button> 
-599	    <button class="day-tab"        data-city="tokio" data-day="2">Día 2</button> 
-600	    <button class="day-tab"        data-city="tokio" data-day="3">Día 3</button> 
-601	    <button class="day-tab"        data-city="tokio" data-day="4">Día 4</button> 
-602	    <button class="day-tab"        data-city="tokio" data-day="5">Día 5</button> 
-603	  </nav> 
-604	 
-605	  <nav class="day-tabs-group" id="daytabs-kioto" aria-label="Días de Kioto"> 
-606	    <button class="day-tab" data-city="kioto" data-day="1">Día 1</button> 
-607	    <button class="day-tab" data-city="kioto" data-day="2">Día 2</button> 
-608	    <button class="day-tab" data-city="kioto" data-day="3">Día 3</button> 
-609	    <button class="day-tab" data-city="kioto" data-day="4">Nara</button> 
-610	  </nav> 
-611	 
-612	  <nav class="day-tabs-group" id="daytabs-osaka" aria-label="Días de Osaka"> 
-613	    <button class="day-tab" data-city="osaka" data-day="1">Día 1</button> 
-614	    <button class="day-tab" data-city="osaka" data-day="2">Día 2</button> 
-615	    <button class="day-tab" data-city="osaka" data-day="3">Día 3</button> 
-616	    <button class="day-tab" data-city="osaka" data-day="4">Día 4</button> 
-617	    <button class="day-tab" data-city="osaka" data-day="5">Día 5</button> 
-618	  </nav> 
-619	</div> 
-620	 
-621	<main id="main"> 
-622	 
-623	  <!-- ══════════════════════════════════════════ 
-624	       TOKIO 
-625	  ══════════════════════════════════════════ --> 
-626	 
-627	  <!-- TOKIO · DÍA 1 --> 
-628	  <section class="day-panel active" id="tokio-day-1" role="tabpanel"> 
-629	    <div class="day-panel__heading" aria-hidden="true"> 
-630	      <span class="day-panel__num">01</span> 
-631	      <span class="day-panel__label">Día 1</span> 
-632	    </div> 
-633	    <div class="timeline"> 
-634	 
-635	      <article class="attraction-card"> 
-636	        <div class="attraction-card__time-col"> 
-637	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-638	          <div class="timeline-line" aria-hidden="true"></div> 
-639	        </div> 
-640	        <div class="attraction-card__body"> 
-641	          <div class="attraction-card__top"> 
-642	            <h2 class="attraction-card__name">Santuario de Asakusa</h2> 
-643	            <span class="type-badge type-badge--santuario">Santuario</span> 
-644	          </div> 
-645	          <p class="attraction-card__notes">Comienza temprano para evitar multitudes. Cerca de Senso-ji.</p> 
-646	          <button class="map-btn" data-place-name="Santuario de Asakusa" data-map-url="https://www.google.com/maps/search/?api=1&query=Santuario%20de%20Asakusa%2C%20Tokyo" aria-label="Ver en mapa"> 
-647	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-648	          </button> 
-649	        </div> 
-650	      </article> 
-651	 
-652	      <article class="attraction-card"> 
-653	        <div class="attraction-card__time-col"> 
-654	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-655	          <div class="timeline-line" aria-hidden="true"></div> 
-656	        </div> 
-657	        <div class="attraction-card__body"> 
-658	          <div class="attraction-card__top"> 
-659	            <h2 class="attraction-card__name">ART AQUARIUM MUSEUM</h2> 
-660	            <span class="type-badge type-badge--museo">Museo de Arte</span> 
-661	          </div> 
-662	          <p class="attraction-card__notes">Espectáculo visual de peces goldfish artísticos (en Ginza/Ueno según temporada).</p> 
-663	          <button class="map-btn" data-place-name="ART AQUARIUM MUSEUM" data-map-url="https://www.google.com/maps/search/?api=1&query=ART%20AQUARIUM%20MUSEUM%2C%20Tokyo" aria-label="Ver en mapa"> 
-664	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-665	          </button> 
-666	        </div> 
-667	      </article> 
-668	 
-669	      <article class="attraction-card"> 
-670	        <div class="attraction-card__time-col"> 
-671	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-672	          <div class="timeline-line" aria-hidden="true"></div> 
-673	        </div> 
-674	        <div class="attraction-card__body"> 
-675	          <div class="attraction-card__top"> 
-676	            <h2 class="attraction-card__name">Ciudad Electrónica de Akihabara</h2> 
-677	            <span class="type-badge type-badge--geek">Geek / Tech</span> 
-678	          </div> 
-679	          <p class="attraction-card__notes">Tiendas de tecnología, anime y videojuegos. Explora las calles principales.</p> 
-680	          <button class="map-btn" data-place-name="Ciudad Electrónica de Akihabara" data-map-url="https://www.google.com/maps/search/?api=1&query=Akihabara%2C%20Tokyo" aria-label="Ver en mapa"> 
-681	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-682	          </button> 
-683	        </div> 
-684	      </article> 
-685	 
-686	      <article class="attraction-card"> 
-687	        <div class="attraction-card__time-col"> 
-688	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-689	          <div class="timeline-line" aria-hidden="true"></div> 
-690	        </div> 
-691	        <div class="attraction-card__body"> 
-692	          <div class="attraction-card__top"> 
-693	            <h2 class="attraction-card__name">Akihabara (Barrio)</h2> 
-694	            <span class="type-badge type-badge--barrio">Barrio / Compras</span> 
-695	          </div> 
-696	          <p class="attraction-card__notes">Caminata por el barrio y cena temática o de ramen local.</p> 
-697	          <button class="map-btn" data-place-name="Akihabara" data-map-url="https://www.google.com/maps/search/?api=1&query=Akihabara%2C%20Tokyo" aria-label="Ver en mapa"> 
-698	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-699	          </button> 
-700	        </div> 
-701	      </article> 
-702	 
-703	      <article class="attraction-card"> 
-704	        <div class="attraction-card__time-col"> 
-705	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-706	          <div class="timeline-line" aria-hidden="true"></div> 
-707	        </div> 
-708	        <div class="attraction-card__body"> 
-709	          <div class="attraction-card__top"> 
-710	            <h2 class="attraction-card__name">Tokyo Skytree</h2> 
-711	            <span class="type-badge type-badge--mirador">Mirador</span> 
-712	          </div> 
-713	          <p class="attraction-card__notes">Sube al anochecer para ver la espectacular vista panorámica iluminada de Tokio.</p> 
-714	          <button class="map-btn" data-place-name="Tokyo Skytree" data-map-url="https://www.google.com/maps/search/?api=1&query=Tokyo%20Skytree" aria-label="Ver en mapa"> 
-715	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-716	          </button> 
-717	        </div> 
-718	      </article> 
-719	 
-720	    </div> 
-721	  </section> 
-722	 
-723	  <!-- TOKIO · DÍA 2 --> 
-724	  <section class="day-panel" id="tokio-day-2" role="tabpanel"> 
-725	    <div class="day-panel__heading" aria-hidden="true"> 
-726	      <span class="day-panel__num">02</span> 
-727	      <span class="day-panel__label">Día 2</span> 
-728	    </div> 
-729	    <div class="timeline"> 
-730	 
-731	      <article class="attraction-card"> 
-732	        <div class="attraction-card__time-col"> 
-733	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-734	          <div class="timeline-line" aria-hidden="true"></div> 
-735	        </div> 
-736	        <div class="attraction-card__body"> 
-737	          <div class="attraction-card__top"> 
-738	            <h2 class="attraction-card__name">Kōkyo (Palacio Imperial)</h2> 
-739	            <span class="type-badge type-badge--castillo">Palacio Imperial</span> 
-740	          </div> 
-741	          <p class="attraction-card__notes">Paseo por los jardines exteriores del palacio imperial.</p> 
-742	          <button class="map-btn" data-place-name="Palacio Imperial de Tokio" data-map-url="https://www.google.com/maps/search/?api=1&query=Imperial%20Palace%20Tokyo" aria-label="Ver en mapa"> 
-743	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-744	          </button> 
-745	        </div> 
-746	      </article> 
-747	 
-748	      <article class="attraction-card"> 
-749	        <div class="attraction-card__time-col"> 
-750	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-751	          <div class="timeline-line" aria-hidden="true"></div> 
-752	        </div> 
-753	        <div class="attraction-card__body"> 
-754	          <div class="attraction-card__top"> 
-755	            <h2 class="attraction-card__name">Jardines de Hamarikyu</h2> 
-756	            <span class="type-badge type-badge--jardin">Jardín Tradicional</span> 
-757	          </div> 
-758	          <p class="attraction-card__notes">Precioso jardín junto a la bahía. Puedes tomar un té verde en la casa flotante.</p> 
-759	          <button class="map-btn" data-place-name="Jardines de Hamarikyu" data-map-url="https://www.google.com/maps/search/?api=1&query=Hamarikyu%20Gardens%2C%20Tokyo" aria-label="Ver en mapa"> 
-760	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-761	          </button> 
-762	        </div> 
-763	      </article> 
-764	 
-765	      <article class="attraction-card"> 
-766	        <div class="attraction-card__time-col"> 
-767	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-768	          <div class="timeline-line" aria-hidden="true"></div> 
-769	        </div> 
-770	        <div class="attraction-card__body"> 
-771	          <div class="attraction-card__top"> 
-772	            <h2 class="attraction-card__name">Fish Market Tsukiji Outer Market</h2> 
-773	            <span class="type-badge type-badge--mercado">Mercado de Comida</span> 
-774	          </div> 
-775	          <p class="attraction-card__notes">Almuerzo fresco: sushi, brochetas de mariscos, tamagoyaki y comida callejera.</p> 
-776	          <button class="map-btn" data-place-name="Tsukiji Outer Market" data-map-url="https://www.google.com/maps/search/?api=1&query=Tsukiji%20Outer%20Market%2C%20Tokyo" aria-label="Ver en mapa"> 
-777	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-778	          </button> 
-779	        </div> 
-780	      </article> 
-781	 
-782	      <article class="attraction-card"> 
-783	        <div class="attraction-card__time-col"> 
-784	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-785	          <div class="timeline-line" aria-hidden="true"></div> 
-786	        </div> 
-787	        <div class="attraction-card__body"> 
-788	          <div class="attraction-card__top"> 
-789	            <h2 class="attraction-card__name">Jardín Nacional Shinjuku Gyoen</h2> 
-790	            <span class="type-badge type-badge--jardin">Jardín</span> 
-791	          </div> 
-792	          <p class="attraction-card__notes">Inmenso parque que combina estilos japonés, inglés y francés.</p> 
-793	          <button class="map-btn" data-place-name="Shinjuku Gyoen" data-map-url="https://www.google.com/maps/search/?api=1&query=Shinjuku%20Gyoen%2C%20Tokyo" aria-label="Ver en mapa"> 
-794	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-795	          </button> 
-796	        </div> 
-797	      </article> 
-798	 
-799	      <article class="attraction-card"> 
-800	        <div class="attraction-card__time-col"> 
-801	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-802	          <div class="timeline-line" aria-hidden="true"></div> 
-803	        </div> 
-804	        <div class="attraction-card__body"> 
-805	          <div class="attraction-card__top"> 
-806	            <h2 class="attraction-card__name">Cabeza de Godzilla</h2> 
-807	            <span class="type-badge type-badge--atraccion">Atracción Icónica</span> 
-808	          </div> 
-809	          <p class="attraction-card__notes">Ubicada en Shinjuku (Kabukicho). Ruge y se ilumina a las horas en punto.</p> 
-810	          <button class="map-btn" data-place-name="Godzilla Head Shinjuku" data-map-url="https://www.google.com/maps/search/?api=1&query=Godzilla%20Head%20Shinjuku%2C%20Tokyo" aria-label="Ver en mapa"> 
-811	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-812	          </button> 
-813	        </div> 
-814	      </article> 
-815	 
-816	    </div> 
-817	  </section> 
-818	 
-819	  <!-- TOKIO · DÍA 3 (Excursión Nikkō) --> 
-820	  <section class="day-panel" id="tokio-day-3" role="tabpanel"> 
-821	    <div class="day-panel__heading" aria-hidden="true"> 
-822	      <span class="day-panel__num">03</span> 
-823	      <span class="day-panel__label">Día 3 · Nikkō</span> 
-824	    </div> 
-825	    <div class="fullday-card"> 
-826	      <div class="fullday-card__banner" data-emoji="⛩️"> 
-827	        <div class="fullday-card__time">📅 &nbsp;Todo el Día</div> 
-828	        <h2 class="fullday-card__name">Parque Nacional de Nikkō</h2> 
-829	      </div> 
-830	      <div class="fullday-card__body"> 
-831	        <span class="type-badge">Excursión · Parque Nacional</span> 
-832	        <p class="fullday-card__notes">Santuarios históricos (Toshogu), naturaleza, cascadas y puentes sagrados. Una escapada mágica fuera de la ciudad.</p> 
-833	        <button class="map-btn" data-place-name="Parque Nacional de Nikkō" data-map-url="https://www.google.com/maps/search/?api=1&query=Nikko%20National%20Park%2C%20Japan" aria-label="Ver en mapa"> 
-834	          <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-835	        </button> 
-836	      </div> 
-837	    </div> 
-838	  </section> 
-839	 
-840	  <!-- TOKIO · DÍA 4 (DisneySea) --> 
-841	  <section class="day-panel" id="tokio-day-4" role="tabpanel"> 
-842	    <div class="day-panel__heading" aria-hidden="true"> 
-843	      <span class="day-panel__num">04</span> 
-844	      <span class="day-panel__label">Día 4</span> 
-845	    </div> 
-846	    <div class="fullday-card"> 
-847	      <div class="fullday-card__banner" data-emoji="🎡"> 
-848	        <div class="fullday-card__time">📅 &nbsp;Todo el Día</div> 
-849	        <h2 class="fullday-card__name">Tokyo DisneySea</h2> 
-850	      </div> 
-851	      <div class="fullday-card__body"> 
-852	        <span class="type-badge">Parque Temático</span> 
-853	        <p class="fullday-card__notes">Parque único en el mundo enfocado en mitos náuticos. ¡Llega antes de la apertura!</p> 
-854	        <button class="map-btn" data-place-name="Tokyo DisneySea" data-map-url="https://www.google.com/maps/search/?api=1&query=Tokyo%20DisneySea" aria-label="Ver en mapa"> 
-855	          <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-856	        </button> 
-857	      </div> 
-858	    </div> 
-859	  </section> 
-860	 
-861	  <!-- TOKIO · DÍA 5 --> 
-862	  <section class="day-panel" id="tokio-day-5" role="tabpanel"> 
-863	    <div class="day-panel__heading" aria-hidden="true"> 
-864	      <span class="day-panel__num">05</span> 
-865	      <span class="day-panel__label">Día 5</span> 
-866	    </div> 
-867	    <div class="timeline"> 
-868	 
-869	      <article class="attraction-card"> 
-870	        <div class="attraction-card__time-col"> 
-871	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-872	          <div class="timeline-line" aria-hidden="true"></div> 
-873	        </div> 
-874	        <div class="attraction-card__body"> 
-875	          <div class="attraction-card__top"> 
-876	            <h2 class="attraction-card__name">Santuario Meiji</h2> 
-877	            <span class="type-badge type-badge--santuario">Santuario</span> 
-878	          </div> 
-879	          <p class="attraction-card__notes">Paseo tranquilo y espiritual por el bosque en medio de la ciudad.</p> 
-880	          <button class="map-btn" data-place-name="Santuario Meiji" data-map-url="https://www.google.com/maps/search/?api=1&query=Meiji%20Shrine%2C%20Tokyo" aria-label="Ver en mapa"> 
-881	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-882	          </button> 
-883	        </div> 
-884	      </article> 
-885	 
-886	      <article class="attraction-card"> 
-887	        <div class="attraction-card__time-col"> 
-888	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-889	          <div class="timeline-line" aria-hidden="true"></div> 
-890	        </div> 
-891	        <div class="attraction-card__body"> 
-892	          <div class="attraction-card__top"> 
-893	            <h2 class="attraction-card__name">Parque Yoyogi</h2> 
-894	            <span class="type-badge type-badge--parque">Parque</span> 
-895	          </div> 
-896	          <p class="attraction-card__notes">Justo al lado del Santuario Meiji. Muy animado los fines de semana.</p> 
-897	          <button class="map-btn" data-place-name="Parque Yoyogi" data-map-url="https://www.google.com/maps/search/?api=1&query=Yoyogi%20Park%2C%20Tokyo" aria-label="Ver en mapa"> 
-898	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-899	          </button> 
-900	        </div> 
-901	      </article> 
-902	 
-903	      <article class="attraction-card"> 
-904	        <div class="attraction-card__time-col"> 
-905	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-906	          <div class="timeline-line" aria-hidden="true"></div> 
-907	        </div> 
-908	        <div class="attraction-card__body"> 
-909	          <div class="attraction-card__top"> 
-910	            <h2 class="attraction-card__name">Marion Crepes</h2> 
-911	            <span class="type-badge type-badge--creperia">Crepería</span> 
-912	          </div> 
-913	          <p class="attraction-card__notes">Ubicado en Harajuku (calle Takeshita). Los crepes icónicos de Tokio.</p> 
-914	          <button class="map-btn" data-place-name="Marion Crepes Harajuku" data-map-url="https://www.google.com/maps/search/?api=1&query=Marion%20Crepes%20Harajuku%2C%20Tokyo" aria-label="Ver en mapa"> 
-915	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-916	          </button> 
-917	        </div> 
-918	      </article> 
-919	 
-920	      <article class="attraction-card"> 
-921	        <div class="attraction-card__time-col"> 
-922	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-923	          <div class="timeline-line" aria-hidden="true"></div> 
-924	        </div> 
-925	        <div class="attraction-card__body"> 
-926	          <div class="attraction-card__top"> 
-927	            <h2 class="attraction-card__name">Shibuya (Barrio)</h2> 
-928	            <span class="type-badge type-badge--barrio">Barrio / Cruce Icónico</span> 
-929	          </div> 
-930	          <p class="attraction-card__notes">Cruza el famoso paso de peatones 'Scramble Crossing'.</p> 
-931	          <button class="map-btn" data-place-name="Shibuya Scramble Crossing" data-map-url="https://www.google.com/maps/search/?api=1&query=Shibuya%20Scramble%20Crossing%2C%20Tokyo" aria-label="Ver en mapa"> 
-932	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-933	          </button> 
-934	        </div> 
-935	      </article> 
-936	 
-937	      <article class="attraction-card"> 
-938	        <div class="attraction-card__time-col"> 
-939	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-940	          <div class="timeline-line" aria-hidden="true"></div> 
-941	        </div> 
-942	        <div class="attraction-card__body"> 
-943	          <div class="attraction-card__top"> 
-944	            <h2 class="attraction-card__name">Hachiko Statue</h2> 
-945	            <span class="type-badge type-badge--escultura">Escultura</span> 
-946	          </div> 
-947	          <p class="attraction-card__notes">Punto de encuentro clásico justo afuera de la estación de Shibuya.</p> 
-948	          <button class="map-btn" data-place-name="Hachiko Statue" data-map-url="https://www.google.com/maps/search/?api=1&query=Hachiko%20Statue%2C%20Shibuya%2C%20Tokyo" aria-label="Ver en mapa"> 
-949	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-950	          </button> 
-951	        </div> 
-952	      </article> 
-953	 
-954	      <article class="attraction-card"> 
-955	        <div class="attraction-card__time-col"> 
-956	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-957	          <div class="timeline-line" aria-hidden="true"></div> 
-958	        </div> 
-959	        <div class="attraction-card__body"> 
-960	          <div class="attraction-card__top"> 
-961	            <h2 class="attraction-card__name">Nintendo Tokyo</h2> 
-962	            <span class="type-badge type-badge--tienda">Tienda Oficial</span> 
-963	          </div> 
-964	          <p class="attraction-card__notes">En el edificio Shibuya Parco. Tienda oficial con figuras y merch exclusivo.</p> 
-965	          <button class="map-btn" data-place-name="Nintendo Tokyo" data-map-url="https://www.google.com/maps/search/?api=1&query=Nintendo%20Tokyo%2C%20Shibuya%20Parco" aria-label="Ver en mapa"> 
-966	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-967	          </button> 
-968	        </div> 
-969	      </article> 
-970	 
-971	      <article class="attraction-card"> 
-972	        <div class="attraction-card__time-col"> 
-973	          <div class="time-block"><span class="time-block__emoji">🌇</span><span class="time-block__label">Atardecer</span></div> 
-974	          <div class="timeline-line" aria-hidden="true"></div> 
-975	        </div> 
-976	        <div class="attraction-card__body"> 
-977	          <div class="attraction-card__top"> 
-978	            <h2 class="attraction-card__name">Shibuya SKY</h2> 
-979	            <span class="type-badge type-badge--mirador">Mirador</span> 
-980	          </div> 
-981	          <p class="attraction-card__notes">Espectacular mirador abierto en el piso superior. Reserva horario para el atardecer.</p> 
-982	          <button class="map-btn" data-place-name="Shibuya SKY" data-map-url="https://www.google.com/maps/search/?api=1&query=Shibuya%20SKY%2C%20Tokyo" aria-label="Ver en mapa"> 
-983	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-984	          </button> 
-985	        </div> 
-986	      </article> 
-987	 
-988	      <article class="attraction-card"> 
-989	        <div class="attraction-card__time-col"> 
-990	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-991	          <div class="timeline-line" aria-hidden="true"></div> 
-992	        </div> 
-993	        <div class="attraction-card__body"> 
-994	          <div class="attraction-card__top"> 
-995	            <h2 class="attraction-card__name">Unicorn Gundam</h2> 
-996	            <span class="type-badge type-badge--atraccion">Atracción Icónica</span> 
-997	          </div> 
-998	          <p class="attraction-card__notes">Estatua gigante a escala real en Odaiba. Show de luces y transformación por la noche.</p> 
-999	          <button class="map-btn" data-place-name="Unicorn Gundam Odaiba" data-map-url="https://www.google.com/maps/search/?api=1&query=Unicorn%20Gundam%20Odaiba%2C%20Tokyo" aria-label="Ver en mapa"> 
-1000	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1001	          </button> 
-1002	        </div> 
-1003	      </article> 
-1004	 
-1005	    </div> 
-1006	  </section> 
-1007	 
-1008	  <!-- ══════════════════════════════════════════ 
-1009	       KIOTO 
-1010	  ══════════════════════════════════════════ --> 
-1011	 
-1012	  <!-- KIOTO · DÍA 1 --> 
-1013	  <section class="day-panel" id="kioto-day-1" role="tabpanel"> 
-1014	    <div class="day-panel__heading" aria-hidden="true"> 
-1015	      <span class="day-panel__num">01</span> 
-1016	      <span class="day-panel__label">Día 1</span> 
-1017	    </div> 
-1018	    <div class="timeline"> 
-1019	 
-1020	      <article class="attraction-card"> 
-1021	        <div class="attraction-card__time-col"> 
-1022	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1023	          <div class="timeline-line" aria-hidden="true"></div> 
-1024	        </div> 
-1025	        <div class="attraction-card__body"> 
-1026	          <div class="attraction-card__top"> 
-1027	            <h2 class="attraction-card__name">Castillo Nijō</h2> 
-1028	            <span class="type-badge type-badge--castillo">Castillo</span> 
-1029	          </div> 
-1030	          <p class="attraction-card__notes">Comienza temprano para ver este histórico palacio shogunal con sus famosos 'suelos de ruiseñor'.</p> 
-1031	          <button class="map-btn" data-place-name="Castillo Nijō" data-map-url="https://www.google.com/maps/search/?api=1&query=Nijo%20Castle%2C%20Kyoto" aria-label="Ver en mapa"> 
-1032	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1033	          </button> 
-1034	        </div> 
-1035	      </article> 
-1036	 
-1037	      <article class="attraction-card"> 
-1038	        <div class="attraction-card__time-col"> 
-1039	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-1040	          <div class="timeline-line" aria-hidden="true"></div> 
-1041	        </div> 
-1042	        <div class="attraction-card__body"> 
-1043	          <div class="attraction-card__top"> 
-1044	            <h2 class="attraction-card__name">Nishiki Market</h2> 
-1045	            <span class="type-badge type-badge--mercado">Mercado</span> 
-1046	          </div> 
-1047	          <p class="attraction-card__notes">El 'mercado de la cocina de Kioto'. Perfecto para almorzar brochetas, matcha, mariscos y comida local.</p> 
-1048	          <button class="map-btn" data-place-name="Nishiki Market Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Nishiki%20Market%2C%20Kyoto" aria-label="Ver en mapa"> 
-1049	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1050	          </button> 
-1051	        </div> 
-1052	      </article> 
-1053	 
-1054	      <article class="attraction-card"> 
-1055	        <div class="attraction-card__time-col"> 
-1056	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1057	          <div class="timeline-line" aria-hidden="true"></div> 
-1058	        </div> 
-1059	        <div class="attraction-card__body"> 
-1060	          <div class="attraction-card__top"> 
-1061	            <h2 class="attraction-card__name">Kiyomizu-dera</h2> 
-1062	            <span class="type-badge type-badge--templo">Templo Budista</span> 
-1063	          </div> 
-1064	          <p class="attraction-card__notes">Icónico templo con terraza de madera colosal. Ofrece espectaculares vistas de la ciudad.</p> 
-1065	          <button class="map-btn" data-place-name="Kiyomizudera" data-map-url="https://www.google.com/maps/search/?api=1&query=Kiyomizudera%2C%20Kyoto" aria-label="Ver en mapa"> 
-1066	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1067	          </button> 
-1068	        </div> 
-1069	      </article> 
-1070	 
-1071	      <article class="attraction-card"> 
-1072	        <div class="attraction-card__time-col"> 
-1073	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1074	          <div class="timeline-line" aria-hidden="true"></div> 
-1075	        </div> 
-1076	        <div class="attraction-card__body"> 
-1077	          <div class="attraction-card__top"> 
-1078	            <h2 class="attraction-card__name">Sannenzaka</h2> 
-1079	            <span class="type-badge type-badge--atraccion">Calle Histórica</span> 
-1080	          </div> 
-1081	          <p class="attraction-card__notes">Hermosa calle empedrada tradicional que desciende de Kiyomizu-dera. Tiendas de souvenirs y casas de té.</p> 
-1082	          <button class="map-btn" data-place-name="Sannenzaka Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Sannenzaka%2C%20Kyoto" aria-label="Ver en mapa"> 
-1083	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1084	          </button> 
-1085	        </div> 
-1086	      </article> 
-1087	 
-1088	      <article class="attraction-card"> 
-1089	        <div class="attraction-card__time-col"> 
-1090	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1091	          <div class="timeline-line" aria-hidden="true"></div> 
-1092	        </div> 
-1093	        <div class="attraction-card__body"> 
-1094	          <div class="attraction-card__top"> 
-1095	            <h2 class="attraction-card__name">Templo Kōdai-ji</h2> 
-1096	            <span class="type-badge type-badge--templo">Templo Budista</span> 
-1097	          </div> 
-1098	          <p class="attraction-card__notes">Templo zen con bellos jardines de piedra y un pequeño bosque de bambú tranquilo cerca de Higashiyama.</p> 
-1099	          <button class="map-btn" data-place-name="Kodaiji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Kodaiji%2C%20Kyoto" aria-label="Ver en mapa"> 
-1100	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1101	          </button> 
-1102	        </div> 
-1103	      </article> 
-1104	 
-1105	      <article class="attraction-card"> 
-1106	        <div class="attraction-card__time-col"> 
-1107	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-1108	          <div class="timeline-line" aria-hidden="true"></div> 
-1109	        </div> 
-1110	        <div class="attraction-card__body"> 
-1111	          <div class="attraction-card__top"> 
-1112	            <h2 class="attraction-card__name">Gion Corner</h2> 
-1113	            <span class="type-badge type-badge--teatro">Espectáculo</span> 
-1114	          </div> 
-1115	          <p class="attraction-card__notes">Ubicado en el barrio de las geishas. Presenta espectáculos de artes tradicionales japonesas.</p> 
-1116	          <button class="map-btn" data-place-name="Gion Corner Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Gion%20Corner%2C%20Kyoto" aria-label="Ver en mapa"> 
-1117	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1118	          </button> 
-1119	        </div> 
-1120	      </article> 
-1121	 
-1122	    </div> 
-1123	  </section> 
-1124	 
-1125	  <!-- KIOTO · DÍA 2 --> 
-1126	  <section class="day-panel" id="kioto-day-2" role="tabpanel"> 
-1127	    <div class="day-panel__heading" aria-hidden="true"> 
-1128	      <span class="day-panel__num">02</span> 
-1129	      <span class="day-panel__label">Día 2</span> 
-1130	    </div> 
-1131	    <div class="timeline"> 
-1132	 
-1133	      <article class="attraction-card"> 
-1134	        <div class="attraction-card__time-col"> 
-1135	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1136	          <div class="timeline-line" aria-hidden="true"></div> 
-1137	        </div> 
-1138	        <div class="attraction-card__body"> 
-1139	          <div class="attraction-card__top"> 
-1140	            <h2 class="attraction-card__name">Bosque de Bambú de Arashiyama</h2> 
-1141	            <span class="type-badge type-badge--parque">Naturaleza</span> 
-1142	          </div> 
-1143	          <p class="attraction-card__notes">Camina temprano entre los imponentes tallos de bambú verdes para disfrutar del sonido del viento.</p> 
-1144	          <button class="map-btn" data-place-name="Arashiyama Bamboo Grove" data-map-url="https://www.google.com/maps/search/?api=1&query=Arashiyama%20Bamboo%20Grove%2C%20Kyoto" aria-label="Ver en mapa"> 
-1145	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1146	          </button> 
-1147	        </div> 
-1148	      </article> 
-1149	 
-1150	      <article class="attraction-card"> 
-1151	        <div class="attraction-card__time-col"> 
-1152	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1153	          <div class="timeline-line" aria-hidden="true"></div> 
-1154	        </div> 
-1155	        <div class="attraction-card__body"> 
-1156	          <div class="attraction-card__top"> 
-1157	            <h2 class="attraction-card__name">Villa Imperial de Katsura</h2> 
-1158	            <span class="type-badge type-badge--castillo">Villa Imperial</span> 
-1159	          </div> 
-1160	          <p class="attraction-card__notes">Famosa por su villa imperial y paisajes sublimes junto al río Katsura, en la zona oeste.</p> 
-1161	          <button class="map-btn" data-place-name="Katsura Imperial Villa Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Katsura%20Imperial%20Villa%2C%20Kyoto" aria-label="Ver en mapa"> 
-1162	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1163	          </button> 
-1164	        </div> 
-1165	      </article> 
-1166	 
-1167	      <article class="attraction-card"> 
-1168	        <div class="attraction-card__time-col"> 
-1169	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-1170	          <div class="timeline-line" aria-hidden="true"></div> 
-1171	        </div> 
-1172	        <div class="attraction-card__body"> 
-1173	          <div class="attraction-card__top"> 
-1174	            <h2 class="attraction-card__name">Karesansui — Ryōan-ji</h2> 
-1175	            <span class="type-badge type-badge--jardin">Jardín Zen</span> 
-1176	          </div> 
-1177	          <p class="attraction-card__notes">Estilo de jardín seco para meditación. El famoso jardín de Ryoan-ji, cerca del Pabellón Dorado.</p> 
-1178	          <button class="map-btn" data-place-name="Ryoanji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Ryoanji%2C%20Kyoto" aria-label="Ver en mapa"> 
-1179	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1180	          </button> 
-1181	        </div> 
-1182	      </article> 
-1183	 
-1184	      <article class="attraction-card"> 
-1185	        <div class="attraction-card__time-col"> 
-1186	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1187	          <div class="timeline-line" aria-hidden="true"></div> 
-1188	        </div> 
-1189	        <div class="attraction-card__body"> 
-1190	          <div class="attraction-card__top"> 
-1191	            <h2 class="attraction-card__name">Pabellón Dorado (Kinkaku-ji)</h2> 
-1192	            <span class="type-badge type-badge--templo">Kinkaku-ji</span> 
-1193	          </div> 
-1194	          <p class="attraction-card__notes">Impresionante templo zen cuyos dos pisos superiores están completamente recubiertos de pan de oro puro.</p> 
-1195	          <button class="map-btn" data-place-name="Kinkakuji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Kinkakuji%2C%20Kyoto" aria-label="Ver en mapa"> 
-1196	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1197	          </button> 
-1198	        </div> 
-1199	      </article> 
-1200	 
-1201	      <article class="attraction-card"> 
-1202	        <div class="attraction-card__time-col"> 
-1203	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1204	          <div class="timeline-line" aria-hidden="true"></div> 
-1205	        </div> 
-1206	        <div class="attraction-card__body"> 
-1207	          <div class="attraction-card__top"> 
-1208	            <h2 class="attraction-card__name">Tetsugaku No Michi</h2> 
-1209	            <span class="type-badge type-badge--parque">Camino de la Filosofía</span> 
-1210	          </div> 
-1211	          <p class="attraction-card__notes">Precioso sendero empedrado al lado de un canal. Conecta la zona norte/este con templos pacíficos.</p> 
-1212	          <button class="map-btn" data-place-name="Philosophers Path Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Philosopher%27s%20Path%2C%20Kyoto" aria-label="Ver en mapa"> 
-1213	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1214	          </button> 
-1215	        </div> 
-1216	      </article> 
-1217	 
-1218	    </div> 
-1219	  </section> 
-1220	 
-1221	  <!-- KIOTO · DÍA 3 --> 
-1222	  <section class="day-panel" id="kioto-day-3" role="tabpanel"> 
-1223	    <div class="day-panel__heading" aria-hidden="true"> 
-1224	      <span class="day-panel__num">03</span> 
-1225	      <span class="day-panel__label">Día 3</span> 
-1226	    </div> 
-1227	    <div class="timeline"> 
-1228	 
-1229	      <article class="attraction-card"> 
-1230	        <div class="attraction-card__time-col"> 
-1231	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1232	          <div class="timeline-line" aria-hidden="true"></div> 
-1233	        </div> 
-1234	        <div class="attraction-card__body"> 
-1235	          <div class="attraction-card__top"> 
-1236	            <h2 class="attraction-card__name">Fushimi Inari-taisha</h2> 
-1237	            <span class="type-badge type-badge--santuario">Santuario</span> 
-1238	          </div> 
-1239	          <p class="attraction-card__notes">El santuario de los miles de toriis rojas que suben por la montaña. ¡Ve muy temprano (6–7 AM) para fotos vacías!</p> 
-1240	          <button class="map-btn" data-place-name="Fushimi Inari Taisha" data-map-url="https://www.google.com/maps/search/?api=1&query=Fushimi%20Inari%20Taisha%2C%20Kyoto" aria-label="Ver en mapa"> 
-1241	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1242	          </button> 
-1243	        </div> 
-1244	      </article> 
-1245	 
-1246	      <article class="attraction-card"> 
-1247	        <div class="attraction-card__time-col"> 
-1248	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-1249	          <div class="timeline-line" aria-hidden="true"></div> 
-1250	        </div> 
-1251	        <div class="attraction-card__body"> 
-1252	          <div class="attraction-card__top"> 
-1253	            <h2 class="attraction-card__name">Tōfuku-ji</h2> 
-1254	            <span class="type-badge type-badge--templo">Templo Budista</span> 
-1255	          </div> 
-1256	          <p class="attraction-card__notes">Famoso por su puente de madera cubierto con vistas a un mar de arces y sus espectaculares jardines zen.</p> 
-1257	          <button class="map-btn" data-place-name="Tofukuji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&query=Tofukuji%2C%20Kyoto" aria-label="Ver en mapa"> 
-1258	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1259	          </button> 
-1260	        </div> 
-1261	      </article> 
-1262	 
-1263	      <article class="attraction-card"> 
-1264	        <div class="attraction-card__time-col"> 
-1265	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1266	          <div class="timeline-line" aria-hidden="true"></div> 
-1267	        </div> 
-1268	        <div class="attraction-card__body"> 
-1269	          <div class="attraction-card__top"> 
-1270	            <h2 class="attraction-card__name">Byōdō-in (Uji)</h2> 
-1271	            <span class="type-badge type-badge--templo">Templo Budista</span> 
-1272	          </div> 
-1273	          <p class="attraction-card__notes">En Uji, cuna del matcha. Su Salón del Fénix es el que aparece impreso en las monedas de 10 yenes.</p> 
-1274	          <button class="map-btn" data-place-name="Byodoin Uji" data-map-url="https://www.google.com/maps/search/?api=1&query=Byodoin%2C%20Uji%2C%20Kyoto" aria-label="Ver en mapa"> 
-1275	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1276	          </button> 
-1277	        </div> 
-1278	      </article> 
-1279	 
-1280	    </div> 
-1281	  </section> 
-1282	 
-1283	  <!-- KIOTO · DÍA 4 — NARA --> 
-1284	  <section class="day-panel" id="kioto-day-4" role="tabpanel"> 
-1285	    <div class="day-panel__heading" aria-hidden="true"> 
-1286	      <span class="day-panel__num">04</span> 
-1287	      <span class="day-panel__label">Día 4 · Nara</span> 
-1288	    </div> 
-1289	    <div class="timeline"> 
-1290	 
-1291	      <article class="attraction-card"> 
-1292	        <div class="attraction-card__time-col"> 
-1293	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1294	          <div class="timeline-line" aria-hidden="true"></div> 
-1295	        </div> 
-1296	        <div class="attraction-card__body"> 
-1297	          <div class="attraction-card__top"> 
-1298	            <h2 class="attraction-card__name">Daibutsu-den — Tōdai-ji</h2> 
-1299	            <span class="type-badge type-badge--templo">Templo · Nara</span> 
-1300	          </div> 
-1301	          <p class="attraction-card__notes">Ubicado en Nara (~45 min en tren). Es el edificio de madera más grande del mundo y alberga el Gran Buda.</p> 
-1302	          <button class="map-btn" data-place-name="Todaiji Nara" data-map-url="https://www.google.com/maps/search/?api=1&query=Todaiji%2C%20Nara" aria-label="Ver en mapa"> 
-1303	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1304	          </button> 
-1305	        </div> 
-1306	      </article> 
-1307	 
-1308	      <article class="attraction-card"> 
-1309	        <div class="attraction-card__time-col"> 
-1310	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1311	          <div class="timeline-line" aria-hidden="true"></div> 
-1312	        </div> 
-1313	        <div class="attraction-card__body"> 
-1314	          <div class="attraction-card__top"> 
-1315	            <h2 class="attraction-card__name">Santuario Kasuga Taisha</h2> 
-1316	            <span class="type-badge type-badge--santuario">Santuario · Nara</span> 
-1317	          </div> 
-1318	          <p class="attraction-card__notes">Famoso santuario conocido por sus miles de linternas de piedra y bronce donadas por devotos.</p> 
-1319	          <button class="map-btn" data-place-name="Kasuga Taisha Nara" data-map-url="https://www.google.com/maps/search/?api=1&query=Kasuga%20Taisha%2C%20Nara" aria-label="Ver en mapa"> 
-1320	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1321	          </button> 
-1322	        </div> 
-1323	      </article> 
-1324	 
-1325	    </div> 
-1326	  </section> 
-1327	 
-1328	  <!-- ══════════════════════════════════════════ 
-1329	       OSAKA 
-1330	  ══════════════════════════════════════════ --> 
-1331	 
-1332	  <!-- OSAKA · DÍA 1 --> 
-1333	  <section class="day-panel" id="osaka-day-1" role="tabpanel"> 
-1334	    <div class="day-panel__heading" aria-hidden="true"> 
-1335	      <span class="day-panel__num">01</span> 
-1336	      <span class="day-panel__label">Día 1</span> 
-1337	    </div> 
-1338	    <div class="timeline"> 
-1339	 
-1340	      <article class="attraction-card"> 
-1341	        <div class="attraction-card__time-col"> 
-1342	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1343	          <div class="timeline-line" aria-hidden="true"></div> 
-1344	        </div> 
-1345	        <div class="attraction-card__body"> 
-1346	          <div class="attraction-card__top"> 
-1347	            <h2 class="attraction-card__name">Castillo de Osaka</h2> 
-1348	            <span class="type-badge type-badge--castillo">Castillo</span> 
-1349	          </div> 
-1350	          <p class="attraction-card__notes">Icono de la ciudad. Explora la gran torre del homenaje y pasea por los fosos y jardines.</p> 
-1351	          <button class="map-btn" data-place-name="Castillo de Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Osaka%20Castle" aria-label="Ver en mapa"> 
-1352	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1353	          </button> 
-1354	        </div> 
-1355	      </article> 
-1356	 
-1357	      <article class="attraction-card"> 
-1358	        <div class="attraction-card__time-col"> 
-1359	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1360	          <div class="timeline-line" aria-hidden="true"></div> 
-1361	        </div> 
-1362	        <div class="attraction-card__body"> 
-1363	          <div class="attraction-card__top"> 
-1364	            <h2 class="attraction-card__name">Umeda Sky Building</h2> 
-1365	            <span class="type-badge type-badge--mirador">Mirador</span> 
-1366	          </div> 
-1367	          <p class="attraction-card__notes">Rascacielos futurista con observatorio flotante al aire libre. Excelentes vistas arquitectónicas.</p> 
-1368	          <button class="map-btn" data-place-name="Umeda Sky Building Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Umeda%20Sky%20Building%2C%20Osaka" aria-label="Ver en mapa"> 
-1369	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1370	          </button> 
-1371	        </div> 
-1372	      </article> 
-1373	 
-1374	      <article class="attraction-card"> 
-1375	        <div class="attraction-card__time-col"> 
-1376	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-1377	          <div class="timeline-line" aria-hidden="true"></div> 
-1378	        </div> 
-1379	        <div class="attraction-card__body"> 
-1380	          <div class="attraction-card__top"> 
-1381	            <h2 class="attraction-card__name">Dōtonbori</h2> 
-1382	            <span class="type-badge type-badge--atraccion">Zona Icónica</span> 
-1383	          </div> 
-1384	          <p class="attraction-card__notes">El corazón de neón de Osaka. Zona mítica para fotos con el Glico Man y comer Takoyaki.</p> 
-1385	          <button class="map-btn" data-place-name="Dotonbori Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Dotonbori%2C%20Osaka" aria-label="Ver en mapa"> 
-1386	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1387	          </button> 
-1388	        </div> 
-1389	      </article> 
-1390	 
-1391	      <article class="attraction-card"> 
-1392	        <div class="attraction-card__time-col"> 
-1393	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-1394	          <div class="timeline-line" aria-hidden="true"></div> 
-1395	        </div> 
-1396	        <div class="attraction-card__body"> 
-1397	          <div class="attraction-card__top"> 
-1398	            <h2 class="attraction-card__name">Don Quijote Dotonbori</h2> 
-1399	            <span class="type-badge type-badge--tienda">Tienda 24h</span> 
-1400	          </div> 
-1401	          <p class="attraction-card__notes">Tienda gigante multinivel abierta 24 horas. Cuenta con una icónica noria en su fachada.</p> 
-1402	          <button class="map-btn" data-place-name="Don Quijote Dotonbori" data-map-url="https://www.google.com/maps/search/?api=1&query=Don%20Quijote%20Dotonbori%2C%20Osaka" aria-label="Ver en mapa"> 
-1403	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1404	          </button> 
-1405	        </div> 
-1406	      </article> 
-1407	 
-1408	      <article class="attraction-card"> 
-1409	        <div class="attraction-card__time-col"> 
-1410	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-1411	          <div class="timeline-line" aria-hidden="true"></div> 
-1412	        </div> 
-1413	        <div class="attraction-card__body"> 
-1414	          <div class="attraction-card__top"> 
-1415	            <h2 class="attraction-card__name">Hozenji Yokocho</h2> 
-1416	            <span class="type-badge type-badge--barrio">Callejón Histórico</span> 
-1417	          </div> 
-1418	          <p class="attraction-card__notes">Pequeño y mágico callejón empedrado tradicional con linternas de papel, justo al lado del canal.</p> 
-1419	          <button class="map-btn" data-place-name="Hozenji Yokocho Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Hozenji%20Yokocho%2C%20Osaka" aria-label="Ver en mapa"> 
-1420	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1421	          </button> 
-1422	        </div> 
-1423	      </article> 
-1424	 
-1425	    </div> 
-1426	  </section> 
-1427	 
-1428	  <!-- OSAKA · DÍA 2 --> 
-1429	  <section class="day-panel" id="osaka-day-2" role="tabpanel"> 
-1430	    <div class="day-panel__heading" aria-hidden="true"> 
-1431	      <span class="day-panel__num">02</span> 
-1432	      <span class="day-panel__label">Día 2</span> 
-1433	    </div> 
-1434	    <div class="timeline"> 
-1435	 
-1436	      <article class="attraction-card"> 
-1437	        <div class="attraction-card__time-col"> 
-1438	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1439	          <div class="timeline-line" aria-hidden="true"></div> 
-1440	        </div> 
-1441	        <div class="attraction-card__body"> 
-1442	          <div class="attraction-card__top"> 
-1443	            <h2 class="attraction-card__name">Acuario de Osaka — Kaiyukan</h2> 
-1444	            <span class="type-badge type-badge--acuario">Acuario</span> 
-1445	          </div> 
-1446	          <p class="attraction-card__notes">El famoso acuario Kaiyukan, uno de los más grandes del mundo con un colosal tiburón ballena.</p> 
-1447	          <button class="map-btn" data-place-name="Osaka Aquarium Kaiyukan" data-map-url="https://www.google.com/maps/search/?api=1&query=Osaka%20Aquarium%20Kaiyukan" aria-label="Ver en mapa"> 
-1448	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1449	          </button> 
-1450	        </div> 
-1451	      </article> 
-1452	 
-1453	      <article class="attraction-card"> 
-1454	        <div class="attraction-card__time-col"> 
-1455	          <div class="time-block"><span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span></div> 
-1456	          <div class="timeline-line" aria-hidden="true"></div> 
-1457	        </div> 
-1458	        <div class="attraction-card__body"> 
-1459	          <div class="attraction-card__top"> 
-1460	            <h2 class="attraction-card__name">Tempozan Ferris Wheel</h2> 
-1461	            <span class="type-badge type-badge--atraccion">Noria</span> 
-1462	          </div> 
-1463	          <p class="attraction-card__notes">Ubicada al lado del acuario. Disfruta de vistas relajantes del puerto industrial de Osaka.</p> 
-1464	          <button class="map-btn" data-place-name="Tempozan Ferris Wheel Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Tempozan%20Ferris%20Wheel%2C%20Osaka" aria-label="Ver en mapa"> 
-1465	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1466	          </button> 
-1467	        </div> 
-1468	      </article> 
-1469	 
-1470	      <article class="attraction-card"> 
-1471	        <div class="attraction-card__time-col"> 
-1472	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1473	          <div class="timeline-line" aria-hidden="true"></div> 
-1474	        </div> 
-1475	        <div class="attraction-card__body"> 
-1476	          <div class="attraction-card__top"> 
-1477	            <h2 class="attraction-card__name">Namba Parks</h2> 
-1478	            <span class="type-badge type-badge--barrio">Centro Comercial</span> 
-1479	          </div> 
-1480	          <p class="attraction-card__notes">Centro comercial moderno famoso por su arquitectura de cañón y su enorme jardín botánico en terrazas.</p> 
-1481	          <button class="map-btn" data-place-name="Namba Parks Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Namba%20Parks%2C%20Osaka" aria-label="Ver en mapa"> 
-1482	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1483	          </button> 
-1484	        </div> 
-1485	      </article> 
-1486	 
-1487	      <article class="attraction-card"> 
-1488	        <div class="attraction-card__time-col"> 
-1489	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1490	          <div class="timeline-line" aria-hidden="true"></div> 
-1491	        </div> 
-1492	        <div class="attraction-card__body"> 
-1493	          <div class="attraction-card__top"> 
-1494	            <h2 class="attraction-card__name">Calle Shinsekai Hondori</h2> 
-1495	            <span class="type-badge type-badge--barrio">Zona Tradicional</span> 
-1496	          </div> 
-1497	          <p class="attraction-card__notes">Barrio de ambiente retro nostálgico con restaurantes de brochetas fritas (Kushikatsu).</p> 
-1498	          <button class="map-btn" data-place-name="Shinsekai Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Shinsekai%2C%20Osaka" aria-label="Ver en mapa"> 
-1499	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1500	          </button> 
-1501	        </div> 
-1502	      </article> 
-1503	 
-1504	      <article class="attraction-card"> 
-1505	        <div class="attraction-card__time-col"> 
-1506	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1507	          <div class="timeline-line" aria-hidden="true"></div> 
-1508	        </div> 
-1509	        <div class="attraction-card__body"> 
-1510	          <div class="attraction-card__top"> 
-1511	            <h2 class="attraction-card__name">Mercado Shin-sekai</h2> 
-1512	            <span class="type-badge type-badge--mercado">Mercado Local</span> 
-1513	          </div> 
-1514	          <p class="attraction-card__notes">Mercado cubierto local donde verás la vida cotidiana más auténtica de Osaka.</p> 
-1515	          <button class="map-btn" data-place-name="Shin-sekai Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Shinsekai%20Market%2C%20Osaka" aria-label="Ver en mapa"> 
-1516	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1517	          </button> 
-1518	        </div> 
-1519	      </article> 
-1520	 
-1521	      <article class="attraction-card"> 
-1522	        <div class="attraction-card__time-col"> 
-1523	          <div class="time-block"><span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span></div> 
-1524	          <div class="timeline-line" aria-hidden="true"></div> 
-1525	        </div> 
-1526	        <div class="attraction-card__body"> 
-1527	          <div class="attraction-card__top"> 
-1528	            <h2 class="attraction-card__name">Harukas 300</h2> 
-1529	            <span class="type-badge type-badge--mirador">Mirador</span> 
-1530	          </div> 
-1531	          <p class="attraction-card__notes">Sube al rascacielos más alto de Osaka en Tennoji para disfrutar de la mejor vista nocturna de la región.</p> 
-1532	          <button class="map-btn" data-place-name="Abeno Harukas Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Abeno%20Harukas%2C%20Osaka" aria-label="Ver en mapa"> 
-1533	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1534	          </button> 
-1535	        </div> 
-1536	      </article> 
-1537	 
-1538	    </div> 
-1539	  </section> 
-1540	 
-1541	  <!-- OSAKA · DÍA 3 (Himeji) --> 
-1542	  <section class="day-panel" id="osaka-day-3" role="tabpanel"> 
-1543	    <div class="day-panel__heading" aria-hidden="true"> 
-1544	      <span class="day-panel__num">03</span> 
-1545	      <span class="day-panel__label">Día 3 · Himeji</span> 
-1546	    </div> 
-1547	    <div class="timeline"> 
-1548	 
-1549	      <article class="attraction-card"> 
-1550	        <div class="attraction-card__time-col"> 
-1551	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana / Tarde</span></div> 
-1552	          <div class="timeline-line" aria-hidden="true"></div> 
-1553	        </div> 
-1554	        <div class="attraction-card__body"> 
-1555	          <div class="attraction-card__top"> 
-1556	            <h2 class="attraction-card__name">Castillo de Himeji</h2> 
-1557	            <span class="type-badge type-badge--castillo">Castillo · Excursión</span> 
-1558	          </div> 
-1559	          <p class="attraction-card__notes">Patrimonio de la Humanidad. El castillo original mejor conservado de Japón (a unos 40 min en Shinkansen desde Osaka).</p> 
-1560	          <button class="map-btn" data-place-name="Castillo de Himeji" data-map-url="https://www.google.com/maps/search/?api=1&query=Himeji%20Castle" aria-label="Ver en mapa"> 
-1561	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1562	          </button> 
-1563	        </div> 
-1564	      </article> 
-1565	 
-1566	      <article class="attraction-card"> 
-1567	        <div class="attraction-card__time-col"> 
-1568	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde / Noche</span></div> 
-1569	          <div class="timeline-line" aria-hidden="true"></div> 
-1570	        </div> 
-1571	        <div class="attraction-card__body"> 
-1572	          <div class="attraction-card__top"> 
-1573	            <h2 class="attraction-card__name">Daisen-ryō Kofun</h2> 
-1574	            <span class="type-badge type-badge--museo">Sitio Histórico</span> 
-1575	          </div> 
-1576	          <p class="attraction-card__notes">Tumba imperial gigante en forma de cerradura rodeada de vegetación en la zona antigua de Sakai.</p> 
-1577	          <button class="map-btn" data-place-name="Daisen Kofun Sakai" data-map-url="https://www.google.com/maps/search/?api=1&query=Daisen%20Kofun%2C%20Sakai%2C%20Osaka" aria-label="Ver en mapa"> 
-1578	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1579	          </button> 
-1580	        </div> 
-1581	      </article> 
-1582	 
-1583	    </div> 
-1584	  </section> 
-1585	 
-1586	  <!-- OSAKA · DÍA 4 (Kurashiki) --> 
-1587	  <section class="day-panel" id="osaka-day-4" role="tabpanel"> 
-1588	    <div class="day-panel__heading" aria-hidden="true"> 
-1589	      <span class="day-panel__num">04</span> 
-1590	      <span class="day-panel__label">Día 4 · Kurashiki</span> 
-1591	    </div> 
-1592	    <div class="fullday-card"> 
-1593	      <div class="fullday-card__banner" data-emoji="⛵"> 
-1594	        <div class="fullday-card__time">📅 &nbsp;Todo el Día</div> 
-1595	        <h2 class="fullday-card__name">Kurashiki</h2> 
-1596	      </div> 
-1597	      <div class="fullday-card__body"> 
-1598	        <span class="type-badge">Barrio Histórico · Excursión</span> 
-1599	        <p class="fullday-card__notes">Precioso distrito histórico de canales en la prefectura de Okayama. Paseos en barca y arquitectura clásica blanca encalada.</p> 
-1600	        <button class="map-btn" data-place-name="Kurashiki Bikan Historical Quarter" data-map-url="https://www.google.com/maps/search/?api=1&query=Kurashiki%20Bikan%20Historical%20Quarter" aria-label="Ver en mapa"> 
-1601	          <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1602	        </button> 
-1603	      </div> 
-1604	    </div> 
-1605	  </section> 
-1606	 
-1607	  <!-- OSAKA · DÍA 5 --> 
-1608	  <section class="day-panel" id="osaka-day-5" role="tabpanel"> 
-1609	    <div class="day-panel__heading" aria-hidden="true"> 
-1610	      <span class="day-panel__num">05</span> 
-1611	      <span class="day-panel__label">Día 5</span> 
-1612	    </div> 
-1613	    <div class="timeline"> 
-1614	 
-1615	      <article class="attraction-card"> 
-1616	        <div class="attraction-card__time-col"> 
-1617	          <div class="time-block"><span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span></div> 
-1618	          <div class="timeline-line" aria-hidden="true"></div> 
-1619	        </div> 
-1620	        <div class="attraction-card__body"> 
-1621	          <div class="attraction-card__top"> 
-1622	            <h2 class="attraction-card__name">Cataratas de Minoh</h2> 
-1623	            <span class="type-badge type-badge--parque">Cascada / Sendero</span> 
-1624	          </div> 
-1625	          <p class="attraction-card__notes">Parque cuasi-nacional. Hermoso sendero junto al río que lleva a una cascada espectacular de 33 metros.</p> 
-1626	          <button class="map-btn" data-place-name="Minoh Falls Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Minoh%20Falls%2C%20Osaka" aria-label="Ver en mapa"> 
-1627	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1628	          </button> 
-1629	        </div> 
-1630	      </article> 
-1631	 
-1632	      <article class="attraction-card"> 
-1633	        <div class="attraction-card__time-col"> 
-1634	          <div class="time-block"><span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span></div> 
-1635	          <div class="timeline-line" aria-hidden="true"></div> 
-1636	        </div> 
-1637	        <div class="attraction-card__body"> 
-1638	          <div class="attraction-card__top"> 
-1639	            <h2 class="attraction-card__name">Templo Katsuo-ji</h2> 
-1640	            <span class="type-badge type-badge--templo">Templo Budista</span> 
-1641	          </div> 
-1642	          <p class="attraction-card__notes">El místico templo de los Daruma. Los devotos los dejan por doquier para atraer la buena fortuna en sus metas.</p> 
-1643	          <button class="map-btn" data-place-name="Katsuoji Temple Osaka" data-map-url="https://www.google.com/maps/search/?api=1&query=Katsuoji%20Temple%2C%20Osaka" aria-label="Ver en mapa"> 
-1644	            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa 
-1645	          </button> 
-1646	        </div> 
-1647	      </article> 
-1648	 
-1649	    </div> 
-1650	  </section> 
-1651	 
-1652	</main> 
-1653	 
-1654	<!-- MAP MODAL --> 
-1655	<div class="map-modal" id="map-modal" role="dialog" aria-modal="true" aria-label="Mapa de ubicación" hidden> 
-1656	  <div class="map-modal__overlay" id="map-overlay"></div> 
-1657	  <div class="map-modal__drawer"> 
-1658	    <div class="map-modal__handle" aria-hidden="true"></div> 
-1659	    <div class="map-modal__header"> 
-1660	      <span class="map-modal__pin" aria-hidden="true">📍</span> 
-1661	      <span class="map-modal__place-name" id="modal-place-name"></span> 
-1662	      <div class="map-modal__actions"> 
-1663	        <a class="map-modal__open-link" id="modal-open-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Abrir en Google Maps"> 
-1664	          <svg width="11" height="11" aria-hidden="true"><use href="#ic-ext"/></svg> 
-1665	          Abrir 
-1666	        </a> 
-1667	        <button class="map-modal__close" id="map-close" aria-label="Cerrar mapa"> 
-1668	          <svg width="16" height="16" aria-hidden="true"><use href="#ic-x"/></svg> 
-1669	        </button> 
-1670	      </div> 
-1671	    </div> 
-1672	    <div class="map-modal__iframe-wrap"> 
-1673	      <div class="map-modal__loading" id="map-loading"> 
-1674	        <div class="map-modal__spinner"></div> 
-1675	        <span>Cargando mapa…</span> 
-1676	      </div> 
-1677	      <iframe id="map-iframe" class="map-modal__iframe" 
-1678	        title="Mapa de ubicación" 
-1679	        loading="lazy" 
-1680	        referrerpolicy="no-referrer-when-downgrade" 
-1681	        sandbox="allow-scripts allow-same-origin allow-popups allow-forms" 
-1682	        allowfullscreen 
-1683	        src="about:blank"> 
-1684	      </iframe> 
-1685	    </div> 
-1686	  </div> 
-1687	</div> 
-1688	 
-1689	<script> 
-1690	(function () { 
-1691	  var CITIES = { 
-1692	    tokio: { jp: '東京', title: 'TOKIO', sub: 'Itinerario · 5 Días · Nov 2026', kanji: '東' }, 
-1693	    kioto: { jp: '京都', title: 'KIOTO', sub: 'Itinerario · 4 Días · Nov 2026', kanji: '京' }, 
-1694	    osaka: { jp: '大阪', title: 'OSAKA', sub: 'Itinerario · 5 Días · Nov 2026', kanji: '阪' } 
-1695	  }; 
-1696	 
-1697	  var header     = document.querySelector('.iti-header'); 
-1698	  var headerJp   = document.getElementById('header-jp'); 
-1699	  var headerTitle= document.getElementById('header-title'); 
-1700	  var headerSub  = document.getElementById('header-sub'); 
-1701	  var cityTabs   = document.querySelectorAll('.city-tab'); 
-1702	  var dayGroups  = document.querySelectorAll('.day-tabs-group'); 
-1703	  var panels     = document.querySelectorAll('.day-panel'); 
-1704	  var main       = document.getElementById('main'); 
-1705	 
-1706	  function activateCity(cityKey) { 
-1707	    var data = CITIES[cityKey]; 
-1708	    header.dataset.kanji = data.kanji; 
-1709	    headerJp.textContent    = data.jp; 
-1710	    headerTitle.textContent = data.title; 
-1711	    headerSub.textContent   = data.sub; 
-1712	 
-1713	    cityTabs.forEach(function (t) { 
-1714	      var on = t.dataset.city === cityKey; 
-1715	      t.classList.toggle('active', on); 
-1716	      t.setAttribute('aria-selected', on); 
-1717	    }); 
-1718	 
-1719	    dayGroups.forEach(function (g) { 
-1720	      g.classList.toggle('active', g.id === 'daytabs-' + cityKey); 
-1721	    }); 
-1722	 
-1723	    activateDay(cityKey, 1); 
-1724	  } 
-1725	 
-1726	  function activateDay(cityKey, dayNum) { 
-1727	    var group = document.getElementById('daytabs-' + cityKey); 
-1728	    if (group) { 
-1729	      group.querySelectorAll('.day-tab').forEach(function (t) { 
-1730	        var on = parseInt(t.dataset.day) === dayNum; 
-1731	        t.classList.toggle('active', on); 
-1732	        t.setAttribute('aria-selected', on); 
-1733	      }); 
-1734	    } 
-1735	 
-1736	    panels.forEach(function (p) { 
-1737	      p.classList.toggle('active', p.id === cityKey + '-day-' + dayNum); 
-1738	    }); 
-1739	 
-1740	    main.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-1741	  } 
-1742	 
-1743	  cityTabs.forEach(function (tab) { 
-1744	    tab.addEventListener('click', function () { activateCity(tab.dataset.city); }); 
-1745	  }); 
-1746	 
-1747	  document.querySelectorAll('.day-tab').forEach(function (tab) { 
-1748	    tab.addEventListener('click', function () { 
-1749	      activateDay(tab.dataset.city, parseInt(tab.dataset.day)); 
-1750	    }); 
-1751	  }); 
-1752	 
-1753	  /* ── Map Modal ── */ 
-1754	  var modal     = document.getElementById('map-modal'); 
-1755	  var iframe    = document.getElementById('map-iframe'); 
-1756	  var placeName = document.getElementById('modal-place-name'); 
-1757	  var openLink  = document.getElementById('modal-open-link'); 
-1758	  var closeBtn  = document.getElementById('map-close'); 
-1759	  var overlay   = document.getElementById('map-overlay'); 
-1760	  var loading   = document.getElementById('map-loading'); 
-1761	 
-1762	  function buildEmbedUrl(searchUrl) { 
-1763	    try { 
-1764	      var url   = new URL(searchUrl); 
-1765	      var query = url.searchParams.get('query') || ''; 
-1766	      return 'https://maps.google.com/maps?q=' + encodeURIComponent(query) + '&output=embed'; 
-1767	    } catch (e) { return 'about:blank'; } 
-1768	  } 
-1769	 
-1770	  function openMap(name, mapUrl) { 
-1771	    placeName.textContent = name; 
-1772	    openLink.href = mapUrl; 
-1773	    loading.style.opacity = '1'; 
-1774	    loading.style.pointerEvents = 'auto'; 
-1775	    iframe.classList.remove('loaded'); 
-1776	    iframe.src = buildEmbedUrl(mapUrl); 
-1777	    modal.removeAttribute('hidden'); 
-1778	    requestAnimationFrame(function () { 
-1779	      requestAnimationFrame(function () { modal.classList.add('is-open'); }); 
-1780	    }); 
-1781	    document.body.style.overflow = 'hidden'; 
-1782	    closeBtn.focus(); 
-1783	  } 
-1784	 
-1785	  function closeMap() { 
-1786	    modal.classList.remove('is-open'); 
-1787	    var drawer = modal.querySelector('.map-modal__drawer'); 
-1788	    var done = false; 
-1789	    function finish() { 
-1790	      if (done) return; done = true; 
-1791	      modal.setAttribute('hidden', ''); 
-1792	      iframe.src = 'about:blank'; 
-1793	      iframe.classList.remove('loaded'); 
-1794	      document.body.style.overflow = ''; 
-1795	    } 
-1796	    drawer.addEventListener('transitionend', finish, { once: true }); 
-1797	    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); } 
-1798	  } 
-1799	 
-1800	  iframe.addEventListener('load', function () { 
-1801	    if (iframe.src === 'about:blank') return; 
-1802	    loading.style.opacity = '0'; 
-1803	    loading.style.pointerEvents = 'none'; 
-1804	    iframe.classList.add('loaded'); 
-1805	  }); 
-1806	 
-1807	  document.querySelectorAll('.map-btn').forEach(function (btn) { 
-1808	    btn.addEventListener('click', function () { 
-1809	      openMap(btn.dataset.placeName, btn.dataset.mapUrl); 
-1810	    }); 
-1811	  }); 
-1812	 
-1813	  closeBtn.addEventListener('click', closeMap); 
-1814	  overlay.addEventListener('click', closeMap); 
-1815	 
-1816	  document.addEventListener('keydown', function (e) { 
-1817	    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) { closeMap(); } 
-1818	  }); 
-1819	 
-1820	  modal.addEventListener('keydown', function (e) { 
-1821	    if (e.key !== 'Tab') return; 
-1822	    var focusable = Array.from(modal.querySelectorAll('a[href], button, iframe')); 
-1823	    var first = focusable[0], last = focusable[focusable.length - 1]; 
-1824	    if (e.shiftKey && document.activeElement === first) { 
-1825	      e.preventDefault(); last.focus(); 
-1826	    } else if (!e.shiftKey && document.activeElement === last) { 
-1827	      e.preventDefault(); first.focus(); 
-1828	    } 
-1829	  }); 
-1830	})(); 
-1831	</script> 
-1832	 
-1833	</body> 
-1834	</html> 
-1835	 
+    :root {
+      --color-ink:           #1a1a2e;
+      --color-ink-light:     #2d2d4a;
+      --color-paper:         #faf8f5;
+      --color-crimson:       #c0392b;
+      --color-crimson-light: #e74c3c;
+      --color-gold:          #c9a84c;
+      --color-gold-light:    #e8c97a;
+      --color-sakura:        #f4a7b9;
+      --color-matcha:        #5c7a5c;
+      --color-indigo:        #2c3e6b;
+      --color-indigo-light:  #3d5499;
+      --color-fog:           #e0dbd4;
+      --color-muted:         #8a8070;
+      --font-display: 'Cinzel', serif;
+      --font-serif:   'Noto Serif JP', serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --space-xs:   4px;
+      --space-sm:   8px;
+      --space-md:   16px;
+      --space-lg:   24px;
+      --space-xl:   40px;
+      --space-2xl:  64px;
+      --radius-sm:   4px;
+      --radius-md:   10px;
+      --radius-lg:   20px;
+      --radius-pill: 999px;
+      --shadow-sm:   0 2px 12px rgba(26,26,46,0.08);
+      --shadow-md:   0 4px 24px rgba(26,26,46,0.12);
+      --shadow-xl:   0 16px 64px rgba(26,26,46,0.22);
+      --z-sticky: 100;
+      --z-modal:  300;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      max-width: 480px;
+      margin-inline: auto;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .iti-header {
+      background: var(--color-ink);
+      padding: var(--space-lg) var(--space-md) var(--space-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .iti-header::before {
+      content: attr(data-kanji);
+      position: absolute;
+      right: -0.1em;
+      top: -0.15em;
+      font-family: var(--font-serif);
+      font-size: 9rem;
+      color: rgba(255,255,255,0.04);
+      pointer-events: none;
+      line-height: 1;
+      transition: content 300ms;
+    }
+    .iti-header__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-md);
+      transition: color 180ms;
+    }
+    .iti-header__back:hover { color: var(--color-gold-light); }
+    .iti-header__jp {
+      display: block;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 0.875rem;
+      color: var(--color-gold);
+      letter-spacing: 0.3em;
+      margin-bottom: 4px;
+      transition: opacity 200ms;
+    }
+    .iti-header__title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      margin-bottom: 6px;
+      transition: opacity 200ms;
+    }
+    .iti-header__sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .iti-header__divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%);
+      margin-top: var(--space-md);
+      opacity: 0.5;
+    }
+
+    /* ── Sticky Nav ── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+      background: var(--color-ink);
+    }
+
+    /* ── City Tabs ── */
+    .city-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .city-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 8px 8px;
+      border-bottom: 2px solid transparent;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: color 180ms, border-color 180ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .city-tab.active { color: #fff; border-bottom-color: var(--color-crimson); }
+    .city-tab:hover:not(.active) { color: rgba(255,255,255,0.7); }
+    .city-tab__jp {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: var(--color-gold);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .city-tab__name {
+      font-family: var(--font-display);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: inherit;
+    }
+    .city-tab__days {
+      font-size: 0.5rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+    }
+    .city-tab.active .city-tab__days { color: rgba(255,255,255,0.5); }
+
+    /* ── Day Tab Groups ── */
+    .day-tabs-group {
+      display: none;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .day-tabs-group.active { display: flex; }
+    .day-tabs-group::-webkit-scrollbar { display: none; }
+    .day-tab {
+      flex: 1;
+      min-width: 0;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: rgba(255,255,255,0.45);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 12px 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 180ms, border-color 180ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .day-tab.active { color: #fff; border-bottom-color: var(--color-gold); }
+    .day-tab:hover:not(.active) { color: rgba(255,255,255,0.75); }
+
+    /* ── Day Panels ── */
+    .day-panel { display: none; padding: var(--space-md) var(--space-md) var(--space-2xl); }
+    .day-panel.active { display: block; }
+    .day-panel__heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-fog);
+    }
+    .day-panel__num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--color-crimson);
+      opacity: 0.15;
+      line-height: 1;
+    }
+    .day-panel__label {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; flex-direction: column; }
+    .attraction-card {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0 var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .attraction-card__time-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+    .time-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .time-block__emoji { font-size: 1.25rem; line-height: 1; }
+    .time-block__label {
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--color-muted);
+      line-height: 1.2;
+    }
+    .timeline-line {
+      width: 1px;
+      flex: 1;
+      min-height: 20px;
+      background: var(--color-fog);
+      margin-top: 6px;
+    }
+    .attraction-card:last-child .timeline-line { display: none; }
+    .attraction-card__body {
+      background: #fff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-fog);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .attraction-card__top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: var(--space-sm);
+    }
+    .attraction-card__name {
+      font-family: var(--font-serif);
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--color-ink);
+      line-height: 1.3;
+      flex: 1 1 100%;
+    }
+    .attraction-card__notes {
+      font-size: 0.8125rem;
+      color: var(--color-muted);
+      line-height: 1.55;
+      margin-bottom: var(--space-md);
+    }
+
+    /* ── Type Badges ── */
+    .type-badge {
+      display: inline-block;
+      border-radius: var(--radius-pill);
+      padding: 2px 10px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .type-badge--santuario, .type-badge--tienda {
+      background: rgba(192,57,43,0.1); color: var(--color-crimson);
+    }
+    .type-badge--museo, .type-badge--castillo, .type-badge--mirador, .type-badge--templo {
+      background: rgba(44,62,107,0.1); color: var(--color-indigo);
+    }
+    .type-badge--jardin, .type-badge--parque, .type-badge--excursion, .type-badge--acuario {
+      background: rgba(92,122,92,0.1); color: var(--color-matcha);
+    }
+    .type-badge--mercado, .type-badge--atraccion, .type-badge--escultura {
+      background: rgba(201,168,76,0.12); color: #9a7a2a;
+    }
+    .type-badge--barrio, .type-badge--parque-tematico, .type-badge--creperia, .type-badge--geek, .type-badge--teatro {
+      background: rgba(244,167,185,0.2); color: #b56070;
+    }
+
+    /* ── Map Button ── */
+    .map-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--color-indigo);
+      color: var(--color-indigo);
+      border-radius: var(--radius-md);
+      padding: 8px var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background 180ms, color 180ms, transform 100ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .map-btn:hover { background: var(--color-indigo); color: #fff; }
+    .map-btn:active { transform: scale(0.97); }
+
+    /* ── Full-Day Card ── */
+    .fullday-card {
+      background: var(--color-ink);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-md);
+    }
+    .fullday-card__banner {
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+      background: linear-gradient(135deg, var(--color-ink) 60%, var(--color-indigo-light) 100%);
+      position: relative;
+      text-align: center;
+    }
+    .fullday-card__banner::before {
+      content: attr(data-emoji);
+      position: absolute;
+      font-size: 5rem;
+      opacity: 0.12;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .fullday-card__time {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-sm);
+    }
+    .fullday-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.375rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: var(--space-sm);
+      position: relative;
+    }
+    .fullday-card__body {
+      padding: var(--space-md);
+      background: rgba(255,255,255,0.04);
+    }
+    .fullday-card__notes {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      margin-bottom: var(--space-md);
+    }
+    .fullday-card .type-badge {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      margin-bottom: var(--space-md);
+      display: inline-block;
+    }
+    .fullday-card .map-btn {
+      border-color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.85);
+    }
+    .fullday-card .map-btn:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    /* ── Map Modal ── */
+    .map-modal { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; }
+    .map-modal[hidden] { display: none; }
+    .map-modal.is-open { pointer-events: auto; }
+    .map-modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 360ms ease;
+    }
+    .map-modal.is-open .map-modal__overlay { background: rgba(0,0,0,0.6); }
+    .map-modal__drawer {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 480px;
+      height: 78dvh;
+      background: var(--color-ink);
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
+      transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .map-modal.is-open .map-modal__drawer { transform: translateX(-50%) translateY(0); }
+    .map-modal__handle {
+      width: 36px; height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+    .map-modal__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      flex-shrink: 0;
+    }
+    .map-modal__pin { font-size: 1rem; flex-shrink: 0; }
+    .map-modal__place-name {
+      flex: 1;
+      font-family: var(--font-serif);
+      font-size: 0.9375rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .map-modal__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .map-modal__open-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: var(--radius-pill);
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 180ms, color 180ms;
+    }
+    .map-modal__open-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .map-modal__close {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 180ms;
+    }
+    .map-modal__close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .map-modal__iframe-wrap { flex: 1; position: relative; background: var(--color-ink-light); }
+    .map-modal__loading {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--space-sm);
+      color: rgba(255,255,255,0.4);
+      font-size: 0.8125rem;
+      pointer-events: none;
+      transition: opacity 300ms;
+    }
+    .map-modal__spinner {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: var(--color-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .map-modal__iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none; opacity: 0;
+      transition: opacity 300ms;
+    }
+    .map-modal__iframe.loaded { opacity: 1; }
+
+    @media (min-width: 481px) {
+      body { box-shadow: var(--shadow-xl); min-height: 100vh; }
+    }
+  </style>
+ </head>
+ <body>
+  <!-- SVG Sprite -->
+  <svg hidden aria-hidden="true" focusable="false" style="position:absolute">
+   <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+   </symbol>
+   <symbol id="ic-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6" />
+   </symbol>
+   <symbol id="ic-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /> <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+   </symbol>
+   <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+   </symbol>
+  </svg>
+  <header class="iti-header" data-kanji="東">
+   <a class="iti-header__back" href="../index.html#itinerary"> 
+    <svg width="14" height="14" aria-hidden="true">
+     <use href="#ic-back" />
+    </svg> Japan 2026 
+   </a> <span class="iti-header__jp" id="header-jp">東京</span>
+   <h1 class="iti-header__title" id="header-title">TOKIO</h1>
+   <p class="iti-header__sub" id="header-sub">Itinerario · 5 Días · Nov 2026</p>
+   <div class="iti-header__divider"></div>
+  </header>
+  <div class="sticky-nav">
+   <div class="city-tabs" role="tablist" aria-label="Ciudad">
+    <button class="city-tab active" data-city="tokio" role="tab" aria-selected="true"><span class="city-tab__jp">東京</span> <span class="city-tab__name">TOKIO</span> <span class="city-tab__days">5 días</span></button>
+    <button class="city-tab" data-city="kioto" role="tab" aria-selected="false"><span class="city-tab__jp">京都</span> <span class="city-tab__name">KIOTO</span> <span class="city-tab__days">4 días</span></button>
+    <button class="city-tab" data-city="osaka" role="tab" aria-selected="false"><span class="city-tab__jp">大阪</span> <span class="city-tab__name">OSAKA</span> <span class="city-tab__days">5 días</span></button>
+   </div>
+   <nav class="day-tabs-group active" id="daytabs-tokio" aria-label="Días de Tokio">
+    <button class="day-tab active" data-city="tokio" data-day="1">Día 1</button>
+    <button class="day-tab" data-city="tokio" data-day="2">Día 2</button>
+    <button class="day-tab" data-city="tokio" data-day="3">Día 3</button>
+    <button class="day-tab" data-city="tokio" data-day="4">Día 4</button>
+    <button class="day-tab" data-city="tokio" data-day="5">Día 5</button>
+   </nav>
+   <nav class="day-tabs-group" id="daytabs-kioto" aria-label="Días de Kioto">
+    <button class="day-tab" data-city="kioto" data-day="1">Día 1</button>
+    <button class="day-tab" data-city="kioto" data-day="2">Día 2</button>
+    <button class="day-tab" data-city="kioto" data-day="3">Día 3</button>
+    <button class="day-tab" data-city="kioto" data-day="4">Nara</button>
+   </nav>
+   <nav class="day-tabs-group" id="daytabs-osaka" aria-label="Días de Osaka">
+    <button class="day-tab" data-city="osaka" data-day="1">Día 1</button>
+    <button class="day-tab" data-city="osaka" data-day="2">Día 2</button>
+    <button class="day-tab" data-city="osaka" data-day="3">Día 3</button>
+    <button class="day-tab" data-city="osaka" data-day="4">Día 4</button>
+    <button class="day-tab" data-city="osaka" data-day="5">Día 5</button>
+   </nav>
+  </div>
+  <main id="main">
+   <!-- ══════════════════════════════════════════
+       TOKIO
+  ══════════════════════════════════════════ -->
+   <!-- TOKIO · DÍA 1 -->
+   <section class="day-panel active" id="tokio-day-1" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">01</span> <span class="day-panel__label">Día 1</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Santuario de Asakusa</h2>
+        <span class="type-badge type-badge--santuario">Santuario</span>
+       </div>
+       <p class="attraction-card__notes">Comienza temprano para evitar multitudes. Cerca de Senso-ji.</p>
+       <button class="map-btn" data-place-name="Santuario de Asakusa" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Santuario%20de%20Asakusa%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">ART AQUARIUM MUSEUM</h2>
+        <span class="type-badge type-badge--museo">Museo de Arte</span>
+       </div>
+       <p class="attraction-card__notes">Espectáculo visual de peces goldfish artísticos (en Ginza/Ueno según temporada).</p>
+       <button class="map-btn" data-place-name="ART AQUARIUM MUSEUM" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=ART%20AQUARIUM%20MUSEUM%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Ciudad Electrónica de Akihabara</h2>
+        <span class="type-badge type-badge--geek">Geek / Tech</span>
+       </div>
+       <p class="attraction-card__notes">Tiendas de tecnología, anime y videojuegos. Explora las calles principales.</p>
+       <button class="map-btn" data-place-name="Ciudad Electrónica de Akihabara" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Akihabara%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Akihabara (Barrio)</h2>
+        <span class="type-badge type-badge--barrio">Barrio / Compras</span>
+       </div>
+       <p class="attraction-card__notes">Caminata por el barrio y cena temática o de ramen local.</p>
+       <button class="map-btn" data-place-name="Akihabara" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Akihabara%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Tokyo Skytree</h2>
+        <span class="type-badge type-badge--mirador">Mirador</span>
+       </div>
+       <p class="attraction-card__notes">Sube al anochecer para ver la espectacular vista panorámica iluminada de Tokio.</p>
+       <button class="map-btn" data-place-name="Tokyo Skytree" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Tokyo%20Skytree" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- TOKIO · DÍA 2 -->
+   <section class="day-panel" id="tokio-day-2" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">02</span> <span class="day-panel__label">Día 2</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Kōkyo (Palacio Imperial)</h2>
+        <span class="type-badge type-badge--castillo">Palacio Imperial</span>
+       </div>
+       <p class="attraction-card__notes">Paseo por los jardines exteriores del palacio imperial.</p>
+       <button class="map-btn" data-place-name="Palacio Imperial de Tokio" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Imperial%20Palace%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Jardines de Hamarikyu</h2>
+        <span class="type-badge type-badge--jardin">Jardín Tradicional</span>
+       </div>
+       <p class="attraction-card__notes">Precioso jardín junto a la bahía. Puedes tomar un té verde en la casa flotante.</p>
+       <button class="map-btn" data-place-name="Jardines de Hamarikyu" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Hamarikyu%20Gardens%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Fish Market Tsukiji Outer Market</h2>
+        <span class="type-badge type-badge--mercado">Mercado de Comida</span>
+       </div>
+       <p class="attraction-card__notes">Almuerzo fresco: sushi, brochetas de mariscos, tamagoyaki y comida callejera.</p>
+       <button class="map-btn" data-place-name="Tsukiji Outer Market" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Tsukiji%20Outer%20Market%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Jardín Nacional Shinjuku Gyoen</h2>
+        <span class="type-badge type-badge--jardin">Jardín</span>
+       </div>
+       <p class="attraction-card__notes">Inmenso parque que combina estilos japonés, inglés y francés.</p>
+       <button class="map-btn" data-place-name="Shinjuku Gyoen" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Shinjuku%20Gyoen%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Cabeza de Godzilla</h2>
+        <span class="type-badge type-badge--atraccion">Atracción Icónica</span>
+       </div>
+       <p class="attraction-card__notes">Ubicada en Shinjuku (Kabukicho). Ruge y se ilumina a las horas en punto.</p>
+       <button class="map-btn" data-place-name="Godzilla Head Shinjuku" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Godzilla%20Head%20Shinjuku%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- TOKIO · DÍA 3 (Excursión Nikkō) -->
+   <section class="day-panel" id="tokio-day-3" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">03</span> <span class="day-panel__label">Día 3 · Nikkō</span>
+    </div>
+    <div class="fullday-card">
+     <div class="fullday-card__banner" data-emoji="⛩️">
+      <div class="fullday-card__time">📅 &nbsp;Todo el Día</div>
+      <h2 class="fullday-card__name">Parque Nacional de Nikkō</h2>
+     </div>
+     <div class="fullday-card__body">
+      <span class="type-badge">Excursión · Parque Nacional</span>
+      <p class="fullday-card__notes">Santuarios históricos (Toshogu), naturaleza, cascadas y puentes sagrados. Una escapada mágica fuera de la ciudad.</p>
+      <button class="map-btn" data-place-name="Parque Nacional de Nikkō" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Nikko%20National%20Park%2C%20Japan" aria-label="Ver en mapa">
+       <svg width="13" height="13" aria-hidden="true">
+        <use href="#ic-pin" />
+       </svg>
+       Ver en Mapa
+      </button>
+     </div>
+    </div>
+   </section>
+   <!-- TOKIO · DÍA 4 (DisneySea) -->
+   <section class="day-panel" id="tokio-day-4" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">04</span> <span class="day-panel__label">Día 4</span>
+    </div>
+    <div class="fullday-card">
+     <div class="fullday-card__banner" data-emoji="🎡">
+      <div class="fullday-card__time">📅 &nbsp;Todo el Día</div>
+      <h2 class="fullday-card__name">Tokyo DisneySea</h2>
+     </div>
+     <div class="fullday-card__body">
+      <span class="type-badge">Parque Temático</span>
+      <p class="fullday-card__notes">Parque único en el mundo enfocado en mitos náuticos. ¡Llega antes de la apertura!</p>
+      <button class="map-btn" data-place-name="Tokyo DisneySea" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Tokyo%20DisneySea" aria-label="Ver en mapa">
+       <svg width="13" height="13" aria-hidden="true">
+        <use href="#ic-pin" />
+       </svg>
+       Ver en Mapa
+      </button>
+     </div>
+    </div>
+   </section>
+   <!-- TOKIO · DÍA 5 -->
+   <section class="day-panel" id="tokio-day-5" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">05</span> <span class="day-panel__label">Día 5</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Santuario Meiji</h2>
+        <span class="type-badge type-badge--santuario">Santuario</span>
+       </div>
+       <p class="attraction-card__notes">Paseo tranquilo y espiritual por el bosque en medio de la ciudad.</p>
+       <button class="map-btn" data-place-name="Santuario Meiji" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Meiji%20Shrine%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Parque Yoyogi</h2>
+        <span class="type-badge type-badge--parque">Parque</span>
+       </div>
+       <p class="attraction-card__notes">Justo al lado del Santuario Meiji. Muy animado los fines de semana.</p>
+       <button class="map-btn" data-place-name="Parque Yoyogi" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Yoyogi%20Park%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Marion Crepes</h2>
+        <span class="type-badge type-badge--creperia">Crepería</span>
+       </div>
+       <p class="attraction-card__notes">Ubicado en Harajuku (calle Takeshita). Los crepes icónicos de Tokio.</p>
+       <button class="map-btn" data-place-name="Marion Crepes Harajuku" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Marion%20Crepes%20Harajuku%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Shibuya (Barrio)</h2>
+        <span class="type-badge type-badge--barrio">Barrio / Cruce Icónico</span>
+       </div>
+       <p class="attraction-card__notes">Cruza el famoso paso de peatones 'Scramble Crossing'.</p>
+       <button class="map-btn" data-place-name="Shibuya Scramble Crossing" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Shibuya%20Scramble%20Crossing%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Hachiko Statue</h2>
+        <span class="type-badge type-badge--escultura">Escultura</span>
+       </div>
+       <p class="attraction-card__notes">Punto de encuentro clásico justo afuera de la estación de Shibuya.</p>
+       <button class="map-btn" data-place-name="Hachiko Statue" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Hachiko%20Statue%2C%20Shibuya%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Nintendo Tokyo</h2>
+        <span class="type-badge type-badge--tienda">Tienda Oficial</span>
+       </div>
+       <p class="attraction-card__notes">En el edificio Shibuya Parco. Tienda oficial con figuras y merch exclusivo.</p>
+       <button class="map-btn" data-place-name="Nintendo Tokyo" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Nintendo%20Tokyo%2C%20Shibuya%20Parco" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌇</span><span class="time-block__label">Atardecer</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Shibuya SKY</h2>
+        <span class="type-badge type-badge--mirador">Mirador</span>
+       </div>
+       <p class="attraction-card__notes">Espectacular mirador abierto en el piso superior. Reserva horario para el atardecer.</p>
+       <button class="map-btn" data-place-name="Shibuya SKY" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Shibuya%20SKY%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Unicorn Gundam</h2>
+        <span class="type-badge type-badge--atraccion">Atracción Icónica</span>
+       </div>
+       <p class="attraction-card__notes">Estatua gigante a escala real en Odaiba. Show de luces y transformación por la noche.</p>
+       <button class="map-btn" data-place-name="Unicorn Gundam Odaiba" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Unicorn%20Gundam%20Odaiba%2C%20Tokyo" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- ══════════════════════════════════════════
+       KIOTO
+  ══════════════════════════════════════════ -->
+   <!-- KIOTO · DÍA 1 -->
+   <section class="day-panel" id="kioto-day-1" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">01</span> <span class="day-panel__label">Día 1</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Castillo Nijō</h2>
+        <span class="type-badge type-badge--castillo">Castillo</span>
+       </div>
+       <p class="attraction-card__notes">Comienza temprano para ver este histórico palacio shogunal con sus famosos 'suelos de ruiseñor'.</p>
+       <button class="map-btn" data-place-name="Castillo Nijō" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Nijo%20Castle%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Nishiki Market</h2>
+        <span class="type-badge type-badge--mercado">Mercado</span>
+       </div>
+       <p class="attraction-card__notes">El 'mercado de la cocina de Kioto'. Perfecto para almorzar brochetas, matcha, mariscos y comida local.</p>
+       <button class="map-btn" data-place-name="Nishiki Market Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Nishiki%20Market%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Kiyomizu-dera</h2>
+        <span class="type-badge type-badge--templo">Templo Budista</span>
+       </div>
+       <p class="attraction-card__notes">Icónico templo con terraza de madera colosal. Ofrece espectaculares vistas de la ciudad.</p>
+       <button class="map-btn" data-place-name="Kiyomizudera" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Kiyomizudera%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Sannenzaka</h2>
+        <span class="type-badge type-badge--atraccion">Calle Histórica</span>
+       </div>
+       <p class="attraction-card__notes">Hermosa calle empedrada tradicional que desciende de Kiyomizu-dera. Tiendas de souvenirs y casas de té.</p>
+       <button class="map-btn" data-place-name="Sannenzaka Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Sannenzaka%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Templo Kōdai-ji</h2>
+        <span class="type-badge type-badge--templo">Templo Budista</span>
+       </div>
+       <p class="attraction-card__notes">Templo zen con bellos jardines de piedra y un pequeño bosque de bambú tranquilo cerca de Higashiyama.</p>
+       <button class="map-btn" data-place-name="Kodaiji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Kodaiji%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Gion Corner</h2>
+        <span class="type-badge type-badge--teatro">Espectáculo</span>
+       </div>
+       <p class="attraction-card__notes">Ubicado en el barrio de las geishas. Presenta espectáculos de artes tradicionales japonesas.</p>
+       <button class="map-btn" data-place-name="Gion Corner Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Gion%20Corner%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- KIOTO · DÍA 2 -->
+   <section class="day-panel" id="kioto-day-2" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">02</span> <span class="day-panel__label">Día 2</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Bosque de Bambú de Arashiyama</h2>
+        <span class="type-badge type-badge--parque">Naturaleza</span>
+       </div>
+       <p class="attraction-card__notes">Camina temprano entre los imponentes tallos de bambú verdes para disfrutar del sonido del viento.</p>
+       <button class="map-btn" data-place-name="Arashiyama Bamboo Grove" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Arashiyama%20Bamboo%20Grove%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Villa Imperial de Katsura</h2>
+        <span class="type-badge type-badge--castillo">Villa Imperial</span>
+       </div>
+       <p class="attraction-card__notes">Famosa por su villa imperial y paisajes sublimes junto al río Katsura, en la zona oeste.</p>
+       <button class="map-btn" data-place-name="Katsura Imperial Villa Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Katsura%20Imperial%20Villa%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Karesansui — Ryōan-ji</h2>
+        <span class="type-badge type-badge--jardin">Jardín Zen</span>
+       </div>
+       <p class="attraction-card__notes">Estilo de jardín seco para meditación. El famoso jardín de Ryoan-ji, cerca del Pabellón Dorado.</p>
+       <button class="map-btn" data-place-name="Ryoanji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Ryoanji%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Pabellón Dorado (Kinkaku-ji)</h2>
+        <span class="type-badge type-badge--templo">Kinkaku-ji</span>
+       </div>
+       <p class="attraction-card__notes">Impresionante templo zen cuyos dos pisos superiores están completamente recubiertos de pan de oro puro.</p>
+       <button class="map-btn" data-place-name="Kinkakuji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Kinkakuji%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Tetsugaku No Michi</h2>
+        <span class="type-badge type-badge--parque">Camino de la Filosofía</span>
+       </div>
+       <p class="attraction-card__notes">Precioso sendero empedrado al lado de un canal. Conecta la zona norte/este con templos pacíficos.</p>
+       <button class="map-btn" data-place-name="Philosophers Path Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Philosopher%27s%20Path%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- KIOTO · DÍA 3 -->
+   <section class="day-panel" id="kioto-day-3" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">03</span> <span class="day-panel__label">Día 3</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Fushimi Inari-taisha</h2>
+        <span class="type-badge type-badge--santuario">Santuario</span>
+       </div>
+       <p class="attraction-card__notes">El santuario de los miles de toriis rojas que suben por la montaña. ¡Ve muy temprano (6–7 AM) para fotos vacías!</p>
+       <button class="map-btn" data-place-name="Fushimi Inari Taisha" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Fushimi%20Inari%20Taisha%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Tōfuku-ji</h2>
+        <span class="type-badge type-badge--templo">Templo Budista</span>
+       </div>
+       <p class="attraction-card__notes">Famoso por su puente de madera cubierto con vistas a un mar de arces y sus espectaculares jardines zen.</p>
+       <button class="map-btn" data-place-name="Tofukuji Kyoto" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Tofukuji%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Byōdō-in (Uji)</h2>
+        <span class="type-badge type-badge--templo">Templo Budista</span>
+       </div>
+       <p class="attraction-card__notes">En Uji, cuna del matcha. Su Salón del Fénix es el que aparece impreso en las monedas de 10 yenes.</p>
+       <button class="map-btn" data-place-name="Byodoin Uji" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Byodoin%2C%20Uji%2C%20Kyoto" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- KIOTO · DÍA 4 — NARA -->
+   <section class="day-panel" id="kioto-day-4" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">04</span> <span class="day-panel__label">Día 4 · Nara</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Daibutsu-den — Tōdai-ji</h2>
+        <span class="type-badge type-badge--templo">Templo · Nara</span>
+       </div>
+       <p class="attraction-card__notes">Ubicado en Nara (~45 min en tren). Es el edificio de madera más grande del mundo y alberga el Gran Buda.</p>
+       <button class="map-btn" data-place-name="Todaiji Nara" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Todaiji%2C%20Nara" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Santuario Kasuga Taisha</h2>
+        <span class="type-badge type-badge--santuario">Santuario · Nara</span>
+       </div>
+       <p class="attraction-card__notes">Famoso santuario conocido por sus miles de linternas de piedra y bronce donadas por devotos.</p>
+       <button class="map-btn" data-place-name="Kasuga Taisha Nara" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Kasuga%20Taisha%2C%20Nara" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- ══════════════════════════════════════════
+       OSAKA
+  ══════════════════════════════════════════ -->
+   <!-- OSAKA · DÍA 1 -->
+   <section class="day-panel" id="osaka-day-1" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">01</span> <span class="day-panel__label">Día 1</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Castillo de Osaka</h2>
+        <span class="type-badge type-badge--castillo">Castillo</span>
+       </div>
+       <p class="attraction-card__notes">Icono de la ciudad. Explora la gran torre del homenaje y pasea por los fosos y jardines.</p>
+       <button class="map-btn" data-place-name="Castillo de Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Osaka%20Castle" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Umeda Sky Building</h2>
+        <span class="type-badge type-badge--mirador">Mirador</span>
+       </div>
+       <p class="attraction-card__notes">Rascacielos futurista con observatorio flotante al aire libre. Excelentes vistas arquitectónicas.</p>
+       <button class="map-btn" data-place-name="Umeda Sky Building Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Umeda%20Sky%20Building%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Dōtonbori</h2>
+        <span class="type-badge type-badge--atraccion">Zona Icónica</span>
+       </div>
+       <p class="attraction-card__notes">El corazón de neón de Osaka. Zona mítica para fotos con el Glico Man y comer Takoyaki.</p>
+       <button class="map-btn" data-place-name="Dotonbori Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Dotonbori%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Don Quijote Dotonbori</h2>
+        <span class="type-badge type-badge--tienda">Tienda 24h</span>
+       </div>
+       <p class="attraction-card__notes">Tienda gigante multinivel abierta 24 horas. Cuenta con una icónica noria en su fachada.</p>
+       <button class="map-btn" data-place-name="Don Quijote Dotonbori" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Don%20Quijote%20Dotonbori%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Hozenji Yokocho</h2>
+        <span class="type-badge type-badge--barrio">Callejón Histórico</span>
+       </div>
+       <p class="attraction-card__notes">Pequeño y mágico callejón empedrado tradicional con linternas de papel, justo al lado del canal.</p>
+       <button class="map-btn" data-place-name="Hozenji Yokocho Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Hozenji%20Yokocho%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- OSAKA · DÍA 2 -->
+   <section class="day-panel" id="osaka-day-2" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">02</span> <span class="day-panel__label">Día 2</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Acuario de Osaka — Kaiyukan</h2>
+        <span class="type-badge type-badge--acuario">Acuario</span>
+       </div>
+       <p class="attraction-card__notes">El famoso acuario Kaiyukan, uno de los más grandes del mundo con un colosal tiburón ballena.</p>
+       <button class="map-btn" data-place-name="Osaka Aquarium Kaiyukan" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Osaka%20Aquarium%20Kaiyukan" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">☀️</span><span class="time-block__label">Mediodía</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Tempozan Ferris Wheel</h2>
+        <span class="type-badge type-badge--atraccion">Noria</span>
+       </div>
+       <p class="attraction-card__notes">Ubicada al lado del acuario. Disfruta de vistas relajantes del puerto industrial de Osaka.</p>
+       <button class="map-btn" data-place-name="Tempozan Ferris Wheel Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Tempozan%20Ferris%20Wheel%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Namba Parks</h2>
+        <span class="type-badge type-badge--barrio">Centro Comercial</span>
+       </div>
+       <p class="attraction-card__notes">Centro comercial moderno famoso por su arquitectura de cañón y su enorme jardín botánico en terrazas.</p>
+       <button class="map-btn" data-place-name="Namba Parks Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Namba%20Parks%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Calle Shinsekai Hondori</h2>
+        <span class="type-badge type-badge--barrio">Zona Tradicional</span>
+       </div>
+       <p class="attraction-card__notes">Barrio de ambiente retro nostálgico con restaurantes de brochetas fritas (Kushikatsu).</p>
+       <button class="map-btn" data-place-name="Shinsekai Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Shinsekai%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Mercado Shin-sekai</h2>
+        <span class="type-badge type-badge--mercado">Mercado Local</span>
+       </div>
+       <p class="attraction-card__notes">Mercado cubierto local donde verás la vida cotidiana más auténtica de Osaka.</p>
+       <button class="map-btn" data-place-name="Shin-sekai Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Shinsekai%20Market%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌙</span><span class="time-block__label">Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Harukas 300</h2>
+        <span class="type-badge type-badge--mirador">Mirador</span>
+       </div>
+       <p class="attraction-card__notes">Sube al rascacielos más alto de Osaka en Tennoji para disfrutar de la mejor vista nocturna de la región.</p>
+       <button class="map-btn" data-place-name="Abeno Harukas Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Abeno%20Harukas%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- OSAKA · DÍA 3 (Himeji) -->
+   <section class="day-panel" id="osaka-day-3" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">03</span> <span class="day-panel__label">Día 3 · Himeji</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana / Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Castillo de Himeji</h2>
+        <span class="type-badge type-badge--castillo">Castillo · Excursión</span>
+       </div>
+       <p class="attraction-card__notes">Patrimonio de la Humanidad. El castillo original mejor conservado de Japón (a unos 40 min en Shinkansen desde Osaka).</p>
+       <button class="map-btn" data-place-name="Castillo de Himeji" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Himeji%20Castle" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde / Noche</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Daisen-ryō Kofun</h2>
+        <span class="type-badge type-badge--museo">Sitio Histórico</span>
+       </div>
+       <p class="attraction-card__notes">Tumba imperial gigante en forma de cerradura rodeada de vegetación en la zona antigua de Sakai.</p>
+       <button class="map-btn" data-place-name="Daisen Kofun Sakai" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Daisen%20Kofun%2C%20Sakai%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- OSAKA · DÍA 4 (Kurashiki) -->
+   <section class="day-panel" id="osaka-day-4" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">04</span> <span class="day-panel__label">Día 4 · Kurashiki</span>
+    </div>
+    <div class="fullday-card">
+     <div class="fullday-card__banner" data-emoji="⛵">
+      <div class="fullday-card__time">📅 &nbsp;Todo el Día</div>
+      <h2 class="fullday-card__name">Kurashiki</h2>
+     </div>
+     <div class="fullday-card__body">
+      <span class="type-badge">Barrio Histórico · Excursión</span>
+      <p class="fullday-card__notes">Precioso distrito histórico de canales en la prefectura de Okayama. Paseos en barca y arquitectura clásica blanca encalada.</p>
+      <button class="map-btn" data-place-name="Kurashiki Bikan Historical Quarter" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Kurashiki%20Bikan%20Historical%20Quarter" aria-label="Ver en mapa">
+       <svg width="13" height="13" aria-hidden="true">
+        <use href="#ic-pin" />
+       </svg>
+       Ver en Mapa
+      </button>
+     </div>
+    </div>
+   </section>
+   <!-- OSAKA · DÍA 5 -->
+   <section class="day-panel" id="osaka-day-5" role="tabpanel">
+    <div class="day-panel__heading" aria-hidden="true">
+     <span class="day-panel__num">05</span> <span class="day-panel__label">Día 5</span>
+    </div>
+    <div class="timeline">
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌅</span><span class="time-block__label">Mañana</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Cataratas de Minoh</h2>
+        <span class="type-badge type-badge--parque">Cascada / Sendero</span>
+       </div>
+       <p class="attraction-card__notes">Parque cuasi-nacional. Hermoso sendero junto al río que lleva a una cascada espectacular de 33 metros.</p>
+       <button class="map-btn" data-place-name="Minoh Falls Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Minoh%20Falls%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+     <article class="attraction-card">
+      <div class="attraction-card__time-col">
+       <div class="time-block">
+        <span class="time-block__emoji">🌆</span><span class="time-block__label">Tarde</span>
+       </div>
+       <div class="timeline-line" aria-hidden="true"></div>
+      </div>
+      <div class="attraction-card__body">
+       <div class="attraction-card__top">
+        <h2 class="attraction-card__name">Templo Katsuo-ji</h2>
+        <span class="type-badge type-badge--templo">Templo Budista</span>
+       </div>
+       <p class="attraction-card__notes">El místico templo de los Daruma. Los devotos los dejan por doquier para atraer la buena fortuna en sus metas.</p>
+       <button class="map-btn" data-place-name="Katsuoji Temple Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Katsuoji%20Temple%2C%20Osaka" aria-label="Ver en mapa">
+        <svg width="13" height="13" aria-hidden="true">
+         <use href="#ic-pin" />
+        </svg>
+        Ver en Mapa
+       </button>
+      </div>
+     </article>
+    </div>
+   </section>
+  </main>
+  <!-- MAP MODAL -->
+  <div class="map-modal" id="map-modal" role="dialog" aria-modal="true" aria-label="Mapa de ubicación" hidden>
+   <div class="map-modal__overlay" id="map-overlay"></div>
+   <div class="map-modal__drawer">
+    <div class="map-modal__handle" aria-hidden="true"></div>
+    <div class="map-modal__header">
+     <span class="map-modal__pin" aria-hidden="true">📍</span> <span class="map-modal__place-name" id="modal-place-name"></span>
+     <div class="map-modal__actions">
+      <a class="map-modal__open-link" id="modal-open-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Abrir en Google Maps"> 
+       <svg width="11" height="11" aria-hidden="true">
+        <use href="#ic-ext" />
+       </svg> Abrir 
+      </a>
+      <button class="map-modal__close" id="map-close" aria-label="Cerrar mapa">
+       <svg width="16" height="16" aria-hidden="true">
+        <use href="#ic-x" />
+       </svg>
+      </button>
+     </div>
+    </div>
+    <div class="map-modal__iframe-wrap">
+     <div class="map-modal__loading" id="map-loading">
+      <div class="map-modal__spinner"></div>
+      <span>Cargando mapa…</span>
+     </div>
+     <iframe id="map-iframe" class="map-modal__iframe" title="Mapa de ubicación" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen src="about:blank">
+      </iframe>
+    </div>
+   </div>
+  </div>
+  <script>
+(function () {
+  var CITIES = {
+    tokio: { jp: '東京', title: 'TOKIO', sub: 'Itinerario · 5 Días · Nov 2026', kanji: '東' },
+    kioto: { jp: '京都', title: 'KIOTO', sub: 'Itinerario · 4 Días · Nov 2026', kanji: '京' },
+    osaka: { jp: '大阪', title: 'OSAKA', sub: 'Itinerario · 5 Días · Nov 2026', kanji: '阪' }
+  };
+
+  var header     = document.querySelector('.iti-header');
+  var headerJp   = document.getElementById('header-jp');
+  var headerTitle= document.getElementById('header-title');
+  var headerSub  = document.getElementById('header-sub');
+  var cityTabs   = document.querySelectorAll('.city-tab');
+  var dayGroups  = document.querySelectorAll('.day-tabs-group');
+  var panels     = document.querySelectorAll('.day-panel');
+  var main       = document.getElementById('main');
+
+  function activateCity(cityKey) {
+    var data = CITIES[cityKey];
+    header.dataset.kanji = data.kanji;
+    headerJp.textContent    = data.jp;
+    headerTitle.textContent = data.title;
+    headerSub.textContent   = data.sub;
+
+    cityTabs.forEach(function (t) {
+      var on = t.dataset.city === cityKey;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on);
+    });
+
+    dayGroups.forEach(function (g) {
+      g.classList.toggle('active', g.id === 'daytabs-' + cityKey);
+    });
+
+    activateDay(cityKey, 1);
+  }
+
+  function activateDay(cityKey, dayNum) {
+    var group = document.getElementById('daytabs-' + cityKey);
+    if (group) {
+      group.querySelectorAll('.day-tab').forEach(function (t) {
+        var on = parseInt(t.dataset.day) === dayNum;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on);
+      });
+    }
+
+    panels.forEach(function (p) {
+      p.classList.toggle('active', p.id === cityKey + '-day-' + dayNum);
+    });
+
+    main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  cityTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activateCity(tab.dataset.city); });
+  });
+
+  document.querySelectorAll('.day-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activateDay(tab.dataset.city, parseInt(tab.dataset.day));
+    });
+  });
+
+  /* ── Map Modal ── */
+  var modal     = document.getElementById('map-modal');
+  var iframe    = document.getElementById('map-iframe');
+  var placeName = document.getElementById('modal-place-name');
+  var openLink  = document.getElementById('modal-open-link');
+  var closeBtn  = document.getElementById('map-close');
+  var overlay   = document.getElementById('map-overlay');
+  var loading   = document.getElementById('map-loading');
+
+  function buildEmbedUrl(searchUrl) {
+    try {
+      var url   = new URL(searchUrl);
+      var query = url.searchParams.get('query') || '';
+      return 'https://maps.google.com/maps?q=' + encodeURIComponent(query) + '&output=embed';
+    } catch (e) { return 'about:blank'; }
+  }
+
+  function openMap(name, mapUrl) {
+    placeName.textContent = name;
+    openLink.href = mapUrl;
+    loading.style.opacity = '1';
+    loading.style.pointerEvents = 'auto';
+    iframe.classList.remove('loaded');
+    iframe.src = buildEmbedUrl(mapUrl);
+    modal.removeAttribute('hidden');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { modal.classList.add('is-open'); });
+    });
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeMap() {
+    modal.classList.remove('is-open');
+    var drawer = modal.querySelector('.map-modal__drawer');
+    var done = false;
+    function finish() {
+      if (done) return; done = true;
+      modal.setAttribute('hidden', '');
+      iframe.src = 'about:blank';
+      iframe.classList.remove('loaded');
+      document.body.style.overflow = '';
+    }
+    drawer.addEventListener('transitionend', finish, { once: true });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); }
+  }
+
+  iframe.addEventListener('load', function () {
+    if (iframe.src === 'about:blank') return;
+    loading.style.opacity = '0';
+    loading.style.pointerEvents = 'none';
+    iframe.classList.add('loaded');
+  });
+
+  document.querySelectorAll('.map-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      openMap(btn.dataset.placeName, btn.dataset.mapUrl);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeMap);
+  overlay.addEventListener('click', closeMap);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) { closeMap(); }
+  });
+
+  modal.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var focusable = Array.from(modal.querySelectorAll('a[href], button, iframe'));
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+})();
+</script>
+ </body>
+</html>
