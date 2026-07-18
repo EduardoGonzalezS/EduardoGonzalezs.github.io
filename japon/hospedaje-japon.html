@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japón 2026 — Hospedaje</title>
+  <meta name="description" content="Hospedaje — Tokio, Kioto y Osaka — Noviembre 2026">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    img, picture, video, canvas, svg { display: block; max-width: 100%; }
+    input, button, textarea, select { font: inherit; }
+    p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+    ul, ol { list-style: none; }
+    a { text-decoration: none; color: inherit; }
+    button { background: none; border: none; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    :root {
+      --color-ink:           #1a1a2e;
+      --color-ink-light:     #2d2d4a;
+      --color-paper:         #faf8f5;
+      --color-crimson:       #c0392b;
+      --color-crimson-light: #e74c3c;
+      --color-gold:          #c9a84c;
+      --color-gold-light:    #e8c97a;
+      --color-sakura:        #f4a7b9;
+      --color-matcha:        #5c7a5c;
+      --color-indigo:        #2c3e6b;
+      --color-indigo-light:  #3d5499;
+      --color-fog:           #e0dbd4;
+      --color-muted:         #8a8070;
+      --font-display: 'Cinzel', serif;
+      --font-serif:   'Noto Serif JP', serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --space-xs:   4px;
+      --space-sm:   8px;
+      --space-md:   16px;
+      --space-lg:   24px;
+      --space-xl:   40px;
+      --space-2xl:  64px;
+      --radius-sm:   4px;
+      --radius-md:   10px;
+      --radius-lg:   20px;
+      --radius-pill: 999px;
+      --shadow-sm:   0 2px 12px rgba(26,26,46,0.08);
+      --shadow-md:   0 4px 24px rgba(26,26,46,0.12);
+      --shadow-xl:   0 16px 64px rgba(26,26,46,0.22);
+      --z-sticky: 100;
+      --z-modal:  300;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      max-width: 480px;
+      margin-inline: auto;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .iti-header {
+      background: var(--color-ink);
+      padding: var(--space-lg) var(--space-md) var(--space-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .iti-header::before {
+      content: attr(data-kanji);
+      position: absolute;
+      right: -0.1em;
+      top: -0.15em;
+      font-family: var(--font-serif);
+      font-size: 9rem;
+      color: rgba(255,255,255,0.04);
+      pointer-events: none;
+      line-height: 1;
+      transition: content 300ms;
+    }
+    .iti-header__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-md);
+      transition: color 180ms;
+    }
+    .iti-header__back:hover { color: var(--color-gold-light); }
+    .iti-header__jp {
+      display: block;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 0.875rem;
+      color: var(--color-gold);
+      letter-spacing: 0.3em;
+      margin-bottom: 4px;
+      transition: opacity 200ms;
+    }
+    .iti-header__title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      margin-bottom: 6px;
+      transition: opacity 200ms;
+    }
+    .iti-header__sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .iti-header__divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%);
+      margin-top: var(--space-md);
+      opacity: 0.5;
+    }
+
+    /* ── Sticky Nav ── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+      background: var(--color-ink);
+    }
+
+    /* ── City Tabs ── */
+    .city-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .city-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 8px 8px;
+      border-bottom: 2px solid transparent;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: color 180ms, border-color 180ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .city-tab.active { color: #fff; border-bottom-color: var(--color-crimson); }
+    .city-tab:hover:not(.active) { color: rgba(255,255,255,0.7); }
+    .city-tab__jp {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: var(--color-gold);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .city-tab__name {
+      font-family: var(--font-display);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: inherit;
+    }
+    .city-tab__days {
+      font-size: 0.5rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+    }
+    .city-tab.active .city-tab__days { color: rgba(255,255,255,0.5); }
+
+    /* ── Day Panels ── */
+    .day-panel { display: none; padding: var(--space-md) var(--space-md) var(--space-2xl); }
+    .day-panel.active { display: block; }
+    .day-panel__heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-fog);
+    }
+    .day-panel__num { font-size: 1.75rem; line-height: 1; }
+    .day-panel__label {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      letter-spacing: 0.1em;
+    }
+    .day-panel__duration {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    /* ── Stay Dates Timeline ── */
+    .stay-timeline { display: flex; flex-direction: column; margin-bottom: var(--space-lg); }
+    .stay-leg {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 0 var(--space-sm);
+    }
+    .stay-leg__col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+    .stay-leg__dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--color-crimson);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .stay-leg__dot--end { background: var(--color-indigo); }
+    .stay-leg__line {
+      width: 1px;
+      flex: 1;
+      min-height: 40px;
+      background: var(--color-fog);
+      margin: 4px 0;
+    }
+    .stay-leg__body { padding-bottom: var(--space-md); }
+    .stay-leg__time {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      line-height: 1.1;
+    }
+    .stay-leg__place {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      color: var(--color-ink);
+      margin-top: 2px;
+    }
+    .stay-leg__note {
+      font-size: 0.7rem;
+      color: var(--color-muted);
+    }
+
+    /* ── Hotel Card ── */
+    .hotel-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-fog);
+      overflow: hidden;
+      margin-bottom: var(--space-lg);
+    }
+    .hotel-card__banner {
+      padding: var(--space-xl) var(--space-md) var(--space-md);
+      background: linear-gradient(135deg, var(--color-ink) 60%, var(--color-indigo-light) 100%);
+      position: relative;
+      text-align: center;
+    }
+    .hotel-card__banner::before {
+      content: '🏨';
+      position: absolute;
+      font-size: 5rem;
+      opacity: 0.12;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hotel-card__nights {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-sm);
+      position: relative;
+    }
+    .hotel-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: var(--space-sm);
+      position: relative;
+    }
+    .hotel-card__body { padding: var(--space-md); }
+    .hotel-card__field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 12px;
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--color-fog);
+    }
+    .hotel-card__field {
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      letter-spacing: 0.03em;
+    }
+    .hotel-card__field strong {
+      display: block;
+      font-size: 0.9375rem;
+      font-family: var(--font-display);
+      color: var(--color-ink);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .hotel-card__notes {
+      font-size: 0.8125rem;
+      color: var(--color-muted);
+      line-height: 1.55;
+      margin-bottom: var(--space-md);
+    }
+    .hotel-card__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ── Buttons ── */
+    .map-btn, .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1;
+      background: transparent;
+      border: 1px solid var(--color-indigo);
+      color: var(--color-indigo);
+      border-radius: var(--radius-md);
+      padding: 8px var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background 180ms, color 180ms, transform 100ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .map-btn:hover, .link-btn:hover { background: var(--color-indigo); color: #fff; }
+    .map-btn:active, .link-btn:active { transform: scale(0.97); }
+    .link-btn { border-color: var(--color-gold); color: #9a7a2a; }
+    .link-btn:hover { background: var(--color-gold); color: #fff; }
+
+    /* ── Map Modal ── */
+    .map-modal { position: fixed; inset: 0; z-index: var(--z-modal); pointer-events: none; }
+    .map-modal[hidden] { display: none; }
+    .map-modal.is-open { pointer-events: auto; }
+    .map-modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 360ms ease;
+    }
+    .map-modal.is-open .map-modal__overlay { background: rgba(0,0,0,0.6); }
+    .map-modal__drawer {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 480px;
+      height: 78dvh;
+      background: var(--color-ink);
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
+      transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .map-modal.is-open .map-modal__drawer { transform: translateX(-50%) translateY(0); }
+    .map-modal__handle {
+      width: 36px; height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+    .map-modal__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      flex-shrink: 0;
+    }
+    .map-modal__pin { font-size: 1rem; flex-shrink: 0; }
+    .map-modal__place-name {
+      flex: 1;
+      font-family: var(--font-serif);
+      font-size: 0.9375rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .map-modal__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .map-modal__open-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: var(--radius-pill);
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 180ms, color 180ms;
+    }
+    .map-modal__open-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .map-modal__close {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 180ms;
+    }
+    .map-modal__close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .map-modal__iframe-wrap { flex: 1; position: relative; background: var(--color-ink-light); }
+    .map-modal__loading {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--space-sm);
+      color: rgba(255,255,255,0.4);
+      font-size: 0.8125rem;
+      pointer-events: none;
+      transition: opacity 300ms;
+    }
+    .map-modal__spinner {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: var(--color-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .map-modal__iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none; opacity: 0;
+      transition: opacity 300ms;
+    }
+    .map-modal__iframe.loaded { opacity: 1; }
+
+    @media (min-width: 481px) {
+      body { box-shadow: var(--shadow-xl); min-height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SVG Sprite -->
+<svg hidden aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+  </symbol>
+  <symbol id="ic-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+    <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+  </symbol>
+  <symbol id="ic-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </symbol>
+  <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+</svg>
+
+<header class="iti-header" data-kanji="宿">
+  <a class="iti-header__back" href="../japon.html">
+    <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Japan 2026
+  </a>
+  <span class="iti-header__jp">宿泊</span>
+  <h1 class="iti-header__title">HOSPEDAJE</h1>
+  <p class="iti-header__sub" id="header-sub">Tokio · Kioto · Osaka · Nov 2026</p>
+  <div class="iti-header__divider"></div>
+</header>
+
+<div class="sticky-nav">
+  <div class="city-tabs" role="tablist" aria-label="Ciudad">
+    <button class="city-tab active" data-city="tokio" role="tab" aria-selected="true">
+      <span class="city-tab__jp">東京</span>
+      <span class="city-tab__name">TOKIO</span>
+      <span class="city-tab__days">5 noches</span>
+    </button>
+    <button class="city-tab" data-city="kioto" role="tab" aria-selected="false">
+      <span class="city-tab__jp">京都</span>
+      <span class="city-tab__name">KIOTO</span>
+      <span class="city-tab__days">4 noches</span>
+    </button>
+    <button class="city-tab" data-city="osaka" role="tab" aria-selected="false">
+      <span class="city-tab__jp">大阪</span>
+      <span class="city-tab__name">OSAKA</span>
+      <span class="city-tab__days">5 noches</span>
+    </button>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- TOKIO -->
+  <section class="day-panel active" id="panel-tokio" role="tabpanel">
+    <div class="day-panel__heading">
+      <span class="day-panel__num">🏨</span>
+      <span class="day-panel__label">5 Días Tokio</span>
+    </div>
+
+    <div class="stay-timeline">
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot"></div>
+          <div class="stay-leg__line"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">3 nov</div>
+          <div class="stay-leg__place">Entrada</div>
+          <div class="stay-leg__note">Check-in</div>
+        </div>
+      </div>
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot stay-leg__dot--end"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">9 nov</div>
+          <div class="stay-leg__place">Salida</div>
+          <div class="stay-leg__note">Check-out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-card__banner">
+        <span class="hotel-card__nights">🌙 &nbsp;6 noches</span>
+        <h2 class="hotel-card__name">Nombre del hotel (pendiente)</h2>
+      </div>
+      <div class="hotel-card__body">
+        <div class="hotel-card__field-grid">
+          <div class="hotel-card__field">Entrada<strong>3 Nov</strong></div>
+          <div class="hotel-card__field">Salida<strong>9 Nov</strong></div>
+        </div>
+        <p class="hotel-card__notes">Aquí puedes agregar la dirección, número de confirmación y notas del hospedaje en Tokio.</p>
+        <div class="hotel-card__actions">
+          <button class="map-btn" data-place-name="Hotel Gracery Shinjuku" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Gracery%20Shinjuku%2C%20Tokyo" aria-label="Ver en mapa">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa
+          </button>
+          <a class="link-btn" href="https://www.gracery.com/shinjuku/" target="_blank" rel="noopener noreferrer">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-globe"/></svg> Sitio Web
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KIOTO -->
+  <section class="day-panel" id="panel-kioto" role="tabpanel">
+    <div class="day-panel__heading">
+      <span class="day-panel__num">🏨</span>
+      <span class="day-panel__label">4 Días Kioto</span>
+    </div>
+
+    <div class="stay-timeline">
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot"></div>
+          <div class="stay-leg__line"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">9 nov</div>
+          <div class="stay-leg__place">Entrada</div>
+          <div class="stay-leg__note">Check-in</div>
+        </div>
+      </div>
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot stay-leg__dot--end"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">13 nov</div>
+          <div class="stay-leg__place">Salida</div>
+          <div class="stay-leg__note">Check-out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-card__banner">
+        <span class="hotel-card__nights">🌙 &nbsp;4 noches</span>
+        <h2 class="hotel-card__name">Nombre del hotel (pendiente)</h2>
+      </div>
+      <div class="hotel-card__body">
+        <div class="hotel-card__field-grid">
+          <div class="hotel-card__field">Entrada<strong>9 Nov</strong></div>
+          <div class="hotel-card__field">Salida<strong>13 Nov</strong></div>
+        </div>
+        <p class="hotel-card__notes">Aquí puedes agregar la dirección, número de confirmación y notas del hospedaje en Kioto.</p>
+        <div class="hotel-card__actions">
+          <button class="map-btn" data-place-name="The Celestine Kyoto Gion" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=The%20Celestine%20Kyoto%20Gion" aria-label="Ver en mapa">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa
+          </button>
+          <a class="link-btn" href="https://www.celestinehotels.jp/en/kyoto-gion/" target="_blank" rel="noopener noreferrer">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-globe"/></svg> Sitio Web
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OSAKA -->
+  <section class="day-panel" id="panel-osaka" role="tabpanel">
+    <div class="day-panel__heading">
+      <span class="day-panel__num">🏨</span>
+      <span class="day-panel__label">5 Días Osaka</span>
+    </div>
+
+    <div class="stay-timeline">
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot"></div>
+          <div class="stay-leg__line"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">13 nov</div>
+          <div class="stay-leg__place">Entrada</div>
+          <div class="stay-leg__note">Check-in</div>
+        </div>
+      </div>
+      <div class="stay-leg">
+        <div class="stay-leg__col">
+          <div class="stay-leg__dot stay-leg__dot--end"></div>
+        </div>
+        <div class="stay-leg__body">
+          <div class="stay-leg__time">18 nov</div>
+          <div class="stay-leg__place">Salida</div>
+          <div class="stay-leg__note">Check-out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-card__banner">
+        <span class="hotel-card__nights">🌙 &nbsp;5 noches</span>
+        <h2 class="hotel-card__name">Nombre del hotel (pendiente)</h2>
+      </div>
+      <div class="hotel-card__body">
+        <div class="hotel-card__field-grid">
+          <div class="hotel-card__field">Entrada<strong>13 Nov</strong></div>
+          <div class="hotel-card__field">Salida<strong>18 Nov</strong></div>
+        </div>
+        <p class="hotel-card__notes">Aquí puedes agregar la dirección, número de confirmación y notas del hospedaje en Osaka.</p>
+        <div class="hotel-card__actions">
+          <button class="map-btn" data-place-name="Cross Hotel Osaka" data-map-url="https://www.google.com/maps/search/?api=1&amp;query=Cross%20Hotel%20Osaka" aria-label="Ver en mapa">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-pin"/></svg> Ver en Mapa
+          </button>
+          <a class="link-btn" href="https://www.crosshotel.com/osaka/" target="_blank" rel="noopener noreferrer">
+            <svg width="13" height="13" aria-hidden="true"><use href="#ic-globe"/></svg> Sitio Web
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- MAP MODAL -->
+<div class="map-modal" id="map-modal" role="dialog" aria-modal="true" aria-label="Mapa de ubicación" hidden>
+  <div class="map-modal__overlay" id="map-overlay"></div>
+  <div class="map-modal__drawer">
+    <div class="map-modal__handle" aria-hidden="true"></div>
+    <div class="map-modal__header">
+      <span class="map-modal__pin" aria-hidden="true">📍</span>
+      <span class="map-modal__place-name" id="modal-place-name"></span>
+      <div class="map-modal__actions">
+        <a class="map-modal__open-link" id="modal-open-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Abrir en Google Maps">
+          <svg width="11" height="11" aria-hidden="true"><use href="#ic-ext"/></svg>
+          Abrir
+        </a>
+        <button class="map-modal__close" id="map-close" aria-label="Cerrar mapa">
+          <svg width="16" height="16" aria-hidden="true"><use href="#ic-x"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="map-modal__iframe-wrap">
+      <div class="map-modal__loading" id="map-loading">
+        <div class="map-modal__spinner"></div>
+        <span>Cargando mapa…</span>
+      </div>
+      <iframe id="map-iframe" class="map-modal__iframe"
+        title="Mapa de ubicación"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+        allowfullscreen
+        src="about:blank">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var cityTabs = document.querySelectorAll('.city-tab');
+  var panels   = document.querySelectorAll('.day-panel');
+  var main     = document.getElementById('main');
+
+  function activateCity(cityKey) {
+    cityTabs.forEach(function (t) {
+      var on = t.dataset.city === cityKey;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on);
+    });
+    panels.forEach(function (p) {
+      p.classList.toggle('active', p.id === 'panel-' + cityKey);
+    });
+    main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  cityTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activateCity(tab.dataset.city); });
+  });
+
+  /* ── Map Modal ── */
+  var modal     = document.getElementById('map-modal');
+  var iframe    = document.getElementById('map-iframe');
+  var placeName = document.getElementById('modal-place-name');
+  var openLink  = document.getElementById('modal-open-link');
+  var closeBtn  = document.getElementById('map-close');
+  var overlay   = document.getElementById('map-overlay');
+  var loading   = document.getElementById('map-loading');
+
+  function buildEmbedUrl(searchUrl) {
+    try {
+      var url   = new URL(searchUrl);
+      var query = url.searchParams.get('query') || '';
+      return 'https://maps.google.com/maps?q=' + encodeURIComponent(query) + '&output=embed';
+    } catch (e) { return 'about:blank'; }
+  }
+
+  function openMap(name, mapUrl) {
+    placeName.textContent = name;
+    openLink.href = mapUrl;
+    loading.style.opacity = '1';
+    loading.style.pointerEvents = 'auto';
+    iframe.classList.remove('loaded');
+    iframe.src = buildEmbedUrl(mapUrl);
+    modal.removeAttribute('hidden');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { modal.classList.add('is-open'); });
+    });
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeMap() {
+    modal.classList.remove('is-open');
+    var drawer = modal.querySelector('.map-modal__drawer');
+    var done = false;
+    function finish() {
+      if (done) return; done = true;
+      modal.setAttribute('hidden', '');
+      iframe.src = 'about:blank';
+      iframe.classList.remove('loaded');
+      document.body.style.overflow = '';
+    }
+    drawer.addEventListener('transitionend', finish, { once: true });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); }
+  }
+
+  iframe.addEventListener('load', function () {
+    if (iframe.src === 'about:blank') return;
+    loading.style.opacity = '0';
+    loading.style.pointerEvents = 'none';
+    iframe.classList.add('loaded');
+  });
+
+  document.querySelectorAll('.map-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      openMap(btn.dataset.placeName, btn.dataset.mapUrl);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeMap);
+  overlay.addEventListener('click', closeMap);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) { closeMap(); }
+  });
+
+  modal.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var focusable = Array.from(modal.querySelectorAll('a[href], button, iframe'));
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
