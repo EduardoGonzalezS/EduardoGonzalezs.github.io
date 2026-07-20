@@ -182,6 +182,21 @@
       margin-top: 2px;
       opacity: 0.8;
     }
+    .cal-day__city {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.45rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-top: 3px;
+      padding: 1px 4px;
+      border-radius: var(--radius-pill);
+      line-height: 1.4;
+    }
+    .cal-day__city--tokio { background: rgba(192,57,43,0.15); color: var(--color-crimson); }
+    .cal-day__city--kioto { background: rgba(44,62,107,0.15); color: var(--color-indigo); }
+    .cal-day__city--osaka { background: rgba(138,109,0,0.18); color: #7a5f00; }
 
     /* ── Legend ── */
     .legend {
@@ -242,24 +257,24 @@
       <div class="cal-day cal-day--fuera">1</div>
       <div class="cal-day cal-day--fuera">2</div>
       <div class="cal-day cal-day--llegada">3<span class="cal-day__tag">Llega</span></div>
-      <div class="cal-day cal-day--completo">4</div>
-      <div class="cal-day cal-day--completo">5</div>
-      <div class="cal-day cal-day--completo">6</div>
-      <div class="cal-day cal-day--completo">7</div>
+      <div class="cal-day cal-day--completo">4<span class="cal-day__city cal-day__city--tokio">Tokio</span></div>
+      <div class="cal-day cal-day--completo">5<span class="cal-day__city cal-day__city--tokio">Tokio</span></div>
+      <div class="cal-day cal-day--completo">6<span class="cal-day__city cal-day__city--tokio">Tokio</span></div>
+      <div class="cal-day cal-day--completo">7<span class="cal-day__city cal-day__city--tokio">Tokio</span></div>
 
       <!-- Semana 2 -->
-      <div class="cal-day cal-day--completo">8</div>
-      <div class="cal-day cal-day--completo">9</div>
-      <div class="cal-day cal-day--completo">10</div>
-      <div class="cal-day cal-day--completo">11</div>
-      <div class="cal-day cal-day--completo">12</div>
-      <div class="cal-day cal-day--completo">13</div>
-      <div class="cal-day cal-day--completo">14</div>
+      <div class="cal-day cal-day--completo">8<span class="cal-day__city cal-day__city--tokio">Tokio</span></div>
+      <div class="cal-day cal-day--completo">9<span class="cal-day__city cal-day__city--kioto">Kioto</span></div>
+      <div class="cal-day cal-day--completo">10<span class="cal-day__city cal-day__city--kioto">Kioto</span></div>
+      <div class="cal-day cal-day--completo">11<span class="cal-day__city cal-day__city--kioto">Kioto</span></div>
+      <div class="cal-day cal-day--completo">12<span class="cal-day__city cal-day__city--kioto">Kioto</span></div>
+      <div class="cal-day cal-day--completo">13<span class="cal-day__city cal-day__city--osaka">Osaka</span></div>
+      <div class="cal-day cal-day--completo">14<span class="cal-day__city cal-day__city--osaka">Osaka</span></div>
 
       <!-- Semana 3 -->
-      <div class="cal-day cal-day--completo">15</div>
-      <div class="cal-day cal-day--completo">16</div>
-      <div class="cal-day cal-day--completo">17</div>
+      <div class="cal-day cal-day--completo">15<span class="cal-day__city cal-day__city--osaka">Osaka</span></div>
+      <div class="cal-day cal-day--completo">16<span class="cal-day__city cal-day__city--osaka">Osaka</span></div>
+      <div class="cal-day cal-day--completo">17<span class="cal-day__city cal-day__city--osaka">Osaka</span></div>
       <div class="cal-day cal-day--salida">18<span class="cal-day__tag">Sale</span></div>
       <div class="cal-day cal-day--fuera">19</div>
       <div class="cal-day cal-day--fuera">20</div>
@@ -294,6 +309,18 @@
     </div>
     <div class="legend__item legend__item--salida">
       DÍA DE SALIDA <span class="legend__count">18 Nov</span>
+    </div>
+  </div>
+
+  <div class="legend" style="margin-top: var(--space-md);">
+    <div class="legend__item" style="background: rgba(192,57,43,0.15); color: var(--color-crimson);">
+      TOKIO <span class="legend__count">4 – 8 Nov</span>
+    </div>
+    <div class="legend__item" style="background: rgba(44,62,107,0.15); color: var(--color-indigo);">
+      KIOTO <span class="legend__count">9 – 12 Nov</span>
+    </div>
+    <div class="legend__item" style="background: rgba(138,109,0,0.18); color: #7a5f00;">
+      OSAKA <span class="legend__count">13 – 17 Nov</span>
     </div>
   </div>
 </main>
