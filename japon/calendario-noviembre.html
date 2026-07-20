@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japón 2026 — Calendario</title>
+  <meta name="description" content="Calendario de viaje — Noviembre 2026">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    ul, ol { list-style: none; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --color-ink:           #1a1a2e;
+      --color-ink-light:     #2d2d4a;
+      --color-paper:         #faf8f5;
+      --color-crimson:       #c0392b;
+      --color-gold:          #c9a84c;
+      --color-gold-light:    #e8c97a;
+      --color-indigo:        #2c3e6b;
+      --color-fog:           #e0dbd4;
+      --color-muted:         #8a8070;
+      --color-llegada:       #fce8a2;
+      --color-llegada-text:  #8a6d00;
+      --color-salida:        #e3a6b8;
+      --color-salida-text:   #7a1f3d;
+      --color-completo:      #c3ddb0;
+      --color-completo-text: #3f6b28;
+      --color-fuera:         #d9d9d9;
+      --color-fuera-text:    #6b6b6b;
+      --font-display: 'Cinzel', serif;
+      --font-serif:   'Noto Serif JP', serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --space-xs:   4px;
+      --space-sm:   8px;
+      --space-md:   16px;
+      --space-lg:   24px;
+      --space-xl:   40px;
+      --radius-sm:   4px;
+      --radius-md:   10px;
+      --radius-lg:   20px;
+      --radius-pill: 999px;
+      --shadow-sm:   0 2px 12px rgba(26,26,46,0.08);
+      --shadow-md:   0 4px 24px rgba(26,26,46,0.12);
+      --shadow-xl:   0 16px 64px rgba(26,26,46,0.22);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      max-width: 480px;
+      margin-inline: auto;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .iti-header {
+      background: var(--color-ink);
+      padding: var(--space-lg) var(--space-md) var(--space-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .iti-header::before {
+      content: '暦';
+      position: absolute;
+      right: -0.1em;
+      top: -0.15em;
+      font-family: var(--font-serif);
+      font-size: 9rem;
+      color: rgba(255,255,255,0.04);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .iti-header__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-md);
+      transition: color 180ms;
+    }
+    .iti-header__back:hover { color: var(--color-gold-light); }
+    .iti-header__jp {
+      display: block;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 0.875rem;
+      color: var(--color-gold);
+      letter-spacing: 0.3em;
+      margin-bottom: 4px;
+    }
+    .iti-header__title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .iti-header__sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .iti-header__divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%);
+      margin-top: var(--space-md);
+      opacity: 0.5;
+    }
+
+    main { padding: var(--space-md) var(--space-md) var(--space-xl); }
+
+    /* ── Calendar Card ── */
+    .cal-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-fog);
+      overflow: hidden;
+      margin-bottom: var(--space-lg);
+    }
+    .cal-card__title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--color-indigo);
+      padding: var(--space-md) var(--space-sm) var(--space-sm);
+      border-bottom: 1px solid var(--color-fog);
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .cal-dow {
+      text-align: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      background: rgba(44,62,107,0.06);
+      padding: 8px 2px;
+    }
+    .cal-day {
+      position: relative;
+      text-align: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 2px;
+      border: 1px solid var(--color-fog);
+      color: var(--color-ink);
+    }
+    .cal-day--empty { background: var(--color-paper); border-color: transparent; }
+    .cal-day--fuera { background: var(--color-fuera); color: var(--color-fuera-text); }
+    .cal-day--llegada { background: var(--color-llegada); color: var(--color-llegada-text); }
+    .cal-day--completo { background: var(--color-completo); color: var(--color-completo-text); }
+    .cal-day--salida { background: var(--color-salida); color: var(--color-salida-text); }
+    .cal-day__tag {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.45rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .legend__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: var(--radius-md);
+      padding: 10px var(--space-md);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .legend__item--completo { background: var(--color-completo); color: var(--color-completo-text); }
+    .legend__item--llegada  { background: var(--color-llegada);  color: var(--color-llegada-text); }
+    .legend__item--salida   { background: var(--color-salida);   color: var(--color-salida-text); }
+    .legend__count {
+      margin-left: auto;
+      font-family: var(--font-display);
+      font-weight: 700;
+    }
+
+    @media (min-width: 481px) {
+      body { box-shadow: var(--shadow-xl); min-height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="iti-header">
+  <a class="iti-header__back" href="japon.html">
+    <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    Japan 2026
+  </a>
+  <span class="iti-header__jp">十一月</span>
+  <h1 class="iti-header__title">NOVIEMBRE</h1>
+  <p class="iti-header__sub">Calendario del viaje · 2026</p>
+  <div class="iti-header__divider"></div>
+</header>
+
+<main>
+  <div class="cal-card">
+    <div class="cal-card__title">NOVIEMBRE</div>
+    <div class="cal-grid">
+      <div class="cal-dow">Dom</div>
+      <div class="cal-dow">Lun</div>
+      <div class="cal-dow">Mar</div>
+      <div class="cal-dow">Mier</div>
+      <div class="cal-dow">Jue</div>
+      <div class="cal-dow">Vie</div>
+      <div class="cal-dow">Sab</div>
+
+      <!-- Semana 1 -->
+      <div class="cal-day cal-day--fuera">1</div>
+      <div class="cal-day cal-day--fuera">2</div>
+      <div class="cal-day cal-day--llegada">3<span class="cal-day__tag">Llega</span></div>
+      <div class="cal-day cal-day--completo">4</div>
+      <div class="cal-day cal-day--completo">5</div>
+      <div class="cal-day cal-day--completo">6</div>
+      <div class="cal-day cal-day--completo">7</div>
+
+      <!-- Semana 2 -->
+      <div class="cal-day cal-day--completo">8</div>
+      <div class="cal-day cal-day--completo">9</div>
+      <div class="cal-day cal-day--completo">10</div>
+      <div class="cal-day cal-day--completo">11</div>
+      <div class="cal-day cal-day--completo">12</div>
+      <div class="cal-day cal-day--completo">13</div>
+      <div class="cal-day cal-day--completo">14</div>
+
+      <!-- Semana 3 -->
+      <div class="cal-day cal-day--completo">15</div>
+      <div class="cal-day cal-day--completo">16</div>
+      <div class="cal-day cal-day--completo">17</div>
+      <div class="cal-day cal-day--salida">18<span class="cal-day__tag">Sale</span></div>
+      <div class="cal-day cal-day--fuera">19</div>
+      <div class="cal-day cal-day--fuera">20</div>
+      <div class="cal-day cal-day--fuera">21</div>
+
+      <!-- Semana 4 -->
+      <div class="cal-day cal-day--fuera">22</div>
+      <div class="cal-day cal-day--fuera">23</div>
+      <div class="cal-day cal-day--fuera">24</div>
+      <div class="cal-day cal-day--fuera">25</div>
+      <div class="cal-day cal-day--fuera">26</div>
+      <div class="cal-day cal-day--fuera">27</div>
+      <div class="cal-day cal-day--fuera">28</div>
+
+      <!-- Semana 5 -->
+      <div class="cal-day cal-day--fuera">29</div>
+      <div class="cal-day cal-day--fuera">30</div>
+      <div class="cal-day cal-day--empty"></div>
+      <div class="cal-day cal-day--empty"></div>
+      <div class="cal-day cal-day--empty"></div>
+      <div class="cal-day cal-day--empty"></div>
+      <div class="cal-day cal-day--empty"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend__item legend__item--completo">
+      DÍAS COMPLETOS <span class="legend__count">14 días</span>
+    </div>
+    <div class="legend__item legend__item--llegada">
+      DÍA DE LLEGADA <span class="legend__count">3 Nov</span>
+    </div>
+    <div class="legend__item legend__item--salida">
+      DÍA DE SALIDA <span class="legend__count">18 Nov</span>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
