@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costales Angeline — Manifiesto de producto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#12151a;
+    --night-2:#1c212a;
+    --yellow:#f4b400;
+    --yellow-deep:#c98900;
+    --orange:#e2572b;
+    --paper:#eef1ec;
+    --paper-2:#f8faf6;
+    --ink:#12151a;
+    --muted:rgba(18,21,26,.62);
+    --muted-dark:rgba(238,241,236,.62);
+    --line:rgba(18,21,26,.14);
+    --line-dark:rgba(238,241,236,.16);
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Work Sans',sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Staatliches',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-weight:400;
+    margin:0;
+  }
+  .mono{font-family:'Space Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+
+  /* hazard stripe divider — signature element */
+  .hazard{
+    height:14px; width:100%;
+    background: repeating-linear-gradient(135deg, var(--yellow) 0 22px, var(--night) 22px 44px);
+  }
+  .hazard.thin{height:8px;}
+
+  .code-tag{
+    font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.06em;
+    color:var(--yellow-deep); font-weight:700;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--night); color:var(--paper-2);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px; max-width:1200px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand .mark{
+    width:38px; height:38px; border:2px solid var(--yellow); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Staatliches',sans-serif; color:var(--yellow); font-size:1.1rem;
+    transform:rotate(-4deg);
+  }
+  .brand .name{font-family:'Staatliches',sans-serif; font-size:1.3rem; letter-spacing:.03em;}
+  .brand .tag{font-family:'Space Mono',monospace; font-size:.62rem; color:var(--muted-dark); letter-spacing:.08em; text-transform:uppercase;}
+  nav.links{display:flex; align-items:center; gap:26px; font-size:.85rem;}
+  nav.links a{opacity:.82; border-bottom:2px solid transparent; padding:4px 0;}
+  nav.links a:hover{opacity:1; border-color:var(--yellow);}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:.74rem; text-transform:uppercase; letter-spacing:.05em;
+    padding:11px 18px; border-radius:var(--radius); border:2px solid transparent; cursor:pointer;
+  }
+  .btn.solid{background:var(--yellow); color:var(--night);}
+  .btn.solid:hover{background:#ffcc33;}
+  .btn.outline{border-color:var(--paper-2); color:var(--paper-2); background:transparent;}
+  .btn.outline:hover{background:rgba(238,241,236,.08);}
+  .btn.orange{background:var(--orange); color:#fff;}
+  .btn.orange:hover{background:#c94420;}
+  .menu-toggle{display:none; background:none; border:1px solid var(--paper-2); color:var(--paper-2); font-size:1.1rem; padding:6px 12px; cursor:pointer;}
+
+  /* ---------- hero ---------- */
+  .hero{background:var(--night); color:var(--paper-2); padding:64px 0 0;}
+  .hero-inner{display:grid; grid-template-columns:1.15fr .85fr; gap:44px; align-items:center; padding-bottom:50px;}
+  .eyebrow{font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--yellow);}
+  .hero h1{font-size:clamp(2.3rem,5.2vw,4rem); line-height:1; margin-top:14px;}
+  .hero h1 em{font-style:normal; color:var(--yellow);}
+  .hero p.lead{margin-top:20px; max-width:48ch; color:var(--muted-dark); font-size:1.05rem;}
+  .cta-row{display:flex; gap:14px; margin-top:30px; flex-wrap:wrap;}
+
+  /* crate stack graphic */
+  .crates{position:relative; height:280px;}
+  .crate{
+    position:absolute; border-radius:2px;
+    background: repeating-linear-gradient(90deg, #2a3140 0 3px, #232a37 3px 7px);
+    border:1px solid rgba(238,241,236,.14);
+  }
+  .crate .lbl{
+    position:absolute; top:8px; left:8px; right:8px;
+    font-family:'Space Mono',monospace; font-size:.6rem; color:var(--yellow); letter-spacing:.05em;
+  }
+  .crate.c1{width:160px; height:100px; bottom:0; left:10px;}
+  .crate.c2{width:150px; height:90px; bottom:0; left:180px;}
+  .crate.c3{width:170px; height:105px; bottom:96px; left:50px;}
+  .crate.c4{width:140px; height:80px; bottom:186px; left:70px;}
+  .stamp{
+    position:absolute; top:10px; right:10px;
+    width:96px; height:96px; border-radius:50%;
+    border:3px solid var(--orange); color:var(--orange);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Staatliches',sans-serif; font-size:.72rem; line-height:1.15;
+    transform:rotate(10deg); letter-spacing:.02em;
+  }
+
+  /* ---------- manifest strip (quick specs) ---------- */
+  .manifest-strip{background:var(--yellow); color:var(--night); overflow:hidden;}
+  .manifest-strip .wrap{
+    display:flex; gap:0; flex-wrap:wrap; padding:14px 24px;
+  }
+  .manifest-item{
+    flex:1; min-width:150px; padding:6px 20px; border-left:1px solid rgba(18,21,26,.2);
+    font-family:'Space Mono',monospace; font-size:.78rem;
+  }
+  .manifest-item:first-child{border-left:none;}
+  .manifest-item b{display:block; font-family:'Staatliches',sans-serif; font-size:1rem; letter-spacing:.02em; margin-top:2px;}
+
+  /* ---------- sections ---------- */
+  section{padding:66px 0;}
+  section.dark{background:var(--night); color:var(--paper-2);}
+  .section-head{max-width:62ch; margin-bottom:38px;}
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);}
+  .section-head p{color:var(--muted); margin-top:12px;}
+  section.dark .section-head p{color:var(--muted-dark);}
+
+  /* ---------- swatch tags (tela comparison) ---------- */
+  .swatch-row{display:flex; gap:48px; flex-wrap:wrap; justify-content:flex-start;}
+  .swatch-tag{
+    background:var(--paper-2); border:1px solid var(--line);
+    width:280px; padding:0; position:relative;
+    box-shadow:0 10px 26px rgba(18,21,26,.08);
+  }
+  .swatch-tag:nth-child(1){transform:rotate(-2deg);}
+  .swatch-tag:nth-child(2){transform:rotate(1.5deg);}
+  .swatch-tag::before{
+    content:""; position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+    width:2px; height:16px; background:var(--muted);
+  }
+  .swatch-fill{height:90px;}
+  .swatch-fill.normal{background:repeating-linear-gradient(45deg,#d8c99a 0 4px,#c9b57e 4px 13px);}
+  .swatch-fill.laminada{background:repeating-linear-gradient(45deg,#2f3a30 0 4px,#26302a 4px 13px);}
+  .swatch-body{padding:18px 20px 22px;}
+  .swatch-body .code-tag{display:block; margin-bottom:6px;}
+  .swatch-body h3{font-size:1.15rem;}
+  .swatch-body p{font-size:.88rem; color:var(--muted); margin-top:10px;}
+
+  /* ---------- filters ---------- */
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px;}
+  .filter-btn{
+    font-family:'Space Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em;
+    background:transparent; border:1px solid var(--night); color:var(--night);
+    padding:8px 14px; cursor:pointer; border-radius:var(--radius);
+  }
+  .filter-btn.active,.filter-btn:hover{background:var(--night); color:var(--yellow);}
+
+  /* ---------- inventory manifest list ---------- */
+  .manifest{border:1px solid var(--line); background:var(--paper-2);}
+  .manifest-head-row, .manifest-row{
+    display:grid; grid-template-columns:70px 1.7fr .9fr 100px 1.3fr; gap:14px; align-items:center;
+    padding:16px 18px; border-bottom:1px solid var(--line);
+  }
+  .manifest-head-row{
+    background:var(--night); color:var(--paper-2);
+    font-family:'Space Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em;
+  }
+  .manifest-row:last-child{border-bottom:none;}
+  .manifest-row:nth-child(even){background:rgba(18,21,26,.025);}
+  .manifest-row .idx{font-family:'Space Mono',monospace; color:var(--yellow-deep); font-weight:700;}
+  .manifest-row .name h3{font-size:1rem; text-transform:none; letter-spacing:0; font-family:'Work Sans',sans-serif; font-weight:700;}
+  .manifest-row .name p{font-size:.82rem; color:var(--muted); margin:4px 0 0;}
+  .tela-badge{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:.65rem; text-transform:uppercase;
+    padding:4px 9px; border-radius:20px; letter-spacing:.04em;
+  }
+  .tela-badge.normal{background:rgba(244,180,0,.18); color:var(--yellow-deep);}
+  .tela-badge.laminada{background:rgba(18,21,26,.1); color:var(--night);}
+  .tela-badge.ambas{background:linear-gradient(90deg, rgba(244,180,0,.18) 50%, rgba(18,21,26,.1) 50%); color:var(--night);}
+  .tela-badge.jumbo{background:rgba(226,87,43,.15); color:var(--orange);}
+  .manifest-row .cap{font-family:'Space Mono',monospace; font-size:.85rem;}
+  .manifest-row .ex{font-size:.8rem; color:var(--muted);}
+
+  /* ---------- jumbo feature ---------- */
+  .feature{
+    display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line-dark);
+  }
+  .feature-visual{
+    background:var(--night-2); position:relative; min-height:280px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .feature-visual .stamp{position:static; transform:rotate(-8deg);}
+  .feature-text{background:var(--night); color:var(--paper-2); padding:40px;}
+  .feature-text .code-tag{color:var(--yellow);}
+  .feature-text h3{font-size:1.6rem; margin-top:10px;}
+  .feature-text p{color:var(--muted-dark); margin-top:14px;}
+  .feature-text .chips{margin-top:20px; display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{font-size:.72rem; font-family:'Space Mono',monospace; border:1px solid var(--line-dark); padding:5px 10px; border-radius:20px; color:var(--muted-dark);}
+
+  /* ---------- promo hazard banner ---------- */
+  .promo-banner{
+    position:relative; padding:56px 0; text-align:center; overflow:hidden;
+    background: repeating-linear-gradient(135deg, var(--yellow) 0 26px, var(--night) 26px 52px);
+  }
+  .promo-inner{
+    background:var(--night); color:var(--paper-2); max-width:760px; margin:0 auto;
+    padding:40px 36px; border:2px solid var(--yellow);
+  }
+  .promo-inner .badge{
+    display:inline-block; background:var(--orange); color:#fff; font-family:'Space Mono',monospace;
+    font-weight:700; font-size:.72rem; padding:6px 14px; border-radius:20px; letter-spacing:.05em; margin-bottom:14px;
+  }
+  .promo-inner h2{font-size:clamp(1.6rem,3.4vw,2.3rem); color:var(--yellow);}
+  .promo-inner p{color:var(--muted-dark); margin-top:12px; max-width:52ch; margin-left:auto; margin-right:auto;}
+  .promo-inner .cta-row{justify-content:center; margin-top:26px;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--night); color:var(--paper-2); padding:56px 0 26px;}
+  .footer-grid{display:grid; grid-template-columns:1.1fr .9fr .9fr; gap:40px;}
+  footer h3{font-size:1.1rem; margin-bottom:14px;}
+  footer p{color:var(--muted-dark); font-size:.92rem;}
+  .contact-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+  .contact-list a{display:flex; align-items:center; gap:10px; font-size:.94rem;}
+  .contact-list .ic{
+    width:32px; height:32px; border:1px solid var(--line-dark); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0;
+  }
+  .social-row{display:flex; gap:10px; margin-top:14px;}
+  .social-row a{
+    width:36px; height:36px; border-radius:50%; border:1px solid var(--line-dark);
+    display:flex; align-items:center; justify-content:center; font-size:.82rem;
+  }
+  .social-row a:hover{background:rgba(238,241,236,.08);}
+  .foot-bottom{
+    margin-top:40px; padding-top:20px; border-top:1px solid var(--line-dark);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:.76rem; color:var(--muted-dark);
+  }
+
+  .float-wa{
+    position:fixed; bottom:22px; right:22px; z-index:60;
+    background:var(--orange); color:#fff; width:54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:1.4rem;
+    box-shadow:0 8px 22px rgba(0,0,0,.35);
+  }
+  .float-wa:hover{background:#c94420;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .hero-inner{grid-template-columns:1fr;}
+    .crates{display:none;}
+    .feature{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .manifest-head-row{display:none;}
+    .manifest-row{grid-template-columns:1fr; gap:6px; position:relative;}
+    .manifest-row .idx{position:absolute; top:16px; right:18px;}
+  }
+  @media (max-width:720px){
+    nav.links{
+      position:fixed; inset:60px 0 0 0; background:var(--night);
+      flex-direction:column; align-items:flex-start; padding:26px 24px; gap:4px;
+      transform:translateX(100%); transition:transform .25s ease; z-index:70;
+    }
+    nav.links.open{transform:translateX(0);}
+    nav.links a{width:100%; padding:12px 0; border-bottom:1px solid var(--line-dark);}
+    .menu-toggle{display:block;}
+    .swatch-row{gap:26px; justify-content:center;}
+    .swatch-tag{width:100%; max-width:320px;}
+    .manifest-strip .wrap{padding:12px 20px;}
+    .manifest-item{border-left:none; border-top:1px solid rgba(18,21,26,.15); flex-basis:45%;}
+    .manifest-item:first-child{border-top:none;}
+    .footer-grid{grid-template-columns:1fr; gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <span class="mark">CA</span>
+      <div>
+        <div class="name">Costales Angeline</div>
+        <div class="tag">Manifiesto de producto</div>
+      </div>
+    </div>
+    <nav class="links" id="navLinks">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#jumbo">Jumbo</a>
+      <a href="#mayoreo">Mayoreo</a>
+      <a href="#medidas">Medidas</a>
+      <a href="#contacto">Contacto</a>
+      <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Bodega · Tlajomulco de Zúñiga, Jalisco</p>
+      <h1>Calidad que se ve,<br><em>resistencia que dura.</em></h1>
+      <p class="lead">Costal y jumbo de polipropileno tejido, en existencia, listos para embarcar. Mayoreo y menudeo, precios directos de bodega, facturación y envíos a toda la República Mexicana.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+        <a class="btn outline" href="#catalogo">Ver manifiesto completo</a>
+      </div>
+    </div>
+    <div class="crates reveal">
+      <div class="stamp">CALIDAD<br>GARANTIZADA</div>
+      <div class="crate c3"><span class="lbl">LOTE · GRANO</span></div>
+      <div class="crate c4"><span class="lbl">LOTE · JUMBO</span></div>
+      <div class="crate c1"><span class="lbl">LOTE · MAYOREO</span></div>
+      <div class="crate c2"><span class="lbl">LOTE · MENUDEO</span></div>
+    </div>
+  </div>
+  <div class="manifest-strip">
+    <div class="wrap">
+      <div class="manifest-item">Medidas<b>5 a 70 kg</b></div>
+      <div class="manifest-item">Venta<b>Mayoreo / Menudeo</b></div>
+      <div class="manifest-item">Facturación<b>Disponible</b></div>
+      <div class="manifest-item">Cobertura<b>Toda la República</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Ficha técnica</p>
+      <h2>Tela normal vs. tela laminada</h2>
+      <p>Dos acabados de un mismo polipropileno tejido, para que elijas el que necesita tu producto.</p>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch-tag reveal">
+        <div class="swatch-fill normal"></div>
+        <div class="swatch-body">
+          <span class="code-tag">MUESTRA · N-01</span>
+          <h3>Tela normal</h3>
+          <p>Ligera, flexible y económica. Ideal para productos secos: grano, forraje, harinas.</p>
+        </div>
+      </div>
+      <div class="swatch-tag reveal">
+        <div class="swatch-fill laminada"></div>
+        <div class="swatch-body">
+          <span class="code-tag">MUESTRA · L-02</span>
+          <h3>Tela laminada</h3>
+          <p>Capa adicional contra la humedad y el polvo. Máxima protección para fertilizante, azúcar y sal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard"></div>
+
+<section id="catalogo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Inventario disponible</p>
+      <h2>Catálogo completo</h2>
+      <p>Filtra por tipo de tela. Cada renglón indica medida, capacidad y ejemplos reales de producto que hemos embazado.</p>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="normal">Tela normal</button>
+      <button class="filter-btn" data-filter="laminada">Tela laminada</button>
+      <button class="filter-btn" data-filter="ambas">Normal y laminada</button>
+    </div>
+
+    <div class="manifest reveal" id="manifestList">
+      <div class="manifest-head-row">
+        <div>Ítem</div><div>Producto</div><div>Tela</div><div>Cap.</div><div>Ejemplos</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">01</div>
+        <div class="name"><h3>Costal estándar</h3><p class="mono">58 x 108 / 60 x 100 cm</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">50–60 kg</div>
+        <div class="ex">Forraje, maíz, frijol</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">02</div>
+        <div class="name"><h3>Grado alimenticio</h3><p class="mono">54 x 95 / 54 x 100 cm</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">50–60 kg</div>
+        <div class="ex">Maíz, frijol, milo</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">03</div>
+        <div class="name"><h3>Alimento para animales</h3><p class="mono">50 x 90 cm · Forrajes El Barrio</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">Granel</div>
+        <div class="ex">Arena, grava, alimento animal</div>
+      </div>
+
+      <div class="manifest-row" data-tela="ambas">
+        <div class="idx mono">04</div>
+        <div class="name"><h3>Composta y minerales</h3><p class="mono">50 x 85 cm · Molino Anaya</p></div>
+        <div><span class="tela-badge ambas">Normal / Laminada</span></div>
+        <div class="cap">Granel</div>
+        <div class="ex">Composta, minerales, arena</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">05</div>
+        <div class="name"><h3>Harinas y cereales</h3><p class="mono">50 x 80 cm · Guadalupe Óptima</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">25 kg</div>
+        <div class="ex">Harina, cereales, calcio</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">06</div>
+        <div class="name"><h3>Blanco sin impresión</h3><p class="mono">45x75 · 50x75 · 50x80 · 50x90 cm</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">Varias</div>
+        <div class="ex">Harinas, arroz, granos</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">07</div>
+        <div class="name"><h3>Transparente con logo</h3><p class="mono">50 x 80 cm · Forrajes Establos</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">Granel</div>
+        <div class="ex">Ganado, caballos, aves</div>
+      </div>
+
+      <div class="manifest-row" data-tela="normal">
+        <div class="idx mono">08</div>
+        <div class="name"><h3>Transparente liso</h3><p class="mono">45x75 · 50x75 · 50x80 cm</p></div>
+        <div><span class="tela-badge normal">Normal</span></div>
+        <div class="cap">Granel</div>
+        <div class="ex">Maíz, frijol, arroz, especias</div>
+      </div>
+
+      <div class="manifest-row" data-tela="laminada">
+        <div class="idx mono">09</div>
+        <div class="name"><h3>Alimento para aves</h3><p class="mono">46 x 80 cm · Fórmula GORY</p></div>
+        <div><span class="tela-badge laminada">Laminada</span></div>
+        <div class="cap">25 kg</div>
+        <div class="ex">Gallo de pelea, aves, minerales</div>
+      </div>
+
+      <div class="manifest-row" data-tela="laminada">
+        <div class="idx mono">10</div>
+        <div class="name"><h3>Fertilizante</h3><p class="mono">50x80 · 50x75 · 50x70 cm</p></div>
+        <div><span class="tela-badge laminada">Laminada</span></div>
+        <div class="cap">25 kg</div>
+        <div class="ex">Tecnomix, Tepeyac, Agrogen</div>
+      </div>
+
+      <div class="manifest-row" data-tela="laminada">
+        <div class="idx mono">11</div>
+        <div class="name"><h3>Azúcar</h3><p class="mono">47 x 80 / 48 x 80 cm</p></div>
+        <div><span class="tela-badge laminada">Laminada</span></div>
+        <div class="cap">25 kg</div>
+        <div class="ex">Ingenios Santos, Grupo Porres</div>
+      </div>
+
+      <div class="manifest-row" data-tela="ambas">
+        <div class="idx mono">12</div>
+        <div class="name"><h3>Sal</h3><p class="mono">45 x 75 cm</p></div>
+        <div><span class="tela-badge ambas">Normal / Laminada</span></div>
+        <div class="cap">25 kg</div>
+        <div class="ex">Palmasal, Pegaso Sal de Mar</div>
+      </div>
+
+      <div class="manifest-row" data-tela="ambas">
+        <div class="idx mono">13</div>
+        <div class="name"><h3>Presentación chica</h3><p class="mono">30 x 45 / 30 x 50 cm</p></div>
+        <div><span class="tela-badge ambas">Normal / Laminada</span></div>
+        <div class="cap">5–10 kg</div>
+        <div class="ex">Pollo, gallo, conejo, pavo, pato</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard"></div>
+
+<section class="dark" id="jumbo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Grandes volúmenes</p>
+      <h2 style="color:var(--paper-2);">Costal jumbo</h2>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-visual">
+        <div class="stamp">SIN<br>IMPRESIÓN</div>
+      </div>
+      <div class="feature-text">
+        <span class="code-tag">ÍTEM · 14</span>
+        <h3>Jumbo blanco, con asas y jareta superior</h3>
+        <p class="mono">90 x 90 x 1.50 m</p>
+        <p>Sin impresión, limpio, listo para plástico peletizado, plástico molido, aluminio, cobre o cualquier tipo de mineral.</p>
+        <div class="chips">
+          <span class="chip">Plástico</span><span class="chip">Aluminio</span><span class="chip">Cobre</span><span class="chip">Minerales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mayoreo" style="padding:0;">
+  <div class="promo-banner">
+    <div class="wrap">
+      <div class="promo-inner reveal">
+        <span class="badge">+10,000 piezas</span>
+        <h2>Mejoramos nuestros precios de mayoreo</h2>
+        <p>Alimentos, productos químicos, materiales de construcción, alimento para animales, fertilizantes y más. Escríbenos por WhatsApp y cotizamos al momento.</p>
+        <div class="cta-row">
+          <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">Pedir cotización</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="medidas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Referencia rápida</p>
+      <h2>Resumen de medidas</h2>
+    </div>
+    <div class="manifest reveal">
+      <div class="manifest-head-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div>Producto</div><div>Medidas</div><div>Tela</div><div>Capacidad</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal tela normal</h3></div><div class="mono">58x108, 60x100 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">50–60 kg</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal mal impreso</h3></div><div class="mono">54x95, 54x100 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">50–60 kg</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal mal impreso</h3></div><div class="mono">50x90 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">Forraje / alimento</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal mal impreso</h3></div><div class="mono">50x85 cm</div><div><span class="tela-badge ambas">Normal / Laminada</span></div><div class="cap">Composta, minerales</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal de línea</h3></div><div class="mono">50x80 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">Harina / alimenticio</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal blanco</h3></div><div class="mono">45x75...50x90 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">Harinas, arroz, granos</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Transparente c/logo</h3></div><div class="mono">50x80 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">Alimento animal</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Transparente s/impresión</h3></div><div class="mono">45x75, 50x75, 50x80 cm</div><div><span class="tela-badge normal">Normal</span></div><div class="cap">Maíz, frijol, arroz</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Mal impreso transparente</h3></div><div class="mono">46x80 cm</div><div><span class="tela-badge laminada">Laminada</span></div><div class="cap">Alimento aves / gallo</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal mal impreso</h3></div><div class="mono">50x80, 50x75, 50x70 cm</div><div><span class="tela-badge laminada">Laminada</span></div><div class="cap">Fertilizantes</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal mal impreso</h3></div><div class="mono">47x80, 48x80 cm</div><div><span class="tela-badge laminada">Laminada</span></div><div class="cap">Azúcar</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Nuevo de línea</h3></div><div class="mono">45x75 cm</div><div><span class="tela-badge ambas">Laminada / Normal</span></div><div class="cap">Sal</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Mal impreso (chico)</h3></div><div class="mono">30x45, 30x50 cm</div><div><span class="tela-badge ambas">Normal / Laminada</span></div><div class="cap">5–10 kg</div>
+      </div>
+      <div class="manifest-row" style="grid-template-columns:1.6fr 1fr .9fr 1.3fr;">
+        <div class="name"><h3>Costal Jumbo</h3></div><div class="mono">90x90x1.50 m</div><div><span class="tela-badge jumbo">Jumbo</span></div><div class="cap">Plástico, aluminio, cobre, minerales</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard thin"></div>
+
+<footer id="contacto">
+  <div class="wrap footer-grid">
+    <div>
+      <h3>Costales Angeline</h3>
+      <p>Bodega propia con amplia variedad de costal y jumbo. Venta de mayoreo y menudeo, precios directos y facturación. Envíos a toda la República Mexicana.</p>
+      <div class="social-row">
+        <a href="https://www.facebook.com/search/top?q=costales%20angeline" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+        <a href="https://www.instagram.com/explore/tags/costalesangeline/" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        <a href="https://www.tiktok.com/search?q=costales%20angeline" target="_blank" rel="noopener" aria-label="TikTok">tt</a>
+      </div>
+    </div>
+    <div>
+      <h3>Contacto</h3>
+      <ul class="contact-list">
+        <li><a href="https://wa.me/523329576213" target="_blank" rel="noopener"><span class="ic">☎</span> 332 957 6213</a></li>
+        <li><a href="https://wa.me/523337054357" target="_blank" rel="noopener"><span class="ic">☎</span> 333 705 4357</a></li>
+        <li><a href="#"><span class="ic">📍</span> Tlajomulco de Zúñiga, Jal.</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Navegación</h3>
+      <ul class="contact-list">
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#jumbo">Jumbo</a></li>
+        <li><a href="#mayoreo">Mayoreo</a></li>
+        <li><a href="#medidas">Resumen de medidas</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Costales Angeline. Todos los derechos reservados.</span>
+    <span>Calidad que se ve, resistencia que dura.</span>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/523329576213" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">✆</a>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    menuToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuToggle.textContent = '☰';
+  }));
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const rows = document.querySelectorAll('#manifestList .manifest-row');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      rows.forEach(row => {
+        row.style.display = (f === 'todos' || row.dataset.tela === f) ? '' : 'none';
+      });
+    });
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

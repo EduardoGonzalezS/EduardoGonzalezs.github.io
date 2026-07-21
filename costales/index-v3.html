@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costales Angeline — Catálogo fotográfico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f6f1e2;
+    --cream-2:#fbf8ee;
+    --forest:#1f3d2e;
+    --forest-2:#16291e;
+    --rust:#b4502c;
+    --olive:#7c8a4e;
+    --sand:#e7dcc0;
+    --ink:#20291f;
+    --muted:rgba(32,41,31,.62);
+    --muted-light:rgba(251,248,238,.7);
+    --line:rgba(32,41,31,.16);
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Karla',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Fraunces',serif; font-weight:600; margin:0; color:var(--forest);}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rust); font-weight:500;}
+
+  /* ================= photo slot component (signature element) ================= */
+  .photo-slot{
+    position:relative; width:100%; aspect-ratio:4/3;
+    background:
+      repeating-linear-gradient(45deg, rgba(31,61,46,.05) 0 9px, transparent 9px 18px),
+      var(--sand);
+    border:1px solid rgba(31,61,46,.22);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+    overflow:hidden;
+  }
+  .photo-slot .corner{position:absolute; width:18px; height:18px; border:2px solid var(--forest); opacity:.55;}
+  .photo-slot .corner.tl{top:8px; left:8px; border-right:none; border-bottom:none;}
+  .photo-slot .corner.tr{top:8px; right:8px; border-left:none; border-bottom:none;}
+  .photo-slot .corner.bl{bottom:8px; left:8px; border-right:none; border-top:none;}
+  .photo-slot .corner.br{bottom:8px; right:8px; border-left:none; border-top:none;}
+  .photo-slot .icon{opacity:.5;}
+  .photo-slot .icon svg{width:30px; height:30px; stroke:var(--forest); fill:none; stroke-width:1.4;}
+  .photo-slot .label{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; text-align:center; color:var(--forest);
+    opacity:.62; padding:0 16px; letter-spacing:.02em;
+  }
+  .photo-slot .dims{
+    font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--forest); opacity:.4;
+  }
+  .photo-slot.tall{aspect-ratio:3/4;}
+  .photo-slot.wide{aspect-ratio:16/9;}
+  .photo-slot.square{aspect-ratio:1/1;}
+
+  /* ================= header ================= */
+  header{background:var(--cream-2); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:50;}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1180px; margin:0 auto;}
+  .brand .name{font-family:'Fraunces',serif; font-size:1.4rem; font-weight:700; color:var(--forest);}
+  .brand .tag{font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:2px;}
+  nav.links{display:flex; align-items:center; gap:26px; font-size:.9rem;}
+  nav.links a{opacity:.8; border-bottom:2px solid transparent; padding:4px 0;}
+  nav.links a:hover{opacity:1; border-color:var(--rust);}
+  .btn{display:inline-flex; align-items:center; gap:8px; font-family:'Karla',sans-serif; font-weight:600; font-size:.85rem; padding:11px 20px; border-radius:var(--radius); border:1.5px solid transparent; cursor:pointer;}
+  .btn.solid{background:var(--rust); color:#fff;}
+  .btn.solid:hover{background:#943e21;}
+  .btn.outline{border-color:var(--forest); color:var(--forest); background:transparent;}
+  .btn.outline:hover{background:rgba(31,61,46,.06);}
+  .menu-toggle{display:none; background:none; border:1px solid var(--forest); color:var(--forest); font-size:1.1rem; padding:6px 12px; border-radius:var(--radius); cursor:pointer;}
+
+  /* ================= hero ================= */
+  .hero{padding:60px 0 70px;}
+  .hero-inner{display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;}
+  .hero h1{font-size:clamp(2.2rem,4.6vw,3.4rem); line-height:1.06; font-style:normal;}
+  .hero h1 em{font-style:italic; color:var(--rust);}
+  .hero p.lead{margin-top:20px; max-width:48ch; color:var(--muted); font-size:1.05rem;}
+  .cta-row{display:flex; gap:14px; margin-top:28px; flex-wrap:wrap;}
+  .hero .caption{margin-top:10px; text-align:center;}
+
+  .facts{display:flex; gap:0; flex-wrap:wrap; margin-top:38px; border-top:1px solid var(--line);}
+  .fact{flex:1; min-width:140px; padding:16px 20px 0; border-left:1px solid var(--line);}
+  .fact:first-child{border-left:none;}
+  .fact .k{font-family:'JetBrains Mono',monospace; font-size:.66rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  .fact .v{font-family:'Fraunces',serif; font-weight:600; font-size:1.15rem; margin-top:4px;}
+
+  /* ================= sections ================= */
+  section{padding:66px 0;}
+  section.alt{background:var(--cream-2);}
+  section.dark{background:var(--forest); color:var(--muted-light);}
+  section.dark h2, section.dark h3{color:var(--cream-2);}
+  .section-head{max-width:62ch; margin-bottom:38px;}
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);}
+  .section-head p{color:var(--muted); margin-top:12px;}
+  section.dark .section-head p{color:var(--muted-light);}
+
+  /* ================= tela comparison ================= */
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .compare-card h3{font-size:1.2rem; margin-top:16px;}
+  .compare-card p{font-size:.92rem; color:var(--muted); margin-top:8px;}
+  .compare-card ul{margin:12px 0 0; padding-left:18px; font-size:.9rem; color:var(--muted);}
+  .compare-card li{margin-bottom:5px;}
+
+  /* ================= filters ================= */
+  .filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px;}
+  .filter-btn{font-family:'JetBrains Mono',monospace; font-size:.74rem; text-transform:uppercase; letter-spacing:.03em; background:transparent; border:1px solid var(--forest); color:var(--forest); padding:9px 16px; border-radius:var(--radius); cursor:pointer;}
+  .filter-btn.active, .filter-btn:hover{background:var(--forest); color:var(--cream-2);}
+
+  /* ================= product grid ================= */
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  .card{background:var(--cream-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:transform .18s ease, box-shadow .18s ease;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 16px 32px rgba(31,61,46,.12);}
+  .card-body{padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+  .card-top h3{font-size:1.05rem; font-weight:600;}
+  .tela-badge{font-family:'JetBrains Mono',monospace; font-size:.62rem; text-transform:uppercase; padding:4px 9px; border-radius:20px; white-space:nowrap; letter-spacing:.03em;}
+  .tela-badge.normal{background:rgba(124,138,78,.18); color:var(--olive);}
+  .tela-badge.laminada{background:rgba(31,61,46,.12); color:var(--forest);}
+  .tela-badge.ambas{background:linear-gradient(90deg, rgba(124,138,78,.18) 50%, rgba(31,61,46,.12) 50%); color:var(--forest);}
+  .tela-badge.jumbo{background:rgba(180,80,44,.15); color:var(--rust);}
+  .measure{font-family:'JetBrains Mono',monospace; font-size:.95rem; font-weight:500; padding-bottom:8px; border-bottom:1px dashed var(--line);}
+  .card-body p.desc{font-size:.86rem; color:var(--muted);}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;}
+  .chip{font-size:.7rem; background:rgba(31,61,46,.06); border:1px solid var(--line); padding:4px 9px; border-radius:20px; color:var(--muted);}
+
+  /* ================= gallery (future photos) ================= */
+  .gallery-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .gallery-grid .gcell{display:flex; flex-direction:column; gap:8px;}
+  .gallery-grid .gname{font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
+
+  /* ================= jumbo feature ================= */
+  .feature{display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:center;}
+  .feature-text .eyebrow{color:var(--sand);}
+  .feature-text h3{color:var(--cream-2); font-size:1.7rem; margin-top:10px;}
+  .feature-text p{color:var(--muted-light); margin-top:12px;}
+  .feature-text .measure{color:var(--cream-2); border-color:rgba(251,248,238,.25);}
+
+  /* ================= promo ================= */
+  .promo{background:var(--sand); border-radius:var(--radius); padding:44px 40px; display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center;}
+  .promo .badge{display:inline-block; background:var(--rust); color:#fff; font-family:'JetBrains Mono',monospace; font-weight:500; font-size:.72rem; padding:6px 14px; border-radius:20px; margin-bottom:12px;}
+  .promo h2{font-size:clamp(1.5rem,3vw,2.1rem);}
+  .promo p{color:var(--muted); margin-top:10px; max-width:52ch;}
+
+  /* ================= summary table ================= */
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--cream-2);}
+  table{border-collapse:collapse; width:100%; min-width:640px; font-size:.88rem;}
+  thead th{font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-size:.66rem; letter-spacing:.05em; text-align:left; background:var(--forest); color:var(--cream-2); padding:12px 16px;}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tbody tr:nth-child(even){background:rgba(31,61,46,.03);}
+  tbody tr:last-child td{border-bottom:none;}
+
+  /* ================= footer ================= */
+  footer{background:var(--forest-2); color:var(--muted-light); padding:56px 0 26px;}
+  .footer-grid{display:grid; grid-template-columns:1.1fr .9fr .9fr; gap:40px;}
+  footer h3{color:var(--cream-2); font-size:1.1rem; margin-bottom:14px;}
+  footer p{color:var(--muted-light); font-size:.92rem;}
+  .contact-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+  .contact-list a{display:flex; align-items:center; gap:10px; font-size:.94rem; color:var(--muted-light);}
+  .contact-list .ic{width:32px; height:32px; border:1px solid rgba(251,248,238,.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0;}
+  .social-row{display:flex; gap:10px; margin-top:14px;}
+  .social-row a{width:36px; height:36px; border-radius:50%; border:1px solid rgba(251,248,238,.2); display:flex; align-items:center; justify-content:center; font-size:.82rem;}
+  .social-row a:hover{background:rgba(251,248,238,.08);}
+  .foot-bottom{margin-top:40px; padding-top:20px; border-top:1px solid rgba(251,248,238,.14); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.76rem; color:var(--muted-light);}
+
+  .float-wa{position:fixed; bottom:22px; right:22px; z-index:60; background:var(--rust); color:#fff; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; box-shadow:0 8px 22px rgba(0,0,0,.25);}
+  .float-wa:hover{background:#943e21;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+
+  /* ================= responsive ================= */
+  @media (max-width:980px){
+    .hero-inner{grid-template-columns:1fr;}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .feature{grid-template-columns:1fr;}
+    .promo{grid-template-columns:1fr;}
+  }
+  @media (max-width:720px){
+    nav.links{position:fixed; inset:64px 0 0 0; background:var(--cream-2); flex-direction:column; align-items:flex-start; padding:26px 24px; gap:4px; transform:translateX(100%); transition:transform .25s ease; z-index:70;}
+    nav.links.open{transform:translateX(0);}
+    nav.links a{width:100%; padding:12px 0; border-bottom:1px solid var(--line);}
+    .menu-toggle{display:block;}
+    .compare{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:1fr 1fr;}
+    .footer-grid{grid-template-columns:1fr; gap:28px;}
+    .facts{flex-direction:column;}
+    .fact{border-left:none; border-top:1px solid var(--line); padding-top:14px; margin-top:6px;}
+    .fact:first-child{border-top:none; margin-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="name">Costales Angeline</div>
+      <div class="tag">Catálogo fotográfico</div>
+    </div>
+    <nav class="links" id="navLinks">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#galeria">Galería</a>
+      <a href="#jumbo">Jumbo</a>
+      <a href="#mayoreo">Mayoreo</a>
+      <a href="#contacto">Contacto</a>
+      <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Tlajomulco de Zúñiga, Jalisco</p>
+      <h1>Calidad que se ve,<br><em>resistencia que dura.</em></h1>
+      <p class="lead">Costal y jumbo de polipropileno tejido para grano, forraje, fertilizante, minerales y más. Mayoreo y menudeo, precios directos y envíos a toda la República Mexicana.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+        <a class="btn outline" href="#catalogo">Ver catálogo completo</a>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Medidas</div><div class="v">5 – 70 kg</div></div>
+        <div class="fact"><div class="k">Venta</div><div class="v">Mayoreo / menudeo</div></div>
+        <div class="fact"><div class="k">Facturación</div><div class="v">Disponible</div></div>
+        <div class="fact"><div class="k">Envíos</div><div class="v">Toda la República</div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="photo-slot wide">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+        <span class="label">Foto principal — pila de costales en bodega o entrega</span>
+        <span class="dims">recomendado 1600 × 1200 px</span>
+      </div>
+      <p class="caption mono" style="font-size:.72rem; color:var(--muted);">Espacio reservado para fotografía — sustituir cuando esté disponible</p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Dos telas, un mismo estándar</p>
+      <h2>Tela normal vs. tela laminada</h2>
+      <p>Fotografía de cerca ayuda al cliente a distinguir el tejido antes de comprar. Aquí van las tomas de detalle de cada acabado.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-card reveal">
+        <div class="photo-slot">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Detalle de tejido — tela normal</span>
+          <span class="dims">recomendado 1200 × 900 px</span>
+        </div>
+        <h3>Tela normal</h3>
+        <p>Ligera, flexible y económica. Ideal para productos secos que se mueven rápido.</p>
+        <ul><li>Grano, forraje y harinas</li><li>Menor costo por pieza</li><li>Transparente, blanca o impresa</li></ul>
+      </div>
+      <div class="compare-card reveal">
+        <div class="photo-slot">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Detalle de tejido — tela laminada</span>
+          <span class="dims">recomendado 1200 × 900 px</span>
+        </div>
+        <h3>Tela laminada</h3>
+        <p>Una capa adicional que protege del polvo y la humedad. Máxima protección para productos sensibles.</p>
+        <ul><li>Fertilizante, azúcar y sal</li><li>Resiste mejor la intemperie</li><li>Mantiene el producto seco</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="catalogo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Catálogo</p>
+      <h2>Un costal para cada producto</h2>
+      <p>Cada tarjeta tiene un espacio reservado para la foto real del costal o del producto embazado. Filtra por tipo de tela.</p>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="normal">Tela normal</button>
+      <button class="filter-btn" data-filter="laminada">Tela laminada</button>
+      <button class="filter-btn" data-filter="ambas">Normal y laminada</button>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Costal estándar 58x108</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Costal estándar</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">58 x 108 cm / 60 x 100 cm</div>
+          <p class="desc">Capacidad de 50 a 60 kilos. Resistente y durable para forraje, maíz, frijol y otros productos a granel.</p>
+          <div class="chips"><span class="chip">Forraje</span><span class="chip">Maíz</span><span class="chip">Frijol</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Grado alimenticio 54x95</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Grado alimenticio</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">54 x 95 cm / 54 x 100 cm</div>
+          <p class="desc">Capacidad de 50 a 60 kilos. Ideal para maíz, frijol, milo o cualquier producto de grado alimenticio.</p>
+          <div class="chips"><span class="chip">Maíz</span><span class="chip">Frijol</span><span class="chip">Milo</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Forrajes El Barrio 50x90</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Alimento para animales</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">50 x 90 cm</div>
+          <p class="desc">Para embazar arena, grava y alimento para animales de grado alimenticio.</p>
+          <div class="chips"><span class="chip">Arena</span><span class="chip">Grava</span><span class="chip">Alim. animal</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="ambas">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Molino Anaya 50x85</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Composta y minerales</h3><span class="tela-badge ambas">Normal / Laminada</span></div>
+          <div class="measure">50 x 85 cm</div>
+          <p class="desc">Ideal para composta, minerales, arena y grava, con opción de refuerzo laminado.</p>
+          <div class="chips"><span class="chip">Composta</span><span class="chip">Minerales</span><span class="chip">Arena</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Guadalupe Óptima 50x80</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Harinas y cereales</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">50 x 80 cm</div>
+          <p class="desc">Ideal para harina, cereales, lácteos, minerales y calcio de grado alimenticio.</p>
+          <div class="chips"><span class="chip">Harina</span><span class="chip">Cereales</span><span class="chip">Calcio</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Blanco liso, varias medidas</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Blanco sin impresión</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">45x75 · 50x75 · 50x80 · 50x90 cm</div>
+          <p class="desc">Con jareta y cordón, para harinas, arroz, granos, alimento animal, arena y grava.</p>
+          <div class="chips"><span class="chip">Harinas</span><span class="chip">Arroz</span><span class="chip">Granos</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Forrajes Establos 50x80</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Transparente con logo</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">50 x 80 cm</div>
+          <p class="desc">Semi-transparente con logotipo, para alimento de ganado, caballos, aves y conejos.</p>
+          <div class="chips"><span class="chip">Ganado</span><span class="chip">Caballos</span><span class="chip">Aves</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="normal">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Transparente liso</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Transparente sin impresión</h3><span class="tela-badge normal">Normal</span></div>
+          <div class="measure">45x75 · 50x75 · 50x80 cm</div>
+          <p class="desc">Ideal para maíz, frijol, arroz y especias, cuando conviene ver el producto desde fuera.</p>
+          <div class="chips"><span class="chip">Maíz</span><span class="chip">Arroz</span><span class="chip">Especias</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="laminada">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Fórmula GORY 46x80</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Alimento para aves</h3><span class="tela-badge laminada">Laminada</span></div>
+          <div class="measure">46 x 80 cm</div>
+          <p class="desc">Protección extra para alimento de gallo y aves, minerales, arena y grava.</p>
+          <div class="chips"><span class="chip">Aves</span><span class="chip">Gallo</span><span class="chip">Minerales</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="laminada">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Tecnomix / Tepeyac / Agrogen</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Fertilizante</h3><span class="tela-badge laminada">Laminada</span></div>
+          <div class="measure">50x80 · 50x75 · 50x70 cm</div>
+          <p class="desc">Fertilizante granulado o en polvo, semillas, alimento animal y productos químicos.</p>
+          <div class="chips"><span class="chip">Fertilizante</span><span class="chip">Semillas</span><span class="chip">Químicos</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="laminada">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Ingenios Santos / Grupo Porres</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Azúcar</h3><span class="tela-badge laminada">Laminada</span></div>
+          <div class="measure">47 x 80 cm / 48 x 80 cm</div>
+          <p class="desc">Pensado para azúcar, arena, grava y calcio, con el refuerzo que exige el traslado.</p>
+          <div class="chips"><span class="chip">Azúcar</span><span class="chip">Arena</span><span class="chip">Calcio</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="ambas">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Palmasal / Pegaso 45x75</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Sal</h3><span class="tela-badge ambas">Normal / Laminada</span></div>
+          <div class="measure">45 x 75 cm</div>
+          <p class="desc">Sal refinada o de mar, arroz, maíz, frijol, alimento animal, fertilizantes y arena.</p>
+          <div class="chips"><span class="chip">Sal</span><span class="chip">Arroz</span><span class="chip">Fertilizantes</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-tela="ambas">
+        <div class="photo-slot"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Línea El Nogal, 5-10 kg</span><span class="dims">1200×900 px</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h3>Presentación chica</h3><span class="tela-badge ambas">Normal / Laminada</span></div>
+          <div class="measure">30 x 45 cm / 30 x 50 cm</div>
+          <p class="desc">Para pollo, gallo, conejo, pavo, pato o cualquier tipo de aves. Facturamos.</p>
+          <div class="chips"><span class="chip">Pollo</span><span class="chip">Conejo</span><span class="chip">5-10 kg</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="galeria">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Para complementar el catálogo</p>
+      <h2>Galería de bodega y producto</h2>
+      <p>Espacios listos para fotografías generales del negocio: bodega, proceso, entregas y detalle de producto en uso.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Fachada / bodega</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">Bodega</span>
+      </div>
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Anaqueles con existencia</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">Existencia</span>
+      </div>
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Costal en uso / campo</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">En uso</span>
+      </div>
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Paletizado / embarque</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">Embarque</span>
+      </div>
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Detalle de costura / jareta</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">Detalle</span>
+      </div>
+      <div class="gcell reveal">
+        <div class="photo-slot square"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+          <span class="label">Equipo / entrega a cliente</span><span class="dims">1000×1000 px</span>
+        </div>
+        <span class="gname">Entrega</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="jumbo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Para grandes volúmenes</p>
+      <h2>Costal jumbo</h2>
+    </div>
+    <div class="feature reveal">
+      <div class="photo-slot wide"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
+        <span class="label">Costal jumbo con asas, 90x90x1.50 m</span><span class="dims">1600×1000 px</span>
+      </div>
+      <div class="feature-text">
+        <p class="eyebrow">Blanco, sin impresión</p>
+        <h3>Con asas y jareta superior</h3>
+        <div class="measure mono">90 x 90 x 1.50 m</div>
+        <p>Limpio y listo para plástico peletizado, plástico molido, aluminio, cobre o cualquier tipo de mineral.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mayoreo">
+  <div class="wrap">
+    <div class="promo reveal">
+      <div>
+        <span class="badge">+10,000 piezas</span>
+        <h2>Mejoramos nuestros precios de mayoreo</h2>
+        <p>Alimentos, productos químicos, materiales de construcción, alimento para animales, fertilizantes y más. Escríbenos por WhatsApp y te cotizamos al momento.</p>
+      </div>
+      <div>
+        <a class="btn solid" href="https://wa.me/523329576213" target="_blank" rel="noopener">Pedir cotización</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="medidas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Referencia rápida</p>
+      <h2>Resumen de medidas disponibles</h2>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>Producto</th><th>Medidas</th><th>Tela</th><th>Capacidad típica</th></tr></thead>
+        <tbody>
+          <tr><td>Costal tela normal</td><td class="mono">58x108, 60x100 cm</td><td>Normal</td><td>50–60 kg</td></tr>
+          <tr><td>Costal mal impreso</td><td class="mono">54x95, 54x100 cm</td><td>Normal</td><td>50–60 kg</td></tr>
+          <tr><td>Costal mal impreso</td><td class="mono">50x90 cm</td><td>Normal</td><td>Forraje / alimento</td></tr>
+          <tr><td>Costal mal impreso</td><td class="mono">50x85 cm</td><td>Normal / Laminada</td><td>Composta, minerales</td></tr>
+          <tr><td>Costal de línea</td><td class="mono">50x80 cm</td><td>Normal</td><td>Harina / grado alimenticio</td></tr>
+          <tr><td>Costal blanco</td><td class="mono">45x75, 50x75, 50x80, 50x90 cm</td><td>Normal</td><td>Harinas, arroz, granos</td></tr>
+          <tr><td>Costal transparente c/logo</td><td class="mono">50x80 cm</td><td>Normal</td><td>Alimento animal</td></tr>
+          <tr><td>Costal transparente s/impresión</td><td class="mono">45x75, 50x75, 50x80 cm</td><td>Normal</td><td>Maíz, frijol, arroz</td></tr>
+          <tr><td>Costal mal impreso transparente</td><td class="mono">46x80 cm</td><td>Laminada</td><td>Alimento aves / gallo</td></tr>
+          <tr><td>Costal mal impreso</td><td class="mono">50x80, 50x75, 50x70 cm</td><td>Laminada</td><td>Fertilizantes</td></tr>
+          <tr><td>Costal mal impreso</td><td class="mono">47x80, 48x80 cm</td><td>Laminada</td><td>Azúcar</td></tr>
+          <tr><td>Costal nuevo de línea</td><td class="mono">45x75 cm</td><td>Laminada / Normal</td><td>Sal</td></tr>
+          <tr><td>Costal mal impreso (chico)</td><td class="mono">30x45, 30x50 cm</td><td>Normal / Laminada</td><td>5–10 kg (alimento aves)</td></tr>
+          <tr><td>Costal Jumbo</td><td class="mono">90x90x1.50 m</td><td>—</td><td>Plástico, aluminio, cobre, minerales</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div class="wrap footer-grid">
+    <div>
+      <h3>Costales Angeline</h3>
+      <p>Bodega propia con amplia variedad de costal y jumbo. Venta de mayoreo y menudeo, precios directos y facturación. Envíos a toda la República Mexicana.</p>
+      <div class="social-row">
+        <a href="https://www.facebook.com/search/top?q=costales%20angeline" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+        <a href="https://www.instagram.com/explore/tags/costalesangeline/" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        <a href="https://www.tiktok.com/search?q=costales%20angeline" target="_blank" rel="noopener" aria-label="TikTok">tt</a>
+      </div>
+    </div>
+    <div>
+      <h3>Contacto</h3>
+      <ul class="contact-list">
+        <li><a href="https://wa.me/523329576213" target="_blank" rel="noopener"><span class="ic">☎</span> 332 957 6213</a></li>
+        <li><a href="https://wa.me/523337054357" target="_blank" rel="noopener"><span class="ic">☎</span> 333 705 4357</a></li>
+        <li><a href="#"><span class="ic">📍</span> Tlajomulco de Zúñiga, Jal.</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Navegación</h3>
+      <ul class="contact-list">
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#jumbo">Jumbo</a></li>
+        <li><a href="#mayoreo">Mayoreo</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Costales Angeline. Todos los derechos reservados.</span>
+    <span>Calidad que se ve, resistencia que dura.</span>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/523329576213" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">✆</a>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    menuToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuToggle.textContent = '☰';
+  }));
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('#grid .card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(card => {
+        card.style.display = (f === 'todos' || card.dataset.tela === f) ? '' : 'none';
+      });
+    });
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
