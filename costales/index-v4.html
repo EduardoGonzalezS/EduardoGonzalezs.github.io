@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costales Angeline — Propuesta 1: Industrial Minimal</title>
+<style>
+  :root{
+    --negro:#1c1c1c;
+    --gris:#4a4a4a;
+    --gris-claro:#f2f0ec;
+    --naranja:#e4572e;
+    --blanco:#ffffff;
+    --max: 1200px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI', Arial, sans-serif;
+    color:var(--negro);
+    background:var(--blanco);
+    line-height:1.5;
+  }
+  img, .img-placeholder{display:block;width:100%;height:100%;object-fit:cover;}
+  .img-placeholder{
+    background:repeating-linear-gradient(45deg,#e0ddd6,#e0ddd6 10px,#eeece7 10px,#eeece7 20px);
+    display:flex;align-items:center;justify-content:center;
+    color:#8a8a8a;font-size:.85rem;text-align:center;padding:1rem;
+    border:1px dashed #b9b4a8;
+  }
+  .container{max-width:var(--max);margin:0 auto;padding:0 clamp(1rem,4vw,3rem);}
+
+  /* HEADER */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--blanco);
+    border-bottom:1px solid #eee;
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:.9rem 0;
+  }
+  .logo{font-weight:800;font-size:clamp(1.1rem,2vw,1.4rem);letter-spacing:.5px;}
+  .logo span{color:var(--naranja);}
+  nav ul{display:flex;gap:1.5rem;list-style:none;}
+  nav ul a{color:var(--negro);text-decoration:none;font-size:.95rem;font-weight:600;}
+  .btn{
+    display:inline-block;background:var(--naranja);color:#fff;
+    padding:.7rem 1.4rem;border-radius:4px;text-decoration:none;
+    font-weight:700;font-size:.9rem;white-space:nowrap;
+  }
+  .menu-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;}
+
+  /* HERO */
+  .hero{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;
+    align-items:center;padding:clamp(2.5rem,6vw,5rem) 0;
+  }
+  .hero h1{
+    font-size:clamp(1.9rem,4.5vw,3.4rem);
+    font-weight:800;line-height:1.1;margin-bottom:1rem;
+  }
+  .hero h1 em{color:var(--naranja);font-style:normal;}
+  .hero p.lead{font-size:clamp(1rem,1.3vw,1.2rem);color:var(--gris);margin-bottom:1.5rem;max-width:520px;}
+  .hero .actions{display:flex;gap:1rem;flex-wrap:wrap;}
+  .btn-outline{
+    border:2px solid var(--negro);color:var(--negro);padding:.65rem 1.3rem;
+    border-radius:4px;text-decoration:none;font-weight:700;font-size:.9rem;
+  }
+  .hero-img{aspect-ratio:4/3;border-radius:6px;overflow:hidden;}
+
+  /* STRIP */
+  .strip{background:var(--negro);color:#fff;padding:.9rem 0;}
+  .strip .container{
+    display:flex;flex-wrap:wrap;gap:1.2rem 2.5rem;justify-content:space-between;
+    font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  }
+
+  section{padding:clamp(2.5rem,5vw,4.5rem) 0;}
+  .section-title{
+    font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;margin-bottom:.6rem;
+  }
+  .section-sub{color:var(--gris);max-width:640px;margin-bottom:2.2rem;}
+
+  /* TELA COMPARISON */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+  .compare .card{
+    background:var(--gris-claro);border-radius:6px;padding:1.5rem;
+  }
+  .compare .card .thumb{aspect-ratio:16/9;border-radius:4px;margin-bottom:1rem;}
+  .compare .card h3{font-size:1.2rem;margin-bottom:.5rem;}
+  .compare .card ul{padding-left:1.1rem;color:var(--gris);font-size:.92rem;}
+
+  /* PRODUCT GRID */
+  .grid-products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:1.5rem;
+  }
+  .product{
+    border:1px solid #eee;border-radius:6px;overflow:hidden;
+    transition:transform .15s;
+  }
+  .product:hover{transform:translateY(-4px);}
+  .product .thumb{aspect-ratio:1/1;}
+  .product .body{padding:1rem 1.1rem;}
+  .product h4{font-size:1rem;margin-bottom:.3rem;}
+  .product .meta{font-size:.82rem;color:var(--gris);}
+  .tag{
+    display:inline-block;background:var(--naranja);color:#fff;font-size:.7rem;
+    font-weight:700;padding:.15rem .5rem;border-radius:3px;margin-top:.5rem;
+  }
+
+  /* PROMO */
+  .promo{
+    background:var(--naranja);color:#fff;border-radius:8px;
+    padding:clamp(2rem,5vw,3rem);text-align:center;
+  }
+  .promo h2{font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:.6rem;}
+  .promo p{margin-bottom:1.4rem;opacity:.95;}
+  .promo .btn{background:#fff;color:var(--naranja);}
+
+  /* SERVICES */
+  .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.4rem;}
+  .service{padding:1.4rem;background:var(--gris-claro);border-radius:6px;}
+  .service .ico{
+    width:44px;height:44px;border-radius:50%;background:var(--naranja);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-weight:800;margin-bottom:.8rem;
+  }
+
+  /* MAP / CONTACT */
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;}
+  .map{aspect-ratio:4/3;border-radius:6px;overflow:hidden;}
+  .contact ul{list-style:none;margin-top:1rem;}
+  .contact li{margin-bottom:.6rem;color:var(--gris);}
+  .contact li strong{color:var(--negro);}
+
+  footer{background:var(--negro);color:#ccc;padding:2.5rem 0 1.2rem;}
+  footer .container{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;}
+  footer h5{color:#fff;margin-bottom:.6rem;}
+  footer .bottom{
+    border-top:1px solid #333;margin-top:1.5rem;padding-top:1rem;
+    font-size:.8rem;color:#888;text-align:center;
+  }
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;}
+    .hero-img{order:-1;aspect-ratio:16/9;}
+    .compare{grid-template-columns:1fr;}
+    .contact{grid-template-columns:1fr;}
+  }
+  @media (max-width:700px){
+    nav ul{
+      position:fixed;top:60px;left:0;right:0;background:#fff;
+      flex-direction:column;padding:1rem 1.5rem;gap:1rem;
+      box-shadow:0 8px 12px rgba(0,0,0,.08);
+      display:none;
+    }
+    nav ul.open{display:flex;}
+    .menu-toggle{display:block;}
+    .strip .container{justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">COSTALES <span>ANGELINE</span></div>
+    <nav>
+      <ul id="navList">
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#comparativa">Telas</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#promo">Mayoreo</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="https://wa.me/523329576213" target="_blank">WhatsApp</a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</header>
+
+<section class="hero container">
+  <div>
+    <h1>Calidad que se ve, <em>resistencia que dura</em></h1>
+    <p class="lead">Venta de costal y jumbo de mayoreo y menudeo. Tela normal y laminada, todas las medidas de 5 a 70 kilogramos. Bodega propia en Tlajomulco de Zúñiga, Jalisco, con envíos a toda la República Mexicana.</p>
+    <div class="actions">
+      <a class="btn" href="#productos">Ver catálogo</a>
+      <a class="btn-outline" href="#contacto">Solicitar cotización</a>
+    </div>
+  </div>
+  <div class="hero-img img-placeholder">Imagen hero: costales apilados en bodega<br>(recomendado 1200×900 px)</div>
+</section>
+
+<div class="strip">
+  <div class="container">
+    <span>📦 Mayoreo y menudeo</span>
+    <span>🧾 Facturación</span>
+    <span>💰 Precios directos de fábrica</span>
+    <span>🚚 Envíos a toda la República</span>
+  </div>
+</div>
+
+<section id="comparativa" class="container">
+  <h2 class="section-title">Tela Normal vs Tela Laminada</h2>
+  <p class="section-sub">Elige el tipo de tela según el producto que vas a embalar y el nivel de protección que necesitas.</p>
+  <div class="compare">
+    <div class="card">
+      <div class="thumb img-placeholder">Foto: costal tela normal (primer plano de textura)</div>
+      <h3>Tela Normal</h3>
+      <ul>
+        <li>Ligera, flexible y económica</li>
+        <li>Ideal para productos secos</li>
+        <li>Maíz, frijol, forraje, harinas y granos</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="thumb img-placeholder">Foto: costal tela laminada (primer plano de textura)</div>
+      <h3>Tela Laminada</h3>
+      <ul>
+        <li>Mayor resistencia a la humedad y al polvo</li>
+        <li>Máxima protección del contenido</li>
+        <li>Fertilizantes, azúcar, sal y minerales</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="productos" class="container">
+  <h2 class="section-title">Nuestro catálogo de costales</h2>
+  <p class="section-sub">Todas las medidas disponibles, de 5 kilos hasta jumbo. Cada foto se sustituirá por imagen real del producto.</p>
+  <div class="grid-products">
+    <div class="product">
+      <div class="thumb img-placeholder">Costal tela normal<br>58x108 / 60x100 cm</div>
+      <div class="body">
+        <h4>Costal Tela Normal</h4>
+        <div class="meta">Polipropileno tejido · 50–60 kg</div>
+        <span class="tag">Forraje / Maíz / Frijol</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal mal impreso<br>54x95 / 54x100 cm</div>
+      <div class="body">
+        <h4>Nuevo Mal Impreso</h4>
+        <div class="meta">Tela normal · 50–60 kg</div>
+        <span class="tag">Grado alimenticio</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal blanco liso<br>45x75 a 50x90 cm</div>
+      <div class="body">
+        <h4>Completamente Blanco</h4>
+        <div class="meta">Con jareta/cordón</div>
+        <span class="tag">Harinas / Arroz / Granos</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal transparente<br>45x75 a 50x80 cm</div>
+      <div class="body">
+        <h4>Transparente sin Impresión</h4>
+        <div class="meta">Tejido, tela normal</div>
+        <span class="tag">Maíz / Frijol / Arroz</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal laminado<br>50x80 / 50x75 / 50x70</div>
+      <div class="body">
+        <h4>Tela Laminada</h4>
+        <div class="meta">Alta resistencia a humedad</div>
+        <span class="tag">Fertilizantes</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal chico<br>30x45 / 30x50 cm</div>
+      <div class="body">
+        <h4>Presentación 5 y 10 kg</h4>
+        <div class="meta">Normal y laminada</div>
+        <span class="tag">Alimento para aves</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal Jumbo blanco<br>90x90x1.50 m</div>
+      <div class="body">
+        <h4>Costal Jumbo</h4>
+        <div class="meta">Con asas y jareta superior</div>
+        <span class="tag">Minerales / Reciclaje</span>
+      </div>
+    </div>
+    <div class="product">
+      <div class="thumb img-placeholder">Costal de línea<br>45x75 cm</div>
+      <div class="body">
+        <h4>Nuevo de Línea</h4>
+        <div class="meta">Laminada y normal</div>
+        <span class="tag">Sal / Azúcar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" class="container">
+  <h2 class="section-title">¿Por qué elegirnos?</h2>
+  <div class="services">
+    <div class="service"><div class="ico">✓</div><h4>Calidad garantizada</h4><p>Más resistentes y con durabilidad comprobada.</p></div>
+    <div class="service"><div class="ico">$</div><h4>Precios directos</h4><p>Sin intermediarios ni revendedores.</p></div>
+    <div class="service"><div class="ico">🏭</div><h4>Bodega propia</h4><p>Amplia variedad de costal y jumbo en stock.</p></div>
+    <div class="service"><div class="ico">🧾</div><h4>Facturación</h4><p>Facturamos todas tus compras.</p></div>
+  </div>
+</section>
+
+<section id="promo" class="container">
+  <div class="promo">
+    <h2>¡Mejoramos nuestros precios de mayoreo!</h2>
+    <p>Aplica para compras arriba de 10,000 piezas. Contáctanos por WhatsApp para tu cotización.</p>
+    <a class="btn" href="https://wa.me/523337054357" target="_blank">Cotizar por WhatsApp</a>
+  </div>
+</section>
+
+<section id="contacto" class="container">
+  <h2 class="section-title">Ubicación y contacto</h2>
+  <div class="contact">
+    <div class="map img-placeholder">Mapa: Tlajomulco de Zúñiga, Jal.<br>(cerca de Santa Cruz de las Flores / San Agustín)</div>
+    <div>
+      <ul>
+        <li><strong>Teléfonos / WhatsApp:</strong> 332 957 6213 · 333 705 4357</li>
+        <li><strong>Ubicación:</strong> Tlajomulco de Zúñiga, Jalisco</li>
+        <li><strong>Cobertura:</strong> Envíos a toda la República Mexicana</li>
+        <li><strong>Redes sociales:</strong> Facebook, Instagram y TikTok — Costales Angeline</li>
+      </ul>
+      <a class="btn" style="margin-top:1rem;" href="https://wa.me/523329576213" target="_blank">Escríbenos ahora</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <h5>Costales Angeline</h5>
+      <p>Calidad que se ve, resistencia que dura.</p>
+    </div>
+    <div>
+      <h5>Contacto</h5>
+      <p>332 957 6213<br>333 705 4357</p>
+    </div>
+    <div>
+      <h5>Síguenos</h5>
+      <p>Facebook · Instagram · TikTok</p>
+    </div>
+  </div>
+  <div class="bottom">© 2026 Costales Angeline — Tlajomulco de Zúñiga, Jalisco.</div>
+</footer>
+
+<script>
+  document.getElementById('menuToggle').addEventListener('click',function(){
+    document.getElementById('navList').classList.toggle('open');
+  });
+</script>
+</body>
+</html>
