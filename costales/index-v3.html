@@ -9,17 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#f6f1e2;
-    --cream-2:#fbf8ee;
-    --forest:#1f3d2e;
-    --forest-2:#16291e;
-    --rust:#b4502c;
-    --olive:#7c8a4e;
-    --sand:#e7dcc0;
-    --ink:#20291f;
-    --muted:rgba(32,41,31,.62);
-    --muted-light:rgba(251,248,238,.7);
-    --line:rgba(32,41,31,.16);
+    --cream:#f7f3ea;
+    --cream-2:#fffcf5;
+    --forest:#17130f;
+    --forest-2:#0e0b08;
+    --rust:#b8863c;
+    --olive:#8a8478;
+    --sand:#ece3d1;
+    --ink:#1a1712;
+    --muted:rgba(26,23,18,.62);
+    --muted-light:rgba(255,252,245,.7);
+    --line:rgba(26,23,18,.16);
     --radius:3px;
   }
   *{box-sizing:border-box;}
@@ -35,9 +35,9 @@
   .photo-slot{
     position:relative; width:100%; aspect-ratio:4/3;
     background:
-      repeating-linear-gradient(45deg, rgba(31,61,46,.05) 0 9px, transparent 9px 18px),
+      repeating-linear-gradient(45deg, rgba(23,19,15,.05) 0 9px, transparent 9px 18px),
       var(--sand);
-    border:1px solid rgba(31,61,46,.22);
+    border:1px solid rgba(23,19,15,.22);
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
     overflow:hidden;
   }
@@ -62,6 +62,8 @@
   /* ================= header ================= */
   header{background:var(--cream-2); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:50;}
   .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1180px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-logo{height:44px; width:auto; display:block;}
   .brand .name{font-family:'Fraunces',serif; font-size:1.4rem; font-weight:700; color:var(--forest);}
   .brand .tag{font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:2px;}
   nav.links{display:flex; align-items:center; gap:26px; font-size:.9rem;}
@@ -71,7 +73,7 @@
   .btn.solid{background:var(--rust); color:#fff;}
   .btn.solid:hover{background:#943e21;}
   .btn.outline{border-color:var(--forest); color:var(--forest); background:transparent;}
-  .btn.outline:hover{background:rgba(31,61,46,.06);}
+  .btn.outline:hover{background:rgba(23,19,15,.06);}
   .menu-toggle{display:none; background:none; border:1px solid var(--forest); color:var(--forest); font-size:1.1rem; padding:6px 12px; border-radius:var(--radius); cursor:pointer;}
 
   /* ================= hero ================= */
@@ -82,6 +84,12 @@
   .hero p.lead{margin-top:20px; max-width:48ch; color:var(--muted); font-size:1.05rem;}
   .cta-row{display:flex; gap:14px; margin-top:28px; flex-wrap:wrap;}
   .hero .caption{margin-top:10px; text-align:center;}
+  .logo-showcase{
+    background:var(--forest); border-radius:var(--radius); padding:36px 24px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 18px 40px rgba(23,19,15,.28);
+  }
+  .logo-showcase img{width:100%; max-width:320px; height:auto;}
 
   .facts{display:flex; gap:0; flex-wrap:wrap; margin-top:38px; border-top:1px solid var(--line);}
   .fact{flex:1; min-width:140px; padding:16px 20px 0; border-left:1px solid var(--line);}
@@ -114,19 +122,19 @@
   /* ================= product grid ================= */
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
   .card{background:var(--cream-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:transform .18s ease, box-shadow .18s ease;}
-  .card:hover{transform:translateY(-3px); box-shadow:0 16px 32px rgba(31,61,46,.12);}
+  .card:hover{transform:translateY(-3px); box-shadow:0 16px 32px rgba(23,19,15,.12);}
   .card-body{padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1;}
   .card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
   .card-top h3{font-size:1.05rem; font-weight:600;}
   .tela-badge{font-family:'JetBrains Mono',monospace; font-size:.62rem; text-transform:uppercase; padding:4px 9px; border-radius:20px; white-space:nowrap; letter-spacing:.03em;}
-  .tela-badge.normal{background:rgba(124,138,78,.18); color:var(--olive);}
-  .tela-badge.laminada{background:rgba(31,61,46,.12); color:var(--forest);}
-  .tela-badge.ambas{background:linear-gradient(90deg, rgba(124,138,78,.18) 50%, rgba(31,61,46,.12) 50%); color:var(--forest);}
-  .tela-badge.jumbo{background:rgba(180,80,44,.15); color:var(--rust);}
+  .tela-badge.normal{background:rgba(138,132,120,.18); color:var(--olive);}
+  .tela-badge.laminada{background:rgba(23,19,15,.12); color:var(--forest);}
+  .tela-badge.ambas{background:linear-gradient(90deg, rgba(138,132,120,.18) 50%, rgba(23,19,15,.12) 50%); color:var(--forest);}
+  .tela-badge.jumbo{background:rgba(184,134,60,.15); color:var(--rust);}
   .measure{font-family:'JetBrains Mono',monospace; font-size:.95rem; font-weight:500; padding-bottom:8px; border-bottom:1px dashed var(--line);}
   .card-body p.desc{font-size:.86rem; color:var(--muted);}
   .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;}
-  .chip{font-size:.7rem; background:rgba(31,61,46,.06); border:1px solid var(--line); padding:4px 9px; border-radius:20px; color:var(--muted);}
+  .chip{font-size:.7rem; background:rgba(23,19,15,.06); border:1px solid var(--line); padding:4px 9px; border-radius:20px; color:var(--muted);}
 
   /* ================= gallery (future photos) ================= */
   .gallery-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
@@ -138,7 +146,7 @@
   .feature-text .eyebrow{color:var(--sand);}
   .feature-text h3{color:var(--cream-2); font-size:1.7rem; margin-top:10px;}
   .feature-text p{color:var(--muted-light); margin-top:12px;}
-  .feature-text .measure{color:var(--cream-2); border-color:rgba(251,248,238,.25);}
+  .feature-text .measure{color:var(--cream-2); border-color:rgba(255,252,245,.25);}
 
   /* ================= promo ================= */
   .promo{background:var(--sand); border-radius:var(--radius); padding:44px 40px; display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center;}
@@ -151,7 +159,7 @@
   table{border-collapse:collapse; width:100%; min-width:640px; font-size:.88rem;}
   thead th{font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-size:.66rem; letter-spacing:.05em; text-align:left; background:var(--forest); color:var(--cream-2); padding:12px 16px;}
   tbody td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top;}
-  tbody tr:nth-child(even){background:rgba(31,61,46,.03);}
+  tbody tr:nth-child(even){background:rgba(23,19,15,.03);}
   tbody tr:last-child td{border-bottom:none;}
 
   /* ================= footer ================= */
@@ -161,11 +169,11 @@
   footer p{color:var(--muted-light); font-size:.92rem;}
   .contact-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
   .contact-list a{display:flex; align-items:center; gap:10px; font-size:.94rem; color:var(--muted-light);}
-  .contact-list .ic{width:32px; height:32px; border:1px solid rgba(251,248,238,.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0;}
+  .contact-list .ic{width:32px; height:32px; border:1px solid rgba(255,252,245,.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0;}
   .social-row{display:flex; gap:10px; margin-top:14px;}
-  .social-row a{width:36px; height:36px; border-radius:50%; border:1px solid rgba(251,248,238,.2); display:flex; align-items:center; justify-content:center; font-size:.82rem;}
-  .social-row a:hover{background:rgba(251,248,238,.08);}
-  .foot-bottom{margin-top:40px; padding-top:20px; border-top:1px solid rgba(251,248,238,.14); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.76rem; color:var(--muted-light);}
+  .social-row a{width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,252,245,.2); display:flex; align-items:center; justify-content:center; font-size:.82rem;}
+  .social-row a:hover{background:rgba(255,252,245,.08);}
+  .foot-bottom{margin-top:40px; padding-top:20px; border-top:1px solid rgba(255,252,245,.14); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.76rem; color:var(--muted-light);}
 
   .float-wa{position:fixed; bottom:22px; right:22px; z-index:60; background:var(--rust); color:#fff; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; box-shadow:0 8px 22px rgba(0,0,0,.25);}
   .float-wa:hover{background:#943e21;}
@@ -188,6 +196,8 @@
     nav.links.open{transform:translateX(0);}
     nav.links a{width:100%; padding:12px 0; border-bottom:1px solid var(--line);}
     .menu-toggle{display:block;}
+    .brand-logo{height:34px;}
+    .brand .tag{display:none;}
     .compare{grid-template-columns:1fr;}
     .grid{grid-template-columns:1fr;}
     .gallery-grid{grid-template-columns:1fr 1fr;}
@@ -203,8 +213,11 @@
 <header>
   <div class="nav">
     <div class="brand">
-      <div class="name">Costales Angeline</div>
-      <div class="tag">Catálogo fotográfico</div>
+      <img src="imagenes/logo.jpg" alt="Costales Angeline" class="brand-logo">
+      <div>
+        <div class="name">Costales Angeline</div>
+        <div class="tag">Catálogo fotográfico</div>
+      </div>
     </div>
     <nav class="links" id="navLinks">
       <a href="#catalogo">Catálogo</a>
@@ -236,10 +249,13 @@
       </div>
     </div>
     <div class="reveal">
-      <div class="photo-slot wide">
+      <div class="logo-showcase">
+        <img src="imagenes/logo.jpg" alt="Costales Angeline">
+      </div>
+      <div class="photo-slot wide" style="margin-top:18px;">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l1.5-2.5h5L16 6"/></svg></span>
-        <span class="label">Foto principal — pila de costales en bodega o entrega</span>
+        <span class="label">Foto de producto — pila de costales en bodega o entrega</span>
         <span class="dims">recomendado 1600 × 1200 px</span>
       </div>
       <p class="caption mono" style="font-size:.72rem; color:var(--muted);">Espacio reservado para fotografía — sustituir cuando esté disponible</p>
