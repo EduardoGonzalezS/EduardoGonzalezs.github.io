@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist — Japón 2026</title>
+<meta name="description" content="Checklist de preparativos para el viaje a Japón, Noviembre 2026">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  ul, ol { list-style: none; }
+  button, input { font: inherit; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  :root {
+    --color-ink:           #1a1a2e;
+    --color-ink-light:     #2d2d4a;
+    --color-paper:         #faf8f5;
+    --color-crimson:       #c0392b;
+    --color-crimson-light: #e74c3c;
+    --color-gold:          #c9a84c;
+    --color-gold-light:    #e8c97a;
+    --color-sakura:        #f4a7b9;
+    --color-matcha:        #5c7a5c;
+    --color-indigo:        #2c3e6b;
+    --color-fog:           #e0dbd4;
+    --color-muted:         #8a8070;
+    --font-display: 'Cinzel', serif;
+    --font-serif:   'Noto Serif JP', serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+    --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px;
+    --radius-sm: 4px; --radius-md: 10px; --radius-lg: 20px; --radius-pill: 999px;
+    --shadow-sm: 0 2px 12px rgba(26,26,46,0.08);
+    --shadow-md: 0 4px 24px rgba(26,26,46,0.12);
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    max-width: 480px;
+    margin-inline: auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: var(--space-xl);
+  }
+
+  /* ── Header ── */
+  .head {
+    background: var(--color-ink);
+    padding: var(--space-lg) var(--space-md) var(--space-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .head::before {
+    content: "旅";
+    position: absolute;
+    right: -0.1em; top: -0.15em;
+    font-family: var(--font-serif);
+    font-size: 9rem;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .head__jp {
+    font-family: var(--font-serif); font-weight: 300; font-size: 0.875rem;
+    color: var(--color-gold); letter-spacing: 0.3em; margin-bottom: 4px;
+  }
+  .head__title {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+    color: #fff; letter-spacing: 0.12em; line-height: 1; margin-bottom: 6px;
+  }
+  .head__sub {
+    font-size: 0.75rem; color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em; margin-bottom: var(--space-lg);
+  }
+
+  .progress-wrap { position: relative; z-index: 1; }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .progress-label { font-size: 0.7rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; }
+  .progress-count { font-family: var(--font-display); font-size: 0.9rem; color: var(--color-gold-light); font-weight: 600; }
+  .progress-track {
+    height: 8px; border-radius: var(--radius-pill);
+    background: rgba(255,255,255,0.1); overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: var(--radius-pill);
+    background: linear-gradient(90deg, var(--color-crimson), var(--color-gold));
+    width: 0%; transition: width 400ms ease;
+  }
+
+  /* ── Categories ── */
+  main { padding: var(--space-md); }
+  .category { margin-bottom: var(--space-md); }
+  .category__head {
+    width: 100%; display: flex; align-items: center; gap: var(--space-sm);
+    background: #fff; border: 1px solid var(--color-fog);
+    border-radius: var(--radius-md); padding: var(--space-md);
+    cursor: pointer; text-align: left; box-shadow: var(--shadow-sm);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .category__emoji { font-size: 1.35rem; line-height: 1; }
+  .category__info { flex: 1; min-width: 0; }
+  .category__name {
+    font-family: var(--font-serif); font-size: 0.9375rem; color: var(--color-ink);
+    margin-bottom: 2px;
+  }
+  .category__meta { font-size: 0.7rem; color: var(--color-muted); }
+  .category__meta.done { color: var(--color-matcha); font-weight: 600; }
+  .category__chevron {
+    width: 18px; height: 18px; flex-shrink: 0; color: var(--color-muted);
+    transition: transform 220ms ease;
+  }
+  .category.open .category__chevron { transform: rotate(180deg); }
+
+  .category__body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 320ms ease;
+  }
+  .category.open .category__body { max-height: 2000px; }
+  .category__list {
+    background: #fff; border: 1px solid var(--color-fog); border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    margin-top: -1px; padding: var(--space-sm) var(--space-md) var(--space-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--color-fog);
+  }
+  .item:last-of-type { border-bottom: none; }
+  .item__check {
+    flex-shrink: 0; width: 21px; height: 21px; border-radius: 6px;
+    border: 1.5px solid var(--color-fog); background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; margin-top: 1px; transition: background 150ms, border-color 150ms;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .item__check svg { width: 13px; height: 13px; opacity: 0; transition: opacity 120ms; color: #fff; }
+  .item.checked .item__check { background: var(--color-matcha); border-color: var(--color-matcha); }
+  .item.checked .item__check svg { opacity: 1; }
+  .item__text {
+    flex: 1; font-size: 0.85rem; color: var(--color-ink); line-height: 1.4;
+    cursor: pointer; padding-top: 2px;
+  }
+  .item.checked .item__text { color: var(--color-muted); text-decoration: line-through; }
+  .item__del {
+    flex-shrink: 0; width: 22px; height: 22px; color: var(--color-fog);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: color 150ms; -webkit-tap-highlight-color: transparent;
+  }
+  .item__del:hover { color: var(--color-crimson); }
+  .item__del svg { width: 14px; height: 14px; }
+
+  .add-row { display: flex; gap: 8px; margin-top: var(--space-sm); }
+  .add-row input {
+    flex: 1; min-width: 0; border: 1px solid var(--color-fog); border-radius: var(--radius-sm);
+    padding: 8px 10px; font-size: 0.8rem; color: var(--color-ink); background: var(--color-paper);
+  }
+  .add-row input:focus { outline: 2px solid var(--color-indigo); outline-offset: 1px; }
+  .add-row button {
+    flex-shrink: 0; width: 36px; border-radius: var(--radius-sm);
+    background: var(--color-ink); color: var(--color-gold-light);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .add-row button svg { width: 16px; height: 16px; }
+
+  .empty-msg { font-size: 0.78rem; color: var(--color-muted); padding: 10px 0; text-align: center; }
+
+  /* ── Footer actions ── */
+  .footer-actions {
+    display: flex; gap: 10px; margin-top: var(--space-lg); padding: 0 var(--space-md);
+  }
+  .btn-reset {
+    flex: 1; border: 1px solid var(--color-crimson); color: var(--color-crimson);
+    border-radius: var(--radius-md); padding: 11px; font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.03em; cursor: pointer; background: transparent;
+    -webkit-tap-highlight-color: transparent; transition: background 150ms, color 150ms;
+  }
+  .btn-reset:hover { background: var(--color-crimson); color: #fff; }
+  .footer-note {
+    text-align: center; font-size: 0.68rem; color: var(--color-muted);
+    margin-top: var(--space-md); padding: 0 var(--space-lg); line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="head__jp">準備</div>
+  <div class="head__title">CHECKLIST</div>
+  <div class="head__sub">Preparativos · Japón, Nov 2026</div>
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label">Progreso general</span>
+      <span class="progress-count" id="overall-count">0 / 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="overall-fill"></div></div>
+  </div>
+</header>
+
+<main id="categories"></main>
+
+<div class="footer-actions">
+  <button class="btn-reset" id="btn-reset">Desmarcar todo</button>
+</div>
+<p class="footer-note">Tus cambios se guardan automáticamente en este navegador (localStorage). Si abres el archivo desde otro dispositivo o navegador, empezarás desde la lista original.</p>
+
+<template id="tpl-category">
+  <li class="category">
+    <button class="category__head">
+      <span class="category__emoji"></span>
+      <span class="category__info">
+        <span class="category__name"></span>
+        <span class="category__meta"></span>
+      </span>
+      <svg class="category__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="category__body">
+      <ul class="category__list"></ul>
+    </div>
+  </li>
+</template>
+
+<template id="tpl-item">
+  <li class="item">
+    <span class="item__check" role="checkbox" aria-checked="false" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </span>
+    <span class="item__text"></span>
+    <span class="item__del" title="Eliminar" role="button" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </span>
+  </li>
+</template>
+
+<script>
+(function () {
+  var STORAGE_KEY = "japon-checklist-v1";
+
+  var DEFAULT_DATA = [
+    { id: "docs", emoji: "🛂", name: "Documentos y trámites", open: true, items: [
+      "Pasaporte vigente (mínimo 6 meses tras el regreso)",
+      "Copias digitales del pasaporte guardadas en la nube",
+      "Seguro de viaje contratado e impreso",
+      "Confirmación de vuelo AM-668 (GDL→LAX→NRT, 1 Nov)",
+      "Confirmación de vuelo NH-179 (NRT→LAX→GDL, 18 Nov)",
+      "Reservas de hotel: Park Hotel Tokyo, The Screen Kyoto, Cross Hotel Osaka"
+    ]},
+    { id: "dinero", emoji: "💴", name: "Dinero y tarjetas", items: [
+      "Avisar al banco del viaje (tarjetas de débito/crédito)",
+      "Confirmar tarjeta sin comisión por retiro/uso en el extranjero",
+      "Cambiar algo de efectivo a yenes antes de salir",
+      "Activar/recargar IC card (Suica o Pasmo) al llegar"
+    ]},
+    { id: "tech", emoji: "📱", name: "Tecnología y conectividad", items: [
+      "SIM o eSIM para Japón activada",
+      "Adaptador de enchufe tipo A",
+      "Power bank cargado",
+      "Google Maps y Google Translate con japonés descargado offline",
+      "Cargar todos los dispositivos la noche anterior"
+    ]},
+    { id: "salud", emoji: "💊", name: "Salud", items: [
+      "Medicamentos personales suficientes para todo el viaje",
+      "Copia de recetas médicas (por si acaso en aduana)",
+      "Botiquín básico: curitas, analgésico, antidiarreico"
+    ]},
+    { id: "equipaje", emoji: "🧳", name: "Equipaje", items: [
+      "Ropa acorde al clima de noviembre (fresco, capas)",
+      "Zapatos cómodos para caminar largas distancias",
+      "Paraguas plegable",
+      "Espacio libre en la maleta para souvenirs"
+    ]},
+    { id: "casa", emoji: "🏠", name: "Antes de salir de casa", items: [
+      "Avisar a un vecino o familiar",
+      "Pausar o redirigir correspondencia/paquetería",
+      "Revisar que puertas, luces y gas queden apagados/cerrados",
+      "Imprimir o guardar offline el itinerario completo"
+    ]}
+  ];
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var state = loadState();
+
+  var root = document.getElementById("categories");
+  var tplCategory = document.getElementById("tpl-category");
+  var tplItem = document.getElementById("tpl-item");
+  var idCounter = Date.now();
+
+  function render() {
+    root.innerHTML = "";
+    var list = document.createElement("ul");
+
+    var totalItems = 0, totalDone = 0;
+
+    state.forEach(function (cat) {
+      totalItems += cat.items.length;
+      totalDone += cat.items.filter(function (it) { return it.done; }).length;
+
+      var node = tplCategory.content.cloneNode(true);
+      var li = node.querySelector(".category");
+      if (cat.open) li.classList.add("open");
+      li.dataset.catId = cat.id;
+
+      node.querySelector(".category__emoji").textContent = cat.emoji;
+      node.querySelector(".category__name").textContent = cat.name;
+
+      var doneCount = cat.items.filter(function (it) { return it.done; }).length;
+      var metaEl = node.querySelector(".category__meta");
+      metaEl.textContent = doneCount + " / " + cat.items.length + " completado" + (cat.items.length === 1 ? "" : "s");
+      if (cat.items.length > 0 && doneCount === cat.items.length) metaEl.classList.add("done");
+
+      var ul = node.querySelector(".category__list");
+
+      if (cat.items.length === 0) {
+        var empty = document.createElement("li");
+        empty.className = "empty-msg";
+        empty.textContent = "Sin pendientes en esta categoría.";
+        ul.appendChild(empty);
+      }
+
+      cat.items.forEach(function (item, idx) {
+        var itNode = tplItem.content.cloneNode(true);
+        var itLi = itNode.querySelector(".item");
+        if (item.done) itLi.classList.add("checked");
+        itLi.dataset.idx = idx;
+
+        var checkEl = itNode.querySelector(".item__check");
+        checkEl.setAttribute("aria-checked", item.done ? "true" : "false");
+        itNode.querySelector(".item__text").textContent = item.text;
+
+        ul.appendChild(itNode);
+      });
+
+      var addRow = document.createElement("li");
+      addRow.className = "add-row";
+      addRow.innerHTML =
+        '<input type="text" placeholder="Agregar pendiente…" maxlength="140">' +
+        '<button aria-label="Agregar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>';
+      ul.appendChild(addRow);
+
+      list.appendChild(li);
+    });
+
+    root.appendChild(list);
+
+    document.getElementById("overall-count").textContent = totalDone + " / " + totalItems;
+    var pct = totalItems === 0 ? 0 : Math.round((totalDone / totalItems) * 100);
+    document.getElementById("overall-fill").style.width = pct + "%";
+  }
+
+  root.addEventListener("click", function (e) {
+    var catLi = e.target.closest(".category");
+    if (!catLi) return;
+    var catId = catLi.dataset.catId;
+    var cat = state.find(function (c) { return c.id === catId; });
+
+    var headBtn = e.target.closest(".category__head");
+    if (headBtn) {
+      cat.open = !catLi.classList.contains("open");
+      catLi.classList.toggle("open");
+      saveState();
+      return;
+    }
+
+    var checkEl = e.target.closest(".item__check");
+    if (checkEl) {
+      var itemLi = checkEl.closest(".item");
+      var idx = parseInt(itemLi.dataset.idx, 10);
+      cat.items[idx].done = !cat.items[idx].done;
+      saveState();
+      render();
+      restoreOpen();
+      return;
+    }
+
+    var delEl = e.target.closest(".item__del");
+    if (delEl) {
+      var itemLi2 = delEl.closest(".item");
+      var idx2 = parseInt(itemLi2.dataset.idx, 10);
+      cat.items.splice(idx2, 1);
+      saveState();
+      render();
+      restoreOpen();
+      return;
+    }
+
+    var addBtn = e.target.closest(".add-row button");
+    if (addBtn) {
+      var input = addBtn.parentElement.querySelector("input");
+      addItemToCategory(cat, input);
+      return;
+    }
+  });
+
+  root.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.matches(".add-row input")) {
+      var catLi = e.target.closest(".category");
+      var cat = state.find(function (c) { return c.id === catLi.dataset.catId; });
+      addItemToCategory(cat, e.target);
+    }
+  });
+
+  function addItemToCategory(cat, input) {
+    var text = input.value.trim();
+    if (!text) return;
+    cat.items.push({ text: text, done: false });
+    cat.open = true;
+    saveState();
+    render();
+    restoreOpen();
+  }
+
+  function restoreOpen() {
+    document.querySelectorAll(".category").forEach(function (li) {
+      var cat = state.find(function (c) { return c.id === li.dataset.catId; });
+      if (cat && cat.open) li.classList.add("open");
+    });
+  }
+
+  document.getElementById("btn-reset").addEventListener("click", function () {
+    if (!confirm("¿Desmarcar todos los pendientes completados? (No se borran los items agregados)")) return;
+    state.forEach(function (cat) {
+      cat.items.forEach(function (it) { it.done = false; });
+    });
+    saveState();
+    render();
+    restoreOpen();
+  });
+
+  // Normalize default data shape (text/done) on first load
+  state.forEach(function (cat) {
+    cat.items = cat.items.map(function (it) {
+      if (typeof it === "string") return { text: it, done: false };
+      return it;
+    });
+    if (typeof cat.open === "undefined") cat.open = false;
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
