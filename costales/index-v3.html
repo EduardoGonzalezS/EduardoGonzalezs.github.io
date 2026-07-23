@@ -136,8 +136,11 @@
   .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;}
   .chip{font-size:.7rem; background:rgba(23,19,15,.06); border:1px solid var(--line); padding:4px 9px; border-radius:20px; color:var(--muted);}
   .chips:has(img){justify-content:center; align-items:center; gap:14px;}
-  .chips img{transition:transform .25s ease, filter .25s ease; will-change:transform;}
-  .chips img:hover{transform:scale(1.18); filter:drop-shadow(0 4px 10px rgba(23,19,15,.25));}
+  .chips img{animation:chipZoomPulse 2s ease-in-out infinite; will-change:transform;}
+  @keyframes chipZoomPulse{
+    0%, 75%, 100%{transform:scale(1);}
+    35%{transform:scale(1.18); filter:drop-shadow(0 4px 10px rgba(23,19,15,.25));}
+  }
 
   /* ================= gallery (future photos) ================= */
   .gallery-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
@@ -682,7 +685,14 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: .12 });
   revealEls.forEach(el => io.observe(el));
+
+  // Zoom automático e independiente por imagen (cada una con su propio desfase aleatorio)
+  document.querySelectorAll('.chips img').forEach(img => {
+    img.style.animationDelay = `-${(Math.random() * 2).toFixed(2)}s`;
+    img.style.animationDuration = `${(5.7 + Math.random() * 0.8).toFixed(2)}s`;
+  });
 </script>
+
 
 </body>
 </html>
