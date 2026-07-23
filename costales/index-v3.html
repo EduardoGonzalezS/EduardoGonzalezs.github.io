@@ -135,6 +135,9 @@
   .card-body p.desc{font-size:.86rem; color:var(--muted);}
   .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;}
   .chip{font-size:.7rem; background:rgba(23,19,15,.06); border:1px solid var(--line); padding:4px 9px; border-radius:20px; color:var(--muted);}
+  .chips:has(img){justify-content:center; align-items:center; gap:14px;}
+  .chips img{transition:transform .25s ease, filter .25s ease; will-change:transform;}
+  .chips img:hover{transform:scale(1.18); filter:drop-shadow(0 4px 10px rgba(23,19,15,.25));}
 
   /* ================= gallery (future photos) ================= */
   .gallery-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
@@ -361,7 +364,7 @@
             <img src="imagenes/items/composta.png" alt="Arena" style="width: 59px; height: 60px;">
             <img src="imagenes/items/minerales.png" alt="Arena" style="width: 59px; height: 60px;">
             <img src="imagenes/items/arena.png" alt="Arena" style="width: 59px; height: 60px;">
-            <img src="imagenes/items/grava.png" alt="Arena" style="width: 56px; height: 60px;">
+            <img src="imagenes/items/grava.png" alt="Arena" style="width: 59px; height: 60px;">
             <img src="imagenes/items/alimento para animales.png" alt="Arena" style="width: 58px; height: 60px;">
             <!-- <span class="chip">Composta</span><span class="chip">Minerales</span><span class="chip">Arena</span> -->
           </div>
