@@ -235,7 +235,11 @@
 <div class="footer-actions">
   <button class="btn-reset" id="btn-reset">Desmarcar todo</button>
 </div>
-<p class="footer-note">Tus cambios se guardan automáticamente en este navegador (localStorage). Si abres el archivo desde otro dispositivo o navegador, empezarás desde la lista original.</p>
+<p class="footer-note" id="footer-note">Conectado a Google Sheets — tus cambios se guardan en la nube.</p>
+<p class="footer-note" id="sync-status" style="display:none;"></p>
+<div class="footer-actions" style="margin-top: var(--space-sm);">
+  <button class="btn-reset" id="btn-config" style="border-color: var(--color-indigo); color: var(--color-indigo);">⚙️ Configurar Google Sheet</button>
+</div>
 
 <template id="tpl-category">
   <li class="category">
@@ -265,89 +269,167 @@
   </li>
 </template>
 
+<div id="config-overlay" style="display:none; position:fixed; inset:0; background:rgba(26,26,46,0.6); z-index:100; align-items:center; justify-content:center; padding: var(--space-lg);">
+  <div style="background:#fff; border-radius: var(--radius-lg); padding: var(--space-lg); max-width: 420px; width:100%; box-shadow: var(--shadow-md);">
+    <h2 style="font-family: var(--font-display); font-size:1.1rem; color: var(--color-ink); margin-bottom: var(--space-sm);">Conectar Google Sheet</h2>
+    <p style="font-size:0.78rem; color: var(--color-muted); line-height:1.5; margin-bottom: var(--space-md);">
+      Pega aquí la URL de tu Apps Script Web App (termina en <code>/exec</code>). Si aún no la tienes, dile a Claude "genérame la guía paso a paso" y te explica cómo crear el Sheet y publicar el script.
+    </p>
+    <input type="text" id="config-url-input" placeholder="https://script.google.com/macros/s/.../exec"
+      style="width:100%; border:1px solid var(--color-fog); border-radius: var(--radius-sm); padding:10px; font-size:0.8rem; margin-bottom: var(--space-md);">
+    <div style="display:flex; gap:8px;">
+      <button id="config-save" style="flex:1; background:var(--color-ink); color:var(--color-gold-light); border:none; border-radius:var(--radius-md); padding:11px; font-size:0.78rem; font-weight:600; cursor:pointer;">Guardar y sincronizar</button>
+      <button id="config-cancel" style="flex-shrink:0; background:transparent; border:1px solid var(--color-fog); color:var(--color-muted); border-radius:var(--radius-md); padding:11px 16px; font-size:0.78rem; cursor:pointer;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   var STORAGE_KEY = "japon-checklist-v1";
+  var CONFIG_KEY = "japon-checklist-gas-url";
+  var CACHE_KEY = "japon-checklist-cache-v1";
+  var OPEN_STATE_KEY = "japon-checklist-open-v1";
 
-  var DEFAULT_DATA = [
-    { id: "docs", emoji: "🛂", name: "Documentos y trámites", open: true, items: [
-      "Pasaporte vigente (mínimo 6 meses tras el regreso)",
-      "Copias digitales del pasaporte guardadas en la nube",
-      "Seguro de viaje contratado e impreso",
-      "Confirmación de vuelo AM-668 (GDL→LAX→NRT, 1 Nov)",
-      "Confirmación de vuelo NH-179 (NRT→LAX→GDL, 18 Nov)",
-      "Reservas de hotel: Park Hotel Tokyo, The Screen Kyoto, Cross Hotel Osaka"
-    ]},
-    { id: "dinero", emoji: "💴", name: "Dinero y tarjetas", items: [
-      "Avisar al banco del viaje (tarjetas de débito/crédito)",
-      "Confirmar tarjeta sin comisión por retiro/uso en el extranjero",
-      "Cambiar algo de efectivo a yenes antes de salir",
-      "Activar/recargar IC card (Suica o Pasmo) al llegar"
-    ]},
-    { id: "tech", emoji: "📱", name: "Tecnología y conectividad", items: [
-      "SIM o eSIM para Japón activada",
-      "Adaptador de enchufe tipo A",
-      "Power bank cargado",
-      "Google Maps y Google Translate con japonés descargado offline",
-      "Cargar todos los dispositivos la noche anterior"
-    ]},
-    { id: "salud", emoji: "💊", name: "Salud", items: [
-      "Medicamentos personales suficientes para todo el viaje",
-      "Copia de recetas médicas (por si acaso en aduana)",
-      "Botiquín básico: curitas, analgésico, antidiarreico"
-    ]},
-    { id: "equipaje", emoji: "🧳", name: "Equipaje", items: [
-      "Ropa acorde al clima de noviembre (fresco, capas)",
-      "Zapatos cómodos para caminar largas distancias",
-      "Paraguas plegable",
-      "Espacio libre en la maleta para souvenirs"
-    ]},
-    { id: "casa", emoji: "🏠", name: "Antes de salir de casa", items: [
-      "Avisar a un vecino o familiar",
-      "Pausar o redirigir correspondencia/paquetería",
-      "Revisar que puertas, luces y gas queden apagados/cerrados",
-      "Imprimir o guardar offline el itinerario completo"
-    ]}
+  function getGasUrl() { return localStorage.getItem(CONFIG_KEY) || ""; }
+  function setGasUrl(url) { localStorage.setItem(CONFIG_KEY, url); }
+
+  function getOpenState() {
+    try { return JSON.parse(localStorage.getItem(OPEN_STATE_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function saveOpenState(obj) {
+    try { localStorage.setItem(OPEN_STATE_KEY, JSON.stringify(obj)); } catch (e) {}
+  }
+
+  // Categorías de referencia (solo para cuando agregas un item nuevo y quieres
+  // ofrecer el emoji/nombre correcto; el Sheet siempre manda la verdad).
+  var CATEGORY_META = [
+    { id: "docs",     emoji: "🛂", name: "Documentos y trámites" },
+    { id: "dinero",   emoji: "💴", name: "Dinero y tarjetas" },
+    { id: "tech",     emoji: "📱", name: "Tecnología y conectividad" },
+    { id: "salud",    emoji: "💊", name: "Salud" },
+    { id: "equipaje", emoji: "🧳", name: "Equipaje" },
+    { id: "casa",     emoji: "🏠", name: "Antes de salir de casa" }
   ];
-
-  function loadState() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) {}
-    return JSON.parse(JSON.stringify(DEFAULT_DATA));
-  }
-
-  function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
-  }
-
-  var state = loadState();
 
   var root = document.getElementById("categories");
   var tplCategory = document.getElementById("tpl-category");
   var tplItem = document.getElementById("tpl-item");
-  var idCounter = Date.now();
+  var overlay = document.getElementById("config-overlay");
+  var syncStatusEl = document.getElementById("sync-status");
+  var footerNoteEl = document.getElementById("footer-note");
+
+  var flatItems = [];   // lo último que sabemos del Sheet (o de caché)
+  var isOnline = false;
+  var isSyncing = false;
+
+  function showStatus(msg, isError) {
+    syncStatusEl.style.display = "block";
+    syncStatusEl.textContent = msg;
+    syncStatusEl.style.color = isError ? "var(--color-crimson)" : "var(--color-matcha)";
+  }
+  function hideStatus() { syncStatusEl.style.display = "none"; }
+
+  function cacheItems(items) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch (e) {}
+  }
+  function readCache() {
+    try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "[]"); } catch (e) { return []; }
+  }
+
+  function groupByCategory(items) {
+    var order = [];
+    var map = {};
+    items.forEach(function (it) {
+      if (!map[it.categoria_id]) {
+        map[it.categoria_id] = {
+          id: it.categoria_id,
+          emoji: it.categoria_emoji,
+          name: it.categoria_nombre,
+          items: []
+        };
+        order.push(it.categoria_id);
+      }
+      map[it.categoria_id].items.push(it);
+    });
+    return order.map(function (id) { return map[id]; });
+  }
+
+  function apiGet() {
+    var url = getGasUrl();
+    if (!url) return Promise.reject(new Error("sin-config"));
+    return fetch(url, { method: "GET" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || "error-servidor");
+        return data.items;
+      });
+  }
+
+  function apiPost(payload) {
+    var url = getGasUrl();
+    if (!url) return Promise.reject(new Error("sin-config"));
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || "error-servidor");
+        return data.items;
+      });
+  }
+
+  function refresh(showLoading) {
+    if (!getGasUrl()) {
+      overlay.style.display = "flex";
+      flatItems = readCache();
+      render();
+      return Promise.resolve();
+    }
+    if (showLoading) showStatus("Sincronizando con Google Sheets…", false);
+    isSyncing = true;
+    return apiGet()
+      .then(function (items) {
+        flatItems = items;
+        cacheItems(items);
+        isOnline = true;
+        hideStatus();
+        footerNoteEl.textContent = "Conectado a Google Sheets — tus cambios se guardan en la nube.";
+        render();
+      })
+      .catch(function (err) {
+        isOnline = false;
+        flatItems = readCache();
+        footerNoteEl.textContent = "Sin conexión con el Sheet — mostrando la última copia guardada en este dispositivo.";
+        showStatus("No se pudo conectar al Sheet. Revisa la URL o tu internet.", true);
+        render();
+      })
+      .finally(function () { isSyncing = false; });
+  }
 
   function render() {
     root.innerHTML = "";
     var list = document.createElement("ul");
+    var openState = getOpenState();
 
+    var categories = groupByCategory(flatItems);
     var totalItems = 0, totalDone = 0;
 
-    state.forEach(function (cat) {
+    categories.forEach(function (cat) {
       totalItems += cat.items.length;
-      totalDone += cat.items.filter(function (it) { return it.done; }).length;
+      totalDone += cat.items.filter(function (it) { return it.hecho; }).length;
 
       var node = tplCategory.content.cloneNode(true);
       var li = node.querySelector(".category");
-      if (cat.open) li.classList.add("open");
+      if (openState[cat.id]) li.classList.add("open");
       li.dataset.catId = cat.id;
 
       node.querySelector(".category__emoji").textContent = cat.emoji;
       node.querySelector(".category__name").textContent = cat.name;
 
-      var doneCount = cat.items.filter(function (it) { return it.done; }).length;
+      var doneCount = cat.items.filter(function (it) { return it.hecho; }).length;
       var metaEl = node.querySelector(".category__meta");
       metaEl.textContent = doneCount + " / " + cat.items.length + " completado" + (cat.items.length === 1 ? "" : "s");
       if (cat.items.length > 0 && doneCount === cat.items.length) metaEl.classList.add("done");
@@ -361,15 +443,15 @@
         ul.appendChild(empty);
       }
 
-      cat.items.forEach(function (item, idx) {
+      cat.items.forEach(function (item) {
         var itNode = tplItem.content.cloneNode(true);
         var itLi = itNode.querySelector(".item");
-        if (item.done) itLi.classList.add("checked");
-        itLi.dataset.idx = idx;
+        if (item.hecho) itLi.classList.add("checked");
+        itLi.dataset.id = item.id;
 
         var checkEl = itNode.querySelector(".item__check");
-        checkEl.setAttribute("aria-checked", item.done ? "true" : "false");
-        itNode.querySelector(".item__text").textContent = item.text;
+        checkEl.setAttribute("aria-checked", item.hecho ? "true" : "false");
+        itNode.querySelector(".item__text").textContent = item.texto;
 
         ul.appendChild(itNode);
       });
@@ -395,42 +477,48 @@
     var catLi = e.target.closest(".category");
     if (!catLi) return;
     var catId = catLi.dataset.catId;
-    var cat = state.find(function (c) { return c.id === catId; });
 
     var headBtn = e.target.closest(".category__head");
     if (headBtn) {
-      cat.open = !catLi.classList.contains("open");
+      var openState = getOpenState();
+      openState[catId] = !catLi.classList.contains("open");
+      saveOpenState(openState);
       catLi.classList.toggle("open");
-      saveState();
       return;
     }
 
     var checkEl = e.target.closest(".item__check");
     if (checkEl) {
       var itemLi = checkEl.closest(".item");
-      var idx = parseInt(itemLi.dataset.idx, 10);
-      cat.items[idx].done = !cat.items[idx].done;
-      saveState();
+      var id = itemLi.dataset.id;
+      var item = flatItems.find(function (it) { return it.id === id; });
+      if (item) item.hecho = !item.hecho; // optimista
       render();
-      restoreOpen();
+      showStatus("Guardando…", false);
+      apiPost({ action: "toggle", id: id })
+        .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
+        .catch(function () { showStatus("No se pudo guardar el cambio. Revisa tu conexión.", true); refresh(false); });
       return;
     }
 
     var delEl = e.target.closest(".item__del");
     if (delEl) {
       var itemLi2 = delEl.closest(".item");
-      var idx2 = parseInt(itemLi2.dataset.idx, 10);
-      cat.items.splice(idx2, 1);
-      saveState();
+      var id2 = itemLi2.dataset.id;
+      if (!confirm("¿Eliminar este pendiente?")) return;
+      flatItems = flatItems.filter(function (it) { return it.id !== id2; }); // optimista
       render();
-      restoreOpen();
+      showStatus("Eliminando…", false);
+      apiPost({ action: "delete", id: id2 })
+        .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
+        .catch(function () { showStatus("No se pudo eliminar. Revisa tu conexión.", true); refresh(false); });
       return;
     }
 
     var addBtn = e.target.closest(".add-row button");
     if (addBtn) {
       var input = addBtn.parentElement.querySelector("input");
-      addItemToCategory(cat, input);
+      addItemToCategory(catId, input);
       return;
     }
   });
@@ -438,48 +526,56 @@
   root.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && e.target.matches(".add-row input")) {
       var catLi = e.target.closest(".category");
-      var cat = state.find(function (c) { return c.id === catLi.dataset.catId; });
-      addItemToCategory(cat, e.target);
+      addItemToCategory(catLi.dataset.catId, e.target);
     }
   });
 
-  function addItemToCategory(cat, input) {
+  function addItemToCategory(catId, input) {
     var text = input.value.trim();
     if (!text) return;
-    cat.items.push({ text: text, done: false });
-    cat.open = true;
-    saveState();
-    render();
-    restoreOpen();
-  }
+    input.value = "";
+    var meta = CATEGORY_META.find(function (c) { return c.id === catId; }) || { emoji: "", name: catId };
+    var existing = flatItems.find(function (it) { return it.categoria_id === catId; });
+    var emoji = existing ? existing.categoria_emoji : meta.emoji;
+    var name = existing ? existing.categoria_nombre : meta.name;
 
-  function restoreOpen() {
-    document.querySelectorAll(".category").forEach(function (li) {
-      var cat = state.find(function (c) { return c.id === li.dataset.catId; });
-      if (cat && cat.open) li.classList.add("open");
-    });
+    var openState = getOpenState();
+    openState[catId] = true;
+    saveOpenState(openState);
+
+    showStatus("Agregando…", false);
+    apiPost({ action: "add", categoria_id: catId, categoria_emoji: emoji, categoria_nombre: name, texto: text })
+      .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
+      .catch(function () { showStatus("No se pudo agregar. Revisa tu conexión.", true); refresh(false); });
   }
 
   document.getElementById("btn-reset").addEventListener("click", function () {
     if (!confirm("¿Desmarcar todos los pendientes completados? (No se borran los items agregados)")) return;
-    state.forEach(function (cat) {
-      cat.items.forEach(function (it) { it.done = false; });
-    });
-    saveState();
+    flatItems.forEach(function (it) { it.hecho = false; }); // optimista
     render();
-    restoreOpen();
+    showStatus("Reiniciando…", false);
+    apiPost({ action: "reset" })
+      .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
+      .catch(function () { showStatus("No se pudo reiniciar. Revisa tu conexión.", true); refresh(false); });
   });
 
-  // Normalize default data shape (text/done) on first load
-  state.forEach(function (cat) {
-    cat.items = cat.items.map(function (it) {
-      if (typeof it === "string") return { text: it, done: false };
-      return it;
-    });
-    if (typeof cat.open === "undefined") cat.open = false;
+  // ── Configuración de la URL del Apps Script ──
+  document.getElementById("btn-config").addEventListener("click", function () {
+    document.getElementById("config-url-input").value = getGasUrl();
+    overlay.style.display = "flex";
+  });
+  document.getElementById("config-cancel").addEventListener("click", function () {
+    if (getGasUrl()) overlay.style.display = "none";
+  });
+  document.getElementById("config-save").addEventListener("click", function () {
+    var url = document.getElementById("config-url-input").value.trim();
+    if (!url) return;
+    setGasUrl(url);
+    overlay.style.display = "none";
+    refresh(true);
   });
 
-  render();
+  refresh(true);
 })();
 </script>
 
