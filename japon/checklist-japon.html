@@ -182,6 +182,36 @@
 
   .empty-msg { font-size: 0.78rem; color: var(--color-muted); padding: 10px 0; text-align: center; }
 
+  /* ── Spinners / loading ── */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid rgba(192,57,43,0.18);
+    border-top-color: var(--color-crimson);
+    animation: spin 700ms linear infinite;
+    flex-shrink: 0;
+  }
+  .spinner--gold { border-color: rgba(201,168,76,0.25); border-top-color: var(--color-gold); }
+  .spinner--sm { width: 13px; height: 13px; border-width: 2px; }
+
+  #initial-loader {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-md); padding: 60px var(--space-lg);
+  }
+  #initial-loader .spinner { width: 34px; height: 34px; border-width: 3px; }
+  #initial-loader__text {
+    font-family: var(--font-serif); font-size: 0.85rem; color: var(--color-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .item.item--busy .item__text { opacity: 0.55; }
+  .item.item--busy .item__check { pointer-events: none; }
+  .item.item--busy .item__del { pointer-events: none; opacity: 0.35; }
+
+  .add-row.add-row--busy input { opacity: 0.6; pointer-events: none; }
+  .add-row.add-row--busy button { pointer-events: none; }
+  .add-row button .spinner { border-color: rgba(232,201,122,0.3); border-top-color: var(--color-gold-light); }
+
   /* ── Footer actions ── */
   .footer-actions {
     display: flex; gap: 10px; margin-top: var(--space-lg); padding: 0 var(--space-md);
@@ -230,7 +260,12 @@
   </div>
 </header>
 
-<main id="categories"></main>
+<main id="categories">
+  <div id="initial-loader">
+    <div class="spinner spinner--gold"></div>
+    <span id="initial-loader__text">Cargando checklist desde Google Sheets…</span>
+  </div>
+</main>
 
 <div class="footer-actions">
   <button class="btn-reset" id="btn-reset">Desmarcar todo</button>
@@ -284,6 +319,23 @@
   </div>
 </div>
 
+<div id="confirm-overlay" style="display:none; position:fixed; inset:0; background:rgba(26,26,46,0.6); z-index:110; align-items:center; justify-content:center; padding: var(--space-lg);">
+  <div style="background:#fff; border-radius: var(--radius-lg); padding: var(--space-lg); max-width: 360px; width:100%; box-shadow: var(--shadow-md); text-align:center;">
+    <div style="width:40px; height:40px; margin:0 auto var(--space-sm); border-radius:50%; background:rgba(192,57,43,0.1); display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-crimson)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px;">
+        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/>
+      </svg>
+    </div>
+    <p id="confirm-message" style="font-family: var(--font-serif); font-size:0.88rem; color: var(--color-ink); line-height:1.5; margin-bottom: var(--space-md);">
+      ¿Eliminar este pendiente?
+    </p>
+    <div style="display:flex; gap:8px;">
+      <button id="confirm-cancel" style="flex:1; background:transparent; border:1px solid var(--color-fog); color:var(--color-muted); border-radius:var(--radius-md); padding:11px; font-size:0.78rem; cursor:pointer;">Cancelar</button>
+      <button id="confirm-accept" style="flex:1; background:var(--color-crimson); color:#fff; border:none; border-radius:var(--radius-md); padding:11px; font-size:0.78rem; font-weight:600; cursor:pointer;">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   var STORAGE_KEY = "japon-checklist-v1";
@@ -317,12 +369,36 @@
   var tplCategory = document.getElementById("tpl-category");
   var tplItem = document.getElementById("tpl-item");
   var overlay = document.getElementById("config-overlay");
+  var confirmOverlay = document.getElementById("confirm-overlay");
+  var confirmMessageEl = document.getElementById("confirm-message");
+  var confirmResolver = null;
+
+  function showConfirm(message) {
+    confirmMessageEl.textContent = message;
+    confirmOverlay.style.display = "flex";
+    return new Promise(function (resolve) {
+      confirmResolver = resolve;
+    });
+  }
+  document.getElementById("confirm-accept").addEventListener("click", function () {
+    confirmOverlay.style.display = "none";
+    if (confirmResolver) confirmResolver(true);
+    confirmResolver = null;
+  });
+  document.getElementById("confirm-cancel").addEventListener("click", function () {
+    confirmOverlay.style.display = "none";
+    if (confirmResolver) confirmResolver(false);
+    confirmResolver = null;
+  });
+
   var syncStatusEl = document.getElementById("sync-status");
   var footerNoteEl = document.getElementById("footer-note");
 
   var flatItems = [];   // lo último que sabemos del Sheet (o de caché)
   var isOnline = false;
   var isSyncing = false;
+  var pendingItemIds = {};   // ids de items con un toggle/delete en curso
+  var pendingAddCats = {};   // categoria_id con un "agregar" en curso
 
   function showStatus(msg, isError) {
     syncStatusEl.style.display = "block";
@@ -382,14 +458,17 @@
       });
   }
 
+  var firstLoadDone = false;
+
   function refresh(showLoading) {
     if (!getGasUrl()) {
       overlay.style.display = "flex";
       flatItems = readCache();
+      firstLoadDone = true;
       render();
       return Promise.resolve();
     }
-    if (showLoading) showStatus("Sincronizando con Google Sheets…", false);
+    if (showLoading && firstLoadDone) showStatus("Sincronizando con Google Sheets…", false);
     isSyncing = true;
     return apiGet()
       .then(function (items) {
@@ -407,7 +486,7 @@
         showStatus("No se pudo conectar al Sheet. Revisa la URL o tu internet.", true);
         render();
       })
-      .finally(function () { isSyncing = false; });
+      .finally(function () { isSyncing = false; firstLoadDone = true; });
   }
 
   function render() {
@@ -454,14 +533,25 @@
         checkEl.setAttribute("aria-checked", item.hecho ? "true" : "false");
         itNode.querySelector(".item__text").textContent = item.texto;
 
+        if (pendingItemIds[item.id]) {
+          itLi.classList.add("item--busy");
+          var svgEl = checkEl.querySelector("svg");
+          if (svgEl) svgEl.style.display = "none";
+          var spin = document.createElement("span");
+          spin.className = "spinner spinner--sm";
+          checkEl.appendChild(spin);
+        }
+
         ul.appendChild(itNode);
       });
 
       var addRow = document.createElement("li");
-      addRow.className = "add-row";
-      addRow.innerHTML =
-        '<input type="text" placeholder="Agregar pendiente…" maxlength="140">' +
-        '<button aria-label="Agregar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>';
+      addRow.className = "add-row" + (pendingAddCats[cat.id] ? " add-row--busy" : "");
+      addRow.innerHTML = pendingAddCats[cat.id]
+        ? '<input type="text" placeholder="Agregar pendiente…" maxlength="140" disabled>' +
+          '<button aria-label="Agregando" disabled><span class="spinner spinner--sm"></span></button>'
+        : '<input type="text" placeholder="Agregar pendiente…" maxlength="140">' +
+          '<button aria-label="Agregar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>';
       ul.appendChild(addRow);
 
       list.appendChild(li);
@@ -494,11 +584,12 @@
       var id = itemLi.dataset.id;
       var item = flatItems.find(function (it) { return it.id === id; });
       if (item) item.hecho = !item.hecho; // optimista
+      pendingItemIds[id] = true;
       render();
-      showStatus("Guardando…", false);
       apiPost({ action: "toggle", id: id })
-        .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
-        .catch(function () { showStatus("No se pudo guardar el cambio. Revisa tu conexión.", true); refresh(false); });
+        .then(function (items) { flatItems = items; cacheItems(items); })
+        .catch(function () { showStatus("No se pudo guardar el cambio. Revisa tu conexión.", true); return refresh(false); })
+        .finally(function () { delete pendingItemIds[id]; render(); });
       return;
     }
 
@@ -506,13 +597,18 @@
     if (delEl) {
       var itemLi2 = delEl.closest(".item");
       var id2 = itemLi2.dataset.id;
-      if (!confirm("¿Eliminar este pendiente?")) return;
-      flatItems = flatItems.filter(function (it) { return it.id !== id2; }); // optimista
-      render();
-      showStatus("Eliminando…", false);
-      apiPost({ action: "delete", id: id2 })
-        .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
-        .catch(function () { showStatus("No se pudo eliminar. Revisa tu conexión.", true); refresh(false); });
+      showConfirm("¿Eliminar este pendiente?").then(function (ok) {
+        if (!ok) return;
+        pendingItemIds[id2] = true;
+        render();
+        apiPost({ action: "delete", id: id2 })
+          .then(function (items) { flatItems = items; cacheItems(items); delete pendingItemIds[id2]; render(); })
+          .catch(function () {
+            showStatus("No se pudo eliminar. Revisa tu conexión.", true);
+            delete pendingItemIds[id2];
+            refresh(false);
+          });
+      });
       return;
     }
 
@@ -544,20 +640,28 @@
     openState[catId] = true;
     saveOpenState(openState);
 
-    showStatus("Agregando…", false);
+    pendingAddCats[catId] = true;
+    render();
     apiPost({ action: "add", categoria_id: catId, categoria_emoji: emoji, categoria_nombre: name, texto: text })
-      .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
-      .catch(function () { showStatus("No se pudo agregar. Revisa tu conexión.", true); refresh(false); });
+      .then(function (items) { flatItems = items; cacheItems(items); })
+      .catch(function () { showStatus("No se pudo agregar. Revisa tu conexión.", true); return refresh(false); })
+      .finally(function () { delete pendingAddCats[catId]; render(); });
   }
 
   document.getElementById("btn-reset").addEventListener("click", function () {
-    if (!confirm("¿Desmarcar todos los pendientes completados? (No se borran los items agregados)")) return;
-    flatItems.forEach(function (it) { it.hecho = false; }); // optimista
-    render();
-    showStatus("Reiniciando…", false);
-    apiPost({ action: "reset" })
-      .then(function (items) { flatItems = items; cacheItems(items); hideStatus(); render(); })
-      .catch(function () { showStatus("No se pudo reiniciar. Revisa tu conexión.", true); refresh(false); });
+    showConfirm("¿Desmarcar todos los pendientes completados? (No se borran los items agregados)").then(function (ok) {
+      if (!ok) return;
+      var btn = document.getElementById("btn-reset");
+      flatItems.forEach(function (it) { it.hecho = false; }); // optimista
+      render();
+      btn.disabled = true;
+      var originalText = btn.textContent;
+      btn.innerHTML = '<span class="spinner spinner--sm" style="display:inline-block; vertical-align:-2px; margin-right:6px;"></span>Reiniciando…';
+      apiPost({ action: "reset" })
+        .then(function (items) { flatItems = items; cacheItems(items); render(); })
+        .catch(function () { showStatus("No se pudo reiniciar. Revisa tu conexión.", true); return refresh(false); })
+        .finally(function () { btn.disabled = false; btn.textContent = originalText; });
+    });
   });
 
   // ── Configuración de la URL del Apps Script ──
