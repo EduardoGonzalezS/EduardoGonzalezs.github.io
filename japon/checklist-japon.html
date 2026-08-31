@@ -272,9 +272,6 @@
 </div>
 <p class="footer-note" id="footer-note">Conectado a Google Sheets — tus cambios se guardan en la nube.</p>
 <p class="footer-note" id="sync-status" style="display:none;"></p>
-<div class="footer-actions" style="margin-top: var(--space-sm);">
-  <button class="btn-reset" id="btn-config" style="border-color: var(--color-indigo); color: var(--color-indigo);">⚙️ Configurar Google Sheet</button>
-</div>
 
 <template id="tpl-category">
   <li class="category">
@@ -303,21 +300,6 @@
     </span>
   </li>
 </template>
-
-<div id="config-overlay" style="display:none; position:fixed; inset:0; background:rgba(26,26,46,0.6); z-index:100; align-items:center; justify-content:center; padding: var(--space-lg);">
-  <div style="background:#fff; border-radius: var(--radius-lg); padding: var(--space-lg); max-width: 420px; width:100%; box-shadow: var(--shadow-md);">
-    <h2 style="font-family: var(--font-display); font-size:1.1rem; color: var(--color-ink); margin-bottom: var(--space-sm);">Conectar Google Sheet</h2>
-    <p style="font-size:0.78rem; color: var(--color-muted); line-height:1.5; margin-bottom: var(--space-md);">
-      Pega aquí la URL de tu Apps Script Web App (termina en <code>/exec</code>). Si aún no la tienes, dile a Claude "genérame la guía paso a paso" y te explica cómo crear el Sheet y publicar el script.
-    </p>
-    <input type="text" id="config-url-input" placeholder="https://script.google.com/macros/s/.../exec"
-      style="width:100%; border:1px solid var(--color-fog); border-radius: var(--radius-sm); padding:10px; font-size:0.8rem; margin-bottom: var(--space-md);">
-    <div style="display:flex; gap:8px;">
-      <button id="config-save" style="flex:1; background:var(--color-ink); color:var(--color-gold-light); border:none; border-radius:var(--radius-md); padding:11px; font-size:0.78rem; font-weight:600; cursor:pointer;">Guardar y sincronizar</button>
-      <button id="config-cancel" style="flex-shrink:0; background:transparent; border:1px solid var(--color-fog); color:var(--color-muted); border-radius:var(--radius-md); padding:11px 16px; font-size:0.78rem; cursor:pointer;">Cancelar</button>
-    </div>
-  </div>
-</div>
 
 <div id="confirm-overlay" style="display:none; position:fixed; inset:0; background:rgba(26,26,46,0.6); z-index:110; align-items:center; justify-content:center; padding: var(--space-lg);">
   <div style="background:#fff; border-radius: var(--radius-lg); padding: var(--space-lg); max-width: 360px; width:100%; box-shadow: var(--shadow-md); text-align:center;">
@@ -368,7 +350,6 @@
   var root = document.getElementById("categories");
   var tplCategory = document.getElementById("tpl-category");
   var tplItem = document.getElementById("tpl-item");
-  var overlay = document.getElementById("config-overlay");
   var confirmOverlay = document.getElementById("confirm-overlay");
   var confirmMessageEl = document.getElementById("confirm-message");
   var confirmResolver = null;
@@ -462,7 +443,6 @@
 
   function refresh(showLoading) {
     if (!getGasUrl()) {
-      overlay.style.display = "flex";
       flatItems = readCache();
       firstLoadDone = true;
       render();
@@ -662,22 +642,6 @@
         .catch(function () { showStatus("No se pudo reiniciar. Revisa tu conexión.", true); return refresh(false); })
         .finally(function () { btn.disabled = false; btn.textContent = originalText; });
     });
-  });
-
-  // ── Configuración de la URL del Apps Script ──
-  document.getElementById("btn-config").addEventListener("click", function () {
-    document.getElementById("config-url-input").value = getGasUrl();
-    overlay.style.display = "flex";
-  });
-  document.getElementById("config-cancel").addEventListener("click", function () {
-    if (getGasUrl()) overlay.style.display = "none";
-  });
-  document.getElementById("config-save").addEventListener("click", function () {
-    var url = document.getElementById("config-url-input").value.trim();
-    if (!url) return;
-    setGasUrl(url);
-    overlay.style.display = "none";
-    refresh(true);
   });
 
   refresh(true);
