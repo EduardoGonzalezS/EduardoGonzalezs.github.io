@@ -291,7 +291,8 @@
   var CACHE_KEY = "japon-checklist-cache-v1";
   var OPEN_STATE_KEY = "japon-checklist-open-v1";
 
-  function getGasUrl() { return localStorage.getItem(CONFIG_KEY) || ""; }
+  var DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzXcJ6xlM18mYoi6oWr6MYUlRtUISsA85XDvJ_PDEOI26FLmpSrVoZQyzdnjTSeam86tw/exec";
+  function getGasUrl() { return localStorage.getItem(CONFIG_KEY) || DEFAULT_GAS_URL; }
   function setGasUrl(url) { localStorage.setItem(CONFIG_KEY, url); }
 
   function getOpenState() {
