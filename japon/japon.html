@@ -70,6 +70,82 @@
       margin-inline: auto;
       min-height: 100dvh;
       overflow-x: hidden;
+      padding-bottom: 72px;
+    }
+
+    /* ── Bottom Navigation ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: 64px;
+      background: var(--color-ink);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: stretch;
+      z-index: var(--z-sticky);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.35);
+    }
+    .bottom-nav__item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: rgba(255,255,255,0.38);
+      text-decoration: none;
+      font-size: 0.6rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 180ms;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .bottom-nav__item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: var(--color-crimson);
+      border-radius: 0 0 2px 2px;
+      opacity: 0;
+      transition: opacity 180ms;
+    }
+    .bottom-nav__item.active {
+      color: #fff;
+    }
+    .bottom-nav__item.active::before {
+      opacity: 1;
+    }
+    .bottom-nav__item:hover:not(.active) {
+      color: rgba(255,255,255,0.65);
+    }
+    .bottom-nav__icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bottom-nav__icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .bottom-nav__item.active .bottom-nav__icon svg {
+      stroke-width: 2.2;
     }
 
     /* ── Header ── */
@@ -91,18 +167,7 @@
       line-height: 1;
       transition: content 300ms;
     }
-    .iti-header__back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: rgba(255,255,255,0.55);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--space-md);
-      transition: color 180ms;
-    }
-    .iti-header__back:hover { color: var(--color-gold-light); }
+
     .iti-header__jp {
       display: block;
       font-family: var(--font-serif);
@@ -134,6 +199,47 @@
       background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%);
       margin-top: var(--space-md);
       opacity: 0.5;
+    }
+
+    /* ── Breadcrumb Navigation ── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: var(--space-md);
+      -webkit-overflow-scrolling: touch;
+      padding-right: 4px;
+    }
+    .breadcrumb::-webkit-scrollbar { display: none; }
+    .breadcrumb__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: color 180ms;
+    }
+    .breadcrumb__link {
+      color: rgba(255,255,255,0.45);
+      transition: color 180ms;
+      padding: 4px 0;
+    }
+    .breadcrumb__link:hover {
+      color: var(--color-gold-light);
+    }
+    .breadcrumb__item.active .breadcrumb__link {
+      color: var(--color-gold);
+      font-weight: 600;
+    }
+    .breadcrumb__separator {
+      color: rgba(255,255,255,0.25);
+      font-size: 0.6rem;
+      flex-shrink: 0;
+      margin: 0 2px;
     }
 
     /* ── Sticky Nav ── */
@@ -576,22 +682,6 @@
 
 <header class="iti-header" data-kanji="東">
   <img class="head__gif" src="resource/japon.gif" alt="">
-  <a class="iti-header__back" href="vuelos-japon.html">
-    Vuelos 
-     <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </a>
-  <a class="iti-header__back" href="hospedaje-japon.html">
-    Hospedaje 
-     <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </a>
-   <a class="iti-header__back" href="calendario-noviembre.html">
-    Calendario 
-     <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </a>
-   <a class="iti-header__back" href="checklist-japon.html">
-    Checklist 
-     <svg width="14" height="14" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </a>
   <span class="iti-header__jp" id="header-jp">東京</span>
   <h1 class="iti-header__title" id="header-title">TOKIO</h1>
   <p class="iti-header__sub" id="header-sub">Itinerario · 5 Días · Nov 2026</p>
@@ -1814,5 +1904,33 @@
   });
 })();
 </script>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" aria-label="Navegación principal">
+  <a class="bottom-nav__item" href="vuelos-japon.html" aria-label="Vuelos">
+    <span class="bottom-nav__icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.5H2l3.5-5.5H18l4 5.5z"/><path d="M2 16.5l3-9 4 4 5-7 5 12"/><path d="M12 16.5v3"/><path d="M8 19.5h8"/></svg>
+    </span>
+    Vuelos
+  </a>
+  <a class="bottom-nav__item" href="hospedaje-japon.html" aria-label="Hospedaje">
+    <span class="bottom-nav__icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </span>
+    Hospedaje
+  </a>
+  <a class="bottom-nav__item active" href="japon.html" aria-label="Itinerario" aria-current="page">
+    <span class="bottom-nav__icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </span>
+    Itinerario
+  </a>
+  <a class="bottom-nav__item" href="checklist-japon.html" aria-label="Checklist">
+    <span class="bottom-nav__icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    </span>
+    Checklist
+  </a>
+</nav>
 
 </body></html>
