@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Japón 2026 — Tickets</title>
-  <meta name="description" content="Tickets y entradas compradas — Japón Noviembre 2026">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎟️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,44 +12,40 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    ul, ol { list-style: none; }
     a { text-decoration: none; color: inherit; }
-    button { background: none; border: none; cursor: pointer; font: inherit; }
+    button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
     img { display: block; max-width: 100%; }
 
     :root {
-      --color-ink:           #1a1a2e;
-      --color-ink-light:     #2d2d4a;
-      --color-paper:         #faf8f5;
-      --color-crimson:       #c0392b;
-      --color-crimson-light: #e74c3c;
-      --color-gold:          #c9a84c;
-      --color-gold-light:    #e8c97a;
-      --color-indigo:        #2c3e6b;
-      --color-indigo-light:  #3d5499;
-      --color-fog:           #e0dbd4;
-      --color-muted:         #8a8070;
-      --font-display: 'Cinzel', serif;
-      --font-serif:   'Noto Serif JP', serif;
-      --font-body:    'Inter', system-ui, sans-serif;
-      --space-xs:   4px;
-      --space-sm:   8px;
-      --space-md:   16px;
-      --space-lg:   24px;
-      --space-xl:   40px;
-      --radius-sm:   4px;
-      --radius-md:   10px;
-      --radius-lg:   20px;
-      --radius-pill: 999px;
-      --shadow-sm:   0 2px 12px rgba(26,26,46,0.08);
-      --shadow-md:   0 4px 24px rgba(26,26,46,0.12);
-      --shadow-xl:   0 16px 64px rgba(26,26,46,0.22);
+      --ink:        #1a1a2e;
+      --ink-light:  #2d2d4a;
+      --paper:      #faf8f5;
+      --fog:        #e0dbd4;
+      --muted:      #8a8070;
+      --gold:       #c9a84c;
+      --gold-lt:    #e8c97a;
+      --crimson:    #c0392b;
+      --crimson-lt: #e74c3c;
+      --indigo:     #2c3e6b;
+      --green:      #1e6b34;
+      --green-bg:   #d4edda;
+      --amber:      #856404;
+      --amber-bg:   #fff3cd;
+      --red-bg:     #f8d7da;
+      --red-txt:    #842029;
+      --font-d: 'Cinzel', serif;
+      --font-j: 'Noto Serif JP', serif;
+      --font-b: 'Inter', system-ui, sans-serif;
+      --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px;
+      --sh-sm: 0 2px 12px rgba(26,26,46,.08);
+      --sh-md: 0 4px 24px rgba(26,26,46,.14);
+      --sh-xl: 0 16px 64px rgba(26,26,46,.22);
     }
 
     body {
-      font-family: var(--font-body);
-      background: var(--color-paper);
-      color: var(--color-ink);
+      font-family: var(--font-b);
+      background: var(--paper);
+      color: var(--ink);
       max-width: 480px;
       margin-inline: auto;
       min-height: 100dvh;
@@ -58,1857 +53,1154 @@
       padding-bottom: 80px;
     }
 
-    /* ── Header ── */
-    .iti-header {
-      background: var(--color-ink);
-      padding: var(--space-lg) var(--space-md) var(--space-md);
+    /* ═══════════════════════════
+       HEADER
+    ═══════════════════════════ */
+    .header {
+      background: var(--ink);
+      padding: 28px 16px 16px;
       position: relative;
       overflow: hidden;
     }
-    .iti-header::before {
+    .header::before {
       content: '券';
-      position: absolute;
-      right: -0.05em;
-      top: -0.1em;
-      font-family: var(--font-serif);
-      font-size: 9rem;
-      color: rgba(255,255,255,0.04);
-      pointer-events: none;
-      line-height: 1;
+      position: absolute; right: -4px; top: -8px;
+      font-family: var(--font-j); font-size: 9rem;
+      color: rgba(255,255,255,.04); pointer-events: none; line-height: 1;
     }
-    .iti-header__jp {
-      display: block;
-      font-family: var(--font-serif);
-      font-weight: 300;
-      font-size: 0.875rem;
-      color: var(--color-gold);
-      letter-spacing: 0.3em;
-      margin-bottom: 4px;
+    .header__gif {
+      position: absolute; top: 16px; right: 16px;
+      width: 54px; height: 54px; object-fit: contain;
+      border-radius: var(--r-sm); z-index: 2;
     }
-    .iti-header__title {
-      font-family: var(--font-display);
-      font-size: 2.25rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.15em;
-      line-height: 1;
-      margin-bottom: 6px;
+    .header__jp {
+      font-family: var(--font-j); font-weight: 300;
+      font-size: .875rem; color: var(--gold);
+      letter-spacing: .3em; display: block; margin-bottom: 4px;
     }
-    .iti-header__sub {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    .header__title {
+      font-family: var(--font-d); font-size: 2.2rem; font-weight: 700;
+      color: #fff; letter-spacing: .15em; line-height: 1; margin-bottom: 5px;
     }
-    .iti-header__divider {
-      height: 1px;
-      background: linear-gradient(90deg, var(--color-gold) 0%, transparent 80%);
-      margin-top: var(--space-md);
-      opacity: 0.5;
+    .header__sub {
+      font-size: .72rem; color: rgba(255,255,255,.42);
+      letter-spacing: .1em; text-transform: uppercase;
     }
-    .head__gif {
-      position: absolute;
-      top: var(--space-md);
-      right: var(--space-md);
-      width: 56px;
-      height: 56px;
-      object-fit: contain;
-      z-index: 2;
-      border-radius: var(--radius-sm);
+    .header__divider {
+      height: 1px; margin-top: 16px; opacity: .5;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 80%);
     }
 
-    /* ── Summary bar ── */
-    .summary-bar {
+    /* ═══════════════════════════
+       SUMMARY BAR
+    ═══════════════════════════ */
+    .summary {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      background: var(--ink-light);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .summary__item {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 11px 8px; gap: 2px;
+    }
+    .summary__item + .summary__item { border-left: 1px solid rgba(255,255,255,.06); }
+    .summary__val {
+      font-family: var(--font-d); font-size: 1.1rem;
+      font-weight: 700; color: var(--gold-lt);
+    }
+    .summary__lbl {
+      font-size: .55rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: rgba(255,255,255,.38);
+    }
+
+    /* ═══════════════════════════
+       FILTER TABS
+    ═══════════════════════════ */
+    .tabs {
+      display: flex; gap: 8px; padding: 12px 16px;
+      overflow-x: auto; scrollbar-width: none;
+      background: var(--paper);
+      border-bottom: 1px solid var(--fog);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex-shrink: 0; padding: 5px 14px; border-radius: var(--r-pill);
+      font-size: .7rem; font-weight: 600; letter-spacing: .04em;
+      border: 1.5px solid var(--fog); color: var(--muted);
+      background: transparent; cursor: pointer; transition: all 150ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .tab:hover:not(.active) { border-color: var(--muted); color: var(--ink); }
+
+    /* ═══════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════ */
+    main { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+    /* Ciudad separador */
+    .city-sep {
+      display: flex; align-items: center; gap: 8px; margin-top: 4px;
+    }
+    .city-sep__jp { font-family: var(--font-j); font-size: .75rem; color: var(--gold); }
+    .city-sep__name { font-family: var(--font-d); font-size: .58rem; font-weight: 700; letter-spacing: .14em; color: var(--muted); }
+    .city-sep__line { flex: 1; height: 1px; background: var(--fog); }
+
+    /* ═══════════════════════════
+       TICKET CARD
+    ═══════════════════════════ */
+    .tcard {
+      background: #fff; border-radius: var(--r-lg);
+      border: 1px solid var(--fog); box-shadow: var(--sh-sm);
+      overflow: hidden; transition: box-shadow 180ms;
+    }
+    .tcard:hover { box-shadow: var(--sh-md); }
+
+    /* Header de la tarjeta */
+    .tcard__top {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .tcard__icon {
+      width: 44px; height: 44px; border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.45rem; flex-shrink: 0;
+    }
+    .tcard__info { flex: 1; min-width: 0; }
+    .tcard__name {
+      font-family: var(--font-d); font-size: .85rem; font-weight: 700;
+      color: var(--ink); letter-spacing: .04em; line-height: 1.25;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+    .tcard__meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tcard__date { font-size: .66rem; color: var(--muted); font-weight: 500; }
+    .badge {
+      font-size: .56rem; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; padding: 2px 7px; border-radius: var(--r-pill);
+    }
+    .badge--ok  { background: var(--green-bg); color: var(--green); }
+    .badge--pend{ background: var(--amber-bg); color: var(--amber); }
+    .badge--out { background: var(--red-bg);   color: var(--red-txt); }
+
+    /* Menú dots */
+    .tcard__menu-btn {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: background 140ms, color 140ms;
+    }
+    .tcard__menu-btn:hover { background: var(--fog); color: var(--ink); }
+    .tcard__menu-btn svg { width: 17px; height: 17px; fill: currentColor; }
+
+    /* Flecha toggle */
+    .tcard__arrow {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--paper); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: transform 260ms, background 160ms;
+    }
+    .tcard.open .tcard__arrow { transform: rotate(180deg); background: var(--fog); }
+    .tcard__arrow svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Línea punteada (talonario) */
+    .tear {
+      border: none; border-top: 1.5px dashed var(--fog);
+      margin: 0 16px; display: none; position: relative;
+    }
+    .tear::before, .tear::after {
+      content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--paper); border: 1.5px solid var(--fog);
+    }
+    .tear::before { left: -20px; } .tear::after { right: -20px; }
+    .tcard.open .tear { display: block; }
+
+    /* Cuerpo expandible */
+    .tcard__body { max-height: 0; overflow: hidden; transition: max-height 300ms ease; }
+    .tcard.open .tcard__body { max-height: 1000px; }
+
+    /* ═══════════════════════════
+       TICKET ITEMS (dentro de la tarjeta)
+    ═══════════════════════════ */
+    .items { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+    .item {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      background: var(--color-ink-light);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .summary-bar__item {
-      display: flex;
-      flex-direction: column;
+      grid-template-columns: auto 1fr auto auto;
       align-items: center;
-      padding: 12px 8px;
-      gap: 2px;
-    }
-    .summary-bar__item + .summary-bar__item {
-      border-left: 1px solid rgba(255,255,255,0.06);
-    }
-    .summary-bar__value {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--color-gold-light);
-    }
-    .summary-bar__label {
-      font-size: 0.55rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.38);
-    }
-
-    /* ── Filter tabs ── */
-    .filter-tabs {
-      display: flex;
-      gap: var(--space-sm);
-      padding: var(--space-md);
-      overflow-x: auto;
-      scrollbar-width: none;
-      background: var(--color-paper);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid var(--color-fog);
-    }
-    .filter-tabs::-webkit-scrollbar { display: none; }
-    .filter-tab {
-      flex-shrink: 0;
-      padding: 5px 14px;
-      border-radius: var(--radius-pill);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border: 1.5px solid var(--color-fog);
-      color: var(--color-muted);
-      background: transparent;
-      cursor: pointer;
-      transition: all 160ms;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .filter-tab.active {
-      background: var(--color-ink);
-      border-color: var(--color-ink);
-      color: #fff;
-    }
-    .filter-tab:hover:not(.active) {
-      border-color: var(--color-muted);
-      color: var(--color-ink);
-    }
-
-    /* ── Main ── */
-    main {
-      padding: var(--space-md);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-    }
-
-    /* ── City section header ── */
-    .city-label {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      margin-top: var(--space-sm);
-    }
-    .city-label__jp {
-      font-family: var(--font-serif);
-      font-size: 0.75rem;
-      color: var(--color-gold);
-    }
-    .city-label__name {
-      font-family: var(--font-display);
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--color-muted);
-    }
-    .city-label__line {
-      flex: 1;
-      height: 1px;
-      background: var(--color-fog);
-    }
-
-    /* ── Ticket Card ── */
-    .ticket-card {
-      background: #fff;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--color-fog);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-      transition: box-shadow 180ms;
-    }
-    .ticket-card:hover { box-shadow: var(--shadow-md); }
-
-    .ticket-card__header {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-md);
-      padding: var(--space-md);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .ticket-card__emoji {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      flex-shrink: 0;
-    }
-    .ticket-card__info { flex: 1; min-width: 0; }
-    .ticket-card__name {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--color-ink);
-      letter-spacing: 0.04em;
-      line-height: 1.2;
-      margin-bottom: 4px;
-    }
-    .ticket-card__meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .ticket-card__date {
-      font-size: 0.68rem;
-      color: var(--color-muted);
-      font-weight: 500;
-    }
-    .ticket-card__status {
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
-    }
-    .status--confirmado { background: #d4edda; color: #1e6b34; }
-    .status--pendiente  { background: #fff3cd; color: #856404; }
-    .status--cancelado  { background: #f8d7da; color: #842029; }
-
-    .ticket-card__toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--color-paper);
-      color: var(--color-muted);
-      flex-shrink: 0;
-      align-self: center;
-      transition: background 160ms, transform 260ms;
-    }
-    .ticket-card.open .ticket-card__toggle {
-      transform: rotate(180deg);
-      background: var(--color-fog);
-    }
-    .ticket-card__toggle svg {
-      width: 14px; height: 14px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    /* ── Tear line ── */
-    .tear-line {
-      position: relative;
-      height: 0;
-      border: none;
-      border-top: 1.5px dashed var(--color-fog);
-      margin: 0 var(--space-md);
-      display: none;
-    }
-    .tear-line::before,
-    .tear-line::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--color-paper);
-      border: 1.5px solid var(--color-fog);
-    }
-    .tear-line::before { left: -21px; }
-    .tear-line::after  { right: -21px; }
-    .ticket-card.open .tear-line { display: block; }
-
-    /* ── Items body ── */
-    .ticket-card__body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 320ms ease;
-    }
-    .ticket-card.open .ticket-card__body { max-height: 600px; }
-
-    .ticket-items {
-      padding: var(--space-md);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-    }
-
-    .ticket-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px var(--space-sm);
-      background: var(--color-paper);
-      border-radius: var(--radius-md);
-      gap: var(--space-sm);
-    }
-    .ticket-item__left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-    .ticket-item__icon { font-size: 1rem; flex-shrink: 0; }
-    .ticket-item__desc {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--color-ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .ticket-item__sub {
-      font-size: 0.62rem;
-      color: var(--color-muted);
-      white-space: nowrap;
-    }
-    .ticket-item__price {
-      font-family: var(--font-display);
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--color-indigo);
-      white-space: nowrap;
-    }
-
-    /* ── Actions button on card header ── */
-    .ticket-card__actions-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      color: var(--color-muted);
-      flex-shrink: 0;
-      align-self: center;
-      transition: background 160ms, color 160ms;
-      position: relative;
-      z-index: 2;
-    }
-    .ticket-card__actions-btn:hover { background: var(--color-fog); color: var(--color-ink); }
-    .ticket-card__actions-btn svg {
-      width: 16px; height: 16px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    /* ── Item action buttons ── */
-    .ticket-item__btns {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-    .ticket-item__btn {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--color-muted);
-      transition: background 140ms, color 140ms;
-    }
-    .ticket-item__btn:hover { background: var(--color-fog); }
-    .ticket-item__btn--del:hover { background: #fde8e8; color: var(--color-crimson); }
-    .ticket-item__btn svg {
-      width: 13px; height: 13px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    /* Add item row */
-    .add-item-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-      padding: 10px var(--space-sm);
-      border-radius: var(--radius-md);
-      border: 1.5px dashed var(--color-fog);
-      color: var(--color-muted);
-      font-size: 0.72rem;
-      font-weight: 500;
-      transition: border-color 160ms, color 160ms, background 160ms;
-      margin-top: 4px;
-    }
-    .add-item-btn:hover {
-      border-color: var(--color-gold);
-      color: var(--color-ink);
-      background: rgba(201,168,76,0.05);
-    }
-    .add-item-btn svg {
-      width: 14px; height: 14px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-      flex-shrink: 0;
-    }
-
-    /* ── Options Sheet (bottom sheet) ── */
-    .options-sheet {
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      display: none;
-    }
-    .options-sheet.is-open { display: block; }
-    .options-sheet__overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      opacity: 0;
-      transition: opacity 240ms;
-    }
-    .options-sheet.is-open .options-sheet__overlay { opacity: 1; }
-    .options-sheet__panel {
-      position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
-      width: 100%; max-width: 480px;
-      background: #fff;
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      padding-bottom: env(safe-area-inset-bottom, 16px);
-      transition: transform 280ms cubic-bezier(.32,.72,0,1);
-      overflow: hidden;
-    }
-    .options-sheet.is-open .options-sheet__panel { transform: translateX(-50%) translateY(0); }
-    .options-sheet__handle {
-      width: 36px; height: 4px;
-      background: var(--color-fog);
-      border-radius: 2px;
-      margin: 10px auto 0;
-    }
-    .options-sheet__title {
-      font-family: var(--font-display);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--color-muted);
-      text-align: center;
-      padding: var(--space-md) var(--space-md) var(--space-sm);
-      border-bottom: 1px solid var(--color-fog);
-    }
-    .options-sheet__name {
-      color: var(--color-ink);
-      display: block;
-      font-size: 0.85rem;
-      margin-top: 2px;
-    }
-    .options-list { padding: var(--space-sm) 0; }
-    .options-list__item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-      width: 100%;
-      padding: 14px var(--space-lg);
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--color-ink);
-      transition: background 140ms;
-      text-align: left;
-    }
-    .options-list__item:hover { background: var(--color-paper); }
-    .options-list__item--danger { color: var(--color-crimson); }
-    .options-list__item svg {
-      width: 18px; height: 18px;
-      stroke: currentColor; fill: none;
-      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
-    .options-list__sep {
-      height: 1px;
-      background: var(--color-fog);
-      margin: var(--space-xs) var(--space-lg);
-    }
-    .options-list__cancel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: calc(100% - 32px);
-      margin: var(--space-sm) var(--space-md) var(--space-md);
-      padding: 12px;
-      border-radius: var(--radius-md);
-      background: var(--color-paper);
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--color-muted);
-      transition: background 140ms;
-    }
-    .options-list__cancel:hover { background: var(--color-fog); color: var(--color-ink); }
-
-    /* ── Form Modal ── */
-    .form-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 400;
-      display: none;
-    }
-    .form-modal.is-open { display: block; }
-    .form-modal__overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      transition: opacity 200ms;
-    }
-    .form-modal.is-open .form-modal__overlay { opacity: 1; }
-    .form-modal__panel {
-      position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
-      width: 100%; max-width: 480px;
-      background: #fff;
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      transition: transform 300ms cubic-bezier(.32,.72,0,1);
-      max-height: 92dvh;
-      display: flex;
-      flex-direction: column;
-    }
-    .form-modal.is-open .form-modal__panel { transform: translateX(-50%) translateY(0); }
-    .form-modal__handle {
-      width: 36px; height: 4px;
-      background: var(--color-fog);
-      border-radius: 2px;
-      margin: 10px auto 0;
-      flex-shrink: 0;
-    }
-    .form-modal__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-md) var(--space-md) var(--space-sm);
-      border-bottom: 1px solid var(--color-fog);
-      flex-shrink: 0;
-    }
-    .form-modal__heading {
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--color-ink);
-    }
-    .form-modal__close {
-      width: 30px; height: 30px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%;
-      color: var(--color-muted);
-      transition: background 140ms;
-    }
-    .form-modal__close:hover { background: var(--color-fog); }
-    .form-modal__close svg {
-      width: 16px; height: 16px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-    }
-    .form-modal__body {
-      padding: var(--space-md);
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-    }
-    .form-field { display: flex; flex-direction: column; gap: 6px; }
-    .form-field label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--color-muted);
-    }
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      width: 100%;
+      gap: 10px;
       padding: 10px 12px;
-      border: 1.5px solid var(--color-fog);
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      color: var(--color-ink);
-      background: var(--color-paper);
-      outline: none;
-      transition: border-color 160ms;
+      background: var(--paper);
+      border-radius: var(--r-md);
+      border: 1px solid transparent;
+      transition: border-color 150ms;
     }
-    .form-field input:focus,
-    .form-field select:focus,
-    .form-field textarea:focus {
-      border-color: var(--color-gold);
-      background: #fff;
-    }
-    .form-field textarea { resize: vertical; min-height: 60px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
-    .form-modal__footer {
-      display: flex;
-      gap: var(--space-sm);
-      padding: var(--space-sm) var(--space-md) calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
-      border-top: 1px solid var(--color-fog);
-      flex-shrink: 0;
-    }
-    .btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      transition: opacity 160ms, transform 120ms;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn--primary {
-      background: var(--color-ink);
-      color: #fff;
-    }
-    .btn--primary:hover { opacity: 0.85; }
-    .btn--ghost {
-      background: var(--color-paper);
-      color: var(--color-muted);
-      border: 1.5px solid var(--color-fog);
-    }
-    .btn--ghost:hover { background: var(--color-fog); color: var(--color-ink); }
+    .item:hover { border-color: var(--fog); }
 
-    /* ── Confirm delete dialog ── */
-    .confirm-dialog {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: var(--space-md);
-    }
-    .confirm-dialog.is-open { display: flex; }
-    .confirm-dialog__overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-    }
-    .confirm-dialog__box {
-      position: relative;
-      background: #fff;
-      border-radius: var(--radius-lg);
-      padding: var(--space-lg);
-      max-width: 320px;
-      width: 100%;
-      box-shadow: var(--shadow-xl);
-      text-align: center;
-    }
-    .confirm-dialog__icon {
-      font-size: 2rem;
-      margin-bottom: var(--space-sm);
-    }
-    .confirm-dialog__title {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--color-ink);
-      margin-bottom: 6px;
-      letter-spacing: 0.04em;
-    }
-    .confirm-dialog__text {
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      margin-bottom: var(--space-lg);
-      line-height: 1.5;
-    }
-    .confirm-dialog__btns { display: flex; gap: var(--space-sm); }
-    .btn--danger {
-      flex: 1;
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: var(--color-crimson);
-      color: #fff;
-      transition: opacity 160ms;
-    }
-    .btn--danger:hover { opacity: 0.85; }
+    .item__icon { font-size: 1.05rem; line-height: 1; }
 
-    /* ── Card footer ── */
-    .ticket-card__footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-sm) var(--space-md) var(--space-md);
-      border-top: 1px solid var(--color-fog);
+    .item__info { min-width: 0; }
+    .item__name {
+      font-size: .8rem; font-weight: 600; color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .ticket-card__total-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-muted);
+    .item__date { font-size: .62rem; color: var(--muted); margin-top: 1px; }
+
+    /* Botón Drive */
+    .item__drive {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .65rem; font-weight: 700; letter-spacing: .02em;
+      color: #fff; background: #1a73e8;
+      padding: 5px 10px; border-radius: var(--r-pill);
+      flex-shrink: 0; transition: background 140ms, transform 120ms;
+      white-space: nowrap;
     }
-    .ticket-card__total-amount {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--color-crimson);
+    .item__drive:hover { background: #1558b0; transform: scale(1.03); }
+    .item__drive:active { transform: scale(.97); }
+    .item__drive svg { width: 11px; height: 11px; fill: currentColor; flex-shrink: 0; }
+    .item__no-drive {
+      font-size: .62rem; color: var(--fog);
+      white-space: nowrap; flex-shrink: 0;
     }
 
-    /* ── Item actions (edit / delete) ── */
-    .ticket-item__actions {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-    .ticket-item__btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 150ms, color 150ms;
-      color: var(--color-muted);
-    }
-    .ticket-item__btn svg {
-      width: 13px; height: 13px;
-      stroke: currentColor; fill: none;
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-    }
-    .ticket-item__btn--edit:hover  { background: rgba(44,62,107,0.1); color: var(--color-indigo); }
-    .ticket-item__btn--delete:hover { background: rgba(192,57,43,0.1); color: var(--color-crimson); }
-
-    /* ── Add item row inside card ── */
-    .ticket-items__add {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px var(--space-sm);
-      border-radius: var(--radius-md);
-      border: 1.5px dashed var(--color-fog);
-      color: var(--color-muted);
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color 150ms, color 150ms, background 150ms;
-      width: 100%;
-      background: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .ticket-items__add:hover { border-color: var(--color-indigo); color: var(--color-indigo); background: rgba(44,62,107,0.04); }
-    .ticket-items__add svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-
-    /* ── FAB nueva tarjeta ── */
-    .fab {
-      position: fixed;
-      bottom: 80px;
-      right: max(16px, calc(50% - 240px + 16px));
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: var(--color-crimson);
-      color: #fff;
+    /* Botón editar ítem */
+    .item__edit {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(192,57,43,0.45);
-      cursor: pointer; border: none; z-index: 150;
-      transition: background 160ms, transform 160ms, box-shadow 160ms;
+      color: var(--muted); transition: background 140ms, color 140ms;
+    }
+    .item__edit:hover { background: rgba(44,62,107,.1); color: var(--indigo); }
+    .item__edit svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Botón añadir ítem */
+    .items__add {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px; border-radius: var(--r-md);
+      border: 1.5px dashed var(--fog);
+      color: var(--muted); font-size: .72rem; font-weight: 600;
+      cursor: pointer; transition: all 140ms;
+      width: 100%; background: none;
       -webkit-tap-highlight-color: transparent;
     }
-    .fab:hover { background: var(--color-crimson-light); transform: scale(1.06); }
-    .fab:active { transform: scale(0.96); }
-    .fab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .items__add:hover { border-color: var(--indigo); color: var(--indigo); background: rgba(44,62,107,.04); }
+    .items__add svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    /* ── Modal overlay ── */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(15,15,30,0.6);
-      backdrop-filter: blur(3px);
-      z-index: 400;
-      opacity: 0; pointer-events: none;
-      transition: opacity 220ms;
+    /* ═══════════════════════════
+       FAB
+    ═══════════════════════════ */
+    .fab {
+      position: fixed; bottom: 80px;
+      right: max(16px, calc(50% - 240px + 16px));
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--crimson); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(192,57,43,.45);
+      cursor: pointer; border: none; z-index: 100;
+      transition: background 150ms, transform 150ms;
+      -webkit-tap-highlight-color: transparent;
     }
-    .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .fab:hover { background: var(--crimson-lt); transform: scale(1.06); }
+    .fab:active { transform: scale(.96); }
+    .fab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* ── Modal drawer ── */
-    .modal-drawer {
+    /* ═══════════════════════════
+       MODAL
+    ═══════════════════════════ */
+    .overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(10,10,24,.65); backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none; transition: opacity 200ms;
+    }
+    .overlay.on { opacity: 1; pointer-events: auto; }
+
+    .drawer {
       position: fixed; bottom: 0; left: 50%;
       transform: translateX(-50%) translateY(100%);
       width: 100%; max-width: 480px;
-      background: var(--color-paper);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      z-index: 401;
-      transition: transform 280ms cubic-bezier(0.32,0.72,0,1);
-      max-height: 92dvh;
+      background: var(--paper);
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+      z-index: 301; max-height: 92dvh;
       display: flex; flex-direction: column;
+      transition: transform 270ms cubic-bezier(.32,.72,0,1);
     }
-    .modal-overlay.is-open .modal-drawer { transform: translateX(-50%) translateY(0); }
+    .overlay.on .drawer { transform: translateX(-50%) translateY(0); }
 
-    .modal-drawer__handle {
-      width: 36px; height: 4px; background: var(--color-fog);
-      border-radius: 2px; margin: 12px auto 0; flex-shrink: 0;
-    }
-    .modal-drawer__head {
+    .drawer__pill { width: 36px; height: 4px; background: var(--fog); border-radius: 2px; margin: 12px auto 0; flex-shrink: 0; }
+
+    .drawer__head {
       display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-md) var(--space-md) var(--space-sm);
-      flex-shrink: 0; border-bottom: 1px solid var(--color-fog);
+      padding: 14px 16px 12px; border-bottom: 1px solid var(--fog); flex-shrink: 0;
     }
-    .modal-drawer__title {
-      font-family: var(--font-display); font-size: 0.9rem; font-weight: 700;
-      letter-spacing: 0.06em; color: var(--color-ink);
-    }
-    .modal-drawer__close {
+    .drawer__title { font-family: var(--font-d); font-size: .88rem; font-weight: 700; letter-spacing: .05em; }
+    .drawer__close {
       width: 32px; height: 32px; border-radius: 50%;
-      background: var(--color-fog); display: flex; align-items: center; justify-content: center;
-      color: var(--color-muted); transition: background 150ms;
+      background: var(--fog); display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: background 140ms;
     }
-    .modal-drawer__close:hover { background: var(--color-ink); color: #fff; }
-    .modal-drawer__close svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .drawer__close:hover { background: var(--ink); color: #fff; }
+    .drawer__close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
-    .modal-drawer__body {
-      overflow-y: auto; padding: var(--space-md); flex: 1;
-      display: flex; flex-direction: column; gap: var(--space-md);
+    .drawer__body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+
+    .drawer__foot {
+      display: flex; gap: 8px; padding: 14px 16px;
+      border-top: 1px solid var(--fog); flex-shrink: 0;
+      background: var(--paper);
     }
 
-    /* ── Form ── */
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.05em; color: var(--color-muted); text-transform: uppercase; }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; padding: 10px 12px;
-      border-radius: var(--radius-md); border: 1.5px solid var(--color-fog);
-      background: #fff; font-family: var(--font-body); font-size: 0.85rem;
-      color: var(--color-ink); outline: none; transition: border-color 150ms; appearance: none;
+    /* ═══════════════════════════
+       FORM ELEMENTS
+    ═══════════════════════════ */
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg label { font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .fi {
+      width: 100%; padding: 11px 12px;
+      border-radius: var(--r-md); border: 1.5px solid var(--fog);
+      background: #fff; font-family: var(--font-b); font-size: .85rem;
+      color: var(--ink); outline: none; transition: border-color 140ms, box-shadow 140ms;
+      appearance: none;
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--color-indigo); }
-    .form-textarea { resize: none; height: 64px; line-height: 1.5; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
-    .form-emoji-row { display: grid; grid-template-columns: 58px 1fr; gap: var(--space-sm); align-items: end; }
-    .form-emoji-preview {
-      height: 44px; border-radius: var(--radius-md); border: 1.5px solid var(--color-fog);
+    .fi:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(44,62,107,.09); }
+    .fi::placeholder { color: #ccc; }
+    .fhint { font-size: .63rem; color: var(--muted); line-height: 1.4; }
+
+    /* Row 2 columnas */
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Emoji preview */
+    .femoji-row { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: end; }
+    .femoji-preview {
+      height: 46px; border-radius: var(--r-md); border: 1.5px solid var(--fog);
       background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
     }
-    .modal-section-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
-    .modal-divider { height: 1px; background: var(--color-fog); }
 
-    /* ── Modal footer buttons ── */
-    .modal-drawer__actions {
-      display: flex; gap: var(--space-sm);
-      padding: var(--space-md); border-top: 1px solid var(--color-fog);
-      flex-shrink: 0; background: var(--color-paper);
+    /* City chips */
+    .chips { display: flex; gap: 8px; }
+    .chip {
+      flex: 1; padding: 9px 4px; border-radius: var(--r-md);
+      border: 1.5px solid var(--fog); font-size: .68rem; font-weight: 600;
+      text-align: center; cursor: pointer; transition: all 140ms; color: var(--muted);
+      -webkit-tap-highlight-color: transparent;
     }
+    .chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .chip:hover:not(.active) { border-color: var(--muted); color: var(--ink); }
+
+    /* Status chips */
+    .schips { display: flex; gap: 8px; }
+    .schip {
+      flex: 1; padding: 8px 4px; border-radius: var(--r-md);
+      border: 1.5px solid var(--fog); font-size: .62rem; font-weight: 700;
+      letter-spacing: .03em; text-transform: uppercase; text-align: center;
+      cursor: pointer; transition: all 140ms; color: var(--muted);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .schip[data-v="ok"].active   { background: var(--green-bg); border-color: #a3cfbb; color: var(--green); }
+    .schip[data-v="pend"].active { background: var(--amber-bg); border-color: #ffe08a; color: var(--amber); }
+    .schip[data-v="out"].active  { background: var(--red-bg);   border-color: #f1b0b7; color: var(--red-txt); }
+    .schip:hover:not(.active) { border-color: var(--muted); }
+
+    /* Botones */
     .btn {
-      flex: 1; padding: 12px; border-radius: var(--radius-md);
-      font-family: var(--font-display); font-size: 0.72rem; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
-      border: none; transition: background 150ms, transform 120ms;
+      flex: 1; padding: 12px; border-radius: var(--r-md);
+      font-family: var(--font-d); font-size: .7rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      cursor: pointer; border: none; transition: background 140ms, transform 110ms;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn:active { transform: scale(0.97); }
-    .btn--primary { background: var(--color-ink); color: #fff; }
-    .btn--primary:hover { background: var(--color-indigo); }
-    .btn--danger  { background: rgba(192,57,43,0.1); color: var(--color-crimson); }
-    .btn--danger:hover { background: var(--color-crimson); color: #fff; }
-    .btn--ghost   { background: var(--color-fog); color: var(--color-muted); flex: 0 0 auto; padding: 12px 20px; }
-    .btn--ghost:hover { background: var(--color-ink); color: #fff; }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: var(--indigo); }
+    .btn-ghost { background: var(--fog); color: var(--muted); flex: 0 0 auto; padding: 12px 20px; }
+    .btn-ghost:hover { background: var(--ink); color: #fff; }
+    .btn-danger { background: rgba(192,57,43,.1); color: var(--crimson); }
+    .btn-danger:hover { background: var(--crimson); color: #fff; }
 
-    /* ── Confirm delete strip ── */
-    .confirm-strip {
-      display: none; padding: var(--space-sm) var(--space-md);
-      background: #fdf0f0; border-top: 1px solid #f5c6c6;
-      gap: var(--space-sm); align-items: center; flex-shrink: 0;
+    /* Confirm banner */
+    .confirm-bar {
+      display: none; align-items: center; gap: 8px;
+      padding: 10px 16px; background: #fdf0f0; border-top: 1px solid #f5c6c6;
+      flex-shrink: 0;
     }
-    .confirm-strip.is-visible { display: flex; }
-    .confirm-strip__text { font-size: 0.75rem; color: var(--color-crimson); font-weight: 500; flex: 1; }
+    .confirm-bar.on { display: flex; }
+    .confirm-bar__msg { flex: 1; font-size: .75rem; color: var(--crimson); font-weight: 500; }
 
-    /* ── Bottom Navigation ── */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      height: 64px;
-      background: var(--color-ink);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: stretch;
-      z-index: 200;
-      box-shadow: 0 -8px 32px rgba(0,0,0,0.35);
+    /* ═══════════════════════════
+       BOTTOM NAV
+    ═══════════════════════════ */
+    .bnav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 480px; height: 64px;
+      background: var(--ink); border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: stretch; z-index: 200;
+      box-shadow: 0 -8px 32px rgba(0,0,0,.35);
     }
-    .bottom-nav__item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      color: rgba(255,255,255,0.38);
-      text-decoration: none;
-      font-size: 0.6rem;
-      font-family: var(--font-body);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      transition: color 180ms;
+    .bnav a {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; color: rgba(255,255,255,.35);
+      font-size: .6rem; font-family: var(--font-b); font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+      transition: color 170ms; position: relative;
       -webkit-tap-highlight-color: transparent;
-      position: relative;
     }
-    .bottom-nav__item::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 20%; right: 20%;
-      height: 2px;
-      background: var(--color-crimson);
-      border-radius: 0 0 2px 2px;
-      opacity: 0;
-      transition: opacity 180ms;
+    .bnav a::before {
+      content: ''; position: absolute; top: 0; left: 20%; right: 20%;
+      height: 2px; background: var(--crimson);
+      border-radius: 0 0 2px 2px; opacity: 0; transition: opacity 170ms;
     }
-    .bottom-nav__item.active { color: #fff; }
-    .bottom-nav__item.active::before { opacity: 1; }
-    .bottom-nav__item:hover:not(.active) { color: rgba(255,255,255,0.65); }
-    .bottom-nav__icon {
-      width: 22px; height: 22px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .bottom-nav__icon svg {
-      width: 20px; height: 20px;
-      stroke: currentColor; fill: none;
-      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-    }
-    .bottom-nav__item.active .bottom-nav__icon svg { stroke-width: 2.2; }
+    .bnav a.active { color: #fff; }
+    .bnav a.active::before { opacity: 1; }
+    .bnav a:hover:not(.active) { color: rgba(255,255,255,.65); }
+    .bnav__icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .bnav__icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bnav a.active .bnav__icon svg { stroke-width: 2.2; }
 
-    @media (min-width: 481px) {
-      body { box-shadow: var(--shadow-xl); }
-    }
+    @media (min-width: 481px) { body { box-shadow: var(--sh-xl); } }
   </style>
 </head>
 <body>
 
-<header class="iti-header">
-  <img class="head__gif" src="resource/japon.gif" alt="">
-  <span class="iti-header__jp">入場券</span>
-  <h1 class="iti-header__title">TICKETS</h1>
-  <p class="iti-header__sub">Entradas y atracciones · Nov 2026</p>
-  <div class="iti-header__divider"></div>
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <img class="header__gif" src="resource/japon.gif" alt="">
+  <span class="header__jp">入場券</span>
+  <h1 class="header__title">TICKETS</h1>
+  <p class="header__sub">Entradas y atracciones · Nov 2026</p>
+  <div class="header__divider"></div>
 </header>
 
-<!-- Summary bar -->
-<div class="summary-bar">
-  <div class="summary-bar__item">
-    <span class="summary-bar__value">8</span>
-    <span class="summary-bar__label">Tickets</span>
+<!-- ══ SUMMARY ══ -->
+<div class="summary">
+  <div class="summary__item">
+    <span class="summary__val" id="s-total">8</span>
+    <span class="summary__lbl">Total</span>
   </div>
-  <div class="summary-bar__item">
-    <span class="summary-bar__value">6</span>
-    <span class="summary-bar__label">Confirmados</span>
+  <div class="summary__item">
+    <span class="summary__val" id="s-conf">6</span>
+    <span class="summary__lbl">Confirmados</span>
   </div>
-  <div class="summary-bar__item">
-    <span class="summary-bar__value">¥34,200</span>
-    <span class="summary-bar__label">Total</span>
+  <div class="summary__item">
+    <span class="summary__val" id="s-pend">2</span>
+    <span class="summary__lbl">Pendientes</span>
   </div>
 </div>
 
-<!-- Filter tabs -->
-<div class="filter-tabs" role="tablist">
-  <button class="filter-tab active" data-filter="all">Todos</button>
-  <button class="filter-tab" data-filter="tokio">Tokio</button>
-  <button class="filter-tab" data-filter="kioto">Kioto</button>
-  <button class="filter-tab" data-filter="osaka">Osaka</button>
+<!-- ══ FILTER TABS ══ -->
+<div class="tabs">
+  <button class="tab active" data-f="all">Todos</button>
+  <button class="tab" data-f="tokio">Tokio</button>
+  <button class="tab" data-f="kioto">Kioto</button>
+  <button class="tab" data-f="osaka">Osaka</button>
 </div>
 
-<main id="tickets-main">
+<!-- ══ MAIN ══ -->
+<main id="main">
 
-  <!-- ── TOKIO ── -->
-  <div class="city-label" data-city="tokio">
-    <span class="city-label__jp">東京</span>
-    <span class="city-label__name">Tokio</span>
-    <div class="city-label__line"></div>
+  <!-- ─── TOKIO ─── -->
+  <div class="city-sep" data-city="tokio">
+    <span class="city-sep__jp">東京</span>
+    <span class="city-sep__name">Tokio</span>
+    <div class="city-sep__line"></div>
+  </div>
+
+  <!-- DisneySea -->
+  <div class="tcard" data-city="tokio" data-status="ok" data-emoji="🏰" data-date="2026-11-07">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#fef0fb;">🏰</div>
+      <div class="tcard__info">
+        <div class="tcard__name">Tokyo DisneySea</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">7 Nov · Tokio</span>
+          <span class="badge badge--ok">Confirmado</span>
+        </div>
+      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="Boleto entrada adulto x2" data-date="7 Nov · 09:00 AM" data-url="https://drive.google.com/file/ejemplo-disneysea">
+          <span class="item__icon">🎟️</span>
+          <div class="item__info">
+            <div class="item__name">Boleto entrada adulto x2</div>
+            <div class="item__date">7 Nov · 09:00 AM</div>
+          </div>
+          <a class="item__drive" href="https://drive.google.com/file/ejemplo-disneysea" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            Ver boleto
+          </a>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
+        </div>
+        <div class="item" data-name="Premier Access — Ratatouille x2" data-date="7 Nov" data-url="">
+          <span class="item__icon">⭐</span>
+          <div class="item__info">
+            <div class="item__name">Premier Access — Ratatouille x2</div>
+            <div class="item__date">7 Nov</div>
+          </div>
+          <span class="item__no-drive">Sin link</span>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
+        </div>
+        <button class="items__add" onclick="openAddItem(this)">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Añadir entrada
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- TeamLab Planets -->
-  <article class="ticket-card" data-city="tokio">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#e8f4fd;">🌊</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">TeamLab Planets</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">7 Nov · Tokio</span>
-          <span class="ticket-card__status status--confirmado">Confirmado</span>
+  <div class="tcard" data-city="tokio" data-status="ok" data-emoji="🌊" data-date="2026-11-05">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#e8f4fd;">🌊</div>
+      <div class="tcard__info">
+        <div class="tcard__name">TeamLab Planets</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">5 Nov · Tokio</span>
+          <span class="badge badge--ok">Confirmado</span>
         </div>
       </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🧑</span>
-            <div>
-              <div class="ticket-item__desc">Adulto — Entrada general</div>
-              <div class="ticket-item__sub">x2 personas · 10:00 AM</div>
-            </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="Entrada general x2 · 10:00 AM" data-date="5 Nov · 10:00 AM" data-url="https://drive.google.com/file/ejemplo-teamlab">
+          <span class="item__icon">🧑</span>
+          <div class="item__info">
+            <div class="item__name">Entrada general x2 · 10:00 AM</div>
+            <div class="item__date">5 Nov · 10:00 AM</div>
           </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
+          <a class="item__drive" href="https://drive.google.com/file/ejemplo-teamlab" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            Ver boleto
+          </a>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
         </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
+        <button class="items__add" onclick="openAddItem(this)">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
+          Añadir entrada
         </button>
       </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥3,600</span>
-      </div>
     </div>
-  </article>
-
-  <!-- Skytree -->
-  <article class="ticket-card" data-city="tokio">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#f0eefd;">🗼</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Tokyo Skytree</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">5 Nov · Tokio</span>
-          <span class="ticket-card__status status--confirmado">Confirmado</span>
-        </div>
-      </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🌅</span>
-            <div>
-              <div class="ticket-item__desc">Tembo Deck (350 m)</div>
-              <div class="ticket-item__sub">x2 personas</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            <span class="ticket-item__price">¥4,000</span>
-        </div>
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">☁️</span>
-            <div>
-              <div class="ticket-item__desc">Tembo Galleria (450 m)</div>
-              <div class="ticket-item__sub">x2 personas · upgrade</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
-        </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
-        </button>
-      </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥6,000</span>
-      </div>
-    </div>
-  </article>
+  </div>
 
   <!-- Shibuya Sky -->
-  <article class="ticket-card" data-city="tokio">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#fef3f0;">🌆</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Shibuya Sky</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">6 Nov · Tokio</span>
-          <span class="ticket-card__status status--pendiente">Pendiente</span>
+  <div class="tcard" data-city="tokio" data-status="pend" data-emoji="🌆" data-date="2026-11-06">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#fef3f0;">🌆</div>
+      <div class="tcard__info">
+        <div class="tcard__name">Shibuya Sky</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">6 Nov · Tokio</span>
+          <span class="badge badge--pend">Pendiente</span>
         </div>
       </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🎫</span>
-            <div>
-              <div class="ticket-item__desc">Entrada mirador — atardecer</div>
-              <div class="ticket-item__sub">x2 personas · 17:30</div>
-            </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="Mirador atardecer x2 · 17:30" data-date="6 Nov · 17:30" data-url="">
+          <span class="item__icon">🎫</span>
+          <div class="item__info">
+            <div class="item__name">Mirador atardecer x2 · 17:30</div>
+            <div class="item__date">6 Nov · 17:30</div>
           </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
+          <span class="item__no-drive">Sin link</span>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
         </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
+        <button class="items__add" onclick="openAddItem(this)">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
+          Añadir entrada
         </button>
       </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥4,000</span>
-      </div>
     </div>
-  </article>
-
-  <!-- ── KIOTO ── -->
-  <div class="city-label" data-city="kioto">
-    <span class="city-label__jp">京都</span>
-    <span class="city-label__name">Kioto</span>
-    <div class="city-label__line"></div>
   </div>
 
-  <!-- Arashiyama -->
-  <article class="ticket-card" data-city="kioto">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#f0faf0;">🎋</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Arashiyama Rickshaw</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">10 Nov · Kioto</span>
-          <span class="ticket-card__status status--confirmado">Confirmado</span>
-        </div>
-      </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🛺</span>
-            <div>
-              <div class="ticket-item__desc">Paseo en rickshaw 30 min</div>
-              <div class="ticket-item__sub">2 personas · ruta bambú</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
-        </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
-        </button>
-      </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥5,000</span>
-      </div>
-    </div>
-  </article>
-
-  <!-- Fushimi Inari noche -->
-  <article class="ticket-card" data-city="kioto">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#fdf0f0;">⛩️</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Fushimi Inari — Tour nocturno</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">11 Nov · Kioto</span>
-          <span class="ticket-card__status status--confirmado">Confirmado</span>
-        </div>
-      </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🌙</span>
-            <div>
-              <div class="ticket-item__desc">Guided night tour</div>
-              <div class="ticket-item__sub">x2 personas · 19:00</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            <span class="ticket-item__price">¥3,600</span>
-        </div>
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🍵</span>
-            <div>
-              <div class="ticket-item__desc">Ceremonia de té incluida</div>
-              <div class="ticket-item__sub">al final del tour</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
-        </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
-        </button>
-      </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥3,600</span>
-      </div>
-    </div>
-  </article>
-
-  <!-- ── OSAKA ── -->
-  <div class="city-label" data-city="osaka">
-    <span class="city-label__jp">大阪</span>
-    <span class="city-label__name">Osaka</span>
-    <div class="city-label__line"></div>
+  <!-- ─── KIOTO ─── -->
+  <div class="city-sep" data-city="kioto">
+    <span class="city-sep__jp">京都</span>
+    <span class="city-sep__name">Kioto</span>
+    <div class="city-sep__line"></div>
   </div>
 
-  <!-- Universal Studios -->
-  <article class="ticket-card" data-city="osaka">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#fff8e6;">🎢</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Universal Studios Japan</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">15 Nov · Osaka</span>
-          <span class="ticket-card__status status--confirmado">Confirmado</span>
+  <!-- Fushimi Inari -->
+  <div class="tcard" data-city="kioto" data-status="ok" data-emoji="⛩️" data-date="2026-11-10">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#fdf0f0;">⛩️</div>
+      <div class="tcard__info">
+        <div class="tcard__name">Fushimi Inari — Tour Nocturno</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">10 Nov · Kioto</span>
+          <span class="badge badge--ok">Confirmado</span>
         </div>
       </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🎟️</span>
-            <div>
-              <div class="ticket-item__desc">1 Day Studio Pass</div>
-              <div class="ticket-item__sub">x2 adultos</div>
-            </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="Guided night tour x2 · 19:00" data-date="10 Nov · 19:00" data-url="https://drive.google.com/file/ejemplo-fushimi">
+          <span class="item__icon">🌙</span>
+          <div class="item__info">
+            <div class="item__name">Guided night tour x2 · 19:00</div>
+            <div class="item__date">10 Nov · 19:00</div>
           </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            <span class="ticket-item__price">¥17,000</span>
+          <a class="item__drive" href="https://drive.google.com/file/ejemplo-fushimi" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            Ver boleto
+          </a>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
         </div>
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">⚡</span>
-            <div>
-              <div class="ticket-item__desc">Express Pass 7</div>
-              <div class="ticket-item__sub">x2 personas · 7 atracciones</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            <span class="ticket-item__price">¥24,000</span>
-        </div>
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🧙</span>
-            <div>
-              <div class="ticket-item__desc">The Wizarding World of Harry Potter</div>
-              <div class="ticket-item__sub">incluido en pass</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            <span class="ticket-item__price">—</span>
-        </div>
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🦕</span>
-            <div>
-              <div class="ticket-item__desc">Jurassic World: The Ride</div>
-              <div class="ticket-item__sub">incluido en pass</div>
-            </div>
-          </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
-        </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
+        <button class="items__add" onclick="openAddItem(this)">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
+          Añadir entrada
         </button>
       </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥41,000</span>
-      </div>
     </div>
-  </article>
+  </div>
 
-  <!-- Dotonbori food tour -->
-  <article class="ticket-card" data-city="osaka">
-    <div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">
-      <div class="ticket-card__emoji" style="background:#fef0f8;">🍜</div>
-      <div class="ticket-card__info">
-        <div class="ticket-card__name">Dotonbori Food Tour</div>
-        <div class="ticket-card__meta">
-          <span class="ticket-card__date">16 Nov · Osaka</span>
-          <span class="ticket-card__status status--pendiente">Pendiente</span>
+  <!-- ─── OSAKA ─── -->
+  <div class="city-sep" data-city="osaka">
+    <span class="city-sep__jp">大阪</span>
+    <span class="city-sep__name">Osaka</span>
+    <div class="city-sep__line"></div>
+  </div>
+
+  <!-- USJ -->
+  <div class="tcard" data-city="osaka" data-status="ok" data-emoji="🎢" data-date="2026-11-15">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#fff8e6;">🎢</div>
+      <div class="tcard__info">
+        <div class="tcard__name">Universal Studios Japan</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">15 Nov · Osaka</span>
+          <span class="badge badge--ok">Confirmado</span>
         </div>
       </div>
-      <div class="ticket-card__actions-btn" aria-label="Opciones" title="Opciones">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-      </div>
-      <div class="ticket-card__toggle" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
-    <div class="tear-line" aria-hidden="true"></div>
-    <div class="ticket-card__body" aria-hidden="true">
-      <div class="ticket-items">
-        <div class="ticket-item">
-          <div class="ticket-item__left">
-            <span class="ticket-item__icon">🥟</span>
-            <div>
-              <div class="ticket-item__desc">Street food walking tour — 3h</div>
-              <div class="ticket-item__sub">x2 personas · 6 paradas</div>
-            </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="1 Day Studio Pass x2" data-date="15 Nov" data-url="https://drive.google.com/file/ejemplo-usj-pass">
+          <span class="item__icon">🎟️</span>
+          <div class="item__info">
+            <div class="item__name">1 Day Studio Pass x2</div>
+            <div class="item__date">15 Nov</div>
           </div>
-          <div class="ticket-item__btns">
-              <button class="ticket-item__btn" aria-label="Editar" title="Editar">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="ticket-item__btn ticket-item__btn--del" aria-label="Eliminar" title="Eliminar">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-            </span>
-          <div class="ticket-item__actions">
-            <button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            </button>
-          </div>
+          <a class="item__drive" href="https://drive.google.com/file/ejemplo-usj-pass" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            Ver boleto
+          </a>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
         </div>
-        <button class="ticket-items__add" onclick="openAddItem(this)">
+        <div class="item" data-name="Express Pass 7 x2" data-date="15 Nov" data-url="https://drive.google.com/file/ejemplo-usj-express">
+          <span class="item__icon">⚡</span>
+          <div class="item__info">
+            <div class="item__name">Express Pass 7 x2</div>
+            <div class="item__date">15 Nov</div>
+          </div>
+          <a class="item__drive" href="https://drive.google.com/file/ejemplo-usj-express" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            Ver boleto
+          </a>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
+        </div>
+        <button class="items__add" onclick="openAddItem(this)">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Añadir ítem
+          Añadir entrada
         </button>
       </div>
-      <div class="ticket-card__footer">
-        <span class="ticket-card__total-label">Total pagado</span>
-        <span class="ticket-card__total-amount">¥8,000</span>
+    </div>
+  </div>
+
+  <!-- Dotonbori -->
+  <div class="tcard" data-city="osaka" data-status="pend" data-emoji="🍜" data-date="2026-11-16">
+    <div class="tcard__top">
+      <div class="tcard__icon" style="background:#fef0f8;">🍜</div>
+      <div class="tcard__info">
+        <div class="tcard__name">Dotonbori Food Tour</div>
+        <div class="tcard__meta">
+          <span class="tcard__date">16 Nov · Osaka</span>
+          <span class="badge badge--pend">Pendiente</span>
+        </div>
+      </div>
+      <button class="tcard__menu-btn" onclick="openEditCard(this)">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+      </button>
+      <div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="tear"></div>
+    <div class="tcard__body">
+      <div class="items">
+        <div class="item" data-name="Street food tour 3h x2" data-date="16 Nov" data-url="">
+          <span class="item__icon">🥟</span>
+          <div class="item__info">
+            <div class="item__name">Street food tour 3h x2</div>
+            <div class="item__date">16 Nov</div>
+          </div>
+          <span class="item__no-drive">Sin link</span>
+          <button class="item__edit" onclick="openEditItem(this)" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+          </button>
+        </div>
+        <button class="items__add" onclick="openAddItem(this)">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Añadir entrada
+        </button>
       </div>
     </div>
-  </article>
+  </div>
 
 </main>
 
 <!-- FAB -->
-<button class="fab" onclick="openAddCard()" title="Nueva tarjeta" aria-label="Añadir ticket">
+<button class="fab" onclick="openNewCard()" aria-label="Agregar atracción">
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
-<!-- MODAL OVERLAY -->
-<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-drawer" id="modal-drawer">
-    <div class="modal-drawer__handle" aria-hidden="true"></div>
-    <div class="modal-drawer__head">
-      <span class="modal-drawer__title" id="modal-title">Nuevo ticket</span>
-      <button class="modal-drawer__close" onclick="closeModal()" aria-label="Cerrar">
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="drawer" id="drawer">
+    <div class="drawer__pill"></div>
+    <div class="drawer__head">
+      <span class="drawer__title" id="dr-title">Nuevo ticket</span>
+      <button class="drawer__close" onclick="closeModal()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-
-    <div class="modal-drawer__body" id="modal-body">
-      <!-- contenido dinámico -->
+    <div class="drawer__body" id="dr-body"></div>
+    <div class="confirm-bar" id="confirm-bar">
+      <span class="confirm-bar__msg" id="confirm-msg">¿Eliminar este elemento?</span>
+      <button class="btn btn-ghost" style="padding:8px 14px;font-size:.65rem;" onclick="hideConfirm()">No</button>
+      <button class="btn btn-danger" style="flex:0 0 auto;padding:8px 14px;font-size:.65rem;" id="confirm-yes">Eliminar</button>
     </div>
-
-    <!-- Confirm delete strip -->
-    <div class="confirm-strip" id="confirm-strip">
-      <span class="confirm-strip__text" id="confirm-text">¿Eliminar este elemento?</span>
-      <button class="btn btn--ghost" style="padding:8px 14px;font-size:0.65rem;" onclick="hideConfirm()">No</button>
-      <button class="btn btn--danger" style="flex:0 0 auto;padding:8px 14px;font-size:0.65rem;" id="confirm-yes">Sí, eliminar</button>
-    </div>
-
-    <div class="modal-drawer__actions" id="modal-actions">
-      <!-- botones dinámicos -->
-    </div>
+    <div class="drawer__foot" id="dr-foot"></div>
   </div>
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav" aria-label="Navegación principal">
-  <a class="bottom-nav__item" href="vuelos-japon.html" aria-label="Vuelos">
-    <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.5H2l3.5-5.5H18l4 5.5z"/><path d="M2 16.5l3-9 4 4 5-7 5 12"/><path d="M12 16.5v3"/><path d="M8 19.5h8"/></svg></span>
+<nav class="bnav">
+  <a href="vuelos-japon.html">
+    <span class="bnav__icon"><svg viewBox="0 0 24 24"><path d="M22 16.5H2l3.5-5.5H18l4 5.5z"/><path d="M2 16.5l3-9 4 4 5-7 5 12"/><path d="M12 16.5v3"/><path d="M8 19.5h8"/></svg></span>
     Vuelos
   </a>
-  <a class="bottom-nav__item" href="hospedaje-japon.html" aria-label="Hospedaje">
-    <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+  <a href="hospedaje-japon.html">
+    <span class="bnav__icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     Hospedaje
   </a>
-  <a class="bottom-nav__item" href="japon.html" aria-label="Itinerario">
-    <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+  <a href="japon.html">
+    <span class="bnav__icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
     Itinerario
   </a>
-  <a class="bottom-nav__item" href="calendario-noviembre.html" aria-label="Calendario">
-    <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></svg></span>
+  <a href="calendario-noviembre.html">
+    <span class="bnav__icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></svg></span>
     Calendario
   </a>
-  <a class="bottom-nav__item active" href="tickets-japon.html" aria-label="Tickets" aria-current="page">
-    <span class="bottom-nav__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5v2M15 11v2M15 17v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span>
+  <a href="tickets-japon.html" class="active" aria-current="page">
+    <span class="bnav__icon"><svg viewBox="0 0 24 24"><path d="M15 5v2M15 11v2M15 17v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span>
     Tickets
   </a>
 </nav>
 
 <script>
-(function () {
+/* ════════════════════════════════════════════
+   ESTADO GLOBAL
+════════════════════════════════════════════ */
+var _target = null; // elemento en edición activo
 
-  /* ════════════════════════════════════
-     TOGGLE CARDS
-  ════════════════════════════════════ */
-  function bindCardToggle(header) {
-    header.addEventListener('click', function () {
-      var card = header.closest('.ticket-card');
-      var open = card.classList.toggle('open');
-      header.setAttribute('aria-expanded', open);
-      card.querySelector('.ticket-card__body').setAttribute('aria-hidden', !open);
-    });
-    header.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
-    });
-  }
-  document.querySelectorAll('.ticket-card__header').forEach(bindCardToggle);
+/* ════════════════════════════════════════════
+   TOGGLE TARJETAS
+════════════════════════════════════════════ */
+document.querySelectorAll('.tcard').forEach(function(card) {
+  card.querySelector('.tcard__top').addEventListener('click', function(e) {
+    if (e.target.closest('.tcard__menu-btn')) return;
+    card.classList.toggle('open');
+  });
+});
 
-  /* ════════════════════════════════════
-     FILTER TABS
-  ════════════════════════════════════ */
-  var tabs   = document.querySelectorAll('.filter-tab');
-  var labels = document.querySelectorAll('.city-label');
-
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      tabs.forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      var filter = tab.dataset.filter;
-      document.querySelectorAll('.ticket-card').forEach(function (card) {
-        card.style.display = (filter === 'all' || card.dataset.city === filter) ? '' : 'none';
-      });
-      labels.forEach(function (label) {
-        label.style.display = (filter === 'all' || label.dataset.city === filter) ? '' : 'none';
-      });
+/* ════════════════════════════════════════════
+   FILTRO POR CIUDAD
+════════════════════════════════════════════ */
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    var f = tab.dataset.f;
+    document.querySelectorAll('.tcard, .city-sep').forEach(function(el) {
+      el.style.display = (f === 'all' || el.dataset.city === f) ? '' : 'none';
     });
   });
+});
 
-  /* ════════════════════════════════════
-     MODAL HELPERS
-  ════════════════════════════════════ */
-  var overlay     = document.getElementById('modal-overlay');
-  var modalTitle  = document.getElementById('modal-title');
-  var modalBody   = document.getElementById('modal-body');
-  var modalActions= document.getElementById('modal-actions');
-  var confirmStrip= document.getElementById('confirm-strip');
-  var confirmText = document.getElementById('confirm-text');
-  var confirmYes  = document.getElementById('confirm-yes');
+/* ════════════════════════════════════════════
+   MODAL — HELPERS
+════════════════════════════════════════════ */
+var overlay    = document.getElementById('overlay');
+var drTitle    = document.getElementById('dr-title');
+var drBody     = document.getElementById('dr-body');
+var drFoot     = document.getElementById('dr-foot');
+var confirmBar = document.getElementById('confirm-bar');
+var confirmMsg = document.getElementById('confirm-msg');
+var confirmYes = document.getElementById('confirm-yes');
 
-  function openModal(title, bodyHTML, actionsHTML) {
-    modalTitle.textContent = title;
-    modalBody.innerHTML    = bodyHTML;
-    modalActions.innerHTML = actionsHTML;
-    confirmStrip.classList.remove('is-visible');
-    overlay.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-    // focus first input
-    var first = modalBody.querySelector('input, select, textarea');
-    if (first) setTimeout(function(){ first.focus(); }, 300);
-  }
+function openModal(title, body, foot) {
+  drTitle.textContent = title;
+  drBody.innerHTML    = body;
+  drFoot.innerHTML    = foot;
+  confirmBar.classList.remove('on');
+  overlay.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  var first = drBody.querySelector('input');
+  if (first) setTimeout(function() { first.focus(); }, 300);
+}
 
-  window.closeModal = function () {
-    overlay.classList.remove('is-open');
-    document.body.style.overflow = '';
-    confirmStrip.classList.remove('is-visible');
-  };
+function closeModal() {
+  overlay.classList.remove('on');
+  document.body.style.overflow = '';
+  _target = null;
+}
+window.closeModal = closeModal;
 
-  overlay.addEventListener('click', function (e) {
-    if (e.target === overlay) closeModal();
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
-  });
+overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
-  function hideConfirm() { confirmStrip.classList.remove('is-visible'); }
-  window.hideConfirm = hideConfirm;
+function hideConfirm() { confirmBar.classList.remove('on'); }
+window.hideConfirm = hideConfirm;
 
-  function recalcTotal(card) {
-    var prices = Array.from(card.querySelectorAll('.ticket-item__price'))
-      .map(function(el){ return parseInt(el.textContent.replace(/[¥,—]/g,'')) || 0; });
-    var total = prices.reduce(function(a,b){ return a+b; }, 0);
-    var totalEl = card.querySelector('.ticket-card__total-amount');
-    if (totalEl) totalEl.textContent = total ? '¥' + total.toLocaleString() : '—';
-  }
+/* ── Helpers de chips ── */
+window.pickChip = function(btn, group) {
+  btn.closest('.' + group).querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+};
+function chipVal(cls) {
+  var el = drBody.querySelector(cls + ' .active');
+  return el ? el.dataset.v : '';
+}
 
-  /* ════════════════════════════════════
-     NUEVA TARJETA (FAB)
-  ════════════════════════════════════ */
-  var CITY_OPTIONS = ['tokio','kioto','osaka'].map(function(c){
-    return '<option value="'+c+'">'+ c.charAt(0).toUpperCase()+c.slice(1) +'</option>';
+function cityChips(sel) {
+  return [['tokio','Tokio'],['kioto','Kioto'],['osaka','Osaka']].map(function(c) {
+    return '<button type="button" class="chip'+(c[0]===sel?' active':'')+'" data-v="'+c[0]+'" onclick="pickChip(this,\'chips\')">'+c[1]+'</button>';
   }).join('');
+}
+function statusChips(sel) {
+  return [['ok','Confirmado'],['pend','Pendiente'],['out','Cancelado']].map(function(s) {
+    return '<button type="button" class="schip'+(s[0]===sel?' active':'')+'" data-v="'+s[0]+'" onclick="pickChip(this,\'schips\')">'+s[1]+'</button>';
+  }).join('');
+}
 
-  var STATUS_OPTIONS = [
-    ['confirmado','Confirmado'],['pendiente','Pendiente'],['cancelado','Cancelado']
-  ].map(function(s){ return '<option value="'+s[0]+'">'+s[1]+'</option>'; }).join('');
+/* ── Icono de Google Drive ── */
+var DRIVE_ICON = '<svg viewBox="0 0 24 24"><path d="M12.01 2.011a3.2 3.2 0 0 1 2.675 1.43l7.315 12.296a2.962 2.962 0 0 1-.048 3.015A3.073 3.073 0 0 1 19.34 20H4.66a3.073 3.073 0 0 1-2.613-1.248 2.962 2.962 0 0 1-.048-3.015l7.313-12.3a3.2 3.2 0 0 1 2.678-1.426zM12 12a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm0-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
+var EDIT_BTN   = '<button class="item__edit" onclick="openEditItem(this)" title="Editar"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>';
 
-  window.openAddCard = function () {
-    openModal('Nueva tarjeta',
-      '<div class="form-emoji-row">' +
-        '<div><div class="form-label">Icono</div><div class="form-emoji-preview" id="ep">🎫</div></div>' +
-        '<div class="form-group"><label class="form-label">Emoji</label>' +
-          '<input class="form-input" id="fi-emoji" value="🎫" maxlength="4" oninput="document.getElementById(\'ep\').textContent=this.value||\'🎫\'">' +
+function driveBtn(url) {
+  if (url) return '<a class="item__drive" href="'+x(url)+'" target="_blank" rel="noopener">'+DRIVE_ICON+'Ver boleto</a>';
+  return '<span class="item__no-drive">Sin link</span>';
+}
+
+/* ── escapeHTML ── */
+function x(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ════════════════════════════════════════════
+   NUEVA TARJETA (FAB)
+════════════════════════════════════════════ */
+window.openNewCard = function() {
+  openModal('Nueva atracción',
+    '<div class="fg"><label>Nombre del lugar *</label>' +
+      '<input class="fi" id="c-name" placeholder="Ej: Tokyo DisneySea"></div>' +
+    '<div class="frow">' +
+      '<div class="fg"><label>Emoji</label>' +
+        '<input class="fi" id="c-emoji" value="🎫" maxlength="4" oninput="document.getElementById(\'c-ep\').textContent=this.value||\'🎫\'"></div>' +
+      '<div class="fg"><label>Preview</label><div class="femoji-preview" id="c-ep">🎫</div></div>' +
+    '</div>' +
+    '<div class="fg"><label>Fecha</label><input class="fi" id="c-date" type="date"></div>' +
+    '<div class="fg"><label>Ciudad *</label><div class="chips">'+cityChips('tokio')+'</div></div>' +
+    '<div class="fg"><label>Estado</label><div class="schips">'+statusChips('ok')+'</div></div>',
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>' +
+    '<button class="btn btn-primary" onclick="saveNewCard()">Guardar</button>'
+  );
+};
+
+window.saveNewCard = function() {
+  var name   = document.getElementById('c-name').value.trim();
+  var emoji  = document.getElementById('c-emoji').value.trim() || '🎫';
+  var date   = document.getElementById('c-date').value;
+  var city   = chipVal('.chips') || 'tokio';
+  var status = chipVal('.schips') || 'ok';
+  if (!name) { document.getElementById('c-name').focus(); return; }
+
+  var cityNames = { tokio:'Tokio', kioto:'Kioto', osaka:'Osaka' };
+  var dateStr = date
+    ? new Date(date+'T12:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'}) + ' · ' + cityNames[city]
+    : cityNames[city];
+  var badgeCls = { ok:'badge--ok', pend:'badge--pend', out:'badge--out' }[status];
+  var badgeTxt = { ok:'Confirmado', pend:'Pendiente', out:'Cancelado' }[status];
+  var bgColors = { tokio:'#f0f4ff', kioto:'#f5f0ff', osaka:'#fff8f0' };
+
+  var card = document.createElement('div');
+  card.className = 'tcard';
+  card.dataset.city = city; card.dataset.status = status;
+  card.dataset.emoji = emoji; card.dataset.date = date;
+
+  card.innerHTML =
+    '<div class="tcard__top">' +
+      '<div class="tcard__icon" style="background:'+bgColors[city]+';">'+emoji+'</div>' +
+      '<div class="tcard__info">' +
+        '<div class="tcard__name">'+x(name)+'</div>' +
+        '<div class="tcard__meta">' +
+          '<span class="tcard__date">'+dateStr+'</span>' +
+          '<span class="badge '+badgeCls+'">'+badgeTxt+'</span>' +
         '</div>' +
       '</div>' +
-      '<div class="form-group"><label class="form-label">Nombre del evento</label>' +
-        '<input class="form-input" id="fi-name" placeholder="Ej: DisneySea Tokyo"></div>' +
-      '<div class="form-row">' +
-        '<div class="form-group"><label class="form-label">Ciudad</label>' +
-          '<select class="form-select" id="fi-city">'+CITY_OPTIONS+'</select></div>' +
-        '<div class="form-group"><label class="form-label">Fecha</label>' +
-          '<input class="form-input" id="fi-date" type="date"></div>' +
-      '</div>' +
-      '<div class="form-group"><label class="form-label">Estado</label>' +
-        '<select class="form-select" id="fi-status">'+STATUS_OPTIONS+'</select></div>',
-      '<button class="btn btn--ghost" onclick="closeModal()">Cancelar</button>' +
-      '<button class="btn btn--primary" onclick="saveNewCard()">Guardar tarjeta</button>'
-    );
-  };
-
-  window.saveNewCard = function () {
-    var name   = document.getElementById('fi-name').value.trim();
-    var emoji  = document.getElementById('fi-emoji').value.trim() || '🎫';
-    var city   = document.getElementById('fi-city').value;
-    var date   = document.getElementById('fi-date').value;
-    var status = document.getElementById('fi-status').value;
-    if (!name) { document.getElementById('fi-name').focus(); return; }
-
-    var dateLabel = date ? new Date(date+'T12:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'}) + ' · ' : '';
-    var statusClass = 'status--'+status;
-    var statusLabel = status === 'confirmado' ? 'Confirmado' : status === 'pendiente' ? 'Pendiente' : 'Cancelado';
-    var cityLabel = city.charAt(0).toUpperCase() + city.slice(1);
-
-    var card = document.createElement('article');
-    card.className = 'ticket-card';
-    card.dataset.city = city;
-    card.innerHTML =
-      '<div class="ticket-card__header" role="button" tabindex="0" aria-expanded="false">' +
-        '<div class="ticket-card__emoji" style="background:#f5f5f5;">'+emoji+'</div>' +
-        '<div class="ticket-card__info">' +
-          '<div class="ticket-card__name">'+name+'</div>' +
-          '<div class="ticket-card__meta">' +
-            '<span class="ticket-card__date">'+dateLabel+cityLabel+'</span>' +
-            '<span class="ticket-card__status '+statusClass+'">'+statusLabel+'</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="ticket-card__toggle" aria-hidden="true">' +
-          '<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>' +
-        '</div>' +
-      '</div>' +
-      '<div class="tear-line" aria-hidden="true"></div>' +
-      '<div class="ticket-card__body" aria-hidden="true">' +
-        '<div class="ticket-items">' +
-          '<button class="ticket-items__add" onclick="openAddItem(this)">' +
-            '<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-            'Añadir ítem' +
-          '</button>' +
-        '</div>' +
-        '<div class="ticket-card__footer">' +
-          '<span class="ticket-card__total-label">Total pagado</span>' +
-          '<span class="ticket-card__total-amount">—</span>' +
-        '</div>' +
-      '</div>';
-
-    // Insertar antes del label de ciudad correcto
-    var main = document.getElementById('tickets-main');
-    var cityLabels = Array.from(main.querySelectorAll('.city-label'));
-    var targetLabel = cityLabels.find(function(l){ return l.dataset.city === city; });
-    if (targetLabel) {
-      // insertar antes del siguiente city-label o al final de main
-      var next = targetLabel.nextElementSibling;
-      while (next && next.classList.contains('ticket-card') && next.dataset.city === city) {
-        next = next.nextElementSibling;
-      }
-      main.insertBefore(card, next);
-    } else {
-      main.appendChild(card);
-    }
-
-    bindCardToggle(card.querySelector('.ticket-card__header'));
-    // mostrar según filtro activo
-    var activeFilter = document.querySelector('.filter-tab.active');
-    if (activeFilter && activeFilter.dataset.filter !== 'all' && activeFilter.dataset.filter !== city) {
-      card.style.display = 'none';
-    }
-    closeModal();
-  };
-
-  /* ════════════════════════════════════
-     EDITAR ÍTEM
-  ════════════════════════════════════ */
-  window.openEditItem = function (btn) {
-    var item  = btn.closest('.ticket-item');
-    var desc  = item.querySelector('.ticket-item__desc').textContent;
-    var sub   = item.querySelector('.ticket-item__sub').textContent;
-    var price = item.querySelector('.ticket-item__price').textContent.replace('¥','').replace(',','');
-    var icon  = item.querySelector('.ticket-item__icon').textContent;
-
-    openModal('Editar ítem',
-      '<div class="form-emoji-row">' +
-        '<div><div class="form-label">Icono</div><div class="form-emoji-preview" id="ep">'+icon+'</div></div>' +
-        '<div class="form-group"><label class="form-label">Emoji</label>' +
-          '<input class="form-input" id="ei-icon" value="'+icon+'" maxlength="4" oninput="document.getElementById(\'ep\').textContent=this.value||\'🎫\'">' +
-        '</div>' +
-      '</div>' +
-      '<div class="form-group"><label class="form-label">Descripción</label>' +
-        '<input class="form-input" id="ei-desc" value="'+desc+'"></div>' +
-      '<div class="form-group"><label class="form-label">Detalle (personas, horario…)</label>' +
-        '<input class="form-input" id="ei-sub" value="'+sub+'"></div>' +
-      '<div class="form-group"><label class="form-label">Precio (¥) — deja vacío si está incluido</label>' +
-        '<input class="form-input" id="ei-price" type="number" placeholder="0" value="'+(isNaN(parseInt(price))?'':parseInt(price))+'"></div>',
-      '<button class="btn btn--ghost" onclick="closeModal()">Cancelar</button>' +
-      '<button class="btn btn--primary" onclick="saveEditItem()">Guardar</button>'
-    );
-    window._editTarget = item;
-  };
-
-  window.saveEditItem = function () {
-    var item  = window._editTarget;
-    var desc  = document.getElementById('ei-desc').value.trim();
-    var sub   = document.getElementById('ei-sub').value.trim();
-    var price = document.getElementById('ei-price').value.trim();
-    var icon  = document.getElementById('ei-icon').value.trim() || '🎫';
-    if (!desc) { document.getElementById('ei-desc').focus(); return; }
-
-    item.querySelector('.ticket-item__desc').textContent = desc;
-    item.querySelector('.ticket-item__sub').textContent  = sub;
-    item.querySelector('.ticket-item__icon').textContent = icon;
-    item.querySelector('.ticket-item__price').textContent = price ? '¥'+parseInt(price).toLocaleString() : '—';
-    recalcTotal(item.closest('.ticket-card'));
-    closeModal();
-  };
-
-  /* ════════════════════════════════════
-     ELIMINAR ÍTEM
-  ════════════════════════════════════ */
-  window.openDeleteItem = function (btn) {
-    var item = btn.closest('.ticket-item');
-    var desc = item.querySelector('.ticket-item__desc').textContent;
-    confirmText.textContent = '¿Eliminar "' + desc + '"?';
-    confirmStrip.classList.add('is-visible');
-
-    // Abrir modal vacío para mostrar el confirm strip
-    openModal('Eliminar ítem', '<p style="font-size:.82rem;color:var(--color-muted);padding:var(--space-sm) 0;">Confirma abajo para eliminar este ítem de la lista.</p>', '');
-    modalActions.innerHTML = '';
-
-    confirmYes.onclick = function () {
-      var card = item.closest('.ticket-card');
-      item.remove();
-      recalcTotal(card);
-      closeModal();
-    };
-  };
-
-  /* ════════════════════════════════════
-     AÑADIR ÍTEM A TARJETA EXISTENTE
-  ════════════════════════════════════ */
-  window.openAddItem = function (btn) {
-    var card = btn.closest('.ticket-card');
-    openModal('Nuevo ítem',
-      '<div class="form-emoji-row">' +
-        '<div><div class="form-label">Icono</div><div class="form-emoji-preview" id="ep">🎫</div></div>' +
-        '<div class="form-group"><label class="form-label">Emoji</label>' +
-          '<input class="form-input" id="ai-icon" value="🎫" maxlength="4" oninput="document.getElementById(\'ep\').textContent=this.value||\'🎫\'">' +
-        '</div>' +
-      '</div>' +
-      '<div class="form-group"><label class="form-label">Descripción</label>' +
-        '<input class="form-input" id="ai-desc" placeholder="Ej: Entrada adulto"></div>' +
-      '<div class="form-group"><label class="form-label">Detalle (personas, horario…)</label>' +
-        '<input class="form-input" id="ai-sub" placeholder="Ej: x2 personas · 10:00 AM"></div>' +
-      '<div class="form-group"><label class="form-label">Precio (¥) — deja vacío si está incluido</label>' +
-        '<input class="form-input" id="ai-price" type="number" placeholder="0"></div>',
-      '<button class="btn btn--ghost" onclick="closeModal()">Cancelar</button>' +
-      '<button class="btn btn--primary" onclick="saveAddItem()">Añadir</button>'
-    );
-    window._addTarget = card;
-  };
-
-  window.saveAddItem = function () {
-    var card  = window._addTarget;
-    var desc  = document.getElementById('ai-desc').value.trim();
-    var sub   = document.getElementById('ai-sub').value.trim();
-    var price = document.getElementById('ai-price').value.trim();
-    var icon  = document.getElementById('ai-icon').value.trim() || '🎫';
-    if (!desc) { document.getElementById('ai-desc').focus(); return; }
-
-    var priceStr = price ? '¥'+parseInt(price).toLocaleString() : '—';
-
-    var itemEl = document.createElement('div');
-    itemEl.className = 'ticket-item';
-    itemEl.innerHTML =
-      '<div class="ticket-item__left">' +
-        '<span class="ticket-item__icon">'+icon+'</span>' +
-        '<div>' +
-          '<div class="ticket-item__desc">'+desc+'</div>' +
-          '<div class="ticket-item__sub">'+sub+'</div>' +
-        '</div>' +
-      '</div>' +
-      '<span class="ticket-item__price">'+priceStr+'</span>' +
-      '<div class="ticket-item__actions">' +
-        '<button class="ticket-item__btn ticket-item__btn--edit" title="Editar" onclick="openEditItem(this)">' +
-          '<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+      '<button class="tcard__menu-btn" onclick="openEditCard(this)">' +
+        '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>' +
+      '</button>' +
+      '<div class="tcard__arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>' +
+    '</div>' +
+    '<div class="tear"></div>' +
+    '<div class="tcard__body">' +
+      '<div class="items">' +
+        '<button class="items__add" onclick="openAddItem(this)">' +
+          '<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+          'Añadir entrada' +
         '</button>' +
-        '<button class="ticket-item__btn ticket-item__btn--delete" title="Eliminar" onclick="openDeleteItem(this)">' +
-          '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>' +
-        '</button>' +
-      '</div>';
+      '</div>' +
+    '</div>';
 
-    var addBtn = card.querySelector('.ticket-items__add');
-    addBtn.parentNode.insertBefore(itemEl, addBtn);
-    recalcTotal(card);
+  card.querySelector('.tcard__top').addEventListener('click', function(e) {
+    if (e.target.closest('.tcard__menu-btn')) return;
+    card.classList.toggle('open');
+  });
+
+  // Insertar en la ciudad correcta
+  var sep = document.querySelector('.city-sep[data-city="'+city+'"]');
+  if (sep) {
+    var ref = sep.nextElementSibling;
+    while (ref && ref.classList.contains('tcard') && ref.dataset.city === city) { ref = ref.nextElementSibling; }
+    document.getElementById('main').insertBefore(card, ref || null);
+  } else {
+    document.getElementById('main').appendChild(card);
+  }
+
+  var af = document.querySelector('.tab.active');
+  if (af && af.dataset.f !== 'all' && af.dataset.f !== city) card.style.display = 'none';
+
+  updateSummary();
+  closeModal();
+};
+
+/* ════════════════════════════════════════════
+   EDITAR TARJETA
+════════════════════════════════════════════ */
+window.openEditCard = function(btn) {
+  var card = btn.closest('.tcard');
+  _target = card;
+  var name = card.querySelector('.tcard__name').textContent;
+
+  openModal('Editar atracción',
+    '<div class="fg"><label>Nombre del lugar *</label>' +
+      '<input class="fi" id="ec-name" value="'+x(name)+'"></div>' +
+    '<div class="frow">' +
+      '<div class="fg"><label>Emoji</label>' +
+        '<input class="fi" id="ec-emoji" value="'+(card.dataset.emoji||'🎫')+'" maxlength="4" oninput="document.getElementById(\'ec-ep\').textContent=this.value||\'🎫\'"></div>' +
+      '<div class="fg"><label>Preview</label><div class="femoji-preview" id="ec-ep">'+(card.dataset.emoji||'🎫')+'</div></div>' +
+    '</div>' +
+    '<div class="fg"><label>Fecha</label><input class="fi" id="ec-date" type="date" value="'+(card.dataset.date||'')+'"></div>' +
+    '<div class="fg"><label>Ciudad</label><div class="chips">'+cityChips(card.dataset.city||'tokio')+'</div></div>' +
+    '<div class="fg"><label>Estado</label><div class="schips">'+statusChips(card.dataset.status||'ok')+'</div></div>',
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>' +
+    '<button class="btn btn-danger" style="flex:0 0 auto;" onclick="askDeleteCard()">Eliminar</button>' +
+    '<button class="btn btn-primary" onclick="saveEditCard()">Guardar</button>'
+  );
+};
+
+window.askDeleteCard = function() {
+  var card = _target;
+  var name = card.querySelector('.tcard__name').textContent;
+  confirmMsg.textContent = '¿Eliminar "'+name+'" y todas sus entradas?';
+  confirmBar.classList.add('on');
+  confirmYes.onclick = function() {
+    card.remove();
+    updateSummary();
     closeModal();
   };
+};
 
-})();
+window.saveEditCard = function() {
+  var card   = _target;
+  var name   = document.getElementById('ec-name').value.trim();
+  var emoji  = document.getElementById('ec-emoji').value.trim() || '🎫';
+  var date   = document.getElementById('ec-date').value;
+  var city   = chipVal('.chips') || card.dataset.city;
+  var status = chipVal('.schips') || card.dataset.status;
+  if (!name) { document.getElementById('ec-name').focus(); return; }
+
+  var cityNames = { tokio:'Tokio', kioto:'Kioto', osaka:'Osaka' };
+  var dateStr = date
+    ? new Date(date+'T12:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'}) + ' · ' + cityNames[city]
+    : cityNames[city];
+  var badgeCls = { ok:'badge--ok', pend:'badge--pend', out:'badge--out' }[status];
+  var badgeTxt = { ok:'Confirmado', pend:'Pendiente', out:'Cancelado' }[status];
+
+  card.dataset.city = city; card.dataset.status = status;
+  card.dataset.emoji = emoji; card.dataset.date = date;
+  card.querySelector('.tcard__name').textContent = name;
+  card.querySelector('.tcard__icon').textContent = emoji;
+  card.querySelector('.tcard__date').textContent = dateStr;
+  var b = card.querySelector('.badge');
+  b.textContent = badgeTxt;
+  b.className = 'badge ' + badgeCls;
+
+  updateSummary();
+  closeModal();
+};
+
+/* ════════════════════════════════════════════
+   AÑADIR ENTRADA (ítem)
+════════════════════════════════════════════ */
+window.openAddItem = function(btn) {
+  _target = btn.closest('.tcard');
+  openModal('Añadir entrada',
+    '<div class="fg"><label>Nombre del boleto *</label>' +
+      '<input class="fi" id="ai-name" placeholder="Ej: Boleto adulto x2"></div>' +
+    '<div class="fg"><label>Emoji</label>' +
+      '<input class="fi" id="ai-icon" value="🎟️" maxlength="4"></div>' +
+    '<div class="fg"><label>Fecha / Horario</label>' +
+      '<input class="fi" id="ai-date" placeholder="Ej: 7 Nov · 09:00 AM"></div>' +
+    '<div class="fg"><label>🔗 Link Google Drive (opcional)</label>' +
+      '<input class="fi" id="ai-url" type="text" placeholder="https://drive.google.com/file/…" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">' +
+      '<span class="fhint">Pega aquí el enlace del archivo guardado en tu Drive</span></div>',
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>' +
+    '<button class="btn btn-primary" onclick="saveAddItem()">Añadir</button>'
+  );
+};
+
+window.saveAddItem = function() {
+  var card = _target;
+  var name = document.getElementById('ai-name').value.trim();
+  var icon = document.getElementById('ai-icon').value.trim() || '🎟️';
+  var date = document.getElementById('ai-date').value.trim();
+  var url  = document.getElementById('ai-url').value.trim();
+  if (!name) { document.getElementById('ai-name').focus(); return; }
+
+  var el = document.createElement('div');
+  el.className = 'item';
+  el.dataset.name = name; el.dataset.date = date; el.dataset.url = url;
+  el.innerHTML =
+    '<span class="item__icon">'+icon+'</span>' +
+    '<div class="item__info">' +
+      '<div class="item__name">'+x(name)+'</div>' +
+      '<div class="item__date">'+x(date)+'</div>' +
+    '</div>' +
+    driveBtn(url) + EDIT_BTN;
+
+  card.querySelector('.items__add').before(el);
+  closeModal();
+};
+
+/* ════════════════════════════════════════════
+   EDITAR ENTRADA (ítem)
+════════════════════════════════════════════ */
+window.openEditItem = function(btn) {
+  var item = btn.closest('.item');
+  _target = item;
+  var name = item.dataset.name || item.querySelector('.item__name').textContent;
+  var date = item.dataset.date || item.querySelector('.item__date').textContent;
+  var url  = item.dataset.url || '';
+  var icon = item.querySelector('.item__icon').textContent;
+
+  openModal('Editar entrada',
+    '<div class="fg"><label>Nombre del boleto *</label>' +
+      '<input class="fi" id="ei-name" value="'+x(name)+'"></div>' +
+    '<div class="fg"><label>Emoji</label>' +
+      '<input class="fi" id="ei-icon" value="'+x(icon)+'" maxlength="4"></div>' +
+    '<div class="fg"><label>Fecha / Horario</label>' +
+      '<input class="fi" id="ei-date" value="'+x(date)+'"></div>' +
+    '<div class="fg"><label>🔗 Link Google Drive (opcional)</label>' +
+      '<input class="fi" id="ei-url" type="text" value="'+x(url)+'" placeholder="https://drive.google.com/file/…" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">' +
+      '<span class="fhint">Pega aquí el enlace del archivo guardado en tu Drive</span></div>',
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>' +
+    '<button class="btn btn-danger" style="flex:0 0 auto;" onclick="askDeleteItem()">Eliminar</button>' +
+    '<button class="btn btn-primary" onclick="saveEditItem()">Guardar</button>'
+  );
+};
+
+window.askDeleteItem = function() {
+  var item = _target;
+  var name = item.dataset.name || item.querySelector('.item__name').textContent;
+  confirmMsg.textContent = '¿Eliminar "'+name+'"?';
+  confirmBar.classList.add('on');
+  confirmYes.onclick = function() { item.remove(); closeModal(); };
+};
+
+window.saveEditItem = function() {
+  var item = _target;
+  var name = document.getElementById('ei-name').value.trim();
+  var icon = document.getElementById('ei-icon').value.trim() || '🎟️';
+  var date = document.getElementById('ei-date').value.trim();
+  var url  = document.getElementById('ei-url').value.trim();
+  if (!name) { document.getElementById('ei-name').focus(); return; }
+
+  item.dataset.name = name; item.dataset.date = date; item.dataset.url = url;
+  item.querySelector('.item__icon').textContent = icon;
+  item.querySelector('.item__name').textContent = name;
+  item.querySelector('.item__date').textContent = date;
+
+  var old = item.querySelector('.item__drive, .item__no-drive');
+  if (old) old.remove();
+  item.querySelector('.item__edit').insertAdjacentHTML('beforebegin', driveBtn(url));
+  closeModal();
+};
+
+/* ════════════════════════════════════════════
+   SUMMARY BAR
+════════════════════════════════════════════ */
+function updateSummary() {
+  var cards = document.querySelectorAll('.tcard');
+  var conf  = 0, pend = 0;
+  cards.forEach(function(c) {
+    if (c.dataset.status === 'ok')   conf++;
+    if (c.dataset.status === 'pend') pend++;
+  });
+  document.getElementById('s-total').textContent = cards.length;
+  document.getElementById('s-conf').textContent  = conf;
+  document.getElementById('s-pend').textContent  = pend;
+}
 </script>
-
 </body>
 </html>
