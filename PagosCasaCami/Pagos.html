@@ -12,7 +12,7 @@
     --shadow: 0 4px 18px rgba(15, 60, 55, .08);
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#0e1514; --card:#172120; --text:#e8f1ef; --muted:#93a6a2; --border:#25322f; --shadow:none; }
+    :root { --bg:#0e1514; --card:#172120; --text:#e8f1ef; --muted:#93a6a2; --border:#25322f; --shadow:none; --danger:#f97066; }
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -22,11 +22,19 @@
   }
   .wrap { max-width: 520px; margin: 0 auto; padding: 0 16px 40px; }
 
+  /* ---- Visibilidad por modo ---- */
+  .only-admin, .only-visor, .only-login { display: none; }
+  body.mode-admin .only-admin { display: block; }
+  body.mode-visor .only-visor { display: block; }
+  body.mode-login .only-login { display: block; }
+  body.mode-admin .only-admin.flex { display: flex; }
+
   header {
     background: linear-gradient(135deg, var(--brand), var(--brand-2));
     color: #fff; margin: 0 -16px 16px; padding: calc(env(safe-area-inset-top) + 22px) 20px 56px;
     border-radius: 0 0 28px 28px;
   }
+  header.compact { padding-bottom: 28px; }
   header small { opacity: .85; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
   header h1 { margin: 4px 0 0; font-size: 34px; font-weight: 700; }
   header .count { opacity: .9; font-size: 14px; margin-top: 2px; }
@@ -63,8 +71,9 @@
 
   .list-head { display: flex; justify-content: space-between; align-items: center; margin: 24px 4px 10px; }
   .list-head h2 { margin: 0; }
-  .list-head button { background: none; border: 0; color: var(--brand-2); font-size: 14px; cursor: pointer; }
+  .link-btn { background: none; border: 0; color: var(--brand-2); font-size: 14px; cursor: pointer; padding: 4px; }
 
+  /* ---- Lista (admin) ---- */
   .year { font-size: 12px; font-weight: 700; color: var(--muted); margin: 16px 4px 6px; letter-spacing: .06em; }
   .item {
     display: flex; align-items: center; gap: 12px; padding: 13px 14px; margin-bottom: 8px;
@@ -78,28 +87,82 @@
   .meta .d { font-weight: 600; font-size: 15px; }
   .meta .m { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .amt { font-weight: 700; font-size: 16px; white-space: nowrap; }
+  .del {
+    border: 0; background: transparent; font-size: 18px; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 10px; flex: none; opacity: .75;
+  }
+  .del:active { background: rgba(180,35,24,.15); opacity: 1; }
 
-  .empty, .loading { text-align: center; color: var(--muted); padding: 30px 0; }
+  /* ---- Cuadrícula (visor) ---- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .tile {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 14px; box-shadow: var(--shadow);
+  }
+  .tile .ico { font-size: 20px; }
+  .tile .d { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .tile .a { font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .tile .m { font-size: 13px; color: var(--muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .visor-title { margin: 0 4px 14px; }
+
+  .empty, .loading { text-align: center; color: var(--muted); padding: 30px 0; grid-column: 1 / -1; }
+  .footer { text-align: center; margin-top: 28px; }
+
+  /* ---- Login ---- */
+  .login { margin-top: calc(env(safe-area-inset-top) + 18vh); text-align: center; }
+  .login .logo { font-size: 44px; }
+  .login h1 { font-size: 22px; margin: 8px 0 4px; }
+  .login p { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+  .login .err { color: var(--danger); font-size: 14px; min-height: 20px; margin-top: 10px; }
+
+  /* ---- Confirmación ---- */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
+    align-items: flex-end; justify-content: center; z-index: 20;
+  }
+  .overlay.show { display: flex; }
+  .sheet {
+    background: var(--card); width: 100%; max-width: 520px; border-radius: 24px 24px 0 0;
+    padding: 24px 20px calc(env(safe-area-inset-bottom) + 20px);
+  }
+  .sheet h3 { margin: 0 0 6px; font-size: 18px; }
+  .sheet p { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+  .sheet .btns { display: flex; gap: 10px; }
+  .sheet button { flex: 1; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--text); }
+  .sheet button.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .sheet button:disabled { opacity: .6; }
+
   .toast {
     position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 24px);
     transform: translate(-50%, 30px); opacity: 0; transition: .25s;
     background: #16211f; color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 14px;
-    pointer-events: none; z-index: 10;
+    pointer-events: none; z-index: 30;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
-  .toast.err { background: var(--danger); }
+  .toast.err { background: #b42318; }
 </style>
 </head>
-<body>
+<body class="mode-login">
 <div class="wrap">
 
-  <header>
+  <!-- ================= LOGIN ================= -->
+  <section class="only-login login">
+    <div class="logo">🏠</div>
+    <h1>Pagos de la casa</h1>
+    <p>Ingresa tu PIN para continuar</p>
+    <input type="password" id="pinInput" placeholder="PIN" autocomplete="current-password" style="text-align:center">
+    <button class="save" id="btnLogin">Entrar</button>
+    <div class="err" id="loginErr"></div>
+  </section>
+
+  <!-- ================= ADMIN ================= -->
+  <header class="only-admin">
     <small>Total pagado</small>
     <h1 id="total">$0.00</h1>
     <div class="count" id="count">Cargando…</div>
   </header>
 
-  <div class="card form">
+  <div class="card form only-admin">
     <h2>➕ Nuevo pago</h2>
 
     <div class="row">
@@ -123,33 +186,57 @@
     <button class="save" id="btnSave">Guardar pago</button>
   </div>
 
-  <div class="list-head">
+  <div class="list-head only-admin flex">
     <h2>Pagos registrados</h2>
-    <button id="btnReload">↻ Actualizar</button>
+    <button class="link-btn" id="btnReload">↻ Actualizar</button>
   </div>
-  <div id="list"><div class="loading">Cargando pagos…</div></div>
+  <div class="only-admin" id="list"></div>
+
+  <!-- ================= VISOR ================= -->
+  <header class="only-visor compact">
+    <small>Casa Camichines</small>
+    <h1 style="font-size:28px">Pagos</h1>
+    <div class="count" id="countV"></div>
+  </header>
+  <div class="only-visor">
+    <div class="grid" id="grid"></div>
+    <div class="footer"><button class="link-btn" id="btnReloadV">↻ Actualizar</button></div>
+  </div>
+
+  <!-- Salir / cambiar PIN (admin y visor) -->
+  <div class="footer" id="footerSalir" style="display:none">
+    <button class="link-btn" id="btnSalir" style="color:var(--muted)">Cambiar PIN / Salir</button>
+  </div>
 
 </div>
+
+<!-- Confirmar eliminación -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h3>¿Eliminar este pago?</h3>
+    <p id="confirmTxt"></p>
+    <div class="btns">
+      <button id="btnCancel">Cancelar</button>
+      <button class="danger" id="btnConfirm">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-  // 👇 PEGA AQUÍ LA URL DE TU IMPLEMENTACIÓN (termina en /exec)
+  // 👇 URL de tu implementación de Apps Script (termina en /exec)
   const API_URL = 'https://script.google.com/macros/s/AKfycbzRn3bFepxtX294ez0bzAVOpImnJzacwd5jQGWkEU94mi7eTAVCtTa7Az01KYKV97XsNQ/exec';
 
   const $ = id => document.getElementById(id);
   const money = n => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(n);
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 
+  let pending = null; // pago pendiente de eliminar
+
   /* ---------- PIN (se guarda solo en este dispositivo) ---------- */
-  function getPin() {
-    let pin = null;
-    try { pin = localStorage.getItem('pagos_pin'); } catch (e) {}
-    if (!pin) {
-      pin = prompt('Ingresa tu PIN de acceso:') || '';
-      try { localStorage.setItem('pagos_pin', pin); } catch (e) {}
-    }
-    return pin;
-  }
+  function getPin() { try { return localStorage.getItem('pagos_pin') || ''; } catch (e) { return ''; } }
+  function setPin(p) { try { localStorage.setItem('pagos_pin', p); } catch (e) {} }
   function clearPin() { try { localStorage.removeItem('pagos_pin'); } catch (e) {} }
 
   /* ---------- API ---------- */
@@ -157,24 +244,25 @@
     const r = await fetch(API_URL + '?pin=' + encodeURIComponent(getPin()));
     return handle(await r.json());
   }
-  async function apiAdd(fecha, monto, pago) {
+  async function apiPost(body) {
     // text/plain evita el preflight CORS que Apps Script no soporta
     const r = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ pin: getPin(), fecha, monto, pago })
+      body: JSON.stringify(Object.assign({ pin: getPin() }, body))
     });
     return handle(await r.json());
   }
   function handle(data) {
     if (data.error) {
-      if (/PIN/i.test(data.error)) clearPin();
-      throw new Error(data.error);
+      const err = new Error(data.error);
+      err.pin = /PIN/i.test(data.error);
+      throw err;
     }
     return data;
   }
 
-  /* ---------- Utilidades UI ---------- */
+  /* ---------- Utilidades ---------- */
   function todayISO() {
     const d = new Date();
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
@@ -182,7 +270,24 @@
   }
   function prettyDate(f) {
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(f);
-    return m ? `${parseInt(m[3])} ${MESES[parseInt(m[2]) - 1]} ${m[1]}` : f;
+    if (m) return `${parseInt(m[3])} ${MESES[parseInt(m[2]) - 1]} ${m[1]}`;
+    const d = new Date(f);
+    if (isNaN(d)) return f;
+    return `${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}`;
+  }
+  function timeOf(f) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(f);
+    const t = m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : new Date(f).getTime();
+    return isNaN(t) ? 0 : t;
+  }
+  // Más recientes primero (empata por posición en la hoja)
+  function sortPagos(pagos) {
+    return pagos.map((p, i) => Object.assign({ _i: i }, p))
+      .sort((a, b) => (timeOf(b.fecha) - timeOf(a.fecha)) || (b._i - a._i));
+  }
+  function iconOf(p) { return /efectivo/i.test(p) ? '💵' : /transf/i.test(p) ? '🏦' : '💳'; }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
   function toast(msg, err) {
     const t = $('toast');
@@ -190,45 +295,88 @@
     t.className = 'toast show' + (err ? ' err' : '');
     setTimeout(() => t.className = 'toast', 2800);
   }
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  /* ---------- Modos ---------- */
+  function showLogin(msg) {
+    document.body.className = 'mode-login';
+    $('footerSalir').style.display = 'none';
+    $('loginErr').textContent = msg || '';
+    $('pinInput').value = '';
   }
 
   function render(data) {
-    $('total').textContent = money(data.total);
-    $('count').textContent = data.pagos.length + (data.pagos.length === 1 ? ' pago registrado' : ' pagos registrados');
+    document.body.className = 'mode-' + data.rol;
+    $('footerSalir').style.display = 'block';
+    const pagos = sortPagos(data.pagos);
+    const n = pagos.length;
+    const cuenta = n + (n === 1 ? ' pago registrado' : ' pagos registrados');
 
-    if (!data.pagos.length) {
-      $('list').innerHTML = '<div class="empty">Aún no hay pagos.</div>';
-      return;
+    if (data.rol === 'admin') {
+      $('total').textContent = money(data.total);
+      $('count').textContent = cuenta;
+      renderAdmin(pagos);
+    } else {
+      $('countV').textContent = cuenta;
+      renderVisor(pagos);
     }
-    const pagos = data.pagos.slice().reverse();
+  }
+
+  function renderAdmin(pagos) {
+    if (!pagos.length) { $('list').innerHTML = '<div class="empty">Aún no hay pagos.</div>'; return; }
     let html = '', yearActual = '';
     pagos.forEach(p => {
-      const y = (/^(\d{4})/.exec(p.fecha) || [])[1] || '';
-      if (y !== yearActual) { yearActual = y; html += `<div class="year">${y}</div>`; }
-      const icon = /efectivo/i.test(p.pago) ? '💵' : /transf/i.test(p.pago) ? '🏦' : '💳';
+      const y = (prettyDate(p.fecha).split(' ')[2]) || '';
+      if (y !== yearActual) { yearActual = y; html += `<div class="year">${esc(y)}</div>`; }
       html += `
         <div class="item">
-          <div class="dot">${icon}</div>
+          <div class="dot">${iconOf(p.pago)}</div>
           <div class="meta">
             <div class="d">${esc(prettyDate(p.fecha))}</div>
             <div class="m">${esc(p.pago || '—')}</div>
           </div>
           <div class="amt">${money(p.monto)}</div>
+          <button class="del" data-fila="${p.fila}" aria-label="Eliminar pago">🗑️</button>
         </div>`;
     });
     $('list').innerHTML = html;
+
+    $('list').querySelectorAll('.del').forEach(b => b.addEventListener('click', () => {
+      pending = pagos.find(p => String(p.fila) === b.dataset.fila);
+      $('confirmTxt').textContent =
+        `${prettyDate(pending.fecha)} · ${money(pending.monto)} · ${pending.pago || '—'}`;
+      $('overlay').classList.add('show');
+    }));
   }
 
+  function renderVisor(pagos) {
+    if (!pagos.length) { $('grid').innerHTML = '<div class="empty">Aún no hay pagos.</div>'; return; }
+    $('grid').innerHTML = pagos.map(p => `
+      <div class="tile">
+        <div class="ico">${iconOf(p.pago)}</div>
+        <div class="d">${esc(prettyDate(p.fecha))}</div>
+        <div class="a">${money(p.monto)}</div>
+        <div class="m">${esc(p.pago || '—')}</div>
+      </div>`).join('');
+  }
+
+  /* ---------- Acciones ---------- */
   async function load() {
-    $('list').innerHTML = '<div class="loading">Cargando pagos…</div>';
+    if (!getPin()) return showLogin();
     try {
       render(await apiGet());
     } catch (e) {
-      $('list').innerHTML = '<div class="empty">No se pudo cargar</div>';
-      toast(e.message, true);
+      if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
+      else toast(e.message || 'No se pudo cargar', true);
     }
+  }
+
+  async function login() {
+    const pin = $('pinInput').value.trim();
+    if (!pin) return;
+    setPin(pin);
+    $('btnLogin').disabled = true;
+    await load();
+    $('btnLogin').disabled = false;
   }
 
   async function save() {
@@ -240,26 +388,54 @@
     const btn = $('btnSave');
     btn.disabled = true; btn.textContent = 'Guardando…';
     try {
-      const data = await apiAdd(fecha, monto, pago);
+      const data = await apiPost({ accion: 'agregar', fecha, monto, pago });
       $('monto').value = ''; $('pago').value = ''; setChip('');
       render(data);
       toast('✅ Pago guardado');
     } catch (e) {
-      toast(e.message, true);
+      if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
+      else toast(e.message, true);
     } finally {
       btn.disabled = false; btn.textContent = 'Guardar pago';
     }
   }
 
+  async function confirmDelete() {
+    if (!pending) return;
+    const btn = $('btnConfirm');
+    btn.disabled = true; btn.textContent = 'Eliminando…';
+    try {
+      const data = await apiPost({ accion: 'eliminar', fila: pending.fila, monto: pending.monto, pago: pending.pago });
+      render(data);
+      toast('🗑️ Pago eliminado');
+    } catch (e) {
+      if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
+      else { toast(e.message, true); load(); }
+    } finally {
+      btn.disabled = false; btn.textContent = 'Eliminar';
+      closeConfirm();
+    }
+  }
+  function closeConfirm() { pending = null; $('overlay').classList.remove('show'); }
+
   function setChip(v) {
     document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.v === v));
   }
+
+  /* ---------- Eventos ---------- */
   document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
     $('pago').value = c.dataset.v; setChip(c.dataset.v);
   }));
   $('pago').addEventListener('input', e => setChip(e.target.value.trim()));
   $('btnSave').addEventListener('click', save);
   $('btnReload').addEventListener('click', load);
+  $('btnReloadV').addEventListener('click', load);
+  $('btnLogin').addEventListener('click', login);
+  $('pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  $('btnSalir').addEventListener('click', () => { clearPin(); showLogin(); });
+  $('btnCancel').addEventListener('click', closeConfirm);
+  $('btnConfirm').addEventListener('click', confirmDelete);
+  $('overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closeConfirm(); });
 
   $('fecha').value = todayISO();
   load();
