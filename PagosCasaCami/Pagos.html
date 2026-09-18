@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<base target="_top">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
@@ -116,7 +115,7 @@
 
     <label for="pago">Forma de pago</label>
     <input type="text" id="pago" placeholder="Efectivo, Transferencia…" autocomplete="off">
-    <div class="chips" id="chips">
+    <div class="chips">
       <button type="button" class="chip" data-v="Efectivo">Efectivo</button>
       <button type="button" class="chip" data-v="Transferencia">Transferencia</button>
     </div>
@@ -134,28 +133,63 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  // 👇 PEGA AQUÍ LA URL DE TU IMPLEMENTACIÓN (termina en /exec)
+  const API_URL = 'https://script.google.com/macros/s/AKfycbw5PBKPQ72PixDbS1PVl2j-5TVmWMWpKQ-KuO327sY4I7Ho00SFn9Z8KmWZlhaXGQfwfw/exec';
+
   const $ = id => document.getElementById(id);
   const money = n => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(n);
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 
+  /* ---------- PIN (se guarda solo en este dispositivo) ---------- */
+  function getPin() {
+    let pin = null;
+    try { pin = localStorage.getItem('pagos_pin'); } catch (e) {}
+    if (!pin) {
+      pin = prompt('Ingresa tu PIN de acceso:') || '';
+      try { localStorage.setItem('pagos_pin', pin); } catch (e) {}
+    }
+    return pin;
+  }
+  function clearPin() { try { localStorage.removeItem('pagos_pin'); } catch (e) {} }
+
+  /* ---------- API ---------- */
+  async function apiGet() {
+    const r = await fetch(API_URL + '?pin=' + encodeURIComponent(getPin()));
+    return handle(await r.json());
+  }
+  async function apiAdd(fecha, monto, pago) {
+    // text/plain evita el preflight CORS que Apps Script no soporta
+    const r = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ pin: getPin(), fecha, monto, pago })
+    });
+    return handle(await r.json());
+  }
+  function handle(data) {
+    if (data.error) {
+      if (/PIN/i.test(data.error)) clearPin();
+      throw new Error(data.error);
+    }
+    return data;
+  }
+
+  /* ---------- Utilidades UI ---------- */
   function todayISO() {
     const d = new Date();
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d.toISOString().slice(0, 10);
   }
-
   function prettyDate(f) {
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(f);
     return m ? `${parseInt(m[3])} ${MESES[parseInt(m[2]) - 1]} ${m[1]}` : f;
   }
-
   function toast(msg, err) {
     const t = $('toast');
     t.textContent = msg;
     t.className = 'toast show' + (err ? ' err' : '');
-    setTimeout(() => t.className = 'toast', 2600);
+    setTimeout(() => t.className = 'toast', 2800);
   }
-
   function esc(s) {
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
@@ -168,8 +202,6 @@
       $('list').innerHTML = '<div class="empty">Aún no hay pagos.</div>';
       return;
     }
-
-    // Más recientes primero (el orden del sheet es cronológico)
     const pagos = data.pagos.slice().reverse();
     let html = '', yearActual = '';
     pagos.forEach(p => {
@@ -189,15 +221,17 @@
     $('list').innerHTML = html;
   }
 
-  function load() {
+  async function load() {
     $('list').innerHTML = '<div class="loading">Cargando pagos…</div>';
-    google.script.run
-      .withSuccessHandler(render)
-      .withFailureHandler(e => { $('list').innerHTML = '<div class="empty">Error al cargar</div>'; toast(e.message, true); })
-      .getPagos();
+    try {
+      render(await apiGet());
+    } catch (e) {
+      $('list').innerHTML = '<div class="empty">No se pudo cargar</div>';
+      toast(e.message, true);
+    }
   }
 
-  function save() {
+  async function save() {
     const fecha = $('fecha').value, monto = parseFloat($('monto').value), pago = $('pago').value.trim();
     if (!fecha) return toast('Elige la fecha', true);
     if (!monto || monto <= 0) return toast('Escribe un monto válido', true);
@@ -205,25 +239,21 @@
 
     const btn = $('btnSave');
     btn.disabled = true; btn.textContent = 'Guardando…';
-
-    google.script.run
-      .withSuccessHandler(data => {
-        btn.disabled = false; btn.textContent = 'Guardar pago';
-        $('monto').value = ''; $('pago').value = ''; setChip('');
-        render(data);
-        toast('✅ Pago guardado');
-      })
-      .withFailureHandler(e => {
-        btn.disabled = false; btn.textContent = 'Guardar pago';
-        toast(e.message, true);
-      })
-      .agregarPago(fecha, monto, pago);
+    try {
+      const data = await apiAdd(fecha, monto, pago);
+      $('monto').value = ''; $('pago').value = ''; setChip('');
+      render(data);
+      toast('✅ Pago guardado');
+    } catch (e) {
+      toast(e.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = 'Guardar pago';
+    }
   }
 
   function setChip(v) {
     document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.v === v));
   }
-
   document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
     $('pago').value = c.dataset.v; setChip(c.dataset.v);
   }));
