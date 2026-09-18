@@ -148,6 +148,27 @@
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
   .toast.err { background: #b42318; }
+
+  /* ---- Cargando ---- */
+  .loader-overlay {
+    position: fixed; inset: 0; z-index: 40; display: none;
+    align-items: center; justify-content: center;
+    background: rgba(243,246,245,.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  }
+  @media (prefers-color-scheme: dark) { .loader-overlay { background: rgba(14,21,20,.6); } }
+  .loader-overlay.show { display: flex; }
+  .loader-box {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+    padding: 22px 28px; box-shadow: var(--shadow);
+  }
+  .loader-spinner {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 4px solid var(--border); border-top-color: var(--brand-2);
+    animation: spin .7s linear infinite;
+  }
+  .loader-box span { font-size: 13px; color: var(--muted); font-weight: 600; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body class="mode-login">
@@ -243,6 +264,13 @@
 
 <div class="toast" id="toast"></div>
 
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="loader-box">
+    <div class="loader-spinner"></div>
+    <span id="loaderText">Cargando…</span>
+  </div>
+</div>
+
 <script>
   // 👇 URL de tu implementación de Apps Script (termina en /exec)
   const API_URL = 'https://script.google.com/macros/s/AKfycbzRn3bFepxtX294ez0bzAVOpImnJzacwd5jQGWkEU94mi7eTAVCtTa7Az01KYKV97XsNQ/exec';
@@ -315,6 +343,18 @@
     setTimeout(() => t.className = 'toast', 2800);
   }
 
+  /* ---------- Loader ---------- */
+  let loaderCount = 0;
+  function showLoader(msg) {
+    loaderCount++;
+    $('loaderText').textContent = msg || 'Cargando…';
+    $('loaderOverlay').classList.add('show');
+  }
+  function hideLoader() {
+    loaderCount = Math.max(0, loaderCount - 1);
+    if (loaderCount === 0) $('loaderOverlay').classList.remove('show');
+  }
+
   /* ---------- Modos ---------- */
   function showLogin(msg) {
     document.body.className = 'mode-login';
@@ -382,11 +422,14 @@
   /* ---------- Acciones ---------- */
   async function load() {
     if (!getPin()) return showLogin();
+    showLoader('Cargando…');
     try {
       render(await apiGet());
     } catch (e) {
       if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
       else toast(e.message || 'No se pudo cargar', true);
+    } finally {
+      hideLoader();
     }
   }
 
@@ -395,7 +438,9 @@
     if (!pin) return;
     setPin(pin);
     $('btnLogin').disabled = true;
+    showLoader('Entrando…');
     await load();
+    hideLoader();
     $('btnLogin').disabled = false;
   }
 
@@ -407,6 +452,7 @@
 
     const btn = $('btnSave');
     btn.disabled = true; btn.textContent = 'Guardando…';
+    showLoader('Guardando…');
     try {
       const data = await apiPost({ accion: 'agregar', fecha, monto, pago });
       $('monto').value = ''; $('pago').value = ''; setChip('');
@@ -416,6 +462,7 @@
       if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
       else toast(e.message, true);
     } finally {
+      hideLoader();
       btn.disabled = false; btn.textContent = 'Guardar pago';
     }
   }
@@ -424,6 +471,7 @@
     if (!pending) return;
     const btn = $('btnConfirm');
     btn.disabled = true; btn.textContent = 'Eliminando…';
+    showLoader('Eliminando…');
     try {
       const data = await apiPost({ accion: 'eliminar', fila: pending.fila, monto: pending.monto, pago: pending.pago });
       render(data);
@@ -432,6 +480,7 @@
       if (e.pin) { clearPin(); showLogin('PIN incorrecto'); }
       else { toast(e.message, true); load(); }
     } finally {
+      hideLoader();
       btn.disabled = false; btn.textContent = 'Eliminar';
       closeConfirm();
     }
