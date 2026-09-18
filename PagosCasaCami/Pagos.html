@@ -195,7 +195,7 @@
   <!-- ================= VISOR ================= -->
   <header class="only-visor compact">
     <small>Casa Camichines</small>
-    <h1 style="font-size:28px">Pagos</h1>
+    <h1 id="totalV">$0.00</h1>
     <div class="count" id="countV"></div>
   </header>
   <div class="only-visor">
@@ -316,6 +316,8 @@
       $('count').textContent = cuenta;
       renderAdmin(pagos);
     } else {
+      const total = data.pagos?.reduce((acc, x) => acc + (x.monto || 0), 0) ?? 0;
+      $('totalV').textContent = money(total);
       $('countV').textContent = cuenta;
       renderVisor(pagos);
     }
