@@ -150,7 +150,7 @@
     <div class="logo">🏠</div>
     <h1>Pagos de la casa</h1>
     <p>Ingresa tu PIN para continuar</p>
-    <input type="password" id="pinInput" placeholder="PIN" autocomplete="current-password" style="text-align:center">
+    <input type="password" id="pinInput" placeholder="PIN" autocomplete="current-password" style="text-align:center" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="6">
     <button class="save" id="btnLogin">Entrar</button>
     <div class="err" id="loginErr"></div>
   </section>
