@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+<html lang="es">
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>¡Nos Casamos!</title>
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="assets/css/animate.css"/>
+
+		<link rel="stylesheet" href="assets/css/style.css" />
+		<link rel="stylesheet" href="assets/css/boda.css" />
+
+    <script type="text/javascript" src="assets/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/plugins.js"></script>
+
+	</head>
+	<body>
+	<div class="svg-wrap">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <path id="arrow-left" d="M26.667 10.667q1.104 0 1.885 0.781t0.781 1.885q0 1.125-0.792 1.896l-14.104 14.104h41.563q1.104 0 1.885 0.781t0.781 1.885-0.781 1.885-1.885 0.781h-41.563l14.104 14.104q0.792 0.771 0.792 1.896 0 1.104-0.781 1.885t-1.885 0.781q-1.125 0-1.896-0.771l-18.667-18.667q-0.771-0.813-0.771-1.896t0.771-1.896l18.667-18.667q0.792-0.771 1.896-0.771z"></path>
+      </svg>
+
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <path id="arrow-right" d="M37.333 10.667q1.125 0 1.896 0.771l18.667 18.667q0.771 0.771 0.771 1.896t-0.771 1.896l-18.667 18.667q-0.771 0.771-1.896 0.771-1.146 0-1.906-0.76t-0.76-1.906q0-1.125 0.771-1.896l14.125-14.104h-41.563q-1.104 0-1.885-0.781t-0.781-1.885 0.781-1.885 1.885-0.781h41.563l-14.125-14.104q-0.771-0.771-0.771-1.896 0-1.146 0.76-1.906t1.906-0.76z"></path>
+      </svg>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+   <div class="container-fluid">
+
+    <!-- HEADER -->
+
+    <section id="header" class="">
+
+      <!-- NAVIGATION -->
+      
+
+      <!-- SLIDER -->
+      <div class="header-slide">
+        <section>
+          <div id="loader" class="pageload-overlay" data-opening="M 0,0 0,60 80,60 80,0 z M 80,0 40,30 0,60 40,30 z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="none">
+              <path d="M 0,0 0,60 80,60 80,0 Z M 80,0 80,60 0,60 0,0 Z"/>
+            </svg>
+          </div> <!-- /.pageload-overlay -->
+          
+          <div class="image-slide bg-fixed">
+            <div class="overlay">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div class="slider-content">
+                      <h1></h1>
+                      <p></p>
+                    </div>
+
+                  </div> <!-- /.col-md-12 -->
+                </div> <!-- /.row -->
+              </div> <!-- /.container -->
+            </div> <!-- /.overlay -->
+          </div> <!-- /.image-slide -->
+
+          <nav class="nav-slide">
+            <a class="prev hidden" href="#prev">
+              <span class="icon-wrap">
+                <svg class="icon" width="32" height="32" viewBox="0 0 64 64">
+                  <use xlink:href="#arrow-left">
+                </svg>
+              </span>
+              <div>
+                <span>Prev Photo</span>
+                <h3>...</h3>
+                <p>...</p>
+                <img alt="Previous thumb">
+              </div>
+            </a>
+            <a class="next hidden" href="#next">
+              <span class="icon-wrap">
+                <svg class="icon" width="32" height="32" viewBox="0 0 64 64">
+                  <use xlink:href="#arrow-right">
+                </svg>
+              </span>
+              <div>
+                <span>Next Photo</span>
+                <h3>...</h3>
+                <p>...</p>
+                <img alt="Next thumb">
+              </div>
+            </a>
+          </nav>
+        </section>
+
+        <script type="text/javascript">
+        var dataHeader = [
+                            {
+                              bigImage :"assets/img/mym.jpg",
+                              title : "¡Nos Casamos!",
+                              subtitle : "Este día es el inicio de un gran viaje que compartiremos llenos de amor",
+							                author : ""
+                            },
+                            {
+                              bigImage :"assets/img/mym.jpg",
+                              title : "¡Nos Casamos!",
+                              subtitle : "Este día es el inicio de un gran viaje que compartiremos llenos de amor",
+							                author : ""
+                            }
+                        ],
+            loaderSVG = new SVGLoader(document.getElementById('loader'), {speedIn : 600, speedOut : 600, easingIn : mina.easeinout});
+            loaderSVG.show()
+        </script>
+
+      </div><!-- /.header-slide -->
+    </section>
+
+    <section id="about" class="light">
+      <div class="container mb">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content">
+              <img src="assets/img/mymDia2.png" alt="" class="img-fluid">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <header class="title">
+        <h2>Nuestro Gran Día</h2>
+        <p class="center">
+          
+          El <strong>Destino</strong> nos puso en el <strong>mismo camino</strong>.<br> y ahora... <br> caminaremos juntos <br>
+          <strong>HASTA EL FINAL</strong>
+        </p>
+      </header>
+
+      <div class="container">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content center">
+              <img src="assets/img/anilloboda.png" alt="" class="img-fluid anillos">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+	
+    <section class="section-foto2">
+    </section>
+	
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="light">
+      <header class="title">
+        <h2>Nuestra historia</h2>
+        <p>Era tu historia <br>
+          Se cruzó con la mía<br>
+          Tanta gente, tanta gente ahí fuera<br>
+          Y coincidir aquel día.</p>
+      </header>
+
+      <div class="container-fluid">
+        <div class="row hidden">
+          <ul id="filters" class="list-inline">
+            <li data-filter="all" class="filter">All</li>
+            <li data-filter=".branding" class="filter">Branding</li> 
+            <li data-filter=".graphic" class="filter">Graphic</li> 
+            <li data-filter=".printing" class="filter">Printing</li> 
+            <li data-filter=".video" class="filter">Video</li> 
+          </ul>
+        </div>
+
+        <div class="row">
+          <div class="container-portfolio center">
+
+            <video controls >
+              <source src="assets/img/videodeamor.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+            <!-- PORTFOLIO OBJECT -->
+            <script type="text/javascript">
+            var portfolio = [
+                    // {
+                    //   category : "branding",
+                    //   image: "assets/img/f1.jpg",
+                    //   title : "Charming <span>Roxy</span>",
+                    //   link : "#none",
+                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
+                    // },
+                    // {
+                    //   category : "graphic",
+                    //   image: "assets/img/f2.jpg",
+                    //   title : "Fresh <span>Bubba</span>",
+                    //   link : "#none",
+                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
+                    // },
+                    // {
+                    //   category : "graphic",
+                    //   image: "assets/img/f3.jpg",
+                    //   title : "Wild <span>Romeo</span>",
+                    //   link : "#none",
+                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
+                    // },
+                    // {
+                    //   category : "video",
+                    //   image: "assets/img/f4.jpg",
+                    //   title : "Strange <span>Dexter</span>",
+                    //   link : "#none",
+                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
+                    // }
+                ];
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TEAM -->
+    <section class="light">
+      <header class="title">
+        <h2>Nuestros padres</h2>
+        <p></p>
+      </header>
+      
+      <div class="container">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content">
+              <div class="about-content left animated" data-animate="fadeInLeft">
+                <div class="about-icon"><img src="assets/img/vestido.png" alt="" class="img-fluid"></div>
+                <div class="about-detail">
+                  <h4 class="center">Francisco Buenrostro López</h4>
+                  <h4 class="center">&</h4>
+                  <h4 class="center">Gloria Viniegra Martinez</h4>
+                  <p class="center"></p>
+                </div>
+              </div>
+
+              <div class="about-content left animated" data-animate="fadeInLeft">
+                <div class="about-icon"><img src="assets/img/traje.png" alt="" class="img-fluid"></div>
+                <div class="about-detail">
+                  <h4 class="center">Mario Serrano García</h4>
+                  <h4 class="center">&</h4>
+                  <h4 class="center">Abigail Salazar García</h4>
+                  <p class="center"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TEAM -->
+    <section class="light">
+      <header class="title">
+        <h2>Nuestros padrinos</h2>
+        <p></p>
+      </header>
+      
+      <div class="container">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content">
+              <div class="about-content left animated" data-animate="fadeInLeft">
+                <div class="about-icon"><img src="assets/img/padrinos.png" alt="" class="img-fluid"></div>
+                <div class="about-detail">
+                  <h4 class="center">Ángel Sergio Dévora Medina</h4>
+                  <h4 class="center">&</h4>
+                  <h4 class="center">Andrea Elizabeth Viniegra Delgadillo</h4>
+                  <p class="center"></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    
+    <!-- INFO -->
+    <section class="light">
+      <header class="title">
+        <h2>Nuestra Ceremonia religiosa</h2>
+      </header>
+      
+      <div class="container">
+        <div class="row blog">
+
+          <div class="col-12">
+            <div class="blog-item animated" data-animate="fadeInDown">
+              <div class="blog-img">
+                <img src="assets/img/templo.jpg" alt="">
+              </div>
+              <div class="blog-content">
+                <h2 class="blog-title">Templo de Nuestra Señora del Carmen</h2>
+                <div class="blog-meta">
+                  <i class="fa fa-calendar"></i>
+                  <p>7:00 PM</p>
+                </div>
+                <div class="blog-text">
+                  <p>
+                    Del Carmen 116, Zona Centro, 44100 Guadalajara, Jal.
+                  </p>
+                  <a class="btn" target="_blank" href="https://goo.gl/maps/s9c3zrYkp37vuVB17">Ver mapa</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>	
+    
+    <!-- INFO -->
+    <section class="light">
+      <header class="title">
+        <h2>Nuestra recepción</h2>
+      </header>
+      
+      <div class="container">
+        <div class="row blog">
+
+          <div class="col-12">
+            <div class="blog-item animated" data-animate="fadeInDown">
+              <div class="blog-img">
+                <img src="assets/img/hacienda.jpeg" alt="">
+              </div>
+              <div class="blog-content">
+                <h2 class="blog-title">Hacienda La Providencia<br><i>Salón "La Galeria"</i></h2>
+                <div class="blog-meta">
+                  <i class="fa fa-calendar"></i>
+                  <p>9:00 PM</p>
+                </div>
+                <div class="blog-text">
+                  <p>
+                    Prol. Río Blanco 1727, Vistas del Centinela, 45130 Zapopan, Jal.
+                  </p>
+                  <a class="btn" target="_blank" href="https://goo.gl/maps/CXhUmUnCcgP7uzqT7">Ver mapa</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>	
+
+    <!-- INFO -->
+    <section id="itinerario" class="light">
+      <header class="title">
+        <h2>Nuestro itinerario</h2>
+      </header>
+      
+      <div class="container">
+        <div class="row">
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/templo-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">Ceremonia religiosa</p>
+                <p class="itinerario-text">7:00 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/apertura-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">Apertura de puerta principal ♥Recepción♥</p>
+                <p class="itinerario-text">8:45 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/servicio-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">inicio de servicio</p>
+                <p class="itinerario-text">9:00 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/ingreso-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">ingreso de novios a pista para presentación</p>
+                <p class="itinerario-text">9:30 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/comidita-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">servicio de banquete</p>
+                <p class="itinerario-text">10:00 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/vals-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">vals novios/ vals papás y padrinos/ baile del billete/ brindis</p>
+                <p class="itinerario-text">11:00 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/perreito-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">apertura de pista para baile</p>
+                <p class="itinerario-text">11:30 PM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/pastel-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">corte de pastel</p>
+                <p class="itinerario-text">1:00 AM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/ramo-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">ramo y liga</p>
+                <p class="itinerario-text">1:30 AM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/flecha-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="itinerario-item animated" data-animate="fadeInDown">
+              <div class="itinerario-img">
+                <img src="assets/img/fin-icon.png" alt="">
+              </div>
+              <div class="itinerario-content">
+                <p class="itinerario-text">fin del evento</p>
+                <p class="itinerario-text">3:00 AM</p>
+              </div>
+              <div class="itinerario-img">
+                <img src="assets/img/cierre-icon.png" alt="">
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>	
+
+    
+    <!-- INFO -->
+    <section class="light">
+      <header class="title">
+        <h2>Nuestra mesa de regalo</h2>
+        <p>Agradecemos mucho todo su amor y apoyo al iniciar esta etapa de formar nuestro hogar.</p>
+      </header>
+      
+      <div class="container">
+        <div class="row blog">
+
+          <div class="col-12">
+            <div class="blog-item animated" data-animate="fadeInDown">
+              <div class="blog-img">
+                <img src="assets/img/liverpool.png" alt="">
+              </div>
+              <div class="blog-content">
+                <h2 class="blog-title">Liverpool</h2>
+                <div class="blog-meta">
+                </div>
+                <div class="blog-text">
+                  <p>
+                    Número de evento: 50545472
+                  </p>
+                  <a class="btn" target="_blank" href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/50545472">Ver mesa ♥</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="blog-item animated" data-animate="fadeInDown">
+              <div class="blog-img">
+                <img src="assets/img/amazon.jpg" alt="">
+              </div>
+              <div class="blog-content">
+                <h2 class="blog-title">Amazon</h2>
+                <div class="blog-meta">
+                </div>
+                <div class="blog-text">
+                  <p>
+                  </p>
+                  <a class="btn" target="_blank" href="https://www.amazon.com.mx/wedding/share/bodadeamor">Ver mesa ♥</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="blog-item animated" data-animate="fadeInDown">
+              <div class="blog-img">
+                <img src="assets/img/santander.jpg" alt="">
+              </div>
+              <div class="blog-content">
+                <h2 class="blog-title">Santander</h2>
+                <div class="blog-meta">
+                </div>
+                <div class="blog-text">
+                  <p>
+                    O si lo prefieres puedes hacer transferencia bancaria a la siguiente cuenta<br>
+                    Cuenta: <b>60600685015</b><br>
+                    CLABE interbancaria: <b>014320606006850159</b>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="light">
+
+      <header class="title">
+        <h2>Confirma tu asistencia</h2>
+        <p>El regalo es opcional, pero lo más importante para nosotros, es tu compañia</p>
+        <p>Da click en el botón inferior para confirmar tu asistencia</p>
+      </header>
+
+      <div class="container">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content center">
+              <img src="assets/img/WhatsApp-logo.png" alt="" class="img-fluid whatsapp">
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="section-content center">
+              <a class="btn btn-link" href="https://wa.me/523336624548" target="_blank">¡CONFIRMAR ASISTENCIA! MARCE</a>
+              <a class="btn btn-link" href="https://wa.me/523321344371" target="_blank">¡CONFIRMAR ASISTENCIA! MARIO</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section class="light">
+      
+      <header class="title">
+        <h2>Código de vestimenta</h2>
+        <p>Formal Etiqueta</p>
+      </header>
+
+      <div class="container mb">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content">
+              <img src="assets/img/vestimenta.jpg" alt="" class="img-fluid">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section class="light">
+      <header class="title">
+        <h2>¡Mamá y Papá merecen un día libre!</h2>
+        <p></p>
+      </header>
+      
+      <div class="container">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content">
+              <div class="about-content left animated" data-animate="fadeInLeft">
+                <div class="about-icon"><img src="assets/img/no-ninos.png" alt="" class="img-fluid"></div>
+                <div class="about-detail">
+                  <p class="center">Por qué mamá y papá merecen un descanso, por lo tanto el evento tiene categoría de <b>No niños.</b></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="light">
+      
+      <header class="title">
+        <h2>Esperamos contar con tu presencia ♥</h2>
+        <p></p>
+      </header>
+
+    </section>
+
+
+    <section class="section-foto1">
+    </section>
+
+
+    <section class="light">
+
+      <div class="container mb">
+        <div class="row table-row">
+
+          <div class="col-12">
+            <div class="section-content center">
+              <img src="assets/img/anillos.png" alt="" class="img-fluid anillos-final">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+	
+   </div><!-- /.container-fluid -->
+    
+    <!-- SCRIPT -->
+    <script type="text/javascript" src="assets/js/main.js"></script>
+	</body>
+</html>
