@@ -27,17 +27,33 @@ em{font-style:italic}
 
 /* Portada */
 #cv{position:fixed;inset:0;z-index:60;display:grid;place-items:center;text-align:center;color:#f1ece1;padding:24px}
-.pn{position:absolute;top:0;bottom:0;width:50.2%;background:radial-gradient(circle at 50% 40%,var(--g2),var(--g1));transition:transform 1.5s cubic-bezier(.7,0,.2,1) .35s}
+.pn{position:absolute;top:0;bottom:0;width:50.2%;background:radial-gradient(circle at 50% 40%,var(--g2),var(--g1));transition:transform 1.5s cubic-bezier(.7,0,.2,1) 0s}
 .pn.l{left:0}.pn.r{right:0}
-#cv.open .l{transform:translateX(-101%)}#cv.open .r{transform:translateX(101%)}
-.ci{position:relative;transition:opacity .6s,transform .8s}
-#cv.open .ci{opacity:0;transform:scale(1.25)}
-.ci p{font-style:italic;letter-spacing:.04em}
-.seal{display:grid;place-items:center;margin:26px auto;width:128px;height:128px;padding:0;border-radius:50%;border:0;cursor:pointer;color:#5b4416;font-size:2rem;line-height:1;white-space:nowrap;letter-spacing:-.02em;
-background:radial-gradient(circle at 35% 30%,#f3dfae,var(--gold) 55%,#a3823f);box-shadow:0 0 0 8px rgba(216,184,120,.18),0 10px 30px #0008;animation:beat 2.2s infinite}
+#cv.open .l{transform:translateX(-101%);transition-delay:2.3s}#cv.open .r{transform:translateX(101%);transition-delay:2.3s}
+.ci{position:relative;transition:opacity .7s 2.3s,transform 1s 2.3s}
+#cv.open .ci{opacity:0;transform:scale(1.3)}
+.ci>p{font-style:italic;letter-spacing:.04em}
+.hint{font-size:1.05rem;opacity:.75;transition:opacity .4s}
+#cv.open .hint{opacity:0}
+
+/* Sobre */
+.env{position:relative;width:min(80vw,340px);aspect-ratio:4/3;margin:100px auto 34px;perspective:1000px;filter:drop-shadow(0 18px 30px #0009)}
+.env>*{position:absolute}
+.eb{inset:0;background:#d9d0bb;border-radius:4px}
+.ec{left:7%;right:7%;top:6%;height:88%;z-index:1;background:#fbf8f0;border:1px solid var(--gold);color:var(--g1);display:grid;align-content:center;gap:2px;padding:10px;transition:transform 1.3s cubic-bezier(.3,.8,.3,1) .75s}
+.ec b{font-size:clamp(2rem,9vw,2.6rem);font-weight:400;line-height:1.1}
+.ec small{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-style:italic;color:var(--gd)}
+.ef{inset:0;z-index:2;background:#ece5d3;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
+.ef::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,#fff5,#0000 55%,#0001)}
+.fl2{left:0;right:0;top:0;height:60%;z-index:3;transform-origin:top;background:#f4efe1;clip-path:polygon(0 0,100% 0,50% 100%);border-radius:4px 4px 0 0}
+.seal{z-index:4;left:50%;top:60%;width:76px;height:76px;margin:-38px 0 0 -38px;display:grid;place-items:center;padding:0;border-radius:50%;border:0;cursor:pointer;color:#5b4416;font-size:1.5rem;line-height:1;white-space:nowrap;letter-spacing:-.02em;
+background:radial-gradient(circle at 35% 30%,#f3dfae,var(--gold) 55%,#a3823f);box-shadow:0 0 0 5px rgba(216,184,120,.25),0 6px 14px #0006;animation:beat 2.2s infinite;transition:opacity .35s,scale .35s}
 .seal:hover{filter:brightness(1.08)}
-@keyframes beat{50%{transform:scale(1.08);box-shadow:0 0 0 18px rgba(216,184,120,.08),0 10px 30px #0008}}
-.hint{font-size:1.05rem;opacity:.75}
+@keyframes beat{50%{transform:scale(1.1)}}
+#cv.open .seal{opacity:0;scale:1.5;animation:none;pointer-events:none}
+#cv.open .fl2{animation:flap .9s ease-in-out forwards}
+@keyframes flap{0%{transform:rotateX(0);z-index:3}49%{z-index:3}50%{z-index:0}100%{transform:rotateX(180deg);z-index:0}}
+#cv.open .ec{transform:translateY(-50%)}
 
 /* Música */
 #mus{position:fixed;top:16px;right:16px;z-index:70;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold);background:#10231ccc;backdrop-filter:blur(6px);display:flex;gap:3px;align-items:center;justify-content:center;cursor:pointer}
@@ -143,8 +159,14 @@ h2.r.in{letter-spacing:0}
   <div class="pn l"></div><div class="pn r"></div>
   <div class="ci">
     <p>Anahi y Martin te invitan a su boda</p>
-    <button class="seal sc" id="open" aria-label="Abrir invitación">A&amp;M</button>
-    <p class="hint">Toca el sello para abrir la invitación y activar la música</p>
+    <div class="env" id="env">
+      <div class="eb"></div>
+      <div class="ec sc"><b>Anahi &amp; Martin</b><small>9 de septiembre de 2027</small></div>
+      <div class="ef"></div>
+      <div class="fl2"></div>
+      <button class="seal sc" id="open" aria-label="Abrir invitación">A&amp;M</button>
+    </div>
+    <p class="hint">Toca el sello para abrir la invitación</p>
   </div>
 </div>
 
@@ -279,11 +301,11 @@ mus.onclick=()=>{au.paused?au.play().then(()=>setMus(1)).catch(()=>{}):(au.pause
 
 /* Abrir portada */
 $('#open').onclick=()=>{
-  $('#cv').classList.add('open');document.body.classList.add('go');
+  $('#cv').classList.add('open');setTimeout(()=>document.body.classList.add('go'),2400);
   au.volume=.7;au.play().then(()=>setMus(1)).catch(()=>setMus(0));
-  setTimeout(()=>$('#cv').remove(),2300);
+  setTimeout(()=>$('#cv').remove(),4600);
 };
-document.body.style.overflow='hidden';$('#open').addEventListener('click',()=>setTimeout(()=>document.body.style.overflow='',1200));
+document.body.style.overflow='hidden';$('#open').addEventListener('click',()=>setTimeout(()=>document.body.style.overflow='',2400));
 
 /* Pétalos */
 if(!reduce){const cols=['#efd3cc','#e2b3ab','#d8b878'];
