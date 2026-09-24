@@ -1,6 +1,9 @@
 .light {
     background-color: #eae5eb;
-    background-image: url(../img/papel.jpg) !important;
+    background-image: url(../img/fondo.jpg) !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
     color: #000;
 }
 .img-fluid {
@@ -155,7 +158,7 @@
     margin-bottom: 30px;
 }
 .section-foto1 {
-    background-image: url(../img/f6.jpg) !important;
+    background-image: url(../img/f6.png) !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -167,7 +170,7 @@
 }
 
 .section-foto2 {
-    background-image: url(../img/f5.jpg) !important;
+    background-image: url(../img/f5.png) !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
