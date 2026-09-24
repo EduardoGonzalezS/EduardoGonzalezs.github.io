@@ -1,0 +1,451 @@
+.title {
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.66);
+    color: white;
+    font-family: "Caveat";
+    font-style: normal;
+    font-size: 2em;
+}
+
+.nosCasamos,
+.titleUbicaciones,
+.titlePadres,
+.titleItinerario,
+.titleOther {
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.66);
+}
+
+#LblUbica {
+    /* background-color: #ddd9d1 !important; */
+    margin-bottom: -10%;
+    /* border-radius: 10px 10px 10px 10px;
+    margin-left: 7%;
+    margin-right: 7%; */
+}
+
+.imgUbica {
+    box-shadow: 12px 12px 21px rgba(0, 0, 0, 0.4) !important;
+}
+
+.textRaleway,
+.textRalewayUbi {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.66);
+}
+
+.textConfirmacion {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    color: white;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.66);
+}
+
+.textRalewayItine {
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.66);
+}
+
+.textHour {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.66);
+    font-weight: 600;
+}
+
+.animationFadeIn1s {
+    display: inline-block;
+    margin: 0 0.5rem;
+    animation: fadeInDown;
+    /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s;
+
+    /* don't forget to set a duration! */
+}
+
+.title-location {
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.66);
+    color: white;
+    font-family: "Marck Script";
+    font-style: normal;
+}
+
+.title-location-section {
+    text-shadow: -6px 5px 15px rgba(0, 0, 0, 0.66);
+    color: rgb(110 110 110);
+    font-family: "Marck Script";
+    font-style: normal;
+    font-size: 2em;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.LblPadrinos {
+    text-shadow: -6px 5px 15px rgba(0, 0, 0, 0.66);
+    color: rgb(110 110 110);
+    font-family: "Marck Script";
+    font-style: normal;
+    font-size: 2em;
+    vertical-align: middle;
+    text-align: center;
+
+}
+
+.blog-content {
+    /* position: relative; */
+    width: calc(100% - 40px);
+    top: -60px;
+    left: 20px;
+    padding: 25px;
+    background: #ffffff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+p.text-padrinos {
+    font-family: "Kalam";
+    font-style: normal;
+    text-shadow: 1px 1px 11px rgba(0, 0, 0, 0.66);
+    color: rgb(84, 84, 84);
+    vertical-align: middle;
+    text-align: center;
+}
+
+p.text-padres {
+    font-family: "Kalam";
+    font-style: normal;
+    text-shadow: 1px 1px 11px rgba(0, 0, 0, 0.66);
+    color: rgb(84, 84, 84);
+}
+
+p.text {
+    font-family: "Kalam";
+    font-style: normal;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.66);
+    color: rgb(84, 84, 84);
+}
+
+a {
+    text-decoration: none !important;
+    color: black !important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.66) !important;
+}
+
+p.textMarck,
+a {
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.66);
+    color: white;
+    font-family: "Marck Script";
+    font-style: normal;
+}
+
+h3.sutitle {
+    font-family: "Caveat";
+    font-style: normal;
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.66);
+    color: white;
+}
+
+hr.border {
+    border-radius: 5px;
+    border: 2px solid #9b9797 !important;
+}
+
+h2.names {
+    font-family: "Sacramento";
+    font-style: normal;
+    font-size: 3em;
+    text-shadow: -4px 2px 8px rgba(0, 0, 0, 0.66);
+    color: white;
+}
+
+.section-be {
+    padding-top: 20%;
+    /* padding-bottom: 30%; */
+}
+
+.backgroundbe {
+    background-image: url('../img/Belen+Eduardo-19.jpg') !important;
+    width: 100%;
+    height: 100%;
+    padding-top: 15%;
+    padding-bottom: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: cover;
+}
+
+.backgroundtime {
+    background-image: url('../img/Belen+Eduardo-77.jpg') !important;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    background-position: center top;
+}
+
+.elementor-countdown-item {
+    background-color: #0000005E;
+    border-radius: 10px 10px 10px 10px;
+    padding: 15px 0px 10px 0px;
+    color: white;
+    margin-right: 1%;
+    font-family: "inherit";
+}
+
+.locations {
+    background-color: #FFFBF7;
+}
+
+.alink {
+    font-size: 2em;
+}
+
+.section-location {
+    background-color: #f2f2f2;
+}
+
+.section-locationM {
+    background-color: #f2f2f2;
+}
+
+.section-location-img2 {
+    background-blend-mode: multiply;
+    background-image: url(https://omaryevelyn.com/wp-content/uploads/2023/02/FondoEve-y-Omar.webp) !important;
+    background-color: #eaf1ea;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.section-location-img3 {
+    background-image: url('https://invites-now.com/wp-content/uploads/2023/02/background-flores-22-scaled.jpg');
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.section-location-img {
+    /* background-image: url('https://invites-now.com/wp-content/uploads/2023/01/background-alma-grises-1-e1681168878148.jpg'); */
+    background-image: url(https://omaryevelyn.com/wp-content/uploads/2023/02/FondoEve-y-Omar.webp) !important;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.vermesa {
+    border-radius: 0.2em;
+    border: solid 1px rgba(87, 86, 89, 1);
+    margin: 10px;
+}
+
+[data-inviewport="mesaDeRegalosClss"].is-inViewport {
+    background-color: #fafafa !important;
+    /* margin-bottom: -10%; */
+    /* border-radius: 10px 10px 10px 10px; */
+    margin-left: 7%;
+    margin-right: 7%;
+    animation: fadeInDown;
+    animation-duration: 2s;
+}
+
+
+[data-inviewport="animationFadeIn"].is-inViewport,
+.animationFadeIn {
+    display: block;
+    animation: fadeInDown;
+    /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s;
+    /* don't forget to set a duration! */
+}
+
+[data-inviewport="novios-iconos"].is-inViewport {
+    display: block;
+    animation: zoomIn;
+    animation-duration: 2s;
+}
+
+[data-inviewport="padres-nombres"].is-inViewport {
+    display: block;
+    animation: slideInDown;
+    animation-duration: 2s;
+}
+
+[data-inviewport="subtitle"].is-inViewport {
+    display: block;
+    animation: pulse;
+    animation-duration: 2s;
+}
+
+[data-inviewport="subtitle"].is-inViewport {
+    display: block;
+    animation: pulse;
+    animation-duration: 2s;
+}
+
+/* .titlePadres {
+    text-shadow: -6px 3px 9px rgba(0, 0, 0, 0.66);
+    color: #413737;
+    font-family: "Sacramento";
+    font-style: normal;
+    font-size: 3em;
+} */
+
+.confirmacion {
+    text-shadow: -6px 3px 9px rgba(0, 0, 0, 0.66);
+    color: #413737;
+    font-family: "Sacramento";
+    font-style: normal;
+    font-size: 3em;
+}
+
+.confirmacionNovios {
+    border-radius: 0.2em;
+    border: solid 1px rgba(87, 86, 89, 1);
+    margin: 13%;
+}
+
+.btn-flotante {
+    font-size: 16px;
+    /* Cambiar el tamaño de la tipografia */
+    text-transform: uppercase;
+    /* Texto en mayusculas */
+    font-weight: bold;
+    /* Fuente en negrita o bold */
+    color: #ffffff;
+    /* Color del texto */
+    border-radius: 5px;
+    /* Borde del boton */
+    letter-spacing: 2px;
+    /* Espacio entre letras */
+    background-color: #a6936a;
+    /* Color de fondo */
+    padding: 18px 30px;
+    /* Relleno del boton */
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    /* transition: all 300ms ease 0ms; */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}
+
+@media only screen and (max-width: 600px) {
+    .btn-flotante {
+        font-size: 14px;
+        padding: 12px 20px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+.button2 {
+    --black: #000000;
+    --ch-black: #141414;
+    --eer-black: #1b1b1b;
+    --night-rider: #2e2e2e;
+    --white: #ffffff;
+    --af-white: #f3f3f3;
+    --ch-white: #e1e1e1;
+    border-radius: 8px;
+    width: 95px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    height: 25px;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0px 15px;
+    border: none;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    font-weight: 700;
+    transition-duration: 0.1s;
+    background-color: var(--ch-black);
+}
+
+.button2:before,
+.button2:after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    border-radius: 10px;
+    background: linear-gradient(45deg,
+            var(--ch-black), var(--eer-black),
+            var(--night-rider), var(--ch-white), var(--night-rider),
+            var(--eer-black), var(--ch-black), var(--ch-black));
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+}
+
+@keyframes steam {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.button2:after {
+    filter: blur(50px);
+}
+
+.connectBtn {
+    width: 230px;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px; */
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(to right, #8bfca9, #aec0a1);
+    box-shadow: 0 20px 30px -7px rgba(97, 118, 238, 0.5);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.connectBtn:hover {
+    box-shadow: none;
+    transform: translate(0px, 2.2px);
+}
+
+.connectBtn:active {
+    transform: scale(0.96) translate(0px, 3.2px);
+}
+.ubi-img {
+    --_g: 10% /45% 45% no-repeat linear-gradient(#000 0 0);
+    --m:
+        left var(--_i, 0%) top var(--_g),
+        bottom var(--_i, 0%) left var(--_g),
+        top var(--_i, 0%) right var(--_g),
+        right var(--_i, 0%) bottom var(--_g);
+    -webkit-mask: var(--m);
+    mask: var(--m);
+    filter: grayscale();
+    transition: 1s linear;
+    cursor: pointer;
+}
+[data-inviewport="ubi-img"].is-inViewport {
+    --_i: 10%;
+    filter: grayscale(0);
+}

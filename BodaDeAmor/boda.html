@@ -1,781 +1,832 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<html lang="es">
-	<head>
-	<meta charset="utf-8">
+<head>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>¡Nos Casamos!</title>
-
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="assets/css/animate.css"/>
-
-		<link rel="stylesheet" href="assets/css/style.css" />
-		<link rel="stylesheet" href="assets/css/boda.css" />
-
-    <script type="text/javascript" src="assets/js/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/js/plugins.js"></script>
-
-	</head>
-	<body>
-	<div class="svg-wrap">
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <path id="arrow-left" d="M26.667 10.667q1.104 0 1.885 0.781t0.781 1.885q0 1.125-0.792 1.896l-14.104 14.104h41.563q1.104 0 1.885 0.781t0.781 1.885-0.781 1.885-1.885 0.781h-41.563l14.104 14.104q0.792 0.771 0.792 1.896 0 1.104-0.781 1.885t-1.885 0.781q-1.125 0-1.896-0.771l-18.667-18.667q-0.771-0.813-0.771-1.896t0.771-1.896l18.667-18.667q0.792-0.771 1.896-0.771z"></path>
-      </svg>
-
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <path id="arrow-right" d="M37.333 10.667q1.125 0 1.896 0.771l18.667 18.667q0.771 0.771 0.771 1.896t-0.771 1.896l-18.667 18.667q-0.771 0.771-1.896 0.771-1.146 0-1.906-0.76t-0.76-1.906q0-1.125 0.771-1.896l14.125-14.104h-41.563q-1.104 0-1.885-0.781t-0.781-1.885 0.781-1.885 1.885-0.781h41.563l-14.125-14.104q-0.771-0.771-0.771-1.896 0-1.146 0.76-1.906t1.906-0.76z"></path>
-      </svg>
-    </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/slides.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="assets/js/invitados.js"></script>
+    <script src="assets/js/main.js"></script>
 
 
-    <!-- MAIN CONTENT -->
+    <!-- <script type="text/javascript" src="assets/js/plugins.js"></script> -->
 
-   <div class="container-fluid">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <!-- HEADER -->
 
-    <section id="header" class="">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-      <!-- NAVIGATION -->
-      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
 
-      <!-- SLIDER -->
-      <div class="header-slide">
-        <section>
-          <div id="loader" class="pageload-overlay" data-opening="M 0,0 0,60 80,60 80,0 z M 80,0 40,30 0,60 40,30 z">
-            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="none">
-              <path d="M 0,0 0,60 80,60 80,0 Z M 80,0 80,60 0,60 0,0 Z"/>
-            </svg>
-          </div> <!-- /.pageload-overlay -->
-          
-          <div class="image-slide bg-fixed">
-            <div class="overlay">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
 
-                    <div class="slider-content">
-                      <h1></h1>
-                      <p></p>
+    <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sacramento">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Caveat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kalam">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Marck+Script">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+    <title>¡Nos casamos!</title>
+</head>
+
+<body>
+  
+    <a class="btn-flotante" id="Btnplay">
+        <i class="bi bi-play-fill bi--2x" id="BtnIcon"></i>
+        <audio style="display:none" id="AudioControl" controls autoplay src="assets/music/Yellow.mp3">
+            <!-- <audio style="display:none" id="AudioControl" controls autoplay src="/assets/music/Yellow.mp3"> -->
+        </audio>
+    </a>
+    <!-- ------------------------------->
+    <!---------- INCIO ----------------->
+    <!-- ------------------------------->
+    <div>
+        <div class="backgroundbe">
+            <br><br>
+            <div class="container">
+                <section class="row">
+                    <div class="col-3" style="text-align: right;">
+                        <hr class="border animate__animated animate__fadeInDown animate__delay-1s">
                     </div>
+                    <div class="col-6 text-center">
+                        <h1 class="title animate__animated" id="H1NuestraBoda">¡Nuestra boda!</h3>
+                    </div>
+                    <div class="col-3" style="text-align: left;">
+                        <hr class="border animate__animated animate__fadeInDown animate__delay-1s">
+                    </div>
+                </section>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <h3 class="sutitle animate__animated" id="H3FechaNoviembre">11 de Noviembre 2023</h3>
+                    </div>
+                </div>
+            </div>
+            <br><br><br><br> <br><br><br><br><br><br><br><br> <br><br><br><br>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <h2 class="names animate__animated" id="H2BelenEduardo">Belén y Eduardo</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------->
+    <!---------- END INCIO ------------->
+    <!-- ------------------------------->
 
-                  </div> <!-- /.col-md-12 -->
-                </div> <!-- /.row -->
-              </div> <!-- /.container -->
-            </div> <!-- /.overlay -->
-          </div> <!-- /.image-slide -->
 
-          <nav class="nav-slide">
-            <a class="prev hidden" href="#prev">
-              <span class="icon-wrap">
-                <svg class="icon" width="32" height="32" viewBox="0 0 64 64">
-                  <use xlink:href="#arrow-left">
-                </svg>
-              </span>
-              <div>
-                <span>Prev Photo</span>
-                <h3>...</h3>
-                <p>...</p>
-                <img alt="Previous thumb">
-              </div>
-            </a>
-            <a class="next hidden" href="#next">
-              <span class="icon-wrap">
-                <svg class="icon" width="32" height="32" viewBox="0 0 64 64">
-                  <use xlink:href="#arrow-right">
-                </svg>
-              </span>
-              <div>
-                <span>Next Photo</span>
-                <h3>...</h3>
-                <p>...</p>
-                <img alt="Next thumb">
-              </div>
-            </a>
-          </nav>
+
+    <!-- ------------------------------->
+    <!---------- NOS CASAMOS ----------->
+    <!-- ------------------------------->
+    <div>
+        <div class="container section-location-img">
+            <br><br>
+            <div class="container">
+                <section class="row">
+                    <div class="col-2" style="text-align: right;">
+                        <hr class="border">
+                    </div>
+                    <div class="col-8 text-center">
+                        <h1 class="nosCasamos" id="LblNosCasamos">¡NOS CASAMOS!</h3>
+                    </div>
+                    <div class="col-2" style="text-align: left;">
+                        <hr class="border">
+                    </div>
+                </section>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <p class="textRaleway">Damos gracias a Dios por el privilegio de encontrarnos, y hoy con el
+                            profundo
+                            amor que sentimos hemos decidido unir nuestras vidas en matrimonio.</p>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <p class="textRaleway">¡Nos hará muy felices que nos acompañes en este día tan especial!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <hr class="border">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- -------------------------------->
+    <!--------END NOS CASAMOS ----------->
+    <!-- -------------------------------->
+
+
+    <!-- ----------------------------->
+    <!----------- CONTADOR ----------->
+    <!-- ----------------------------->
+    <div>
+        <section class="backgroundtime">
+            <br> <br><br>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col text-center">
+                        <h1 class="title animate__animated" id="LblSoloFaltan">¡Solo faltan!</h3>
+                    </div>
+                </div>
+            </div>
+            <br> <br>
+            <div class="container text-center" style="padding-left: 6%; padding-right: 5%;">
+                <div class="row elementor-countdown-wrapper" data-date="1680381000">
+                    <div class="col elementor-countdown-item">
+                        <span id="days" class="elementor-countdown-digits elementor-countdown-days">00</span><br>
+                        <span class="elementor-countdown-label">Días</span>
+                    </div>
+                    <div class="col  elementor-countdown-item"><span id="hours"
+                            class="elementor-countdown-digits elementor-countdown-hours">00</span><br> <span
+                            class="elementor-countdown-label">Horas</span></div>
+                    <div class="col elementor-countdown-item"><span id="minutes"
+                            class="elementor-countdown-digits elementor-countdown-minutes">00</span><br> <span
+                            class="elementor-countdown-label">Minutos</span></div>
+                    <div class="col elementor-countdown-item"><span id="seconds"
+                            class="elementor-countdown-digits elementor-countdown-seconds">00</span><br> <span
+                            class="elementor-countdown-label">Segundos</span></div>
+                </div>
+            </div>
+            <br><br><br><br><br><br>
         </section>
+    </div>
+    <!-------------------------------->
+    <!---------END CONTADOR ----------->
+    <!-- ------------------------------>
 
-        <script type="text/javascript">
-        var dataHeader = [
-                            {
-                              bigImage :"assets/img/mym.png",
-                              title : "¡Nos Casamos!",
-                              subtitle : "Este día es el inicio de un gran viaje que compartiremos llenos de amor",
-							                author : ""
-                            },
-                            {
-                              bigImage :"assets/img/mym.png",
-                              title : "¡Nos Casamos!",
-                              subtitle : "Este día es el inicio de un gran viaje que compartiremos llenos de amor",
-							                author : ""
+
+    <!-- --------------------------------->
+    <!----------- HUBICACIONES ----------->
+    <!-- --------------------------------->
+    <div>
+        <section class="container section-location ">
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <h1 class="titleUbicaciones animate__animated" id="LblUbica">UBICACIONES</h3>
+                </div>
+            </div>
+        </section>
+        <section class="section-location" style="padding-top: 1%; margin-bottom: -8%">
+            <div class="container" style="margin-top: -9%;">
+                <div class="container section-location-img">
+                    <br><br>
+                    <div>
+                        <section class="container animate__animated" id="SctCeremoniaIco">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <br><br>
+                                    <img decoding="async" width="15%"
+                                        src="https://invites-now.com/wp-content/uploads/2022/11/Ceremonia-ICONO.png">
+                                </div>
+                            </div>
+                        </section>
+                        <section class="row">
+                            <div class="col-3" style="text-align: right;">
+                                <hr class="border">
+                            </div>
+                            <div class="col-6 text-center" style="margin-top: 10px;">
+                                <h1 class="textRalewayUbi animate__animated" id="LblCeremonia">Ceremonia religiosa</h3>
+                            </div>
+                            <div class="col-3" style="text-align: left;">
+                                <hr class="border">
+                            </div>
+                        </section>
+                        <div>
+                        </div>
+                        <section class="container">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <p class="textRalewayUbi animate__animated" id="LblSabado11">Sábado, 11 de Noviembre
+                                        2023
+                                    </p>
+                                    <p class="textRalewayUbi animate__animated" id="Lbl6pm">6:00 pm</p>
+                                    <img src="assets/img/templo.jpg" class="imgUbica ubi-img" data-inviewport="ubi-img"
+                                        style="width: 80%; height: 51%;" />
+                                    <p class="textRalewayUbi" style="padding-top: 10px;" id="LblParroquia">"Parroquia El
+                                        Señor del Encino"</p>
+                                    <a class="textRalewayUbi" href="https://goo.gl/maps/2YYcupQGxATFTB2Q9"
+                                        target="_blank" id="AMapaParroquia" class="animate__animated animate__flipInX">
+                                        <span> > </span> Abrir
+                                        mapa <span>
+                                            < </span></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div>
+                        <section class="container">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="15%"
+                                        src="https://invites-now.com/wp-content/uploads/2022/11/cocktail-icono.png">
+                                </div>
+                            </div>
+                        </section>
+                        <section class="row">
+                            <div class="col-3" style="text-align: right;">
+                                <hr class="border">
+                            </div>
+                            <div class="col-6 text-center" style="margin-top: 10px;">
+                                <h1 class="textRalewayUbi" id="LblRecepcion">Recepción</h3>
+                            </div>
+                            <div class="col-3" style="text-align: left;">
+                                <hr class="border">
+                            </div>
+                        </section>
+                        <section class="container">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <p class="textRalewayUbi" id="LblSabadoQuinta">Sábado, 11 de Noviembre 2023
+                                    </p>
+                                    <p class="textRalewayUbi" id="Lbl8pm">8:00 pm</p>
+                                    <img src="assets/img/quinta.jpg" class="imgUbica ubi-img" data-inviewport="ubi-img"
+                                        width="90%" />
+                                    <p class="textRalewayUbi" style="padding-top: 10px;" id="LblQuintaTremen">"Quinta la
+                                        trementina"
+                                    </p>
+                                    <a class="textRalewayUbi" href="https://goo.gl/maps/HkAvXsboyM3xsakn8"
+                                        target="_blank" id="AMapaQuinta"> <span>></span>
+                                        Abrir
+                                        mapa <span>
+                                            < </span></a>
+                                    <br><br>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </section>
+    </div>
+    <!-- ------------------------------->
+    <!---------END HUBICACIONES -------->
+    <!-- ------------------------------->
+
+
+    <!-- ------------------------------->
+    <!--------SLIDE FOTOS -- ----------->
+    <!-- ------------------------------->
+    <div>
+        <section class="container section-location ">
+            <div id="carouselExampleCaptions" class="carousel slide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="assets/img/Belen + Eduardo-2.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/img/Belen + Eduardo-94.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/img/Belen + Eduardo-90.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/img/Belen + Eduardo-33.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/img/Belen + Eduardo-62.jpg" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+    </div>
+   
+    <!-- --------------------------------->
+    <!----- END SLIDE FOTOS -- ----------->
+    <!-- --------------------------------->
+
+
+    <!-- -------------------------------->
+    <!--------NUESTROS PADRES ----------->
+    <!-- -------------------------------->
+    <div>
+        <section class="container section-locationM">
+            <div class="section-location-img">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <hr class="border">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <h1 class="titlePadres" id="LblNuestrosPadres">¡Nuestros padres!</h3>
+                        </div>
+                    </section>
+                </div>
+                <section class="container" id="SctIconInicio">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <img decoding="async" src="assets/img/cierre-icon.png" style="width: 65%; margin: -2%;">
+                        </div>
+                    </div>
+                </section>
+                <div class="container">
+                    <section class="container" id="SctPadresNovia">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <p class="textRaleway" id="LblMamaNovia">Angélica Hernández</p>
+                                <p class="textRaleway" id="LblPapaNovia">José Salas</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div>
+                    <section class="container" id="SctVestido">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <img src="assets/img/vestido.png" style="width: 15%;">
+                            </div>
+                        </div>
+                    </section>
+                </div><br>
+                <div class="container">
+                    <section class="container" id="SctPadresNovio">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <p class="textRaleway" id="LblMamaNovio">Irma Sandoval †</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div>
+                    <section class="container" id="SctTraje">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <img src="assets/img/traje.png" style="width: 15%;">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <hr class="border">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- -------------------------------->
+    <!----END NUESTROS PADRES ----------->
+    <!-- -------------------------------->
+
+
+    <!-- -------------------------------->
+    <!--------NUESTROS PADRINOS---------->
+    <!-- -------------------------------->
+    <div>
+        <section class="container section-locationM">
+            <div class="section-location-img">
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <h1 class="titlePadres" id="LblNuestrosPadrinos">¡Nuestros padrinos!</h3>
+                        </div>
+                    </section>
+                </div>
+                <section class="container" id="SctIconInicio">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <img decoding="async" src="assets/img/cierre-icon.png" style="width: 65%; margin: -2%;">
+                        </div>
+                    </div>
+                </section>
+                <div class="container">
+                    <section class="container" id="SctPadrinos">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <p class="textRaleway" id="LblMadrina">Martha Sandoval</p>
+                                <p class="textRaleway" id="LblPadrino">Carlos Lizarde</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <hr class="border">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- -------------------------------->
+    <!----END NUESTROS PADRINOS --------->
+    <!-- -------------------------------->
+
+
+    <!-- ------------------------------->
+    <!----------- ITINERARIO ----------->
+    <!-- ------------------------------->
+    <div>
+        <section class="container section-location">
+            <div class="container section-location-img2">
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <br><br>
+                            <h1 class="titleItinerario" id="LblItinerario" style="font-size: 30px !important">ITINERARIO
+                                </h3>
+                        </div>
+                    </section>
+                </div>
+                <br>
+                <div>
+                    <section class="container" id="SctIconInicio">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <img decoding="async" width="100%" src="assets/img/cierre-icon.png">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- lista de itinerario -->
+                <div id="DContentItinerario">
+                    <div class=" justify-content-evenly" id="SctIconIglesia">
+                        <div class="text-center">
+                            <img decoding="async" width="100%" src="assets/img/templo-icon.png">
+                            <label class="textRalewayItine">Ceremonia religiosa</label>
+                            <p class="textHour">6:00 pm</p>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="container" id="SctIconFlecha1">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="100%" src="assets/img/flecha-icon.png">
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="justify-content-evenly" id="SlcIconApertura">
+                        <div class="text-center">
+                            <img decoding="async" width="100%" src="assets/img/apertura-icon.png">
+                            <label class="textRalewayItine">Apertura de puerta principal</label><br>
+                            <label class="textRalewayItine">"Recepción"</label>
+                            <p class="textHour">7:45 pm</p>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="container" id="SctIconFlecha1">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="100%" src="assets/img/flecha-icon.png">
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="justify-content-evenly" id="SlctIconBodaCivil">
+                        <div class="text-center">
+                            <img decoding="async" width="15%" src="assets/img/wedding-ring_1317882.png"><br>
+                            <label class="textRalewayItine">Ceremonia civil</label><br>
+                            <label class="textRalewayItine">(En la Quinta)</label>
+                            <p class="textHour">8:00 pm</p>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="container" id="SctIconFlecha1">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="100%" src="assets/img/flecha-icon.png">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="justify-content-evenly" id="SctHoraCocteleria">
+                        <div class="text-center">
+                            <img decoding="async" width="15%" src="assets/img/toasts_113184.png"><br>
+                            <label class="textRalewayItine">Inicio de</label><br>
+                            <label class="textRalewayItine">cocteleria</label>
+                            <p class="textHour">8:30 pm</p>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="container" id="SctIconFlecha1">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="100%" src="assets/img/flecha-icon.png">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="justify-content-evenly" id="">
+                        <div>
+                            <div class="text-center" id="SlctIconBodaBrindis">
+                                <p class="textHour">9:30 pm</p>
+                            </div>
+                            <div class="text-center" id="SctIconBrindis">
+                                <img decoding="async" width="15%" src="assets/img/champagne-glass_1161670.png"
+                                    style="margin: 0% 0% 8% 0%;"><br>
+                                <label class="textRalewayItine">Brindis</label>
+                            </div>
+                            <div class="text-center" id="SctIconCena">
+                                <img decoding="async" width="100%" src="assets/img/comidita-icon.png"
+                                    style="margin: 1% 0% 0% 0%;"><br>
+                                <label class="textRalewayItine">Cena</label>
+                            </div>
+                            <div class="text-center" id="SctIconVals">
+                                <img decoding="async" width="15%" src="assets/img/wedding-couple_146455.png"
+                                    style="margin: 8% 0% 8% 0%;"><br>
+                                <label class="textRalewayItine">Val's</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="container" id="SctIconFlecha1">
+                            <div class="row justify-content-center">
+                                <div class="col text-center">
+                                    <img decoding="async" width="100%" src="assets/img/flecha-icon.png">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="justify-content-evenly" id="SctIconFin">
+                        <div class="text-center">
+                            <img decoding="async" width="100%" src="assets/img/fin-icon.png"><br>
+                            <label class="textRalewayItine">Fin del</label> <br>
+                            <label class="textRalewayItine">evento</label>
+                            <p class="textHour">3:00 am</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <section class="container" id="SctIconCierre">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <img decoding="async" width="100%" src="assets/img/cierre-icon.png">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+        </section>
+    </div>
+    <!-- ------------------------------->
+    <!--------END ITINERARIO ----------->
+    <!-- ------------------------------->
+
+
+    <!-- --------------------------------->
+    <!----- CODIGO DE VESTIMENTA --------->
+    <!-- --------------------------------->
+    <div>
+        <section class="container section-location ">
+            <div class="section-location-img">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <hr class="border">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <h1 class="titlePadres" id="LblCodigoVestimenta">¡Código de vestimenta!</h3>
+                        </div>
+                    </section>
+                </div>
+                <br>
+                <div class="container">
+                    <section class="container" id="SctIconCodigos">
+                        <div class="row justify-content-center">
+                            <div class="col-6 text-center">
+                                <img src="https://invites-now.com/wp-content/uploads/2023/01/suit-gris.png" width="60%">
+                            </div>
+                            <div class="col-6 text-center">
+                                <img src="https://invites-now.com/wp-content/uploads/2022/07/Dress_3_black-1.png"
+                                    width="50%">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <hr class="border">
+                                <p class="titleOther" id="LblFormalEtiqueta">¡¡¡ Formal etiqueta !!!</p>
+                                <hr class="border">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- --------------------------------->
+    <!--END CODIGO DE VESTIMENTA --------->
+    <!-- --------------------------------->
+
+
+    <!-- --------------------------------->
+    <!----------- MESA DE REGALO --------->
+    <!-- --------------------------------->
+    <div>
+        <section class="container section-locationM ">
+            <div class="section-location-img2">
+                <br><br>
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <h1 class="titleOther" id="LblMesaRegalo">¡Mesa de regalo!</h3>
+                        </div>
+                    </section>
+                </div>
+                <br>
+                <div class="container">
+                    <section class="container animate__animated" id="SctMesaderegalosDeRegalos">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
+                                <p class="textRaleway animate__animated" id="PAgradecimientos">Agradecemos mucho
+                                    todo su
+                                    amor y apoyo al iniciar esta etapa de formar nuestro hogar</p>
+                                <hr class="border">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div>
+                                <img src="assets/img/liverpool.png" style="width: 100%;" />
+                            </div>
+                            <div class="blog-content section-location-img" id="DivMesaLiverpool">
+                                <div class="blog-meta">
+                                </div>
+                                <div class="blog-text" style="text-align: center;">
+                                    <p class="textRaleway">
+                                        Número de evento: 51237758
+                                    </p>
+                                    <div class=" justify-content-center">
+                                        <button class="button2"
+                                            href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51237758"
+                                            id="BtnMesaLiverpool">
+                                            Ver mesa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="row justify-content-center">
+                            <div>
+                                <img src="assets/img/amazon.jpg" style="width: 100%;" />
+                            </div>
+                            <div class="blog-content section-location-img" id="DivMesaAmazon">
+                                <div class="blog-meta">
+                                </div>
+                                <div class="blog-text" style="text-align: center;">
+                                    <div class=" justify-content-center">
+                                        <button class="button2" id="BtnMesaAmazon"
+                                            href="https://www.amazon.com.mx/wedding/share/BELENYEDUARDO">
+                                            Ver mesa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- --------------------------------->
+    <!----------- MESA DE REGALO --------->
+    <!-- --------------------------------->
+
+
+    <!-- --------------------------------->
+    <!---- CONFIRMACION DE ASISTENCIA ---->
+    <!-- --------------------------------->
+    <div>
+        <section class="container section-locationM ">
+            <div class="section-location-img2">
+                <br><br>
+                <div class="container">
+                    <section class="row">
+                        <div class="col text-center">
+                            <hr>
+                            <h1 class="titleOther">¡Confirmación de asistencia!</h1>
+                            <hr>
+                        </div>
+                    </section>
+                </div>
+                <br>
+                <!-- <div class="container animate__animated" id="DivWhatsapp">
+                    <div style="text-align: center;">
+                        <img src="assets/img/WhatsApp-logo.png" style="width: 30%;" alt="">
+                    </div>
+                </div> -->
+                <script type="text/javascript">
+                    var parseQueryString = function (url) {
+                        var urlParams = {};
+                        url.replace(
+                            new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                            function ($0, $1, $2, $3) {
+                                urlParams[$1] = $3;
                             }
-                        ],
-            loaderSVG = new SVGLoader(document.getElementById('loader'), {speedIn : 600, speedOut : 600, easingIn : mina.easeinout});
-            loaderSVG.show()
-        </script>
+                        );
 
-      </div><!-- /.header-slide -->
-    </section>
-
-    <section id="about" class="light">
-      <div class="container mb">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content">
-              <img src="assets/img/mymDia2.png" alt="" class="img-fluid">
+                        return urlParams;
+                    }
+                    var urlToParse = location.search;
+                    var result = parseQueryString(urlToParse);
+                </script>
+                <div class="blog-text" style="text-align: center;">
+                    <div>
+                        <button class="connectBtn textConfirmacion" id="aRefBelen" href="">
+                            <img src="assets/img/WhatsApp-logo.png" style="width: 20%;" alt="">
+                            Confirma con: Belén
+                        </button>
+                    </div><br>
+                    <div>
+                        <button class="connectBtn textConfirmacion" id="aRefEduardo" href="">
+                            <img src="assets/img/WhatsApp-logo.png" style="width: 20%;" alt="">
+                            Confirma con: Eduardo
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <!-- <div class="confirmacionNovios">
+                       
+                         <a class="alink" id="aRefBelen" href="" target="_blank" style="font-size: 23px;">
+                            Confirma con: Belén</a> 
+                    </div> -->
+                <!-- <div class="confirmacionNovios">
+                        <a class="alink" id="aRefEduardo" href="" target="_blank" style="font-size: 23px;">
+                            Confirma con: Eduardo </a>
+                    </div> -->
             </div>
-          </div>
-
-        </div>
-      </div>
-
-      <header class="title">
-        <h2>Nuestro Gran Día</h2>
-        <p class="center">
-          
-          El <strong>Destino</strong> nos puso en el <strong>mismo camino</strong>.<br> y ahora... <br> caminaremos juntos <br>
-          <strong>HASTA EL FINAL</strong>
-        </p>
-      </header>
-
-      <div class="container">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content center">
-              <img src="assets/img/anilloboda.png" alt="" class="img-fluid anillos">
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </section>
-	
-    <section class="section-foto2">
-    </section>
-	
-    <!-- PORTFOLIO -->
-    <section id="portfolio" class="light">
-      <header class="title">
-        <h2>Nuestra historia</h2>
-        <p>Era tu historia <br>
-          Se cruzó con la mía<br>
-          Tanta gente, tanta gente ahí fuera<br>
-          Y coincidir aquel día.</p>
-      </header>
-
-      <div class="container-fluid">
-        <div class="row hidden">
-          <ul id="filters" class="list-inline">
-            <li data-filter="all" class="filter">All</li>
-            <li data-filter=".branding" class="filter">Branding</li> 
-            <li data-filter=".graphic" class="filter">Graphic</li> 
-            <li data-filter=".printing" class="filter">Printing</li> 
-            <li data-filter=".video" class="filter">Video</li> 
-          </ul>
-        </div>
-
-        <div class="row">
-          <div class="container-portfolio center">
-
-            <video controls >
-              <source src="assets/media/videodeamor.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-            </video>
-            <!-- PORTFOLIO OBJECT -->
             <script type="text/javascript">
-            var portfolio = [
-                    // {
-                    //   category : "branding",
-                    //   image: "assets/img/f6.jpg",
-                    //   title : "Charming <span>Roxy</span>",
-                    //   link : "#none",
-                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
-                    // },
-                    // {
-                    //   category : "graphic",
-                    //   image: "assets/img/f6.jpg",
-                    //   title : "Fresh <span>Bubba</span>",
-                    //   link : "#none",
-                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
-                    // },
-                    // {
-                    //   category : "graphic",
-                    //   image: "assets/img/f5.png",
-                    //   title : "Wild <span>Romeo</span>",
-                    //   link : "#none",
-                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
-                    // },
-                    // {
-                    //   category : "video",
-                    //   image: "assets/img/f6.jpg",
-                    //   title : "Strange <span>Dexter</span>",
-                    //   link : "#none",
-                    //   text : "Lorem ipsum Dolor in minim fugiat ut nisi occaecat fugiat. Lorem ipsum Quis tempor Ut enim officia deserunt consectetur."
-                    // }
-                ];
+                for (var i = 0; i < invitados.length; i++) {
+                    if (invitados[i].no === result.person) {
+                        document.getElementById("aRefEduardo").href = invitados[i].urlHe;
+                        document.getElementById("aRefBelen").href = invitados[i].urlShe;
+                        i = invitados.length;
+                    }
+                }
             </script>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- TEAM -->
-    <section class="light">
-      <header class="title">
-        <h2>Nuestros padres</h2>
-        <p></p>
-      </header>
-      
-      <div class="container">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content">
-              <div class="about-content left animated" data-animate="fadeInLeft">
-                <div class="about-icon"><img src="assets/img/vestido.png" alt="" class="img-fluid"></div>
-                <div class="about-detail">
-                  <h4 class="center">José Guadalupe Salas Vázquez</h4>
-                  <h4 class="center">&</h4>
-                  <h4 class="center">Angélica Hernández Morales</h4>
-                  <p class="center"></p>
-                </div>
-              </div>
-
-              <div class="about-content left animated" data-animate="fadeInLeft">
-                <div class="about-icon"><img src="assets/img/traje.png" alt="" class="img-fluid"></div>
-                <div class="about-detail">
-                  <h4 class="center">Irma Sandoval Valencia</h4>
-                  <h6 class="center"><i>Que nos acampaña desde el cielo, en su lugar ...</i></h6>
-                  <!-- <h6 class="center"><i>En su lugar</i></h6> -->
-                  <h4 class="center">Maria Socorro Berumen González</h4>
-                  <!-- <h4 class="center">&</h4>
-                  <h4 class="center">Alicia Valencia Garibay</h4> -->
-                  <!-- <h4 class="center">&</h4>
-                  <h4 class="center">Abigail Salazar García</h4> -->
-                  <p class="center"></p>
-                </div>
-              </div>
+            <div class="container">
+                <section class="row">
+                    <div class="col text-center">
+                        <hr>
+                        <h1 class="titleOther">¡Esperamos contar con tu presencia!</h1>
+                        <hr>
+                    </div>
+                </section>
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
+    </div>
+    <!-- ------------------------------------->
+    <!---- END CONFIRMACION DE ASISTENCIA ---->
+    <!-- ------------------------------------->
+</body>
 
-    </section>
-
-    <!-- TEAM -->
-    <section class="light">
-      <header class="title">
-        <h2>Nuestros padrinos</h2>
-        <p></p>
-      </header>
-      
-      <div class="container">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content">
-              <div class="about-content left animated" data-animate="fadeInLeft">
-                <div class="about-icon"><img src="assets/img/padrinos.png" alt="" class="img-fluid"></div>
-                <div class="about-detail">
-                  <h4 class="center">Martha Sandoval</h4>
-                  <h4 class="center">&</h4>
-                  <h4 class="center">Carlos Lizarde</h4>
-                  <p class="center"></p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-    
-    <!-- INFO -->
-    <section class="light">
-      <header class="title">
-        <h2>Nuestra Ceremonia religiosa</h2>
-      </header>
-      
-      <div class="container">
-        <div class="row blog">
-
-          <div class="col-12">
-            <div class="blog-item animated" data-animate="fadeInDown">
-              <div class="blog-img">
-                <img src="assets/img/templo.jpg" alt="">
-              </div>
-              <div class="blog-content">
-                <h2 class="blog-title">Parroquia San Pedro Apóstol</h2>
-                <div class="blog-meta">
-                  <i class="fa fa-calendar"></i>
-                  <p>4:00 PM</p>
-                </div>
-                <div class="blog-text">
-                  <p>
-                    Guillermo Prieto 60, Centro, 45500 San Pedro Tlaquepaque, Jal.
-                  </p>
-                  <a class="btn" target="_blank" href="https://goo.gl/maps/QPXWGsqqZ4m92CqA9">Ver mapa</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </section>	
-    
-    <!-- INFO -->
-    <section class="light">
-      <header class="title">
-        <h2>Nuestra recepción</h2>
-      </header>
-      
-      <div class="container">
-        <div class="row blog">
-
-          <div class="col-12">
-            <div class="blog-item animated" data-animate="fadeInDown">
-              <div class="blog-img">
-                <img src="assets/img/quinta.jpg" alt="">
-              </div>
-              <div class="blog-content">
-                <h2 class="blog-title"><i>Quinta La Trementina</i></h2>
-                <div class="blog-meta">
-                  <i class="fa fa-calendar"></i>
-                  <p>6:00 PM</p>
-                </div>
-                <div class="blog-text">
-                  <p>
-                    Dr. Javier Valdivia 132, Solidaridad, 45580 San Pedro Tlaquepaque, Jal.
-                  </p>
-                  <a class="btn" target="_blank" href="https://goo.gl/maps/HkAvXsboyM3xsakn8">Ver mapa</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </section>	
-
-    <!-- INFO -->
-    <section id="itinerario" class="light">
-      <header class="title">
-        <h2>Nuestro itinerario</h2>
-      </header>
-      
-      <div class="container">
-        <div class="row">
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/templo-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">Ceremonia religiosa</p>
-                <p class="itinerario-text">4:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/apertura-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">Apertura de puerta principal ♥Recepción♥</p>
-                <p class="itinerario-text">5:45 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/servicio-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">inicio de servicio</p>
-                <p class="itinerario-text">6:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/ingreso-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">servicio coctelería</p>
-                <p class="itinerario-text">6:00 PM a 7:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/servicio-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">Ceremonia civil </p>
-                <h6 class="center"><i>(en la Quinta)</i></h6>
-                <p class="itinerario-text">7:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/perreito-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">Inicio evento</p>
-                <p class="itinerario-text">8:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-          <!-- <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/ingreso-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">ingreso de novios a pista para presentación</p>
-                <p class="itinerario-text">9:30 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/comidita-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">servicio de banquete</p>
-                <p class="itinerario-text">10:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/vals-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">vals novios/ vals papás y padrinos/ baile del billete/ brindis</p>
-                <p class="itinerario-text">11:00 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/perreito-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">apertura de pista para baile</p>
-                <p class="itinerario-text">11:30 PM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-
-           <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/pastel-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">corte de pastel</p>
-                <p class="itinerario-text">1:00 AM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div> 
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/ramo-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">ramo y liga</p>
-                <p class="itinerario-text">1:30 AM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/flecha-icon.png" alt="">
-              </div>
-            </div>
-          </div> -->
-
-          <div class="col-12">
-            <div class="itinerario-item animated" data-animate="fadeInDown">
-              <div class="itinerario-img">
-                <img src="assets/img/fin-icon.png" alt="">
-              </div>
-              <div class="itinerario-content">
-                <p class="itinerario-text">fin del evento</p>
-                <p class="itinerario-text">1:00 AM</p>
-              </div>
-              <div class="itinerario-img">
-                <img src="assets/img/cierre-icon.png" alt="">
-              </div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </section>	
-
-    
-    <!-- INFO -->
-    <section class="light">
-      <header class="title">
-        <!-- <h2>Nuestra mesa de regalo</h2> -->
-        <h2>Próximamente nuestra mesa de regalo </h2>
-        <p>Agradecemos mucho todo su amor y apoyo al iniciar esta etapa de formar nuestro hogar.</p>
-      </header>
-      
-      <div class="container">
-        <div class="row blog">
-
-          <div class="col-12">
-            <div class="blog-item animated" data-animate="fadeInDown">
-              <div class="blog-img">
-                <img src="assets/img/liverpool.png" alt="">
-              </div>
-              <div class="blog-content">
-                <h2 class="blog-title">Liverpool</h2>
-                <div class="blog-meta">
-                </div>
-                <!-- <div class="blog-text">
-                  <p>
-                    Número de evento: 50545472
-                  </p>
-                  <a class="btn" target="_blank" href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/50545472">Ver mesa ♥</a>
-                </div> -->
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="blog-item animated" data-animate="fadeInDown">
-              <div class="blog-img">
-                <img src="assets/img/amazon.jpg" alt="">
-              </div>
-              <div class="blog-content">
-                <h2 class="blog-title">Amazon</h2>
-                <div class="blog-meta">
-                </div>
-                <!-- <div class="blog-text">
-                  <p>
-                  </p>
-                  <a class="btn" target="_blank" href="https://www.amazon.com.mx/wedding/share/bodadeamor">Ver mesa ♥</a>
-                </div> -->
-              </div>
-            </div>
-          </div>
-
-          <!-- <div class="col-12">
-            <div class="blog-item animated" data-animate="fadeInDown">
-              <div class="blog-img">
-                <img src="assets/img/santander.jpg" alt="">
-              </div>
-              <div class="blog-content">
-                <h2 class="blog-title">Santander</h2>
-                <div class="blog-meta">
-                </div>
-                <div class="blog-text">
-                  <p>
-                    O si lo prefieres puedes hacer transferencia bancaria a la siguiente cuenta<br>
-                    Cuenta: <b>60600685015</b><br>
-                    CLABE interbancaria: <b>014320606006850159</b>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          
-        </div>
-      </div>
-    </section>
-
-    <section class="light">
-
-      <header class="title">
-        <h2>Confirma tu asistencia</h2>
-        <p>El regalo es opcional, pero lo más importante para nosotros, es tu compañia</p>
-        <p>Da click en el botón inferior para confirmar tu asistencia</p>
-      </header>
-
-      <div class="container">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content center">
-              <img src="assets/img/WhatsApp-logo.png" alt="" class="img-fluid whatsapp">
-            </div>
-          </div>
-          <script type="text/javascript">
-           var parseQueryString = function(url) {
-              var urlParams = {};
-              url.replace(
-                new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                function($0, $1, $2, $3) {
-                  urlParams[$1] = $3;
-                }
-              );
-              
-              return urlParams;
-            }
-            var urlToParse = location.search;
-            var result = parseQueryString(urlToParse);
-            var dataInv = [{"no":"1","urlShe":"https://wa.me/523337499289?text=%C2%A1Hola%20Belén!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Martha%0D%0A-%20Pascual%0D%0A-%20Victor%0D%0A-%20Pareja%20Victor%0D%0A-%20Monica%0D%0A-%20Anthony%0D%0A-%20Jessica%0D%0A-%20Pareja%20Jessica","urlHe":"https://wa.me/523312683659?text=%C2%A1Hola%20Eduardo!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Martha%0D%0A-%20Pascual%0D%0A-%20Victor%0D%0A-%20Pareja%20Victor%0D%0A-%20Monica%0D%0A-%20Anthony%0D%0A-%20Jessica%0D%0A-%20Pareja%20Jessica"},{"no":"2","urlShe":"https://wa.me/523337499289?text=%C2%A1Hola%20Belén!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Roberto%0D%0A-%20Faty","urlHe":"https://wa.me/523312683659?text=%C2%A1Hola%20Eduardo!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Roberto%0D%0A-%20Faty"},{"no":"3","urlShe":"https://wa.me/523337499289?text=%C2%A1Hola%20Belén!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Alex%0D%0A-%20Luli","urlHe":"https://wa.me/523312683659?text=%C2%A1Hola%20Eduardo!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Alex%0D%0A-%20Luli"},{"no":"4","urlShe":"https://wa.me/523337499289?text=%C2%A1Hola%20Belén!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Belén%0D%0A-%20Gustavo","urlHe":"https://wa.me/523312683659?text=%C2%A1Hola%20Eduardo!%0D%0A%0D%0AConfirmo%20mi%20asistencia%3A%0D%0A-%20Belén%0D%0A-%20Gustavo"}];
-          </script>
-          <div class="col-12">
-            <div class="section-content center">
-              <a class="btn btn-link" id="aRefBelen" href="" target="_blank">¡Confirma asistencia! BELÉN</a>
-              <a class="btn btn-link" id="aRefEduardo" href="" target="_blank">¡Confirma asistencia! EDUARDO</a>
-            </div>
-          </div>
-          <script type="text/javascript">
-              for (var i = 0; i < dataInv.length; i++) {
-                if(dataInv[i].no === result.person){
-                  document.getElementById("aRefEduardo").href = dataInv[i].urlHe;
-                  document.getElementById("aRefBelen").href = dataInv[i].urlShe;
-                }
-              }
-          </script>
-        </div>
-      </div>
-
-    </section>
-
-    <section class="light">
-      
-      <header class="title">
-        <h2>Código de vestimenta</h2>
-        <p>Formal Etiqueta</p>
-      </header>
-
-      <div class="container mb">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content">
-              <img src="assets/img/vestimenta.jpg" alt="" class="img-fluid">
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </section>
-
-    <!-- <section class="light">
-      <header class="title">
-        <h2>¡Mamá y Papá merecen un día libre!</h2>
-        <p></p>
-      </header>
-      
-      <div class="container">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content">
-              <div class="about-content left animated" data-animate="fadeInLeft">
-                <div class="about-icon"><img src="assets/img/no-ninos.png" alt="" class="img-fluid"></div>
-                <div class="about-detail">
-                  <p class="center">Por qué mamá y papá merecen un descanso, por lo tanto el evento tiene categoría de <b>No niños.</b></p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section> -->
-
-    <section class="light">
-      
-      <header class="title">
-        <h2>Esperamos contar con tu presencia ♥</h2>
-        <p></p>
-      </header>
-
-    </section>
-
-
-    <section class="section-foto1">
-    </section>
-
-
-    <section class="light">
-
-      <div class="container mb">
-        <div class="row table-row">
-
-          <div class="col-12">
-            <div class="section-content center">
-              <img src="assets/img/anillos.png" alt="" class="img-fluid anillos-final">
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </section>
-
-	
-   </div><!-- /.container-fluid -->
-    
-    <!-- SCRIPT -->
-    <script type="text/javascript" src="assets/js/main.js"></script>
-	</body>
 </html>

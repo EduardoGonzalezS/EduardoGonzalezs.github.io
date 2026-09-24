@@ -1,436 +1,452 @@
-var SliderStatus = true;
+var nodesAnimation = [];
+document.addEventListener('DOMContentLoaded', () => {
+  //===
+  // VARIABLES
+  //===
+  const DATE_TARGET = new Date('11/11/2023 0:01 AM');
+  // DOM for render
+  const SPAN_DAYS = document.querySelector('span#days');
+  const SPAN_HOURS = document.querySelector('span#hours');
+  const SPAN_MINUTES = document.querySelector('span#minutes');
+  const SPAN_SECONDS = document.querySelector('span#seconds');
+  // Milliseconds for the calculations
+  const MILLISECONDS_OF_A_SECOND = 1000;
+  const MILLISECONDS_OF_A_MINUTE = MILLISECONDS_OF_A_SECOND * 60;
+  const MILLISECONDS_OF_A_HOUR = MILLISECONDS_OF_A_MINUTE * 60;
+  const MILLISECONDS_OF_A_DAY = MILLISECONDS_OF_A_HOUR * 24
 
-// Navigation
-(function($){
+  //===
+  // FUNCTIONS
+  //===
 
-	"use strict"
+  /**
+  * Method that updates the countdown and the sample
+  */
+  function updateCountdown() {
+    // Calcs
+    const NOW = new Date()
+    const DURATION = DATE_TARGET - NOW;
+    const REMAINING_DAYS = Math.floor(DURATION / MILLISECONDS_OF_A_DAY);
+    const REMAINING_HOURS = Math.floor((DURATION % MILLISECONDS_OF_A_DAY) / MILLISECONDS_OF_A_HOUR);
+    const REMAINING_MINUTES = Math.floor((DURATION % MILLISECONDS_OF_A_HOUR) / MILLISECONDS_OF_A_MINUTE);
+    const REMAINING_SECONDS = Math.floor((DURATION % MILLISECONDS_OF_A_MINUTE) / MILLISECONDS_OF_A_SECOND);
+    // Thanks Pablo Monteserín (https://pablomonteserin.com/cuenta-regresiva/)
 
-	$(window).on("scroll", function(){
-		var navBar = $(".navbar-fixed-top"),
-			windowHeight = $(this).innerHeight()-navBar.innerHeight();
+    // Render
+    SPAN_DAYS.textContent = REMAINING_DAYS;
+    SPAN_HOURS.textContent = REMAINING_HOURS;
+    SPAN_MINUTES.textContent = REMAINING_MINUTES;
+    SPAN_SECONDS.textContent = REMAINING_SECONDS;
+  }
+  updateCountdown();
+  // Refresh every second
+  setInterval(updateCountdown, MILLISECONDS_OF_A_SECOND);
 
-		if($(this).scrollTop() > windowHeight)
-		{
-			SliderStatus = false;
-			navBar.removeClass("bottom");
-		}
-		else
-		{
-			SliderStatus = true;
-			navBar.addClass("bottom");
-		}
-	});
-})(jQuery);
-
-// Header Slider
-(function($){
-
-	"use strict"
-
-	var aPrev = $(".nav-slide a.prev"),
-		aNext = $(".nav-slide a.next"),
-		NextTitle = $(".nav-slide a.next h3"),
-		// NextAuthor = $(".nav-slide a.next p"),
-		NextImg = $(".nav-slide a.next img"),
-		PrevTitle = $(".nav-slide a.prev h3"),
-		// PrevAuthor = $(".nav-slide a.prev p"),
-		PrevImg = $(".nav-slide a.prev img"),
-		activeSlide = $(".image-slide"),
-		activeTitle = $(".slider-content h1"),
-		activeSubtitle = $(".slider-content p"),
-		activeIndex, nextIndex, prevIndex,
-		objHeaderLength = dataHeader.length - 1,
-		SliderTimeout = false;
-
-	aPrev.on("click", function(){
-		loader(false);
-	});
-
-	aNext.on("click", function(){
-		loader(true);
-	});
-
-	function SliderInterval(){
-		SliderTimeout = setInterval(function(){
-			if(SliderStatus) loader(true);
-		}, 400000);
-	}
-
-	function startImageHeader(){
-		if(typeof activeIndex === "undefined")
-		{
-			activeIndex = 0;
-			nextIndex = 1;
-			prevIndex = objHeaderLength;
-		}
-
-		dataHeader.forEach(function(a){
-			a.show = false;
-		});
-
-		dataHeader[activeIndex].show = true;
-
-		new preLoader([dataHeader[activeIndex].bigImage, dataHeader[prevIndex].bigImage, dataHeader[nextIndex].bigImage], {
-			onComplete: function(loaded, errors){
-
-				var brokenImage = "images/broken-image.jpg",
-					activeImg = dataHeader[activeIndex].bigImage,
-					prevImg = dataHeader[prevIndex].bigImage,
-					nextImg = dataHeader[nextIndex].bigImage;
-
-				if (errors){
-		            for(var i=0; i<errors.length; i++)
-		            {
-		            	activeImg = (errors[i] === activeImg) ? brokenImage : activeImg;
-		            	prevImg = (errors[i] === prevImg) ? brokenImage : prevImg;
-		            	nextImg = (errors[i] === nextImg) ? brokenImage : nextImg;
-		            }
-		        }
-		        
-		        setTimeout(function(){
-		        	loaderSVG.hide();
-		        	SliderInterval();
-		        }, 200);
-
-		        activeSlide.css("background-image", "url('" + activeImg + "')");
-			
-				PrevImg.attr("src", prevImg);
-				
-				NextImg.attr("src", nextImg);
-		    }
-		});
-
-		activeTitle.text(dataHeader[activeIndex].title);
-		activeSubtitle.text(dataHeader[activeIndex].subtitle);
-
-		// PrevAuthor.text("by " + dataHeader[prevIndex].author);
-		PrevTitle.text(dataHeader[prevIndex].title);
-		// NextAuthor.text("by " + dataHeader[nextIndex].author);
-		NextTitle.text(dataHeader[nextIndex].title);
-	}
-
-	function loader(n){
-		clearInterval(SliderTimeout);
-		loaderSVG.show();
-
-		for (var i = 0; i<=objHeaderLength; i++) {
-			if(dataHeader[i].show && n)
-			{
-				activeIndex = (i+1 > objHeaderLength) ? 0 : i+1;
-				nextIndex = (activeIndex+1 > objHeaderLength) ? 0 : activeIndex+1;
-				prevIndex = i;
-
-				break;
-			}
-			else if(dataHeader[i].show && !n)
-			{
-				activeIndex = (i-1 < 0) ? objHeaderLength : i-1;
-				prevIndex = (activeIndex-1 < 0) ? objHeaderLength : activeIndex-1;
-				nextIndex = i;
-				break;
-			}
-		}
-
-		setTimeout(function(){
-			startImageHeader();
-		}, 800);	
-	}
-
-	startImageHeader();
-
-})(jQuery);
-
-
-// TEMPLATE
-(function($){
-	$(document).on("ready", function(){
-		"use strict"
-		
-
-		//Header fit screen
-
-	    $(function() {
-	        "use strict";
-	        $("#header").css({
-	            "height": ($(window).height()) + "px"
-	        });
-	        $(window).resize(function() {
-	            $("#header").css({
-	                "height": ($(window).height()) + "px"
-	            });
-	        });
-	    });
-
-		// anchor handler
-		$(document).on("click", "a", function(e){
-			var full_url = this.href,
-				windowWidth = window.innerWidth,
-				navBar = (windowWidth >= 768) ? $(".navbar-fixed-top") : $(".navbar-header"),
-				windowLocation = window.location.href.split("#")[0],
-				parts = full_url.split("#");
-
-			if(windowLocation !== parts[0])
-				return
-
-			if(parts[1].length > 0 && $("#" + parts[1]).length > 0)
-			{
-				$.smoothScroll({
-					offset : -navBar.innerHeight(),
-					scrollTarget: "#" + parts[1],
-					speed : 500
-				});
-			}
-
-		    return false;
-		});
-
-
-		// animated element
-		$(".animated").appear(function() {
-	        var element = $(this),
-	        	animation = element.data("animate"),
-	        	animationDelay = element.data("delay");
-
-	        if (animationDelay) {
-	            setTimeout(function() {
-	                element.addClass(animation + " visible");
-	                if (element.hasClass("counter")) {
-	                    element.find('.value').countTo();
-	                }
-	            }, animationDelay);
-	        } else {
-	            element.addClass(animation + " visible");
-	            if (element.hasClass("counter")) {
-	                element.find(".value").countTo();
-	            }
-	        }
-	    }, {
-	        accY: -150
-	    });
-
-	    $(".skill-bar .percentage").appear(function() {
-	        var element = $(this),
-	        	animation = element.data("value");
-	        element.animate({
-	        	"width" : animation
-	        }, 2000);
-	    });
-	});
-
-
-    // PORTFOLIO
-
-    $(document).on("ready", function(){
-    	"use strict"
-
-    	function columnsSplit(){
-	    	if($(window).innerWidth() >= 1200)
-	    		return 4
-	    	else if($(window).innerWidth() >= 992)
-	    		return 3
-	    	else if($(window).innerWidth() >= 768)
-	    		return 2
-	    	else return 1
-	    }
-
-	    var portWidth = $(window).innerWidth() / columnsSplit(),
-	    	containerPortfolio = $(".container-portfolio"),
-	    	portImage = [];
-
-	    $(window).on("resize", function(){
-	    	$(".container-portfolio .portfolio-view").each(function(a, b){
-	    		$(b).css({
-	    			"width" : $(window).innerWidth()/columnsSplit(),
-	    			"height" : ($(window).innerWidth()/columnsSplit() - 113)
-	    		});
-	    	});
-	    });
-
-	    $.each(portfolio, function(a, b){
-	    	portImage.push(b.image);
-	    });
-
-	    new preLoader(portImage, {
-	    	onComplete : function(load, errors){
-	    		$.each(portfolio, function(a, b){
-			    	var image = (typeof b.image === "undefined") ? "images/broken-image.jpg" : b.image;
-
-			    	if (errors){
-			            for(var i=0; i<errors.length; i++)
-			            {
-			            	image = (errors[i] === image) ? "images/broken-image.jpg" : image;
-			            }
-			        }
-
-			        var portList = $('<figure class="portfolio-view ' + b.category + '" style="width:' + portWidth + 'px;"><img src="' + image + '"><figcaption><h2>' + b.title + '</span></h2><p>' + b.text + '</p><a href="' + b.link + '">View more</a></figcaption></figure>');
-							// var portList = $('<figure class="portfolio-view ' + b.category + '" style="width:' + portWidth + 'px;background-image: url(../'+image+');background-repeat: no-repeat;background-position: center;background-size: cover;height:' + (portWidth-113) + 'px"><img src="' + image + '"><figcaption><h2>' + b.title + '</span></h2><p>' + b.text + '</p><a href="' + b.link + '">View more</a></figcaption></figure>');
-
-			    	portList.appendTo(containerPortfolio);
-			    });
-			    
-			    $(".container-portfolio").mixItUp({
-			    	selectors : {
-			    		target : ".portfolio-view"
-			    	},
-			    	animation: {
-			    		effects: "fade stagger scale rotateX(-360deg)",
-						easing: "cubic-bezier(0.215, 0.61, 0.355, 1)"
-					}
-			    });
-	    	}
-	    });
+  // debugger;
+  observer = new IntersectionObserver(entries => {
+    // debugger
+    // Recorrer las entradas recibidas
+    entries.forEach(entry => {
+      // Está visible en el viewport
+      if (entry.intersectionRatio > 0) {
+        // entry.target es el elemento que se está observando
+        // Agregar la clase para animar
+        // debugger
+        //entry.target.classList.add('itinerarioClss');
+        // Dejar de observar
+        observer.unobserve(entry.target);
+      }
     });
+  });
+  // Observar elemento a animar
+  // observer.observe(document.querySelector('#itinerarioClss'));
+  const inViewport = (entries, observer) => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle("is-inViewport", entry.isIntersecting);
+    });
+  };
+
+  const Obs = new IntersectionObserver(inViewport);
+  const obsOptions = {}; //See: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options
+
+  // Attach observer to every [data-inviewport] element:
+  const ELs_inViewport = document.querySelectorAll('[data-inviewport]');
+  ELs_inViewport.forEach(EL => {
+    Obs.observe(EL, obsOptions);
+  });
+});
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function audioElement() {
+  var playMusic = true;
+  var play = playMusic;
+  // debugger
+  // var audioElement = document.createElement('audio');
+  var audioElement = document.getElementById("AudioControl");
+  // audioElement.setAttribute('src', 'assets/music/Yellow.mp3');
+  // audioElement.autoplay = playMusic;
+  // audioElement.play();
+  $("#Btnplay").on('click', function () {
+    if (play) {
+      $("#BtnIcon").removeClass("bi-play-fill");
+      $("#BtnIcon").addClass("bi-pause-fill");
+      audioElement.play();
+    }
+    else {
+      $("#BtnIcon").removeClass("bi-pause-fill");
+      $("#BtnIcon").addClass("bi-play-fill");
+      audioElement.pause();
+    }
+    play = !play;
+  });
+  // demo(audioElement);
+};
+const OpenRefConfirmation = function () {
+  var href = $(this).prop('href');
+  if (href === undefined)
+    href = $(this).attr('href');
+  console.log(href);
+  window.open(href, '_blank');
+};
+$(document).ready(function () {
+  $("#aRefBelen").on('click', OpenRefConfirmation);
+  $("#aRefEduardo").on('click', OpenRefConfirmation);
+  $("#BtnMesaLiverpool").on('click', OpenRefConfirmation);
+  $("#BtnMesaAmazon").on('click', OpenRefConfirmation);
+  audioElement();
+  document.body.addEventListener("click", function () {
+    if (onlyOne) {
+      onlyOne = false;
+      $("#Btnplay").trigger("click");
+    }
+  });
 
 
-    //Google map
-
-	$(document).on("ready", function() {
-
-		var map;
-
-		$(".btn-map").click(function() {
-			if($("#google_map").children() > 0)
-				$("#google_map").slideToggle(300, function(){
-					map.getCenter();
-				});
-			else
-				$("#google_map").slideToggle(300, initialize);
-        });
-
-		function initialize() {
-		    var mapOptions = {
-		        zoom: 17,
-		        center: new google.maps.LatLng(-6.86041, 107.590006),
-		        disableDefaultUI: true,
-		        scrollwheel: false,
-		        styles: [{
-		            "featureType": "water",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 17
-		            }]
-		        }, {
-		            "featureType": "landscape",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 20
-		            }]
-		        }, {
-		            "featureType": "road.highway",
-		            "elementType": "geometry.fill",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 17
-		            }]
-		        }, {
-		            "featureType": "road.highway",
-		            "elementType": "geometry.stroke",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 29
-		            }, {
-		                "weight": 0.2
-		            }]
-		        }, {
-		            "featureType": "road.arterial",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 18
-		            }]
-		        }, {
-		            "featureType": "road.local",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 16
-		            }]
-		        }, {
-		            "featureType": "poi",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 21
-		            }]
-		        }, {
-		            "elementType": "labels.text.stroke",
-		            "stylers": [{
-		                "visibility": "on"
-		            }, {
-		                "color": "#000000"
-		            }, {
-		                "lightness": 16
-		            }]
-		        }, {
-		            "elementType": "labels.text.fill",
-		            "stylers": [{
-		                "saturation": 36
-		            }, {
-		                "color": "#000000"
-		            }, {
-		                "lightness": 40
-		            }]
-		        }, {
-		            "elementType": "labels.icon",
-		            "stylers": [{
-		                "visibility": "off"
-		            }]
-		        }, {
-		            "featureType": "transit",
-		            "elementType": "geometry",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 19
-		            }]
-		        }, {
-		            "featureType": "administrative",
-		            "elementType": "geometry.fill",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 20
-		            }]
-		        }, {
-		            "featureType": "administrative",
-		            "elementType": "geometry.stroke",
-		            "stylers": [{
-		                "color": "#000000"
-		            }, {
-		                "lightness": 17
-		            }, {
-		                "weight": 1.2
-		            }]
-		        }]
-		    };
-
-		    map = new google.maps.Map(document.getElementById('google_map'), mapOptions);
-
-		    var contentString = "<div class='map-tooltip'><h2>Manja<span>real</span></h2></div>";
-
-		    var infowindow = new google.maps.InfoWindow({
-		    	content: contentString
-		    });
-
-			var marker = new google.maps.Marker({
-				position: new google.maps.LatLng(-6.86041, 107.590006),
-				map: map,
-				icon : "images/map-pin.png"
-			});
-
-			google.maps.event.addListener(marker, 'click', function() {
-				infowindow.open(map,marker);
-			});
-		}
-	});
-
-})(jQuery);
+  // Create a new IntersectionObserver object
+  let observer = new IntersectionObserver(function (entries, observer) {
+    for (let entry of entries) {
+      if (entry.isIntersecting) {
+        var elementAni = nodesAnimation.find(x => x.id === entry.target.id);
+        $('#' + entry.target.id).addClass("animate__animated");
+        $('#' + entry.target.id).removeClass(elementAni.animation);
+        $('#' + entry.target.id).addClass(elementAni.animation);
+      }
+    }
+  });
+  nodesAnimation = [];
+  var eleAnima = [
+    {
+      id: "PAgradecimientos",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "DivMesaLiverpool",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "DivMesaAmazon",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "DivWhatsapp",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "H1NuestraBoda",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "H3FechaNoviembre",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "H2BelenEduardo",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblNosCasamos",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblSoloFaltan",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblUbica",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctCeremoniaIco",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblCeremonia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblSabado11",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "Lbl6pm",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblParroquia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "AMapaParroquia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblSabadoQuinta",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "Lbl8pm",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblQuintaTremen",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "AMapaQuinta",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblNuestrosPadres",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctPadresNovia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblMamaNovia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblPapaNovia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctVestido",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctPadresNovio",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblMamaNovio",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctTraje",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblNuestrosPadrinos",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctPadrinos",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblMadrina",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblPadrino",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblRecepcion",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblItinerario",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconInicio",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconIglesia",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "DivCeremoniaReligiosa",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "DivHoraCeremoniaReli",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha1",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlcIconApertura",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlcAperturaLbl",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctAperturaHora",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha2",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconCeremoniaCivil",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctLblInicioServicio",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctHoraInicioServicio",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha3",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconCena",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconBrindis",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconVals",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctInicioCoctele",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctHoraCocteleria",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha4",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlctIconBodaCivil",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlctIconBodaBrindis",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlctLblQuintaCivil",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctHoraCivil",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha5",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlctBaile",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SlctInicioEvento",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctHoraEvento",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha6",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconMusica",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctBailongo",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctBailongoHora",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFlecha7",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconFin",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctFinEvento",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctHoraFinEvento",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconCierre",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblCodigoVestimenta",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "SctIconCodigos",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblFormalEtiqueta",
+      animation: "animate__fadeInDown"
+    },
+    {
+      id: "LblMesaRegalo",
+      animation: "animate__fadeInDown"
+    }
+  ];
+  for (let node of eleAnima) {
+    nodesAnimation.push({
+      node: document.querySelectorAll('#' + node.id),
+      animation: node.animation,
+      id: node.id
+    });
+  }
+  // Observe each heading
+  for (let node of nodesAnimation) {
+    for (let heading of node.node) {
+      observer.observe(heading);
+    }
+  }
+});
+var playMusic = false;
+var onlyOne = true;
