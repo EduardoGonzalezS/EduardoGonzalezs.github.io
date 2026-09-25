@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repostería Belén - Sellos</title>
+<style>
+  :root{
+    --bg:#fdf6ee;
+    --card:#ffffff;
+    --primary:#8a5a3c;
+    --primary-dark:#6b4128;
+    --accent:#e8b04b;
+    --text:#3a2a20;
+    --muted:#8a7b6f;
+    --border:#eee0d0;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100%;
+    padding:20px 16px 40px;
+  }
+  .app{width:100%;max-width:420px;}
+  h1{font-size:1.4rem;text-align:center;margin:8px 0 4px;color:var(--primary-dark);}
+  .subtitle{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+  .tabs{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:18px;border:1px solid var(--border);}
+  .tab{flex:1;text-align:center;padding:10px 4px;border-radius:10px;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s;}
+  .tab.active{background:var(--primary);color:#fff;}
+  .screen{display:none;}
+  .screen.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card);border-radius:18px;padding:22px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(138,90,60,.06);}
+  label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin:14px 0 6px;}
+  input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);
+    font-size:1rem;background:#fffaf4;color:var(--text);
+  }
+  input:focus{outline:2px solid var(--accent);}
+  button{
+    width:100%;margin-top:20px;padding:13px;border:none;border-radius:12px;
+    background:var(--primary);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+    transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
+  }
+  button:active{background:var(--primary-dark);transform:scale(.97);}
+  button:hover{box-shadow:0 6px 16px rgba(138,90,60,.25);}
+  button.secondary{background:transparent;color:var(--primary);border:1px solid var(--primary);margin-top:10px;}
+  .error{color:#c0392b;font-size:.82rem;margin-top:10px;text-align:center;}
+  .qr-box{text-align:center;margin-top:18px;}
+  .qr-box img{border-radius:12px;border:1px solid var(--border);padding:10px;background:#fff;animation:popIn .4s ease;}
+  .qr-id{font-family:monospace;font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all;}
+  .stamp-header{text-align:center;margin-bottom:18px;}
+  .stamp-header .name{font-size:1.1rem;font-weight:700;animation:fade .4s ease;}
+  .stamp-count{font-size:2.4rem;font-weight:800;color:var(--primary);text-align:center;margin:6px 0 2px;animation:popIn .35s ease;}
+  .stamp-label{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:16px;}
+  .stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:10px 0 4px;}
+  .stamp{
+    aspect-ratio:1;border-radius:50%;border:2px dashed var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+    transition:transform .2s ease, background .3s ease, border .3s ease;
+  }
+  .stamp.filled{background:var(--accent);border:2px solid var(--accent);color:#fff;animation:stampPop .4s ease backwards;}
+  .catalog-list{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+  .product{
+    display:flex;align-items:center;gap:12px;background:var(--card);
+    border:1px solid var(--border);border-radius:14px;padding:12px;
+    opacity:0;animation:slideUp .4s ease forwards;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .product:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(138,90,60,.1);}
+  .product .emoji{font-size:1.8rem;width:44px;text-align:center;display:inline-block;animation:wiggle 2.5s ease-in-out infinite;}
+  .product .info{flex:1;}
+  .product .info .pname{font-weight:700;font-size:.95rem;}
+  .product .info .pdesc{font-size:.78rem;color:var(--muted);margin-top:2px;}
+  .logout{text-align:center;margin-top:18px;}
+  .logout a{color:var(--muted);font-size:.8rem;text-decoration:underline;cursor:pointer;}
+  .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;}
+
+  @keyframes popIn{
+    from{opacity:0;transform:scale(.85);}
+    to{opacity:1;transform:scale(1);}
+  }
+  @keyframes stampPop{
+    0%{transform:scale(0);opacity:0;}
+    60%{transform:scale(1.15);opacity:1;}
+    100%{transform:scale(1);}
+  }
+  @keyframes slideUp{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes wiggle{
+    0%,100%{transform:rotate(0deg);}
+    25%{transform:rotate(-8deg);}
+    75%{transform:rotate(8deg);}
+  }
+  h1{animation:slideUp .4s ease;}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwPszTqEYXE6gdQqiFxe-be3t68txgsXmA6bM__Fw3hf-W6n1NL8cU09pUIEO3nECRr/exec";
+
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem("sellos_sesion")); }catch(e){ return null; }
+}
+function setSession(cliente){
+  try{ localStorage.setItem("sellos_sesion", JSON.stringify(cliente)); }catch(e){}
+}
+function clearSession(){
+  localStorage.removeItem("sellos_sesion");
+}
+
+async function apiCall(params){
+  const url = new URL(API_URL);
+  Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+  const res = await fetch(url.toString());
+  return res.json();
+}
+
+const productosFallback = [
+  {emoji:"🍪", nombre:"Galletas de dulce de leche", desc:"Suaves, rellenas de dulce de leche casero"},
+  {emoji:"🌀", nombre:"Roles de canela", desc:"Esponjosos, con glaseado cremoso"},
+  {emoji:"🍫", nombre:"Brownies", desc:"Chocolate intenso, textura fudgy"},
+  {emoji:"🍌", nombre:"Pan de plátano", desc:"Húmedo, receta tradicional"},
+  {emoji:"🌽", nombre:"Pan de elote", desc:"Dulce, suave, sabor casero"},
+];
+
+let state = { screen: "login", loading: false, catalogo: null };
+
+function render(){
+  const app = document.getElementById("app");
+  const session = getSession();
+
+  if(session){
+    app.innerHTML = renderLoggedIn(session);
+    cargarCatalogoSiFalta();
+    refrescarEstadoCliente(session.id);
+  } else {
+    app.innerHTML = renderAuth();
+  }
+  attachHandlers();
+}
+
+async function cargarCatalogoSiFalta(){
+  if(state.catalogo) { actualizarCatalogoDom(); return; }
+  try{
+    const data = await apiCall({accion:"catalogo"});
+    if(data.ok && data.productos && data.productos.length){
+      state.catalogo = data.productos.map(p => ({
+        emoji: p.emoji || "🍰", nombre: p.producto, desc: p.descripcion
+      }));
+    } else {
+      state.catalogo = productosFallback;
+    }
+  }catch(e){
+    state.catalogo = productosFallback;
+  }
+  actualizarCatalogoDom();
+}
+
+function actualizarCatalogoDom(){
+  const cont = document.getElementById("catalog-list");
+  if(!cont) return;
+  const lista = state.catalogo || productosFallback;
+  cont.innerHTML = lista.map((p,i) => `
+    <div class="product" style="animation-delay:${i*0.08}s">
+      <div class="emoji">${p.emoji}</div>
+      <div class="info">
+        <div class="pname">${p.nombre}</div>
+        <div class="pdesc">${p.desc}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function refrescarEstadoCliente(id){
+  try{
+    const data = await apiCall({accion:"estado", id});
+    if(data.ok){
+      setSession(data.cliente);
+      const countEl = document.querySelector(".stamp-count");
+      if(countEl && Number(countEl.textContent.split("/")[0]) !== Number(data.cliente.sellos)){
+        render(); // vuelve a dibujar si cambiaron los sellos (ej. te sellaron en el mostrador)
+      }
+    }
+  }catch(e){ /* silencioso: seguimos con lo que ya teníamos en sesión */ }
+}
+
+function renderAuth(){
+  return `
+    <h1>🥐 Repostería Belén</h1>
+    <div class="subtitle">Junta sellos y canjea tus postres favoritos</div>
+    <div class="tabs">
+      <div class="tab ${state.screen==='login'?'active':''}" data-tab="login">Iniciar sesión</div>
+      <div class="tab ${state.screen==='registro'?'active':''}" data-tab="registro">Registrarme</div>
+    </div>
+
+    <div class="screen ${state.screen==='login'?'active':''}" id="screen-login">
+      <div class="card">
+        <label>Número de teléfono</label>
+        <input type="tel" id="login-tel" placeholder="10 dígitos">
+        <label>Contraseña</label>
+        <input type="password" id="login-pass" placeholder="••••••••">
+        <button id="btn-login">${state.loading ? "Entrando..." : "Entrar"}</button>
+        <div class="error" id="login-error"></div>
+      </div>
+    </div>
+
+    <div class="screen ${state.screen==='registro'?'active':''}" id="screen-registro">
+      <div class="card">
+        <label>Nombre</label>
+        <input type="text" id="reg-nombre" placeholder="Tu nombre">
+        <label>Número de teléfono</label>
+        <input type="tel" id="reg-tel" placeholder="10 dígitos">
+        <label>Contraseña</label>
+        <input type="password" id="reg-pass" placeholder="Crea una contraseña">
+        <button id="btn-registro">${state.loading ? "Creando..." : "Crear mi tarjeta de sellos"}</button>
+        <div class="error" id="reg-error"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLoggedIn(cliente){
+  const total = 10;
+  const sellos = Number(cliente.sellos) || 0;
+  let stampsHtml = "";
+  for(let i=0;i<total;i++){
+    const delay = i<sellos ? `style="animation-delay:${i*0.06}s"` : "";
+    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'⭐':''}</div>`;
+  }
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cliente.id)}&size=220x220`;
+
+  return `
+    <div class="stamp-header">
+      <div class="name">Hola, ${cliente.nombre} 👋</div>
+    </div>
+    <div class="card">
+      <div class="stamp-count">${sellos}/${total}</div>
+      <div class="stamp-label">sellos acumulados</div>
+      <div class="stamps-grid">${stampsHtml}</div>
+      <div class="qr-box">
+        <img src="${qrUrl}" alt="QR del cliente">
+        <div class="qr-id">${cliente.id}</div>
+      </div>
+    </div>
+
+    <h1 style="margin-top:24px;">Nuestro catálogo</h1>
+    <div class="catalog-list" id="catalog-list"></div>
+
+    <div class="logout"><a id="btn-logout">Cerrar sesión</a></div>
+  `;
+}
+
+function attachHandlers(){
+  document.querySelectorAll(".tab").forEach(tab=>{
+    tab.onclick = ()=>{ state.screen = tab.dataset.tab; render(); };
+  });
+
+  const btnLogin = document.getElementById("btn-login");
+  if(btnLogin){
+    btnLogin.onclick = async ()=>{
+      const telefono = document.getElementById("login-tel").value.trim();
+      const password = document.getElementById("login-pass").value;
+      const err = document.getElementById("login-error");
+      if(!telefono || !password){
+        err.textContent = "Completa ambos campos.";
+        return;
+      }
+      err.textContent = "";
+      state.loading = true; render();
+      try{
+        const data = await apiCall({accion:"login", telefono, password});
+        state.loading = false;
+        if(data.ok){
+          setSession(data.cliente);
+          render();
+        } else {
+          render();
+          document.getElementById("login-error").textContent = data.error || "No se pudo iniciar sesión.";
+        }
+      }catch(e){
+        state.loading = false; render();
+        document.getElementById("login-error").textContent = "Error de conexión. Intenta de nuevo.";
+      }
+    };
+  }
+
+  const btnReg = document.getElementById("btn-registro");
+  if(btnReg){
+    btnReg.onclick = async ()=>{
+      const nombre = document.getElementById("reg-nombre").value.trim();
+      const telefono = document.getElementById("reg-tel").value.trim();
+      const password = document.getElementById("reg-pass").value;
+      const err = document.getElementById("reg-error");
+      if(!nombre || !telefono || !password){
+        err.textContent = "Completa todos los campos.";
+        return;
+      }
+      err.textContent = "";
+      state.loading = true; render();
+      try{
+        const data = await apiCall({accion:"registro", nombre, telefono, password});
+        state.loading = false;
+        if(data.ok){
+          setSession(data.cliente);
+          render();
+        } else {
+          render();
+          document.getElementById("reg-error").textContent = data.error || "No se pudo registrar.";
+        }
+      }catch(e){
+        state.loading = false; render();
+        document.getElementById("reg-error").textContent = "Error de conexión. Intenta de nuevo.";
+      }
+    };
+  }
+
+  const btnLogout = document.getElementById("btn-logout");
+  if(btnLogout){
+    btnLogout.onclick = ()=>{
+      clearSession();
+      state.screen = "login";
+      render();
+    };
+  }
+}
+
+render();
+</script>
+</body>
+</html>

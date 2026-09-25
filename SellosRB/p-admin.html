@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repostería Belén - Panel Admin</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<style>
+  :root{
+    --bg:#fdf6ee;
+    --card:#ffffff;
+    --primary:#8a5a3c;
+    --primary-dark:#6b4128;
+    --accent:#e8b04b;
+    --text:#3a2a20;
+    --muted:#8a7b6f;
+    --border:#eee0d0;
+    --ok:#3f9142;
+    --err:#c0392b;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#241a13; --card:#2f2319; --text:#f3e9df; --muted:#b8a798; --border:#4a3a2c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#241a13; --card:#2f2319; --text:#f3e9df; --muted:#b8a798; --border:#4a3a2c;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--text);
+    display:flex;flex-direction:column;align-items:center;min-height:100%;
+    padding:20px 16px 40px;
+  }
+  .app{width:100%;max-width:440px;}
+  h1{font-size:1.3rem;text-align:center;margin:8px 0 2px;color:var(--primary-dark);}
+  .subtitle{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:18px;}
+  .card{background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(138,90,60,.06);margin-bottom:16px;}
+  #reader{width:100%;border-radius:14px;overflow:hidden;}
+  button{
+    width:100%;padding:13px;border:none;border-radius:12px;
+    background:var(--primary);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+    transition:transform .15s ease, background .2s ease;
+  }
+  button:active{transform:scale(.97);background:var(--primary-dark);}
+  button.secondary{background:transparent;color:var(--primary);border:1px solid var(--primary);margin-top:10px;}
+  label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin:10px 0 6px;}
+  input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);
+    font-size:1rem;background:var(--bg);color:var(--text);
+  }
+  .status{margin-top:14px;padding:14px;border-radius:12px;font-size:.9rem;display:none;animation:popIn .3s ease;}
+  .status.ok{background:rgba(63,145,66,.12);color:var(--ok);display:block;}
+  .status.err{background:rgba(192,57,43,.12);color:var(--err);display:block;}
+  .cliente-info{text-align:center;margin-top:6px;}
+  .cliente-info .nombre{font-size:1.15rem;font-weight:700;}
+  .cliente-info .sellos{font-size:2rem;font-weight:800;color:var(--primary);margin-top:4px;}
+  .toggle-mode{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:16px;border:1px solid var(--border);}
+  .toggle-mode div{flex:1;text-align:center;padding:9px 4px;border-radius:10px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;}
+  .toggle-mode div.active{background:var(--primary);color:#fff;}
+  .hidden{display:none;}
+  @keyframes popIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+  .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>🥐 Panel Admin</h1>
+  <div class="subtitle">Repostería Belén — otorgar sellos</div>
+
+  <div class="toggle-mode">
+    <div id="mode-scan" class="active">Escanear QR</div>
+    <div id="mode-manual">Buscar por ID</div>
+  </div>
+
+  <div id="section-scan" class="card">
+    <div id="reader"></div>
+    <button id="btn-start-scan" style="margin-top:14px;">Iniciar cámara</button>
+    <button id="btn-stop-scan" class="secondary hidden">Detener cámara</button>
+  </div>
+
+  <div id="section-manual" class="card hidden">
+    <label>ID del cliente</label>
+    <input type="text" id="manual-id" placeholder="CLI-XXXXX-1234">
+    <button id="btn-manual-sellar" style="margin-top:14px;">Sumar sello</button>
+  </div>
+
+  <div class="card" id="result-card" style="display:none;">
+    <div class="cliente-info" id="cliente-info"></div>
+  </div>
+
+  <div class="note">Cada escaneo o búsqueda suma 1 sello al cliente.</div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwPszTqEYXE6gdQqiFxe-be3t68txgsXmA6bM__Fw3hf-W6n1NL8cU09pUIEO3nECRr/exec";
+
+let html5QrCode = null;
+let scanning = false;
+let cooldown = false;
+
+async function apiCall(params){
+  const url = new URL(API_URL);
+  Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+  const res = await fetch(url.toString());
+  return res.json();
+}
+
+function mostrarStatus(msg, tipo){
+  const card = document.getElementById("result-card");
+  const info = document.getElementById("cliente-info");
+  card.style.display = "block";
+  info.innerHTML = `<div class="status ${tipo}">${msg}</div>`;
+}
+
+function mostrarCliente(cliente){
+  const card = document.getElementById("result-card");
+  const info = document.getElementById("cliente-info");
+  card.style.display = "block";
+  info.innerHTML = `
+    <div class="status ok">✅ Sello agregado correctamente</div>
+    <div class="nombre">${cliente.nombre}</div>
+    <div class="sellos">${cliente.sellos} sellos</div>
+  `;
+}
+
+async function sellarCliente(id){
+  if(cooldown) return;
+  cooldown = true;
+  try{
+    const data = await apiCall({accion:"sellar", id});
+    if(data.ok){
+      mostrarCliente(data.cliente);
+    } else {
+      mostrarStatus("❌ " + (data.error || "Cliente no encontrado"), "err");
+    }
+  }catch(e){
+    mostrarStatus("❌ Error de conexión", "err");
+  }
+  setTimeout(()=>{ cooldown = false; }, 2500);
+}
+
+function onScanSuccess(decodedText){
+  sellarCliente(decodedText.trim());
+}
+
+function startScanner(){
+  html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 220 },
+    onScanSuccess,
+    ()=>{} // ignorar errores de frame sin QR
+  ).then(()=>{
+    scanning = true;
+    document.getElementById("btn-start-scan").classList.add("hidden");
+    document.getElementById("btn-stop-scan").classList.remove("hidden");
+  }).catch(err=>{
+    mostrarStatus("❌ No se pudo acceder a la cámara: " + err, "err");
+  });
+}
+
+function stopScanner(){
+  if(html5QrCode && scanning){
+    html5QrCode.stop().then(()=>{
+      scanning = false;
+      document.getElementById("btn-start-scan").classList.remove("hidden");
+      document.getElementById("btn-stop-scan").classList.add("hidden");
+    });
+  }
+}
+
+document.getElementById("btn-start-scan").onclick = startScanner;
+document.getElementById("btn-stop-scan").onclick = stopScanner;
+
+document.getElementById("btn-manual-sellar").onclick = ()=>{
+  const id = document.getElementById("manual-id").value.trim();
+  if(!id){
+    mostrarStatus("Escribe un ID de cliente.", "err");
+    return;
+  }
+  sellarCliente(id);
+};
+
+document.getElementById("mode-scan").onclick = ()=>{
+  document.getElementById("mode-scan").classList.add("active");
+  document.getElementById("mode-manual").classList.remove("active");
+  document.getElementById("section-scan").classList.remove("hidden");
+  document.getElementById("section-manual").classList.add("hidden");
+  stopScanner();
+};
+document.getElementById("mode-manual").onclick = ()=>{
+  document.getElementById("mode-manual").classList.add("active");
+  document.getElementById("mode-scan").classList.remove("active");
+  document.getElementById("section-manual").classList.remove("hidden");
+  document.getElementById("section-scan").classList.add("hidden");
+  stopScanner();
+};
+</script>
+</body>
+</html>
