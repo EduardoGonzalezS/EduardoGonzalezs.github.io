@@ -76,6 +76,10 @@
   }
   .loading-box p{margin:0;font-weight:700;color:var(--text);font-size:1rem;}
   @keyframes spin{to{transform:rotate(360deg);}}
+  .confirm-box{max-width:320px;}
+  .confirm-box p{font-size:1rem;line-height:1.4;}
+  .confirm-actions{display:flex;gap:10px;margin-top:18px;}
+  .confirm-actions button{margin:0;}
   .cliente-info{text-align:center;margin-top:6px;}
   .cliente-info .nombre{font-size:1.15rem;font-weight:700;}
   .cliente-info .sellos{font-size:2rem;font-weight:800;color:var(--primary);margin-top:4px;}
@@ -148,7 +152,17 @@
 <div class="loading-overlay" id="loading-overlay">
   <div class="loading-box">
     <div class="spinner"></div>
-    <p>Registrando sello...</p>
+    <p id="loading-text">Registrando sello...</p>
+  </div>
+</div>
+
+<div class="loading-overlay" id="confirm-overlay">
+  <div class="loading-box confirm-box">
+    <p id="confirm-text">¿Confirmar acción?</p>
+    <div class="confirm-actions">
+      <button id="btn-confirm-no" class="secondary">Cancelar</button>
+      <button id="btn-confirm-yes">Confirmar</button>
+    </div>
   </div>
 </div>
 
@@ -164,6 +178,33 @@ async function apiCall(params){
   Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
   const res = await fetch(url.toString());
   return res.json();
+}
+
+function mostrarCarga(texto){
+  document.getElementById("loading-text").textContent = texto;
+  document.getElementById("loading-overlay").classList.add("active");
+}
+function ocultarCarga(){
+  document.getElementById("loading-overlay").classList.remove("active");
+}
+
+// Muestra un modal de confirmación y resuelve true/false según lo que elija el usuario.
+function pedirConfirmacion(mensaje){
+  return new Promise(resolve=>{
+    document.getElementById("confirm-text").textContent = mensaje;
+    const overlay = document.getElementById("confirm-overlay");
+    overlay.classList.add("active");
+    const btnSi = document.getElementById("btn-confirm-yes");
+    const btnNo = document.getElementById("btn-confirm-no");
+    const cerrar = (resultado)=>{
+      overlay.classList.remove("active");
+      btnSi.onclick = null;
+      btnNo.onclick = null;
+      resolve(resultado);
+    };
+    btnSi.onclick = ()=> cerrar(true);
+    btnNo.onclick = ()=> cerrar(false);
+  });
 }
 
 function mostrarStatus(msg, tipo){
@@ -205,17 +246,17 @@ function mostrarCliente(cliente){
 async function sellarCliente(id){
   if(cooldown) return;
   cooldown = true;
-  document.getElementById("loading-overlay").classList.add("active");
+  mostrarCarga("Registrando sello...");
   try{
     const data = await apiCall({accion:"sellar", id});
-    document.getElementById("loading-overlay").classList.remove("active");
+    ocultarCarga();
     if(data.ok){
       mostrarCliente(data.cliente);
     } else {
       mostrarStatus("❌ " + (data.error || "Cliente no encontrado"), "err");
     }
   }catch(e){
-    document.getElementById("loading-overlay").classList.remove("active");
+    ocultarCarga();
     mostrarStatus("❌ Error de conexión", "err");
   }
   setTimeout(()=>{ cooldown = false; }, 2500);
@@ -356,11 +397,22 @@ function renderClientesList(filtro){
 }
 
 async function ajustarSello(id, delta){
+  const cliente = listaClientes.find(c => c.id === id);
+  const nombre = cliente ? cliente.nombre : "este cliente";
+  const mensaje = delta > 0
+    ? `¿Sumar 1 sello a ${nombre}?`
+    : `¿Quitar 1 sello a ${nombre}?`;
+
+  const confirmado = await pedirConfirmacion(mensaje);
+  if(!confirmado) return;
+
   const fila = document.querySelector(`.cliente-row[data-id="${CSS.escape(id)}"]`);
   const botones = fila ? fila.querySelectorAll(".btn-adjust") : [];
   botones.forEach(b => b.disabled = true);
+  mostrarCarga("Actualizando sellos...");
   try{
     const data = await apiCall({accion:"sellar", id, delta});
+    ocultarCarga();
     if(data.ok && data.cliente){
       const idx = listaClientes.findIndex(c => c.id === id);
       if(idx > -1) listaClientes[idx].sellos = data.cliente.sellos;
@@ -370,6 +422,7 @@ async function ajustarSello(id, delta){
       botones.forEach(b => b.disabled = false);
     }
   }catch(e){
+    ocultarCarga();
     mostrarMensajeClientes("❌ Error de conexión.", "err");
     botones.forEach(b => b.disabled = false);
   }
