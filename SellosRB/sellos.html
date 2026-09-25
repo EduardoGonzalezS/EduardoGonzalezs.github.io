@@ -65,6 +65,25 @@
   .error{color:#c0392b;font-size:.82rem;margin-top:10px;text-align:center;}
   .status{padding:12px 14px;border-radius:12px;font-size:.85rem;margin:12px 0;animation:popIn .3s ease;}
   .status.ok{background:rgba(63,145,66,.12);color:#3f9142;}
+
+  #scroll-hint{
+    position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+    display:flex;align-items:center;gap:6px;
+    background:var(--primary);color:#fff;border:none;border-radius:999px;
+    padding:10px 18px 10px 14px;font-size:.8rem;font-weight:700;
+    box-shadow:0 8px 20px rgba(216,103,138,.4);cursor:pointer;
+    z-index:40;animation:hintBounce 1.8s ease-in-out infinite;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  #scroll-hint.hidden{
+    opacity:0;pointer-events:none;animation:none;
+    transform:translateX(-50%) translateY(10px);
+  }
+  #scroll-hint .scroll-hint-arrow{font-size:1.2rem;line-height:1;}
+  @keyframes hintBounce{
+    0%,100%{transform:translateX(-50%) translateY(0);}
+    50%{transform:translateX(-50%) translateY(-6px);}
+  }
   .qr-box{text-align:center;margin-top:18px;}
   .qr-box img{border-radius:12px;border:1px solid var(--border);padding:10px;background:#fff;animation:popIn .4s ease;}
   .qr-id{font-family:monospace;font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all;}
@@ -149,6 +168,11 @@
 <body>
 <div class="app" id="app"></div>
 
+<button id="scroll-hint" class="hidden" aria-label="Ver catálogo de productos">
+  <span class="scroll-hint-arrow">⌄</span>
+  <span class="scroll-hint-label">Ver catálogo</span>
+</button>
+
 <div class="loading-overlay" id="loading-overlay">
   <div class="loading-box">
     <div class="spinner"></div>
@@ -212,10 +236,40 @@ function render(){
     app.innerHTML = renderLoggedIn(session);
     cargarCatalogoSiFalta();
     refrescarEstadoCliente(session.id);
+    setupScrollHint();
   } else {
     app.innerHTML = renderAuth();
+    ocultarScrollHint();
   }
   attachHandlers();
+}
+
+// Botón flotante que invita a bajar para ver el catálogo. Se muestra en la
+// pantalla del cliente y se esconde solo en cuanto el catálogo entra en pantalla.
+let scrollHintObserver = null;
+
+function ocultarScrollHint(){
+  if(scrollHintObserver){ scrollHintObserver.disconnect(); scrollHintObserver = null; }
+  const btn = document.getElementById("scroll-hint");
+  if(btn) btn.classList.add("hidden");
+}
+
+function setupScrollHint(){
+  const btn = document.getElementById("scroll-hint");
+  const objetivo = document.getElementById("catalogo-heading");
+  if(!btn || !objetivo) return;
+
+  btn.onclick = ()=> objetivo.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  if(scrollHintObserver) scrollHintObserver.disconnect();
+  scrollHintObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      btn.classList.toggle("hidden", entry.isIntersecting);
+    });
+  }, { threshold: 0.1 });
+  scrollHintObserver.observe(objetivo);
+
+  btn.classList.remove("hidden");
 }
 
 async function cargarCatalogoSiFalta(){
@@ -354,7 +408,7 @@ function renderLoggedIn(cliente){
       </div>
     </div>
 
-    <h1 style="margin-top:24px;">Nuestro catálogo</h1>
+    <h1 id="catalogo-heading" style="margin-top:24px;">Nuestro catálogo</h1>
     <div class="catalog-grid" id="catalog-list"></div>
 
     <div class="logout"><a id="btn-logout">Cerrar sesión</a></div>
