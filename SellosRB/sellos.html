@@ -79,6 +79,7 @@
     transition:transform .2s ease, background .3s ease, border .3s ease;
   }
   .stamp.filled{background:var(--accent);border:2px solid var(--accent);color:#fff;animation:stampPop .4s ease backwards;}
+  .stamp img{width:65%;height:65%;object-fit:contain;}
   .catalog-list{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
   .product{
     display:flex;align-items:center;gap:12px;background:var(--card);
@@ -304,7 +305,7 @@ function renderLoggedIn(cliente){
   let stampsHtml = "";
   for(let i=0;i<total;i++){
     const delay = i<sellos ? `style="animation-delay:${i*0.06}s"` : "";
-    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'⭐':''}</div>`;
+    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'<img src="assets/img/rol.png" alt="">':''}</div>`;
   }
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cliente.id)}&size=220x220`;
 
