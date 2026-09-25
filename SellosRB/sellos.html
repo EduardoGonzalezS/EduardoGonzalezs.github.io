@@ -80,18 +80,27 @@
   }
   .stamp.filled{background:var(--accent);border:2px solid var(--accent);color:#fff;animation:stampPop .4s ease backwards;}
   .stamp img{width:65%;height:65%;object-fit:contain;}
-  .catalog-list{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
-  .product{
-    display:flex;align-items:center;gap:12px;background:var(--card);
-    border:1px solid var(--border);border-radius:14px;padding:12px;
-    opacity:0;animation:slideUp .4s ease forwards;
+  .catalog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px;}
+  .product-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    overflow:hidden;opacity:0;animation:slideUp .4s ease forwards;
     transition:transform .2s ease, box-shadow .2s ease;
   }
-  .product:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(216,103,138,.12);}
-  .product .emoji{font-size:1.8rem;width:44px;text-align:center;display:inline-block;animation:wiggle 2.5s ease-in-out infinite;}
-  .product .info{flex:1;}
-  .product .info .pname{font-weight:700;font-size:.95rem;}
-  .product .info .pdesc{font-size:.78rem;color:var(--muted);margin-top:2px;}
+  .product-card:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(216,103,138,.16);}
+  .product-card .img-wrap{
+    aspect-ratio:1;width:100%;position:relative;overflow:hidden;
+    background:linear-gradient(135deg, var(--bg), var(--accent));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .product-card .img-wrap img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .3s ease;
+  }
+  .product-card:hover .img-wrap img{transform:scale(1.06);}
+  .product-card .emoji-fallback{font-size:2.5rem;animation:wiggle 2.5s ease-in-out infinite;}
+  .product-card .info{padding:10px 12px 14px;}
+  .product-card .pname{font-weight:700;font-size:.85rem;line-height:1.25;}
+  .product-card .pdesc{font-size:.7rem;color:var(--muted);margin-top:3px;line-height:1.3;}
   .logout{text-align:center;margin-top:18px;}
   .logout a{color:var(--muted);font-size:.8rem;text-decoration:underline;cursor:pointer;}
   .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;}
@@ -226,19 +235,38 @@ async function cargarCatalogoSiFalta(){
   actualizarCatalogoDom();
 }
 
+// Convierte "Roles de canela" en "roles-de-canela" para adivinar el nombre
+// del archivo de imagen en assets/img/productos/. Si el producto trae su
+// propio campo "imagen" (del catálogo), ese se usa en su lugar.
+function slugify(str){
+  return (str || "")
+    .toString()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-+|-+$)/g, "");
+}
+
 function actualizarCatalogoDom(){
   const cont = document.getElementById("catalog-list");
   if(!cont) return;
   const lista = state.catalogo || productosFallback;
-  cont.innerHTML = lista.map((p,i) => `
-    <div class="product" style="animation-delay:${i*0.08}s">
-      <div class="emoji">${p.emoji}</div>
+  cont.innerHTML = lista.map((p,i) => {
+    const imgSrc = p.imagen || `assets/img/productos/${slugify(p.nombre)}.png`;
+    return `
+    <div class="product-card" style="animation-delay:${i*0.08}s">
+      <div class="img-wrap">
+        <img src="${imgSrc}" alt="${p.nombre}" loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="emoji-fallback" style="display:none;">${p.emoji || "🍰"}</div>
+      </div>
       <div class="info">
         <div class="pname">${p.nombre}</div>
         <div class="pdesc">${p.desc}</div>
       </div>
     </div>
-  `).join("");
+  `;
+  }).join("");
 }
 
 async function refrescarEstadoCliente(id){
@@ -327,7 +355,7 @@ function renderLoggedIn(cliente){
     </div>
 
     <h1 style="margin-top:24px;">Nuestro catálogo</h1>
-    <div class="catalog-list" id="catalog-list"></div>
+    <div class="catalog-grid" id="catalog-list"></div>
 
     <div class="logout"><a id="btn-logout">Cerrar sesión</a></div>
   `;
