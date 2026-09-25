@@ -47,6 +47,11 @@
     font-size:1rem;background:#fffaf4;color:var(--text);
   }
   input:focus{outline:2px solid var(--accent);}
+  .pin-boxes{display:flex;gap:10px;justify-content:center;}
+  .pin-box{
+    width:52px;height:56px;padding:0;text-align:center;
+    font-size:1.5rem;font-weight:700;letter-spacing:0;
+  }
   button{
     width:100%;margin-top:20px;padding:13px;border:none;border-radius:12px;
     background:var(--primary);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
@@ -148,7 +153,7 @@ function ocultarCarga(){
 function mensajeErrorLogin(data){
   const raw = (data && data.error ? String(data.error).toLowerCase() : "");
   if(raw.includes("contraseñ") || raw.includes("password") || raw.includes("clave")){
-    return "Contraseña incorrecta.";
+    return "Pin incorrecto.";
   }
   if(raw.includes("no encontr") || raw.includes("no existe") || raw.includes("usuario") || raw.includes("telefono") || raw.includes("teléfono")){
     return "Usuario no encontrado.";
@@ -256,9 +261,14 @@ function renderAuth(){
     <div class="screen ${state.screen==='login'?'active':''}" id="screen-login">
       <div class="card">
         <label>Número de teléfono</label>
-        <input type="tel" id="login-tel" placeholder="10 dígitos">
-        <label>Contraseña</label>
-        <input type="password" id="login-pass" placeholder="••••••••">
+        <input type="tel" id="login-tel" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="off" placeholder="10 dígitos">
+        <label>Pin</label>
+        <div class="pin-boxes" data-pin-group="login">
+          <input type="password" class="pin-box" id="login-pin-0" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="login-pin-1" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="login-pin-2" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="login-pin-3" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+        </div>
         <button id="btn-login">${state.loading ? "Entrando..." : "Entrar"}</button>
         <div class="error" id="login-error"></div>
       </div>
@@ -269,9 +279,14 @@ function renderAuth(){
         <label>Nombre</label>
         <input type="text" id="reg-nombre" placeholder="Tu nombre">
         <label>Número de teléfono</label>
-        <input type="tel" id="reg-tel" placeholder="10 dígitos">
-        <label>Contraseña</label>
-        <input type="password" id="reg-pass" placeholder="Crea una contraseña">
+        <input type="tel" id="reg-tel" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="off" placeholder="10 dígitos">
+        <label>Pin (4 dígitos)</label>
+        <div class="pin-boxes" data-pin-group="reg">
+          <input type="password" class="pin-box" id="reg-pin-0" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="reg-pin-1" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="reg-pin-2" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+          <input type="password" class="pin-box" id="reg-pin-3" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="off">
+        </div>
         <button id="btn-registro">${state.loading ? "Creando..." : "Crear mi tarjeta de sellos"}</button>
         <div class="error" id="reg-error"></div>
       </div>
@@ -310,19 +325,74 @@ function renderLoggedIn(cliente){
   `;
 }
 
+function soloDigitos(el, maxLen){
+  if(!el) return;
+  el.oninput = ()=>{
+    el.value = el.value.replace(/\D/g, "").slice(0, maxLen);
+  };
+}
+
+function getPin(prefix){
+  let pin = "";
+  for(let i=0;i<4;i++){
+    const box = document.getElementById(`${prefix}-pin-${i}`);
+    pin += box ? box.value : "";
+  }
+  return pin;
+}
+
+function setupPinGroup(prefix){
+  const boxes = [0,1,2,3].map(i => document.getElementById(`${prefix}-pin-${i}`));
+  boxes.forEach((box, i)=>{
+    if(!box) return;
+    box.oninput = ()=>{
+      box.value = box.value.replace(/\D/g, "").slice(0,1);
+      if(box.value && boxes[i+1]) boxes[i+1].focus();
+    };
+    box.onkeydown = (e)=>{
+      if(e.key === "Backspace" && !box.value && boxes[i-1]){
+        boxes[i-1].focus();
+      }
+    };
+    box.onpaste = (e)=>{
+      const texto = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g, "");
+      if(!texto) return;
+      e.preventDefault();
+      texto.slice(0,4).split("").forEach((d, idx)=>{
+        if(boxes[idx]) boxes[idx].value = d;
+      });
+      const siguiente = boxes[Math.min(texto.length,3)];
+      if(siguiente) siguiente.focus();
+    };
+  });
+}
+
 function attachHandlers(){
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.onclick = ()=>{ state.screen = tab.dataset.tab; render(); };
   });
 
+  soloDigitos(document.getElementById("login-tel"), 10);
+  soloDigitos(document.getElementById("reg-tel"), 10);
+  setupPinGroup("login");
+  setupPinGroup("reg");
+
   const btnLogin = document.getElementById("btn-login");
   if(btnLogin){
     btnLogin.onclick = async ()=>{
       const telefono = document.getElementById("login-tel").value.trim();
-      const password = document.getElementById("login-pass").value;
+      const password = getPin("login");
       const err = document.getElementById("login-error");
       if(!telefono || !password){
         err.textContent = "Completa ambos campos.";
+        return;
+      }
+      if(telefono.length !== 10){
+        err.textContent = "El número de teléfono debe tener 10 dígitos.";
+        return;
+      }
+      if(password.length !== 4){
+        err.textContent = "El Pin debe ser de 4 dígitos.";
         return;
       }
       err.textContent = "";
@@ -348,10 +418,18 @@ function attachHandlers(){
     btnReg.onclick = async ()=>{
       const nombre = document.getElementById("reg-nombre").value.trim();
       const telefono = document.getElementById("reg-tel").value.trim();
-      const password = document.getElementById("reg-pass").value;
+      const password = getPin("reg");
       const err = document.getElementById("reg-error");
       if(!nombre || !telefono || !password){
         err.textContent = "Completa todos los campos.";
+        return;
+      }
+      if(telefono.length !== 10){
+        err.textContent = "El número de teléfono debe tener 10 dígitos.";
+        return;
+      }
+      if(password.length !== 4){
+        err.textContent = "El Pin debe ser de 4 dígitos.";
         return;
       }
       err.textContent = "";
