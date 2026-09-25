@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Repostería Belén - Sellos</title>
+<link rel="icon" type="image/png" href="assets/img/rol.png">
 <style>
   :root{
     --bg:#fff3f6;
@@ -33,6 +34,7 @@
   }
   .app{width:100%;max-width:420px;}
   h1{font-size:1.4rem;text-align:center;margin:8px 0 4px;color:var(--primary-dark);}
+  .brand-icon{height:1.5em;width:auto;vertical-align:-0.3em;margin-right:6px;border-radius:8px;}
   .subtitle{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:20px;}
   .tabs{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:18px;border:1px solid var(--border);}
   .tab{flex:1;text-align:center;padding:10px 4px;border-radius:10px;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s;}
@@ -253,7 +255,7 @@ async function refrescarEstadoCliente(id){
 
 function renderAuth(){
   return `
-    <h1>🌀 Repostería Belén</h1>
+    <h1><img src="assets/img/rol.png" alt="" class="brand-icon">Repostería Belén</h1>
     <div class="subtitle">Junta sellos y canjea tus postres favoritos</div>
     <div class="tabs">
       <div class="tab ${state.screen==='login'?'active':''}" data-tab="login">Iniciar sesión</div>
