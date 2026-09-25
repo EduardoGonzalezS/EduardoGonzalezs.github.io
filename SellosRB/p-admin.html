@@ -116,6 +116,16 @@ function mostrarStatus(msg, tipo){
   const info = document.getElementById("cliente-info");
   card.style.display = "block";
   info.innerHTML = `<div class="status ${tipo}">${msg}</div>`;
+  if(tipo === "err"){
+    info.innerHTML += `<button id="btn-reintentar" style="margin-top:10px;">Reintentar</button>`;
+    const btnReintentar = document.getElementById("btn-reintentar");
+    if(btnReintentar){
+      btnReintentar.onclick = ()=>{
+        card.style.display = "none";
+        startScanner();
+      };
+    }
+  }
 }
 
 function mostrarCliente(cliente){
@@ -123,10 +133,18 @@ function mostrarCliente(cliente){
   const info = document.getElementById("cliente-info");
   card.style.display = "block";
   info.innerHTML = `
-    <div class="status ok">✅ Sello agregado correctamente</div>
+    <div class="status ok">✅ Sello registrado correctamente</div>
     <div class="nombre">${cliente.nombre}</div>
     <div class="sellos">${cliente.sellos} sellos</div>
+    <button id="btn-escanear-otro" style="margin-top:14px;">Escanear otro QR</button>
   `;
+  const btnOtro = document.getElementById("btn-escanear-otro");
+  if(btnOtro){
+    btnOtro.onclick = ()=>{
+      card.style.display = "none";
+      startScanner();
+    };
+  }
 }
 
 async function sellarCliente(id){
@@ -146,6 +164,8 @@ async function sellarCliente(id){
 }
 
 function onScanSuccess(decodedText){
+  if(cooldown) return;
+  stopScanner();
   sellarCliente(decodedText.trim());
 }
 
