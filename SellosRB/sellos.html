@@ -6,14 +6,14 @@
 <title>Repostería Belén - Sellos</title>
 <style>
   :root{
-    --bg:#fdf6ee;
+    --bg:#fff3f6;
     --card:#ffffff;
-    --primary:#8a5a3c;
-    --primary-dark:#6b4128;
-    --accent:#e8b04b;
-    --text:#3a2a20;
-    --muted:#8a7b6f;
-    --border:#eee0d0;
+    --primary:#e88aa5;
+    --primary-dark:#d9678a;
+    --accent:#ffc2d1;
+    --text:#5c3346;
+    --muted:#b48c9d;
+    --border:#fbdde7;
     box-sizing:border-box;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
@@ -40,11 +40,11 @@
   .screen{display:none;}
   .screen.active{display:block;animation:fade .25s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-  .card{background:var(--card);border-radius:18px;padding:22px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(138,90,60,.06);}
+  .card{background:var(--card);border-radius:18px;padding:22px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(216,103,138,.08);}
   label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin:14px 0 6px;}
   input{
     width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);
-    font-size:1rem;background:#fffaf4;color:var(--text);
+    font-size:1rem;background:#fff8fa;color:var(--text);
   }
   input:focus{outline:2px solid var(--accent);}
   .pin-boxes{display:flex;gap:10px;justify-content:center;}
@@ -58,9 +58,11 @@
     transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
   }
   button:active{background:var(--primary-dark);transform:scale(.97);}
-  button:hover{box-shadow:0 6px 16px rgba(138,90,60,.25);}
+  button:hover{box-shadow:0 6px 16px rgba(216,103,138,.3);}
   button.secondary{background:transparent;color:var(--primary);border:1px solid var(--primary);margin-top:10px;}
   .error{color:#c0392b;font-size:.82rem;margin-top:10px;text-align:center;}
+  .status{padding:12px 14px;border-radius:12px;font-size:.85rem;margin:12px 0;animation:popIn .3s ease;}
+  .status.ok{background:rgba(63,145,66,.12);color:#3f9142;}
   .qr-box{text-align:center;margin-top:18px;}
   .qr-box img{border-radius:12px;border:1px solid var(--border);padding:10px;background:#fff;animation:popIn .4s ease;}
   .qr-id{font-family:monospace;font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all;}
@@ -82,7 +84,7 @@
     opacity:0;animation:slideUp .4s ease forwards;
     transition:transform .2s ease, box-shadow .2s ease;
   }
-  .product:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(138,90,60,.1);}
+  .product:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(216,103,138,.12);}
   .product .emoji{font-size:1.8rem;width:44px;text-align:center;display:inline-block;animation:wiggle 2.5s ease-in-out infinite;}
   .product .info{flex:1;}
   .product .info .pname{font-weight:700;font-size:.95rem;}
@@ -251,7 +253,7 @@ async function refrescarEstadoCliente(id){
 
 function renderAuth(){
   return `
-    <h1>🥐 Repostería Belén</h1>
+    <h1>🌀 Repostería Belén</h1>
     <div class="subtitle">Junta sellos y canjea tus postres favoritos</div>
     <div class="tabs">
       <div class="tab ${state.screen==='login'?'active':''}" data-tab="login">Iniciar sesión</div>
@@ -304,6 +306,8 @@ function renderLoggedIn(cliente){
   }
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cliente.id)}&size=220x220`;
 
+  const completo = sellos >= total;
+
   return `
     <div class="stamp-header">
       <div class="name">Hola, ${cliente.nombre} 👋</div>
@@ -311,6 +315,7 @@ function renderLoggedIn(cliente){
     <div class="card">
       <div class="stamp-count">${sellos}/${total}</div>
       <div class="stamp-label">sellos acumulados</div>
+      ${completo ? `<div class="status ok" style="text-align:center;">🎉 ¡Completaste tu tarjeta! Ven a canjear tu premio.</div>` : ""}
       <div class="stamps-grid">${stampsHtml}</div>
       <div class="qr-box">
         <img src="${qrUrl}" alt="QR del cliente">

@@ -7,14 +7,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <style>
   :root{
-    --bg:#fdf6ee;
+    --bg:#fff3f6;
     --card:#ffffff;
-    --primary:#8a5a3c;
-    --primary-dark:#6b4128;
-    --accent:#e8b04b;
-    --text:#3a2a20;
-    --muted:#8a7b6f;
-    --border:#eee0d0;
+    --primary:#e88aa5;
+    --primary-dark:#d9678a;
+    --accent:#ffc2d1;
+    --text:#5c3346;
+    --muted:#b48c9d;
+    --border:#fbdde7;
     --ok:#3f9142;
     --err:#c0392b;
     box-sizing:border-box;
@@ -23,11 +23,11 @@
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#241a13; --card:#2f2319; --text:#f3e9df; --muted:#b8a798; --border:#4a3a2c;
+      --bg:#2b1621; --card:#391f2d; --text:#fbe3ec; --muted:#caa0b3; --border:#5a2f45;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#241a13; --card:#2f2319; --text:#f3e9df; --muted:#b8a798; --border:#4a3a2c;
+    --bg:#2b1621; --card:#391f2d; --text:#fbe3ec; --muted:#caa0b3; --border:#5a2f45;
   }
   *{box-sizing:border-box;}
   html,body{height:100%;}
@@ -40,7 +40,7 @@
   .app{width:100%;max-width:440px;}
   h1{font-size:1.3rem;text-align:center;margin:8px 0 2px;color:var(--primary-dark);}
   .subtitle{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:18px;}
-  .card{background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(138,90,60,.06);margin-bottom:16px;}
+  .card{background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(216,103,138,.08);margin-bottom:16px;}
   #reader{width:100%;border-radius:14px;overflow:hidden;}
   button{
     width:100%;padding:13px;border:none;border-radius:12px;
@@ -105,13 +105,30 @@
   .btn-adjust:disabled{opacity:.4;cursor:default;}
   .badge-sellos{min-width:24px;text-align:center;font-weight:800;color:var(--primary);font-size:.95rem;}
   .clientes-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 0;}
+  .btn-restaurar{
+    width:auto;padding:8px 14px;font-size:.78rem;font-weight:700;
+    background:var(--accent);color:var(--primary-dark);border-radius:10px;
+  }
+  .btn-restaurar:active{background:var(--primary);color:#fff;}
+  .cliente-row-completo{background:rgba(255,194,209,.25);border-radius:12px;margin:0 -6px;padding-left:6px;padding-right:6px;}
+  .btn-historial{
+    width:26px;height:26px;border-radius:50%;border:1px solid var(--border);
+    background:transparent;color:var(--muted);font-size:.85rem;padding:0;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  }
+  .historial-list{max-height:280px;overflow-y:auto;text-align:left;margin-top:14px;}
+  .historial-item{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+  .historial-item:last-child{border-bottom:none;}
+  .historial-item .h-fecha{color:var(--muted);}
+  .historial-item .h-delta.positivo{color:var(--ok);font-weight:700;}
+  .historial-item .h-delta.negativo{color:var(--err);font-weight:700;}
   @keyframes popIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
   .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;}
 </style>
 </head>
 <body>
 <div class="app">
-  <h1>🥐 Panel Admin</h1>
+  <h1>🌀 Panel Admin</h1>
   <div class="subtitle">Repostería Belén — otorgar sellos</div>
 
   <div class="toggle-mode">
@@ -166,8 +183,19 @@
   </div>
 </div>
 
+<div class="loading-overlay" id="historial-overlay">
+  <div class="loading-box confirm-box">
+    <p id="historial-titulo" style="margin-bottom:0;">Historial</p>
+    <div class="historial-list" id="historial-list"></div>
+    <div class="confirm-actions">
+      <button id="btn-historial-cerrar" class="secondary" style="width:100%;">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwPszTqEYXE6gdQqiFxe-be3t68txgsXmA6bM__Fw3hf-W6n1NL8cU09pUIEO3nECRr/exec";
+const META_SELLOS = 10;
 
 let html5QrCode = null;
 let scanning = false;
@@ -228,11 +256,13 @@ function mostrarCliente(cliente){
   const card = document.getElementById("result-card");
   const info = document.getElementById("cliente-info");
   card.style.display = "block";
+  const completo = cliente.sellos >= META_SELLOS;
   info.innerHTML = `
     <div class="status ok">✅ Sello registrado correctamente</div>
     <div class="nombre">${cliente.nombre}</div>
     <div class="sellos">${cliente.sellos} sellos</div>
-    <button id="btn-escanear-otro" style="margin-top:14px;">Escanear otro QR</button>
+    ${completo ? `<button id="btn-restaurar-resultado" class="btn-restaurar" style="margin-top:14px;">🎁 Restaurar tarjeta (premio canjeado)</button>` : ""}
+    <button id="btn-escanear-otro" style="margin-top:10px;">Escanear otro QR</button>
   `;
   const btnOtro = document.getElementById("btn-escanear-otro");
   if(btnOtro){
@@ -240,6 +270,42 @@ function mostrarCliente(cliente){
       card.style.display = "none";
       startScanner();
     };
+  }
+  const btnRestaurar = document.getElementById("btn-restaurar-resultado");
+  if(btnRestaurar){
+    btnRestaurar.onclick = async ()=>{
+      const ok = await restaurarTarjeta(cliente.id, cliente.nombre);
+      if(ok){
+        card.style.display = "none";
+        startScanner();
+      }
+    };
+  }
+}
+
+// Pone en 0 los sellos de un cliente (canje de premio al completar la tarjeta).
+// Pide confirmación, muestra "Actualizando sellos..." y devuelve true/false
+// según si se logró restaurar.
+async function restaurarTarjeta(id, nombre){
+  const confirmado = await pedirConfirmacion(`¿Restaurar la tarjeta de ${nombre}? Sus sellos volverán a 0 (premio ya canjeado).`);
+  if(!confirmado) return false;
+
+  mostrarCarga("Actualizando sellos...");
+  try{
+    const data = await apiCall({accion:"reiniciar", id});
+    ocultarCarga();
+    if(data.ok && data.cliente){
+      const idx = listaClientes ? listaClientes.findIndex(c => c.id === id) : -1;
+      if(idx > -1) listaClientes[idx].sellos = data.cliente.sellos;
+      return true;
+    } else {
+      mostrarStatus("❌ " + (data.error || "No se pudo restaurar la tarjeta."), "err");
+      return false;
+    }
+  }catch(e){
+    ocultarCarga();
+    mostrarStatus("❌ Error de conexión.", "err");
+    return false;
   }
 }
 
@@ -377,22 +443,40 @@ function renderClientesList(filtro){
     return;
   }
 
-  cont.innerHTML = filtrados.map(c => `
-    <div class="cliente-row" data-id="${c.id}">
+  cont.innerHTML = filtrados.map(c => {
+    const completo = c.sellos >= META_SELLOS;
+    return `
+    <div class="cliente-row ${completo ? "cliente-row-completo" : ""}" data-id="${c.id}">
       <div class="cliente-datos">
-        <div class="nombre-row">${c.nombre}</div>
+        <div class="nombre-row">${c.nombre}${completo ? " 🎉" : ""}</div>
         <div class="sub-row">${c.telefono ? c.telefono + " · " : ""}${c.id}</div>
       </div>
       <div class="cliente-controls">
-        <button class="btn-adjust" data-action="restar" data-id="${c.id}" ${c.sellos <= 0 ? "disabled" : ""}>−</button>
-        <span class="badge-sellos" id="badge-${c.id}">${c.sellos}</span>
-        <button class="btn-adjust" data-action="sumar" data-id="${c.id}">+</button>
+        <button class="btn-historial" data-id="${c.id}" title="Ver historial de fechas">🕒</button>
+        ${completo
+          ? `<button class="btn-restaurar" data-id="${c.id}">🎁 Restaurar</button>`
+          : `
+            <button class="btn-adjust" data-action="restar" data-id="${c.id}" ${c.sellos <= 0 ? "disabled" : ""}>−</button>
+            <span class="badge-sellos" id="badge-${c.id}">${c.sellos}</span>
+            <button class="btn-adjust" data-action="sumar" data-id="${c.id}">+</button>
+          `}
       </div>
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   cont.querySelectorAll(".btn-adjust").forEach(btn=>{
     btn.onclick = ()=> ajustarSello(btn.dataset.id, btn.dataset.action === "sumar" ? 1 : -1);
+  });
+  cont.querySelectorAll(".btn-restaurar").forEach(btn=>{
+    btn.onclick = async ()=>{
+      const cliente = listaClientes.find(c => c.id === btn.dataset.id);
+      const ok = await restaurarTarjeta(btn.dataset.id, cliente ? cliente.nombre : "este cliente");
+      if(ok) renderClientesList(document.getElementById("clientes-search").value.trim());
+    };
+  });
+  cont.querySelectorAll(".btn-historial").forEach(btn=>{
+    btn.onclick = ()=> mostrarHistorial(btn.dataset.id);
   });
 }
 
@@ -430,6 +514,42 @@ async function ajustarSello(id, delta){
 
 document.getElementById("clientes-search").oninput = (e)=> renderClientesList(e.target.value);
 document.getElementById("btn-refrescar-clientes").onclick = ()=> cargarClientes(true);
+
+// Muestra la fecha exacta de cada sello sumado/quitado y cada canje de un cliente.
+async function mostrarHistorial(id){
+  const cliente = listaClientes ? listaClientes.find(c => c.id === id) : null;
+  document.getElementById("historial-titulo").textContent = `Historial de ${cliente ? cliente.nombre : "cliente"}`;
+  const lista = document.getElementById("historial-list");
+  lista.innerHTML = `<div class="clientes-empty">Cargando...</div>`;
+  document.getElementById("historial-overlay").classList.add("active");
+
+  try{
+    const data = await apiCall({accion:"historial", id});
+    if(!data.ok || !Array.isArray(data.historial) || !data.historial.length){
+      lista.innerHTML = `<div class="clientes-empty">Aún no hay movimientos registrados.</div>`;
+      return;
+    }
+    lista.innerHTML = data.historial.map(h=>{
+      const fecha = new Date(h.fecha);
+      const fechaTexto = isNaN(fecha) ? h.fecha : fecha.toLocaleString("es-MX", {dateStyle:"medium", timeStyle:"short"});
+      const esCanje = h.tipo === "canje";
+      const signo = h.delta > 0 ? "+" : "";
+      return `
+        <div class="historial-item">
+          <span class="h-fecha">${fechaTexto}</span>
+          <span class="h-delta ${h.delta >= 0 ? "positivo" : "negativo"}">
+            ${esCanje ? "🎁 Canje" : `${signo}${h.delta} sello${Math.abs(h.delta) === 1 ? "" : "s"}`}
+          </span>
+        </div>
+      `;
+    }).join("");
+  }catch(e){
+    lista.innerHTML = `<div class="clientes-empty">Error de conexión.</div>`;
+  }
+}
+document.getElementById("btn-historial-cerrar").onclick = ()=>{
+  document.getElementById("historial-overlay").classList.remove("active");
+};
 </script>
 </body>
 </html>
