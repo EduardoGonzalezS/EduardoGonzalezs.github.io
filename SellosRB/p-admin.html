@@ -57,6 +57,25 @@
   .status{margin-top:14px;padding:14px;border-radius:12px;font-size:.9rem;display:none;animation:popIn .3s ease;}
   .status.ok{background:rgba(63,145,66,.12);color:var(--ok);display:block;}
   .status.err{background:rgba(192,57,43,.12);color:var(--err);display:block;}
+  .loading-overlay{
+    position:fixed;inset:0;background:rgba(36,26,19,.55);
+    display:none;align-items:center;justify-content:center;z-index:50;
+    padding:16px;
+  }
+  .loading-overlay.active{display:flex;}
+  .loading-box{
+    background:var(--card);border-radius:18px;padding:28px 30px;
+    text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25);
+    animation:popIn .25s ease;
+  }
+  .spinner{
+    width:44px;height:44px;border-radius:50%;
+    border:4px solid var(--border);border-top-color:var(--primary);
+    margin:0 auto 14px;
+    animation:spin .8s linear infinite;
+  }
+  .loading-box p{margin:0;font-weight:700;color:var(--text);font-size:1rem;}
+  @keyframes spin{to{transform:rotate(360deg);}}
   .cliente-info{text-align:center;margin-top:6px;}
   .cliente-info .nombre{font-size:1.15rem;font-weight:700;}
   .cliente-info .sellos{font-size:2rem;font-weight:800;color:var(--primary);margin-top:4px;}
@@ -95,6 +114,13 @@
   </div>
 
   <div class="note">Cada escaneo o búsqueda suma 1 sello al cliente.</div>
+</div>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p>Registrando sello...</p>
+  </div>
 </div>
 
 <script>
@@ -150,14 +176,17 @@ function mostrarCliente(cliente){
 async function sellarCliente(id){
   if(cooldown) return;
   cooldown = true;
+  document.getElementById("loading-overlay").classList.add("active");
   try{
     const data = await apiCall({accion:"sellar", id});
+    document.getElementById("loading-overlay").classList.remove("active");
     if(data.ok){
       mostrarCliente(data.cliente);
     } else {
       mostrarStatus("❌ " + (data.error || "Cliente no encontrado"), "err");
     }
   }catch(e){
+    document.getElementById("loading-overlay").classList.remove("active");
     mostrarStatus("❌ Error de conexión", "err");
   }
   setTimeout(()=>{ cooldown = false; }, 2500);
