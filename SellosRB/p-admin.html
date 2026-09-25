@@ -83,6 +83,24 @@
   .toggle-mode div{flex:1;text-align:center;padding:9px 4px;border-radius:10px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;}
   .toggle-mode div.active{background:var(--primary);color:#fff;}
   .hidden{display:none;}
+  .clientes-search{margin-top:10px;}
+  .clientes-header{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .btn-refresh{width:auto;padding:7px 12px;font-size:.75rem;margin:0;}
+  .cliente-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
+  .cliente-row:last-child{border-bottom:none;}
+  .cliente-datos{flex:1;min-width:0;}
+  .cliente-datos .nombre-row{font-weight:700;font-size:.92rem;}
+  .cliente-datos .sub-row{font-size:.72rem;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cliente-controls{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .btn-adjust{
+    width:30px;height:30px;border-radius:50%;border:1px solid var(--primary);
+    background:transparent;color:var(--primary);font-size:1.1rem;font-weight:800;
+    padding:0;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .btn-adjust:active{background:var(--primary);color:#fff;transform:scale(.92);}
+  .btn-adjust:disabled{opacity:.4;cursor:default;}
+  .badge-sellos{min-width:24px;text-align:center;font-weight:800;color:var(--primary);font-size:.95rem;}
+  .clientes-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 0;}
   @keyframes popIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
   .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;}
 </style>
@@ -95,6 +113,7 @@
   <div class="toggle-mode">
     <div id="mode-scan" class="active">Escanear QR</div>
     <div id="mode-manual">Buscar por ID</div>
+    <div id="mode-clientes">Clientes</div>
   </div>
 
   <div id="section-scan" class="card">
@@ -109,11 +128,21 @@
     <button id="btn-manual-sellar" style="margin-top:14px;">Sumar sello</button>
   </div>
 
+  <div id="section-clientes" class="card hidden">
+    <div class="clientes-header">
+      <label style="margin:0;">Clientes registrados</label>
+      <button id="btn-refrescar-clientes" class="secondary btn-refresh">↻ Actualizar</button>
+    </div>
+    <input type="text" id="clientes-search" class="clientes-search" placeholder="Buscar por nombre, teléfono o ID/QR">
+    <div id="clientes-msg" class="status" style="display:none;margin-top:10px;"></div>
+    <div id="clientes-list" style="margin-top:6px;"></div>
+  </div>
+
   <div class="card" id="result-card" style="display:none;">
     <div class="cliente-info" id="cliente-info"></div>
   </div>
 
-  <div class="note">Cada escaneo o búsqueda suma 1 sello al cliente.</div>
+  <div class="note">Cada escaneo o búsqueda suma 1 sello al cliente. En "Clientes" puedes sumar o quitar sellos manualmente.</div>
 </div>
 
 <div class="loading-overlay" id="loading-overlay">
@@ -236,20 +265,118 @@ document.getElementById("btn-manual-sellar").onclick = ()=>{
   sellarCliente(id);
 };
 
-document.getElementById("mode-scan").onclick = ()=>{
-  document.getElementById("mode-scan").classList.add("active");
-  document.getElementById("mode-manual").classList.remove("active");
-  document.getElementById("section-scan").classList.remove("hidden");
-  document.getElementById("section-manual").classList.add("hidden");
+const MODOS = ["scan", "manual", "clientes"];
+function setModo(activo){
+  MODOS.forEach(m=>{
+    document.getElementById(`mode-${m}`).classList.toggle("active", m === activo);
+    document.getElementById(`section-${m}`).classList.toggle("hidden", m !== activo);
+  });
+  document.getElementById("result-card").style.display = "none";
   stopScanner();
-};
-document.getElementById("mode-manual").onclick = ()=>{
-  document.getElementById("mode-manual").classList.add("active");
-  document.getElementById("mode-scan").classList.remove("active");
-  document.getElementById("section-manual").classList.remove("hidden");
-  document.getElementById("section-scan").classList.add("hidden");
-  stopScanner();
-};
+  if(activo === "clientes") cargarClientes(false);
+}
+document.getElementById("mode-scan").onclick = ()=> setModo("scan");
+document.getElementById("mode-manual").onclick = ()=> setModo("manual");
+document.getElementById("mode-clientes").onclick = ()=> setModo("clientes");
+
+// ---- Clientes: listar, buscar, sumar/quitar sellos ----
+let listaClientes = null; // null = aún no cargada
+let mensajeClientesTimeout = null;
+
+function normalizar(str){
+  return (str || "").toString().toLowerCase();
+}
+
+function mostrarMensajeClientes(msg, tipo){
+  const el = document.getElementById("clientes-msg");
+  if(!el) return;
+  el.textContent = msg;
+  el.className = "status " + tipo;
+  el.style.display = "block";
+  clearTimeout(mensajeClientesTimeout);
+  mensajeClientesTimeout = setTimeout(()=>{ el.style.display = "none"; }, 2500);
+}
+
+async function cargarClientes(forzar){
+  if(listaClientes !== null && !forzar){
+    renderClientesList(document.getElementById("clientes-search").value.trim());
+    return;
+  }
+  listaClientes = null;
+  renderClientesList("");
+  try{
+    const data = await apiCall({accion:"clientes"});
+    listaClientes = (data.ok && Array.isArray(data.clientes)) ? data.clientes : [];
+    if(!data.ok) mostrarMensajeClientes("❌ " + (data.error || "No se pudo cargar la lista."), "err");
+  }catch(e){
+    listaClientes = [];
+    mostrarMensajeClientes("❌ Error de conexión.", "err");
+  }
+  renderClientesList(document.getElementById("clientes-search").value.trim());
+}
+
+function renderClientesList(filtro){
+  const cont = document.getElementById("clientes-list");
+  if(!cont) return;
+
+  if(listaClientes === null){
+    cont.innerHTML = `<div class="clientes-empty">Cargando clientes...</div>`;
+    return;
+  }
+
+  const f = normalizar(filtro);
+  const filtrados = !f ? listaClientes : listaClientes.filter(c =>
+    normalizar(c.nombre).includes(f) ||
+    normalizar(c.telefono).includes(f) ||
+    normalizar(c.id).includes(f)
+  );
+
+  if(!filtrados.length){
+    cont.innerHTML = `<div class="clientes-empty">${listaClientes.length ? "Sin resultados." : "No hay clientes registrados."}</div>`;
+    return;
+  }
+
+  cont.innerHTML = filtrados.map(c => `
+    <div class="cliente-row" data-id="${c.id}">
+      <div class="cliente-datos">
+        <div class="nombre-row">${c.nombre}</div>
+        <div class="sub-row">${c.telefono ? c.telefono + " · " : ""}${c.id}</div>
+      </div>
+      <div class="cliente-controls">
+        <button class="btn-adjust" data-action="restar" data-id="${c.id}" ${c.sellos <= 0 ? "disabled" : ""}>−</button>
+        <span class="badge-sellos" id="badge-${c.id}">${c.sellos}</span>
+        <button class="btn-adjust" data-action="sumar" data-id="${c.id}">+</button>
+      </div>
+    </div>
+  `).join("");
+
+  cont.querySelectorAll(".btn-adjust").forEach(btn=>{
+    btn.onclick = ()=> ajustarSello(btn.dataset.id, btn.dataset.action === "sumar" ? 1 : -1);
+  });
+}
+
+async function ajustarSello(id, delta){
+  const fila = document.querySelector(`.cliente-row[data-id="${CSS.escape(id)}"]`);
+  const botones = fila ? fila.querySelectorAll(".btn-adjust") : [];
+  botones.forEach(b => b.disabled = true);
+  try{
+    const data = await apiCall({accion:"sellar", id, delta});
+    if(data.ok && data.cliente){
+      const idx = listaClientes.findIndex(c => c.id === id);
+      if(idx > -1) listaClientes[idx].sellos = data.cliente.sellos;
+      renderClientesList(document.getElementById("clientes-search").value.trim());
+    } else {
+      mostrarMensajeClientes("❌ " + (data.error || "No se pudo actualizar el sello."), "err");
+      botones.forEach(b => b.disabled = false);
+    }
+  }catch(e){
+    mostrarMensajeClientes("❌ Error de conexión.", "err");
+    botones.forEach(b => b.disabled = false);
+  }
+}
+
+document.getElementById("clientes-search").oninput = (e)=> renderClientesList(e.target.value);
+document.getElementById("btn-refrescar-clientes").onclick = ()=> cargarClientes(true);
 </script>
 </body>
 </html>
