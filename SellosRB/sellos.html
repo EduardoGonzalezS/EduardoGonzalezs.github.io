@@ -127,6 +127,11 @@
     transition:transform .2s ease, background .3s ease, border .3s ease;
   }
   .stamp.filled{background:var(--accent);border:2px solid var(--accent);color:#fff;animation:stampPop .4s ease backwards;}
+  .stamp.half{
+    background:conic-gradient(from -90deg, var(--accent) 0deg 180deg, transparent 180deg 360deg);
+    border:2px solid var(--border);
+  }
+  .stamp.half img{clip-path:inset(0 50% 0 0);opacity:.95;}
   .stamp img{width:65%;height:65%;object-fit:contain;}
   .catalog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px;}
   .product-card{
@@ -386,13 +391,36 @@ function actualizarCatalogoDom(){
   }).join("");
 }
 
+// Un cliente puede tener sellos con medios (ej. 3.5). Estos helpers se usan
+// en todas las vistas para que el número y las estampas se vean igual.
+function formatSellos(sellos){
+  const n = Number(sellos) || 0;
+  return Number.isInteger(n) ? String(n) : `${Math.floor(n)}½`;
+}
+
+function generarStampsHtml(sellos, total){
+  const llenos = Math.floor(sellos);
+  const tieneMedio = (sellos - llenos) >= 0.5 - 1e-9;
+  let html = "";
+  for(let i=0;i<total;i++){
+    if(i < llenos){
+      html += `<div class="stamp filled" style="animation-delay:${i*0.06}s"><img src="assets/img/rol.png" alt=""></div>`;
+    } else if(i === llenos && tieneMedio){
+      html += `<div class="stamp filled half" style="animation-delay:${i*0.06}s"><img src="assets/img/rol.png" alt=""></div>`;
+    } else {
+      html += `<div class="stamp"></div>`;
+    }
+  }
+  return html;
+}
+
 async function refrescarEstadoCliente(id){
   try{
     const data = await apiCall({accion:"estado", id});
     if(data.ok){
       setSession(data.cliente);
       const countEl = document.querySelector(".stamp-count");
-      if(countEl && Number(countEl.textContent.split("/")[0]) !== Number(data.cliente.sellos)){
+      if(countEl && Number(countEl.dataset.sellos) !== Number(data.cliente.sellos)){
         actualizarSellosDom(data.cliente); // actualiza solo el contador/tarjeta, sin redibujar todo (evita parpadeo del logo)
       }
     }
@@ -405,15 +433,13 @@ function actualizarSellosDom(cliente){
   const completo = sellos >= total;
 
   const countEl = document.querySelector(".stamp-count");
-  if(countEl) countEl.textContent = `${sellos}/${total}`;
-
-  let stampsHtml = "";
-  for(let i=0;i<total;i++){
-    const delay = i<sellos ? `style="animation-delay:${i*0.06}s"` : "";
-    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'<img src="assets/img/rol.png" alt="">':''}</div>`;
+  if(countEl){
+    countEl.textContent = `${formatSellos(sellos)}/${total}`;
+    countEl.dataset.sellos = sellos;
   }
+
   const gridEl = document.querySelector(".stamps-grid");
-  if(gridEl) gridEl.innerHTML = stampsHtml;
+  if(gridEl) gridEl.innerHTML = generarStampsHtml(sellos, total);
 
   const card = document.querySelector(".card");
   if(card){
@@ -478,11 +504,7 @@ function renderAuth(){
 function renderLoggedIn(cliente){
   const total = 10;
   const sellos = Number(cliente.sellos) || 0;
-  let stampsHtml = "";
-  for(let i=0;i<total;i++){
-    const delay = i<sellos ? `style="animation-delay:${i*0.06}s"` : "";
-    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'<img src="assets/img/rol.png" alt="">':''}</div>`;
-  }
+  const stampsHtml = generarStampsHtml(sellos, total);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(cliente.id)}&size=220x220`;
 
   const completo = sellos >= total;
@@ -493,7 +515,7 @@ function renderLoggedIn(cliente){
       <div class="name">Hola, ${cliente.nombre} 👋</div>
     </div>
     <div class="card">
-      <div class="stamp-count">${sellos}/${total}</div>
+      <div class="stamp-count" data-sellos="${sellos}">${formatSellos(sellos)}/${total}</div>
       <div class="stamp-label">sellos acumulados</div>
       ${completo ? `<div class="status ok" style="text-align:center;">🎉 ¡Completaste tu tarjeta! Ven a canjear tu premio.</div>` : ""}
       <div class="stamps-grid">${stampsHtml}</div>

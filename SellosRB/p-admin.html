@@ -91,6 +91,8 @@
   .confirm-box p{font-size:1rem;line-height:1.4;}
   .confirm-actions{display:flex;gap:10px;margin-top:18px;}
   .confirm-actions button{margin:0;}
+  .tiposello-actions{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
+  .tiposello-actions button{margin:0;}
   .cliente-info{text-align:center;margin-top:6px;}
   .cliente-info .nombre{font-size:1.15rem;font-weight:700;}
   .cliente-info .sellos{font-size:2rem;font-weight:800;color:var(--primary);margin-top:4px;}
@@ -101,20 +103,22 @@
   .clientes-search{margin-top:10px;}
   .clientes-header{display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .btn-refresh{width:auto;padding:7px 12px;font-size:.75rem;margin:0;}
-  .cliente-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
+  .cliente-row{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid var(--border);}
   .cliente-row:last-child{border-bottom:none;}
+  .cliente-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .cliente-datos{flex:1;min-width:0;}
   .cliente-datos .nombre-row{font-weight:700;font-size:.92rem;}
   .cliente-datos .sub-row{font-size:.72rem;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .cliente-controls{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .cliente-row-bottom{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:nowrap;}
   .btn-adjust{
-    width:30px;height:30px;border-radius:50%;border:1px solid var(--primary);
-    background:transparent;color:var(--primary);font-size:1.1rem;font-weight:800;
-    padding:0;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    min-width:34px;height:30px;padding:0 4px;border-radius:9px;border:1px solid var(--primary);
+    background:transparent;color:var(--primary);font-size:.72rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
   }
+  .btn-adjust.btn-adjust-half{color:var(--primary-dark);}
   .btn-adjust:active{background:var(--primary);color:#fff;transform:scale(.92);}
   .btn-adjust:disabled{opacity:.4;cursor:default;}
-  .badge-sellos{min-width:24px;text-align:center;font-weight:800;color:var(--primary);font-size:.95rem;}
+  .badge-sellos{min-width:34px;text-align:center;font-weight:800;color:var(--primary);font-size:.95rem;}
   .clientes-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 0;}
   .btn-restaurar{
     width:auto;padding:8px 14px;font-size:.78rem;font-weight:700;
@@ -196,6 +200,17 @@
   </div>
 </div>
 
+<div class="loading-overlay" id="tiposello-overlay">
+  <div class="loading-box confirm-box">
+    <p id="tiposello-text">¿Qué quieres registrar?</p>
+    <div class="tiposello-actions">
+      <button id="btn-tiposello-completo">🍥 Sello completo (+1)</button>
+      <button id="btn-tiposello-medio" class="secondary">½ Medio sello (+0.5)</button>
+      <button id="btn-tiposello-cancelar" class="secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div class="loading-overlay" id="historial-overlay">
   <div class="loading-box confirm-box">
     <p id="historial-titulo" style="margin-bottom:0;">Historial</p>
@@ -219,6 +234,19 @@ async function apiCall(params){
   Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
   const res = await fetch(url.toString());
   return res.json();
+}
+
+// Un cliente puede acumular medios sellos (ej. 3.5). Estos helpers dan un
+// formato consistente en toda la pantalla: "3½" en vez de "3.5".
+function formatSellos(n){
+  const num = Number(n) || 0;
+  return Number.isInteger(num) ? String(num) : `${Math.floor(num)}½`;
+}
+function formatCantidadSellos(delta){
+  const abs = Math.abs(Number(delta) || 0);
+  if(abs === 0.5) return "medio sello";
+  if(abs === 1) return "1 sello";
+  return `${abs} sellos`;
 }
 
 function mostrarCarga(texto){
@@ -248,6 +276,29 @@ function pedirConfirmacion(mensaje){
   });
 }
 
+// Pregunta si el sello a registrar es completo (1) o medio (0.5).
+// Resuelve 1, 0.5, o null si se cancela.
+function pedirTipoSello(mensaje){
+  return new Promise(resolve=>{
+    document.getElementById("tiposello-text").textContent = mensaje;
+    const overlay = document.getElementById("tiposello-overlay");
+    overlay.classList.add("active");
+    const btnCompleto = document.getElementById("btn-tiposello-completo");
+    const btnMedio = document.getElementById("btn-tiposello-medio");
+    const btnCancelar = document.getElementById("btn-tiposello-cancelar");
+    const cerrar = (resultado)=>{
+      overlay.classList.remove("active");
+      btnCompleto.onclick = null;
+      btnMedio.onclick = null;
+      btnCancelar.onclick = null;
+      resolve(resultado);
+    };
+    btnCompleto.onclick = ()=> cerrar(1);
+    btnMedio.onclick = ()=> cerrar(0.5);
+    btnCancelar.onclick = ()=> cerrar(null);
+  });
+}
+
 function mostrarStatus(msg, tipo){
   const card = document.getElementById("result-card");
   const info = document.getElementById("cliente-info");
@@ -273,7 +324,7 @@ function mostrarCliente(cliente){
   info.innerHTML = `
     <div class="status ok">✅ Sello registrado correctamente</div>
     <div class="nombre">${cliente.nombre}</div>
-    <div class="sellos">${cliente.sellos} sellos</div>
+    <div class="sellos">${formatSellos(cliente.sellos)} sellos</div>
     ${completo ? `<button id="btn-restaurar-resultado" class="btn-restaurar" style="margin-top:14px;">🎁 Restaurar tarjeta (premio canjeado)</button>` : ""}
     <button id="btn-escanear-otro" style="margin-top:10px;">Escanear otro QR</button>
   `;
@@ -322,12 +373,12 @@ async function restaurarTarjeta(id, nombre){
   }
 }
 
-async function sellarCliente(id){
+async function sellarCliente(id, delta){
   if(cooldown) return;
   cooldown = true;
   mostrarCarga("Registrando sello...");
   try{
-    const data = await apiCall({accion:"sellar", id});
+    const data = await apiCall({accion:"sellar", id, delta});
     ocultarCarga();
     if(data.ok){
       mostrarCliente(data.cliente);
@@ -341,10 +392,16 @@ async function sellarCliente(id){
   setTimeout(()=>{ cooldown = false; }, 2500);
 }
 
-function onScanSuccess(decodedText){
+async function onScanSuccess(decodedText){
   if(cooldown) return;
   stopScanner();
-  sellarCliente(decodedText.trim());
+  const id = decodedText.trim();
+  const delta = await pedirTipoSello("¿Registrar sello completo o medio sello?");
+  if(delta === null){
+    startScanner();
+    return;
+  }
+  sellarCliente(id, delta);
 }
 
 function startScanner(){
@@ -376,13 +433,15 @@ function stopScanner(){
 document.getElementById("btn-start-scan").onclick = startScanner;
 document.getElementById("btn-stop-scan").onclick = stopScanner;
 
-document.getElementById("btn-manual-sellar").onclick = ()=>{
+document.getElementById("btn-manual-sellar").onclick = async ()=>{
   const id = document.getElementById("manual-id").value.trim();
   if(!id){
     mostrarStatus("Escribe un ID de cliente.", "err");
     return;
   }
-  sellarCliente(id);
+  const delta = await pedirTipoSello("¿Registrar sello completo o medio sello?");
+  if(delta === null) return;
+  sellarCliente(id, delta);
 };
 
 const MODOS = ["scan", "manual", "clientes"];
@@ -458,20 +517,25 @@ function renderClientesList(filtro){
 
   cont.innerHTML = filtrados.map(c => {
     const completo = c.sellos >= META_SELLOS;
+    const sinSellos = c.sellos <= 0;
     return `
     <div class="cliente-row ${completo ? "cliente-row-completo" : ""}" data-id="${c.id}">
-      <div class="cliente-datos">
-        <div class="nombre-row">${c.nombre}${completo ? " 🎉" : ""}</div>
-        <div class="sub-row">${c.telefono ? c.telefono + " · " : ""}${c.id}</div>
-      </div>
-      <div class="cliente-controls">
+      <div class="cliente-row-top">
+        <div class="cliente-datos">
+          <div class="nombre-row">${c.nombre}${completo ? " 🎉" : ""}</div>
+          <div class="sub-row">${c.telefono ? c.telefono + " · " : ""}${c.id}</div>
+        </div>
         <button class="btn-historial" data-id="${c.id}" title="Ver historial de fechas">🕒</button>
+      </div>
+      <div class="cliente-row-bottom">
         ${completo
-          ? `<button class="btn-restaurar" data-id="${c.id}">🎁 Restaurar</button>`
+          ? `<button class="btn-restaurar" data-id="${c.id}">🎁 Restaurar tarjeta</button>`
           : `
-            <button class="btn-adjust" data-action="restar" data-id="${c.id}" ${c.sellos <= 0 ? "disabled" : ""}>−</button>
-            <span class="badge-sellos" id="badge-${c.id}">${c.sellos}</span>
-            <button class="btn-adjust" data-action="sumar" data-id="${c.id}">+</button>
+            <button class="btn-adjust" data-delta="-1" data-id="${c.id}" ${sinSellos ? "disabled" : ""}>−1</button>
+            <button class="btn-adjust btn-adjust-half" data-delta="-0.5" data-id="${c.id}" ${sinSellos ? "disabled" : ""}>−½</button>
+            <span class="badge-sellos" id="badge-${c.id}">${formatSellos(c.sellos)}</span>
+            <button class="btn-adjust btn-adjust-half" data-delta="0.5" data-id="${c.id}">+½</button>
+            <button class="btn-adjust" data-delta="1" data-id="${c.id}">+1</button>
           `}
       </div>
     </div>
@@ -479,7 +543,7 @@ function renderClientesList(filtro){
   }).join("");
 
   cont.querySelectorAll(".btn-adjust").forEach(btn=>{
-    btn.onclick = ()=> ajustarSello(btn.dataset.id, btn.dataset.action === "sumar" ? 1 : -1);
+    btn.onclick = ()=> ajustarSello(btn.dataset.id, parseFloat(btn.dataset.delta));
   });
   cont.querySelectorAll(".btn-restaurar").forEach(btn=>{
     btn.onclick = async ()=>{
@@ -497,8 +561,8 @@ async function ajustarSello(id, delta){
   const cliente = listaClientes.find(c => c.id === id);
   const nombre = cliente ? cliente.nombre : "este cliente";
   const mensaje = delta > 0
-    ? `¿Sumar 1 sello a ${nombre}?`
-    : `¿Quitar 1 sello a ${nombre}?`;
+    ? `¿Sumar ${formatCantidadSellos(delta)} a ${nombre}?`
+    : `¿Quitar ${formatCantidadSellos(delta)} a ${nombre}?`;
 
   const confirmado = await pedirConfirmacion(mensaje);
   if(!confirmado) return;
@@ -546,12 +610,12 @@ async function mostrarHistorial(id){
       const fecha = new Date(h.fecha);
       const fechaTexto = isNaN(fecha) ? h.fecha : fecha.toLocaleString("es-MX", {dateStyle:"medium", timeStyle:"short"});
       const esCanje = h.tipo === "canje";
-      const signo = h.delta > 0 ? "+" : "";
+      const signo = h.delta > 0 ? "+" : "−";
       return `
         <div class="historial-item">
           <span class="h-fecha">${fechaTexto}</span>
           <span class="h-delta ${h.delta >= 0 ? "positivo" : "negativo"}">
-            ${esCanje ? "🎁 Canje" : `${signo}${h.delta} sello${Math.abs(h.delta) === 1 ? "" : "s"}`}
+            ${esCanje ? "🎁 Canje" : `${signo}${formatCantidadSellos(h.delta)}`}
           </span>
         </div>
       `;
