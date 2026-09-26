@@ -393,15 +393,46 @@ async function refrescarEstadoCliente(id){
       setSession(data.cliente);
       const countEl = document.querySelector(".stamp-count");
       if(countEl && Number(countEl.textContent.split("/")[0]) !== Number(data.cliente.sellos)){
-        render(); // vuelve a dibujar si cambiaron los sellos (ej. te sellaron en el mostrador)
+        actualizarSellosDom(data.cliente); // actualiza solo el contador/tarjeta, sin redibujar todo (evita parpadeo del logo)
       }
     }
   }catch(e){ /* silencioso: seguimos con lo que ya teníamos en sesión */ }
 }
 
+function actualizarSellosDom(cliente){
+  const total = 10;
+  const sellos = Number(cliente.sellos) || 0;
+  const completo = sellos >= total;
+
+  const countEl = document.querySelector(".stamp-count");
+  if(countEl) countEl.textContent = `${sellos}/${total}`;
+
+  let stampsHtml = "";
+  for(let i=0;i<total;i++){
+    const delay = i<sellos ? `style="animation-delay:${i*0.06}s"` : "";
+    stampsHtml += `<div class="stamp ${i<sellos?'filled':''}" ${delay}>${i<sellos?'<img src="assets/img/rol.png" alt="">':''}</div>`;
+  }
+  const gridEl = document.querySelector(".stamps-grid");
+  if(gridEl) gridEl.innerHTML = stampsHtml;
+
+  const card = document.querySelector(".card");
+  if(card){
+    let statusEl = card.querySelector(".status.ok");
+    if(completo && !statusEl){
+      statusEl = document.createElement("div");
+      statusEl.className = "status ok";
+      statusEl.style.textAlign = "center";
+      statusEl.textContent = "🎉 ¡Completaste tu tarjeta! Ven a canjear tu premio.";
+      card.querySelector(".stamp-label").insertAdjacentElement("afterend", statusEl);
+    } else if(!completo && statusEl){
+      statusEl.remove();
+    }
+  }
+}
+
 function renderAuth(){
   return `
-    <h1 class="brand-logo"><img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-img"></h1>
+    <h1 class="brand-logo"><img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-img" onerror="this.style.display='none';"></h1>
     <div class="subtitle">Junta sellos y canjea tus postres favoritos</div>
     <div class="tabs">
       <div class="tab ${state.screen==='login'?'active':''}" data-tab="login">Iniciar sesión</div>
@@ -457,6 +488,7 @@ function renderLoggedIn(cliente){
   const completo = sellos >= total;
 
   return `
+    <h1 class="brand-logo" style="margin-bottom:14px;"><img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-img" onerror="this.style.display='none';"></h1>
     <div class="stamp-header">
       <div class="name">Hola, ${cliente.nombre} 👋</div>
     </div>
