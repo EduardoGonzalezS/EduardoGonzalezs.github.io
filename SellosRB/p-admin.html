@@ -42,7 +42,14 @@
   .app{width:100%;max-width:440px;}
   h1{font-size:1.3rem;text-align:center;margin:8px 0 2px;color:var(--primary-dark);}
   .brand-icon{height:1.5em;width:auto;vertical-align:-0.3em;margin-right:6px;border-radius:8px;}
-  .logo-brand{display:block;max-width:220px;width:100%;height:auto;margin:4px auto 2px;}
+  .logo-wrap{
+    width:100%;max-width:230px;margin:0 auto;
+    aspect-ratio:2.6/1;position:relative;overflow:hidden;
+  }
+  .logo-wrap img{
+    position:absolute;top:50%;left:0;width:100%;height:auto;
+    transform:translateY(-50%);
+  }
   .subtitle{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:18px;}
   .card{background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(216,103,138,.08);margin-bottom:16px;}
   #reader{width:100%;border-radius:14px;overflow:hidden;}
@@ -132,7 +139,9 @@
 </head>
 <body>
 <div class="app">
-  <img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-brand">
+  <div class="logo-wrap">
+    <img src="assets/img/RB-Logo.png" alt="Repostería Belén">
+  </div>
   <div class="subtitle">Panel Admin — otorgar sellos</div>
 
   <div class="toggle-mode">
