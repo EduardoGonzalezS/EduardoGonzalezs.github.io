@@ -14,7 +14,7 @@
   --o9:#262b16; --o8:#3a4023; --o7:#4f5a2f; --o5:#6f7b45; --o4:#8c9860; --o3:#b3bc8a; --o1:#eceedb;
   --iv:#f6f3e7; --ink:#262a16; --oil:#d6c07c;
 }
-*{box-sizing:border-box;margin:0}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 html.lock,html.lock body{overflow:hidden}
 body{font:300 1.15rem/1.75 'Fraunces',Georgia,serif;font-optical-sizing:auto;color:var(--ink);background:var(--iv);overflow-x:hidden}
@@ -468,7 +468,7 @@ $('#open').onclick=()=>{
 function startLeaves(){
   if(reduce)return;
   const cols=['#8c9860','#6f7b45','#b3bc8a','#d6c07c','#a3ae74'];
-  const leafCount=innerWidth<640?7:14;
+  const leafCount=innerWidth<640?5:14;
   for(let i=0;i<leafCount;i++){
     const w=document.createElement('div');w.className='lv';
     const sz=10+Math.random()*9;
