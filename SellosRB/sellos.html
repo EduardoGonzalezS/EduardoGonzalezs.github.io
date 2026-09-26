@@ -395,7 +395,7 @@ function actualizarCatalogoDom(){
 // en todas las vistas para que el número y las estampas se vean igual.
 function formatSellos(sellos){
   const n = Number(sellos) || 0;
-  return Number.isInteger(n) ? String(n) : `${Math.floor(n)}½`;
+  return Number.isInteger(n) ? String(n) : n.toFixed(1);
 }
 
 function generarStampsHtml(sellos, total){

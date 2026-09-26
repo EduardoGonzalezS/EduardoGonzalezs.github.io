@@ -93,6 +93,15 @@
   .confirm-actions button{margin:0;}
   .tiposello-actions{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
   .tiposello-actions button{margin:0;}
+  .ajustar-subtitulo{margin:2px 0 0;font-size:.8rem;color:var(--muted);font-weight:400;}
+  .ajustar-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+  .btn-delta{
+    margin:0;padding:14px 8px;border-radius:12px;border:1px solid var(--primary);
+    background:transparent;color:var(--primary-dark);font-weight:700;font-size:.85rem;
+  }
+  .btn-delta:active{background:var(--primary);color:#fff;}
+  .btn-delta-quitar{border-style:dashed;color:var(--err);border-color:var(--err);}
+  .btn-delta-quitar:active{background:var(--err);color:#fff;}
   .cliente-info{text-align:center;margin-top:6px;}
   .cliente-info .nombre{font-size:1.15rem;font-weight:700;}
   .cliente-info .sellos{font-size:2rem;font-weight:800;color:var(--primary);margin-top:4px;}
@@ -109,16 +118,14 @@
   .cliente-datos{flex:1;min-width:0;}
   .cliente-datos .nombre-row{font-weight:700;font-size:.92rem;}
   .cliente-datos .sub-row{font-size:.72rem;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .cliente-row-bottom{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:nowrap;}
-  .btn-adjust{
-    min-width:34px;height:30px;padding:0 4px;border-radius:9px;border:1px solid var(--primary);
-    background:transparent;color:var(--primary);font-size:.72rem;font-weight:800;
-    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  .cliente-row-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .badge-sellos{font-weight:800;color:var(--primary);font-size:1rem;}
+  .badge-sellos .badge-label{font-weight:500;color:var(--muted);font-size:.75rem;margin-left:4px;}
+  .btn-ajustar{
+    width:auto;padding:8px 16px;font-size:.78rem;font-weight:700;border-radius:10px;
+    background:transparent;color:var(--primary);border:1px solid var(--primary);
   }
-  .btn-adjust.btn-adjust-half{color:var(--primary-dark);}
-  .btn-adjust:active{background:var(--primary);color:#fff;transform:scale(.92);}
-  .btn-adjust:disabled{opacity:.4;cursor:default;}
-  .badge-sellos{min-width:34px;text-align:center;font-weight:800;color:var(--primary);font-size:.95rem;}
+  .btn-ajustar:active{background:var(--primary);color:#fff;}
   .clientes-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 0;}
   .btn-restaurar{
     width:auto;padding:8px 14px;font-size:.78rem;font-weight:700;
@@ -211,6 +218,22 @@
   </div>
 </div>
 
+<div class="loading-overlay" id="ajustar-overlay">
+  <div class="loading-box confirm-box">
+    <p id="ajustar-titulo" style="margin-bottom:0;">Ajustar sellos</p>
+    <p id="ajustar-subtitulo" class="ajustar-subtitulo"></p>
+    <div class="ajustar-grid">
+      <button class="btn-delta" data-delta="1">➕ Sello completo</button>
+      <button class="btn-delta" data-delta="0.5">➕ Medio sello</button>
+      <button class="btn-delta btn-delta-quitar" data-delta="-0.5">➖ Medio sello</button>
+      <button class="btn-delta btn-delta-quitar" data-delta="-1">➖ Sello completo</button>
+    </div>
+    <div class="confirm-actions">
+      <button id="btn-ajustar-cerrar" class="secondary" style="width:100%;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div class="loading-overlay" id="historial-overlay">
   <div class="loading-box confirm-box">
     <p id="historial-titulo" style="margin-bottom:0;">Historial</p>
@@ -240,7 +263,7 @@ async function apiCall(params){
 // formato consistente en toda la pantalla: "3½" en vez de "3.5".
 function formatSellos(n){
   const num = Number(n) || 0;
-  return Number.isInteger(num) ? String(num) : `${Math.floor(num)}½`;
+  return Number.isInteger(num) ? String(num) : num.toFixed(1);
 }
 function formatCantidadSellos(delta){
   const abs = Math.abs(Number(delta) || 0);
@@ -517,7 +540,6 @@ function renderClientesList(filtro){
 
   cont.innerHTML = filtrados.map(c => {
     const completo = c.sellos >= META_SELLOS;
-    const sinSellos = c.sellos <= 0;
     return `
     <div class="cliente-row ${completo ? "cliente-row-completo" : ""}" data-id="${c.id}">
       <div class="cliente-row-top">
@@ -529,21 +551,17 @@ function renderClientesList(filtro){
       </div>
       <div class="cliente-row-bottom">
         ${completo
-          ? `<button class="btn-restaurar" data-id="${c.id}">🎁 Restaurar tarjeta</button>`
-          : `
-            <button class="btn-adjust" data-delta="-1" data-id="${c.id}" ${sinSellos ? "disabled" : ""}>−1</button>
-            <button class="btn-adjust btn-adjust-half" data-delta="-0.5" data-id="${c.id}" ${sinSellos ? "disabled" : ""}>−½</button>
-            <span class="badge-sellos" id="badge-${c.id}">${formatSellos(c.sellos)}</span>
-            <button class="btn-adjust btn-adjust-half" data-delta="0.5" data-id="${c.id}">+½</button>
-            <button class="btn-adjust" data-delta="1" data-id="${c.id}">+1</button>
-          `}
+          ? `<span class="badge-sellos" id="badge-${c.id}">${formatSellos(c.sellos)}<span class="badge-label">sellos</span></span>
+             <button class="btn-restaurar" data-id="${c.id}">🎁 Restaurar tarjeta</button>`
+          : `<span class="badge-sellos" id="badge-${c.id}">${formatSellos(c.sellos)}<span class="badge-label">sellos</span></span>
+             <button class="btn-ajustar" data-id="${c.id}">✏️ Ajustar</button>`}
       </div>
     </div>
   `;
   }).join("");
 
-  cont.querySelectorAll(".btn-adjust").forEach(btn=>{
-    btn.onclick = ()=> ajustarSello(btn.dataset.id, parseFloat(btn.dataset.delta));
+  cont.querySelectorAll(".btn-ajustar").forEach(btn=>{
+    btn.onclick = ()=> abrirAjustarSellos(btn.dataset.id);
   });
   cont.querySelectorAll(".btn-restaurar").forEach(btn=>{
     btn.onclick = async ()=>{
@@ -557,18 +575,33 @@ function renderClientesList(filtro){
   });
 }
 
+// Abre la ventana con las 4 opciones (sumar/quitar, completo/medio) para un cliente.
+let ajustarClienteId = null;
+
+function abrirAjustarSellos(id){
+  const cliente = listaClientes ? listaClientes.find(c => c.id === id) : null;
+  ajustarClienteId = id;
+  document.getElementById("ajustar-titulo").textContent = `Ajustar sellos de ${cliente ? cliente.nombre : "cliente"}`;
+  document.getElementById("ajustar-subtitulo").textContent = `Actualmente tiene ${formatSellos(cliente ? cliente.sellos : 0)} sellos`;
+  document.getElementById("ajustar-overlay").classList.add("active");
+}
+function cerrarAjustarSellos(){
+  document.getElementById("ajustar-overlay").classList.remove("active");
+  ajustarClienteId = null;
+}
+document.querySelectorAll("#ajustar-overlay .btn-delta").forEach(btn=>{
+  btn.onclick = ()=>{
+    const id = ajustarClienteId;
+    const delta = parseFloat(btn.dataset.delta);
+    cerrarAjustarSellos();
+    if(id) ajustarSello(id, delta);
+  };
+});
+document.getElementById("btn-ajustar-cerrar").onclick = cerrarAjustarSellos;
+
 async function ajustarSello(id, delta){
-  const cliente = listaClientes.find(c => c.id === id);
-  const nombre = cliente ? cliente.nombre : "este cliente";
-  const mensaje = delta > 0
-    ? `¿Sumar ${formatCantidadSellos(delta)} a ${nombre}?`
-    : `¿Quitar ${formatCantidadSellos(delta)} a ${nombre}?`;
-
-  const confirmado = await pedirConfirmacion(mensaje);
-  if(!confirmado) return;
-
   const fila = document.querySelector(`.cliente-row[data-id="${CSS.escape(id)}"]`);
-  const botones = fila ? fila.querySelectorAll(".btn-adjust") : [];
+  const botones = fila ? fila.querySelectorAll(".btn-ajustar, .btn-restaurar") : [];
   botones.forEach(b => b.disabled = true);
   mostrarCarga("Actualizando sellos...");
   try{
