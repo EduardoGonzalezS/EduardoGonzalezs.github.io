@@ -54,7 +54,16 @@ label{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--mut
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
 .panel form{display:grid;gap:12px;margin-top:12px}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
-.bar select{width:auto;max-width:190px}
+.flt{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.bar select{width:auto;max-width:200px}
+.bar2{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+label.chk{flex-direction:row;align-items:center;gap:8px;cursor:pointer}
+label.chk input{width:auto}
+.btn.sm{padding:7px 12px;font-size:.85rem}
+.tag{font-size:.7rem;background:#5eead426;color:var(--acc);border-radius:6px;padding:1px 7px;margin-left:6px;font-weight:600}
+.item.paid{opacity:.55}
+.x.ok{color:var(--acc)}.x.ok:hover{background:#5eead41f}
+@media(max-width:520px){.item{flex-wrap:wrap}.item .b{width:100%;justify-content:flex-end}}
 .item{display:flex;align-items:center;gap:12px;padding:11px 4px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
@@ -118,7 +127,13 @@ dialog form{display:grid;gap:14px}
       </form>
     </section>
     <section class="panel" style="--i:5">
-      <div class="bar"><h2>Compras</h2><select id="filter" aria-label="Filtrar por tarjeta"></select></div>
+      <div class="bar"><h2>Compras</h2>
+        <div class="flt"><select id="filter" aria-label="Filtrar por tarjeta"></select><select id="period" aria-label="Filtrar por periodo" hidden></select></div></div>
+      <div class="bar2">
+        <label class="chk"><input type="checkbox" id="showPaid"> Mostrar pagadas</label>
+        <span class="mut" id="sub"></span>
+      </div>
+      <div class="bar2"><button class="btn sm" id="payPeriod" hidden>Marcar periodo como pagado</button></div>
       <div id="list"></div>
     </section>
   </div>
@@ -154,7 +169,7 @@ dialog form{display:grid;gap:14px}
 <dialog id="confDlg">
   <form method="dialog" style="display:grid;gap:14px">
     <h2 id="confT"></h2><div id="confB" class="mut"></div>
-    <div class="end"><button value="no" class="btn ghost">Cancelar</button><button value="yes" class="btn danger">Eliminar</button></div>
+    <div class="end"><button value="no" class="btn ghost">Cancelar</button><button value="yes" class="btn danger" id="confYes">Eliminar</button></div>
   </form>
 </dialog>
 
@@ -185,8 +200,9 @@ async function run(text, fn){
   catch(e){ toast(e.message || 'Ocurrió un error', true); return false; }
   finally{ await new Promise(r=>setTimeout(r, Math.max(0, 450-(Date.now()-t0)))); $('ov').classList.remove('on'); }
 }
-function confirmDlg(title, body){
+function confirmDlg(title, body, label='Eliminar', danger=true){
   $('confT').textContent = title; $('confB').textContent = body;
+  $('confYes').textContent = label; $('confYes').className = 'btn'+(danger?' danger':'');
   const d = $('confDlg'); d.returnValue=''; d.showModal();
   return new Promise(res => d.addEventListener('close', ()=>res(d.returnValue==='yes'), {once:true}));
 }
@@ -217,7 +233,7 @@ async function load(){
 function mDate(y,m,day){ return new Date(y,m,Math.min(day,new Date(y,m+1,0).getDate())); }
 function nextOccur(day,from){ let c=mDate(from.getFullYear(),from.getMonth(),day); if(c<from) c=mDate(from.getFullYear(),from.getMonth()+1,day); return c; }
 const addDays = (d,n) => new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
-const sum = (id,from,to) => data.compras.filter(c=>c.tarjeta===id&&c.fecha>from&&c.fecha<=to).reduce((a,c)=>a+c.monto,0);
+const sum = (id,from,to) => data.compras.filter(c=>c.tarjeta===id&&c.fecha>from&&c.fecha<=to&&!c.pagada).reduce((a,c)=>a+c.monto,0);
 
 /* ---- Render ---- */
 function render(){
@@ -227,18 +243,18 @@ function render(){
     const lastCut = mDate(nextCut.getFullYear(),nextCut.getMonth()-1,t.corte);
     const prevCut = mDate(lastCut.getFullYear(),lastCut.getMonth()-1,t.corte);
     const payLast = addDays(lastCut,PAY_DAYS), owed = payLast>=today;
-    const pay = owed ? payLast : addDays(nextCut,PAY_DAYS);
-    const toPay = owed ? sum(t.id,iso(prevCut),iso(lastCut)) : sum(t.id,iso(lastCut),iso(nextCut));
+    const payCur = addDays(nextCut,PAY_DAYS);                       // pago de las compras del periodo actual
+    const due = owed ? sum(t.id,iso(prevCut),iso(lastCut)) : 0;   // estado de cuenta anterior aún por pagar
     t._cycle = sum(t.id,iso(lastCut),iso(nextCut));
-    const total = data.compras.filter(c=>c.tarjeta===t.id).reduce((a,c)=>a+c.monto,0);
+    const total = data.compras.filter(c=>c.tarjeta===t.id&&!c.pagada).reduce((a,c)=>a+c.monto,0);
     return `<article class="cc" style="--c:${colorOf(t)};--i:${i}">
       <div class="top"><div><div class="chip"></div><h3>${esc(t.nombre)}</h3></div>
         <div class="acts"><button class="ico" data-edit="${esc(t.id)}">Editar</button><button class="ico" data-del="${esc(t.id)}">Eliminar</button></div></div>
       <div class="lbl">Gastado en este periodo</div><div class="big" data-cid="${esc(t.id)}">${money(t._cycle)}</div>
       <dl><dt>Próximo corte</dt><dd>${show(iso(nextCut))}</dd>
-      <dt>Próximo pago</dt><dd>${show(iso(pay))}</dd>
-      <dt>Monto a pagar</dt><dd>${money(toPay)}</dd>
-      <dt>Total registrado</dt><dd>${money(total)}</dd></dl></article>`;
+      <dt>Pago de este periodo</dt><dd>${show(iso(payCur))}</dd>
+      ${due>0?`<dt>Pago pendiente (${show(iso(payLast))})</dt><dd>${money(due)}</dd>`:''}
+      <dt>Total por pagar</dt><dd>${money(total)}</dd></dl></article>`;
   }).join('') || '<div class="empty">Aún no tienes tarjetas.<br>Pulsa “+ Nueva tarjeta” para empezar.</div>';
 
   data.tarjetas.forEach(t=>{ const el=document.querySelector(`[data-cid="${t.id}"]`); if(el) countUp(el,t._cycle,prev[t.id]||0); prev[t.id]=t._cycle; });
@@ -247,16 +263,40 @@ function render(){
   const cur = $('fCard').value, curF = $('filter').value;
   $('fCard').innerHTML = opts; if(cur) $('fCard').value = cur;
   $('filter').innerHTML = '<option value="">Todas</option>'+opts; $('filter').value = curF;
+  fillPeriods();
   renderList();
 }
+const pd = s => { const [y,m,d]=s.split('-'); return new Date(+y,m-1,+d); };
+const cardOf = id => data.tarjetas.find(t=>t.id===id);
+const periodKey = c => { const t=cardOf(c.tarjeta); return t ? iso(nextOccur(t.corte, pd(c.fecha))) : ''; };
+function periodLabel(key, t){
+  const end = pd(key), start = addDays(mDate(end.getFullYear(), end.getMonth()-1, t.corte), 1);
+  return `${start.getDate()} ${MESES[start.getMonth()]} – ${show(key)}`;
+}
+function fillPeriods(){
+  const f = $('filter').value, sel = $('period'), cur = sel.value;
+  if(!f || !cardOf(f)){ sel.hidden = true; sel.innerHTML = ''; return; }
+  const t = cardOf(f), showPaid = $('showPaid').checked;
+  const keys = [...new Set(data.compras.filter(c=>c.tarjeta===f&&(showPaid||!c.pagada)).map(periodKey))].sort().reverse();
+  sel.innerHTML = '<option value="">Todos los periodos</option>' + keys.map(k=>`<option value="${k}">${periodLabel(k,t)}</option>`).join('');
+  sel.value = keys.includes(cur) ? cur : '';
+  sel.hidden = false;
+}
+function visible(){
+  const f = $('filter').value, p = $('period').hidden ? '' : $('period').value, sp = $('showPaid').checked;
+  return data.compras.filter(c=>(!f||c.tarjeta===f)&&(!p||periodKey(c)===p)&&(sp||!c.pagada))
+    .sort((a,b)=>b.fecha.localeCompare(a.fecha));
+}
 function renderList(){
-  const f = $('filter').value, map = Object.fromEntries(data.tarjetas.map(t=>[t.id,t]));
-  const rows = data.compras.filter(c=>!f||c.tarjeta===f).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  $('list').innerHTML = rows.map(c=>{ const t=map[c.tarjeta];
-    return `<div class="item${c.id===newId?' new':''}" data-row="${esc(c.id)}"><span class="dot" style="background:${t?colorOf(t):'#555'}"></span>
-      <div class="d"><b>${esc(c.desc)}</b><span class="mut">${show(c.fecha)} · ${esc(t?t.nombre:'?')}</span></div>
-      <span class="amt">${money(c.monto)}</span><span class="b"><button class="x ed" data-ebuy="${esc(c.id)}">Editar</button><button class="x" data-buy="${esc(c.id)}">Quitar</button></span></div>`; }).join('')
-    || '<div class="mut" style="padding:14px 4px">Aún no hay compras registradas.</div>';
+  const rows = visible();
+  $('list').innerHTML = rows.map(c=>{ const t=cardOf(c.tarjeta);
+    return `<div class="item${c.id===newId?' new':''}${c.pagada?' paid':''}" data-row="${esc(c.id)}"><span class="dot" style="background:${t?colorOf(t):'#555'}"></span>
+      <div class="d"><b>${esc(c.desc)}${c.pagada?'<span class="tag">Pagada</span>':''}</b><span class="mut">${show(c.fecha)} · ${esc(t?t.nombre:'?')}</span></div>
+      <span class="amt">${money(c.monto)}</span>
+      <span class="b"><button class="x ok" data-pay="${esc(c.id)}">${c.pagada?'Deshacer':'Pagada'}</button><button class="x ed" data-ebuy="${esc(c.id)}">Editar</button><button class="x" data-buy="${esc(c.id)}">Quitar</button></span></div>`; }).join('')
+    || '<div class="mut" style="padding:14px 4px">No hay compras para mostrar.</div>';
+  $('sub').textContent = rows.length ? `${rows.length} compra(s) · ${money(rows.reduce((a,c)=>a+c.monto,0))}` : '';
+  $('payPeriod').hidden = !($('filter').value && !$('period').hidden && $('period').value && rows.some(c=>!c.pagada));
   newId = null;
 }
 
@@ -265,7 +305,7 @@ $('f').addEventListener('submit', async e=>{
   e.preventDefault();
   if(!data.tarjetas.length) return toast('Primero agrega una tarjeta', true);
   const b = {action:'add',tarjeta:$('fCard').value,fecha:$('fDate').value,desc:$('fDesc').value.trim(),monto:parseFloat($('fAmt').value)};
-  const ok = await run('Registrando compra…', async()=>{ const r=await api(b); newId=r.id; data.compras.push({id:r.id,fecha:b.fecha,tarjeta:b.tarjeta,desc:b.desc,monto:b.monto}); });
+  const ok = await run('Registrando compra…', async()=>{ const r=await api(b); newId=r.id; data.compras.push({id:r.id,fecha:b.fecha,tarjeta:b.tarjeta,desc:b.desc,monto:b.monto,pagada:false}); });
   if(ok){ $('fDesc').value=''; $('fAmt').value=''; render(); toast('Compra registrada'); }
 });
 let editingBuy = null;
@@ -285,13 +325,29 @@ $('list').addEventListener('click', async e=>{
     $('eCard').value = c.tarjeta; $('eDate').value = c.fecha; $('eDesc').value = c.desc; $('eAmt').value = c.monto;
     return $('buyDlg').showModal();
   }
+  const pid = e.target.dataset.pay;
+  if(pid){
+    const c = data.compras.find(c=>c.id===pid), v = !c.pagada;
+    const ok = await run(v?'Marcando como pagada…':'Reactivando compra…', async()=>{ await api({action:'pay',ids:[pid],value:v}); c.pagada=v; });
+    if(ok){ render(); toast(v?'Compra marcada como pagada':'Compra reactivada'); }
+    return;
+  }
   const id = e.target.dataset.buy; if(!id) return;
   if(!await confirmDlg('¿Quitar esta compra?','Se eliminará también de tu hoja de Google.')) return;
   const row = document.querySelector(`[data-row="${id}"]`); row.classList.add('leaving');
   const ok = await run('Eliminando compra…', async()=>{ await api({action:'delete',id}); data.compras=data.compras.filter(c=>c.id!==id); });
   if(ok){ render(); toast('Compra eliminada'); } else row.classList.remove('leaving');
 });
-$('filter').addEventListener('change', renderList);
+$('filter').addEventListener('change', ()=>{ fillPeriods(); renderList(); });
+$('period').addEventListener('change', renderList);
+$('showPaid').addEventListener('change', ()=>{ fillPeriods(); renderList(); });
+$('payPeriod').addEventListener('click', async ()=>{
+  const ids = visible().filter(c=>!c.pagada).map(c=>c.id); if(!ids.length) return;
+  const total = visible().filter(c=>!c.pagada).reduce((a,c)=>a+c.monto,0);
+  if(!await confirmDlg('¿Marcar periodo como pagado?', `${ids.length} compra(s) por ${money(total)} dejarán de aparecer en la lista.`, 'Marcar pagadas', false)) return;
+  const ok = await run('Marcando como pagadas…', async()=>{ await api({action:'pay',ids,value:true}); data.compras.forEach(c=>{ if(ids.includes(c.id)) c.pagada=true; }); });
+  if(ok){ render(); toast('Periodo marcado como pagado'); }
+});
 
 /* ---- Tarjetas ---- */
 let editing = null;
