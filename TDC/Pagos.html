@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compras TDC</title>
+<style>
+:root{--bg:#f3f5f2;--card:#fff;--ink:#17231d;--mut:#66756c;--line:#dde3de;--acc:#0f6b4f;--acc-ink:#fff;--warn:#b3261e}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1512;--card:#18211c;--ink:#e8efe9;--mut:#8fa197;--line:#2a372f;--acc:#4cc59a;--acc-ink:#07130d;--warn:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Segoe UI",system-ui,-apple-system,sans-serif}
+main{max-width:980px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 16px}
+h2{font-size:1.05rem;margin:24px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 2px;font-size:1.05rem}
+.big{font-size:1.7rem;font-weight:700;letter-spacing:-.02em}
+.mut{color:var(--mut);font-size:.85rem}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:.92rem;padding:3px 0;border-top:1px solid var(--line)}
+.row:first-of-type{margin-top:8px}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+label{display:flex;flex-direction:column;font-size:.8rem;color:var(--mut);gap:4px}
+input,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-width:0}
+button{cursor:pointer;background:var(--acc);color:var(--acc-ink);border:0;font-weight:600}
+button:disabled{opacity:.5}
+button.del{background:none;color:var(--warn);padding:6px 10px;border:1px solid var(--line)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:10px}
+.item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item .d{flex:1;min-width:0}
+.item .d b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.amt{font-weight:600;white-space:nowrap}
+#msg{position:sticky;top:0;padding:8px 12px;border-radius:8px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;display:none}
+#msg.err{color:var(--warn);border-color:var(--warn)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bar select{max-width:200px}
+</style>
+</head>
+<body>
+<main>
+  <div id="msg" role="status"></div>
+  <h1>Compras con tarjeta de crédito</h1>
+
+  <div id="cards" class="grid"></div>
+
+  <h2>Agregar compra</h2>
+  <form id="f" class="card">
+    <label>Tarjeta<select id="fCard" required></select></label>
+    <label>Fecha<input id="fDate" type="date" required></label>
+    <label>Descripción<input id="fDesc" type="text" maxlength="80" required placeholder="Ej. Supermercado"></label>
+    <label>Monto<input id="fAmt" type="number" step="0.01" min="0.01" inputmode="decimal" required placeholder="0.00"></label>
+    <button id="fBtn">Guardar compra</button>
+  </form>
+
+  <div class="bar"><h2>Compras</h2><select id="filter" aria-label="Filtrar por tarjeta"></select></div>
+  <div id="list" class="list"></div>
+</main>
+
+<script>
+// ====== CONFIGURACIÓN ======
+const API_URL = 'https://script.google.com/macros/s/AKfycbyRPVY3zGPhE9k7v6ShhycC-wL948n9gcWgAALS1OLlWJ5NGKzyF5y9ApTeyQzysX7o/exec';
+const TOKEN   = '35e9c83d-c818-4a82-899f-f48435fc17d2';               // igual que en Code.gs
+// ===========================
+
+const $ = id => document.getElementById(id);
+const money = n => n.toLocaleString('es-MX', {style:'currency', currency:'MXN'});
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const show = s => { const [y,m,d] = s.split('-'); return `${+d} ${MESES[m-1]} ${y}`; };
+let data = {tarjetas:[], compras:[]};
+
+function msg(t, err){ const m=$('msg'); m.textContent=t; m.className=err?'err':''; m.style.display=t?'block':'none'; }
+
+async function load(){
+  msg('Cargando…');
+  try{
+    const r = await fetch(`${API_URL}?token=${encodeURIComponent(TOKEN)}`);
+    const j = await r.json();
+    if(j.error) throw new Error(j.error);
+    data = j; msg(''); render();
+  }catch(e){ msg('No se pudo cargar: '+e.message+'. Revisa API_URL, TOKEN y la publicación del script.', true); }
+}
+
+async function post(body){
+  const r = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({token:TOKEN, ...body})});
+  const j = await r.json();
+  if(j.error) throw new Error(j.error);
+  return j;
+}
+
+// ---- Fechas de corte / pago ----
+function mDate(y,m,day){ return new Date(y, m, Math.min(day, new Date(y, m+1, 0).getDate())); }
+function nextOccur(day, from){ let c = mDate(from.getFullYear(), from.getMonth(), day); if(c<from) c = mDate(from.getFullYear(), from.getMonth()+1, day); return c; }
+function payAfter(cut, payDay){ let p = mDate(cut.getFullYear(), cut.getMonth(), payDay); if(p<=cut) p = mDate(cut.getFullYear(), cut.getMonth()+1, payDay); return p; }
+const sum = (id, from, to) => data.compras.filter(c => c.tarjeta===id && c.fecha>from && c.fecha<=to).reduce((a,c)=>a+c.monto, 0);
+
+function render(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  $('cards').innerHTML = data.tarjetas.map(t=>{
+    const nextCut = nextOccur(t.corte, today);
+    const lastCut = mDate(nextCut.getFullYear(), nextCut.getMonth()-1, t.corte);
+    const prevCut = mDate(lastCut.getFullYear(), lastCut.getMonth()-1, t.corte);
+    const payLast = payAfter(lastCut, t.pago);
+    const owedCycle = payLast>=today;               // el estado de cuenta anterior aún no vence
+    const pay = owedCycle ? payLast : payAfter(nextCut, t.pago);
+    const toPay = owedCycle ? sum(t.id, iso(prevCut), iso(lastCut)) : sum(t.id, iso(lastCut), iso(nextCut));
+    const cycle = sum(t.id, iso(lastCut), iso(nextCut));
+    const total = data.compras.filter(c=>c.tarjeta===t.id).reduce((a,c)=>a+c.monto,0);
+    return `<div class="card"><h3>${esc(t.nombre)}</h3>
+      <div class="mut">Gastado en este periodo</div><div class="big">${money(cycle)}</div>
+      <div class="row"><span>Próximo corte</span><b>${show(iso(nextCut))}</b></div>
+      <div class="row"><span>Próximo pago</span><b>${show(iso(pay))}</b></div>
+      <div class="row"><span>Monto de ese pago</span><b>${money(toPay)}</b></div>
+      <div class="row"><span>Total registrado</span><span>${money(total)}</span></div>
+      <div class="mut">Corte día ${t.corte} · Pago día ${t.pago}</div></div>`;
+  }).join('') || '<div class="card">Agrega tus tarjetas en la hoja “Tarjetas” del Excel.</div>';
+
+  const opts = data.tarjetas.map(t=>`<option value="${esc(t.id)}">${esc(t.nombre)}</option>`).join('');
+  const cur = $('filter').value;
+  $('fCard').innerHTML = opts;
+  $('filter').innerHTML = '<option value="">Todas las tarjetas</option>' + opts;
+  $('filter').value = cur;
+  renderList();
+}
+
+function renderList(){
+  const f = $('filter').value;
+  const names = Object.fromEntries(data.tarjetas.map(t=>[t.id,t.nombre]));
+  const rows = data.compras.filter(c=>!f||c.tarjeta===f).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  $('list').innerHTML = rows.map(c=>`<div class="item"><div class="d"><b>${esc(c.desc)}</b>
+    <span class="mut">${show(c.fecha)} · ${esc(names[c.tarjeta]||'?')}</span></div>
+    <span class="amt">${money(c.monto)}</span>
+    <button class="del" data-id="${esc(c.id)}" aria-label="Eliminar compra">Eliminar</button></div>`).join('')
+    || '<div class="item mut">Aún no hay compras registradas.</div>';
+}
+
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+$('f').addEventListener('submit', async e=>{
+  e.preventDefault(); $('fBtn').disabled = true; msg('Guardando…');
+  try{
+    const b = {action:'add', tarjeta:$('fCard').value, fecha:$('fDate').value, desc:$('fDesc').value.trim(), monto:parseFloat($('fAmt').value)};
+    const r = await post(b);
+    data.compras.push({id:r.id, fecha:b.fecha, tarjeta:b.tarjeta, desc:b.desc, monto:b.monto});
+    $('fDesc').value=''; $('fAmt').value=''; msg('Compra guardada'); setTimeout(()=>msg(''),1500); render();
+  }catch(err){ msg('No se pudo guardar: '+err.message, true); }
+  $('fBtn').disabled = false;
+});
+
+$('list').addEventListener('click', async e=>{
+  const id = e.target.dataset.id; if(!id) return;
+  if(!confirm('¿Eliminar esta compra?')) return;
+  msg('Eliminando…');
+  try{ await post({action:'delete', id}); data.compras = data.compras.filter(c=>c.id!==id); msg('Compra eliminada'); setTimeout(()=>msg(''),1500); render(); }
+  catch(err){ msg('No se pudo eliminar: '+err.message, true); }
+});
+$('filter').addEventListener('change', renderList);
+
+$('fDate').value = iso(new Date());
+load();
+</script>
+</body>
+</html>
