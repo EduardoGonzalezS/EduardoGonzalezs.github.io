@@ -63,6 +63,8 @@ label{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--mut
 .amt{font-weight:700;white-space:nowrap}
 .x{background:none;border:1px solid var(--line);color:var(--warn);border-radius:8px;padding:5px 9px;cursor:pointer;transition:background .15s}
 .x:hover{background:#ff7b7b1f}
+.x.ed{color:var(--ink)}.x.ed:hover{background:#ffffff14}
+.item .b{display:flex;gap:6px}
 
 /* Animaciones */
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -129,12 +131,23 @@ dialog form{display:grid;gap:14px}
   <form id="cf" method="dialog">
     <h2 id="cfTitle">Nueva tarjeta</h2>
     <label>Nombre<input id="cName" maxlength="30" required placeholder="Ej. BBVA Oro"></label>
-    <div class="two">
-      <label>Día de corte<input id="cCut" type="number" min="1" max="31" required></label>
-      <label>Día de pago<input id="cPay" type="number" min="1" max="31" required></label>
-    </div>
+    <label>Día de corte<input id="cCut" type="number" min="1" max="31" required></label>
+    <div class="mut">El pago se calcula solo: 20 días después de cada corte.</div>
     <div><div class="mut" style="margin-bottom:6px">Color</div><div class="sw" id="sw"></div></div>
     <div class="end"><button type="button" class="btn ghost" id="cCancel">Cancelar</button><button class="btn">Guardar</button></div>
+  </form>
+</dialog>
+
+<dialog id="buyDlg">
+  <form id="bf" method="dialog">
+    <h2>Editar compra</h2>
+    <label>Tarjeta<select id="eCard" required></select></label>
+    <div class="two">
+      <label>Fecha<input id="eDate" type="date" required></label>
+      <label>Monto<input id="eAmt" type="number" step="0.01" min="0.01" inputmode="decimal" required></label>
+    </div>
+    <label>Descripción<input id="eDesc" maxlength="80" required></label>
+    <div class="end"><button type="button" class="btn ghost" id="eCancel">Cancelar</button><button class="btn">Guardar</button></div>
   </form>
 </dialog>
 
@@ -151,6 +164,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyRPVY3zGPhE9k7v6ShhycC
 const TOKEN   = '35e9c83d-c818-4a82-899f-f48435fc17d2'; // igual que en Code.gs
 // ===========================
 
+const PAY_DAYS = 20; // el pago vence 20 días después de la fecha de corte
 const COLORS = ['#3b82f6','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const $ = id => document.getElementById(id);
@@ -191,6 +205,9 @@ async function load(){
   const ok = await run('Cargando tus tarjetas…', async()=>{
     const r = await fetch(`${API_URL}?token=${encodeURIComponent(TOKEN)}`);
     const j = await r.json(); if(j.error) throw new Error(j.error); data = j;
+    data.compras.forEach(c=>{ // por si la hoja devuelve la fecha en otro formato
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(c.fecha)){ const d=new Date(c.fecha); if(!isNaN(d)) c.fecha=iso(d); }
+    });
   });
   render(); setTimeout(()=>$('app').classList.remove('enter'), 1200);
   if(!ok) toast('No se pudo cargar. Revisa API_URL y TOKEN.', true);
@@ -199,7 +216,7 @@ async function load(){
 /* ---- Fechas de corte / pago ---- */
 function mDate(y,m,day){ return new Date(y,m,Math.min(day,new Date(y,m+1,0).getDate())); }
 function nextOccur(day,from){ let c=mDate(from.getFullYear(),from.getMonth(),day); if(c<from) c=mDate(from.getFullYear(),from.getMonth()+1,day); return c; }
-function payAfter(cut,payDay){ let p=mDate(cut.getFullYear(),cut.getMonth(),payDay); if(p<=cut) p=mDate(cut.getFullYear(),cut.getMonth()+1,payDay); return p; }
+const addDays = (d,n) => new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
 const sum = (id,from,to) => data.compras.filter(c=>c.tarjeta===id&&c.fecha>from&&c.fecha<=to).reduce((a,c)=>a+c.monto,0);
 
 /* ---- Render ---- */
@@ -209,8 +226,8 @@ function render(){
     const nextCut = nextOccur(t.corte,today);
     const lastCut = mDate(nextCut.getFullYear(),nextCut.getMonth()-1,t.corte);
     const prevCut = mDate(lastCut.getFullYear(),lastCut.getMonth()-1,t.corte);
-    const payLast = payAfter(lastCut,t.pago), owed = payLast>=today;
-    const pay = owed ? payLast : payAfter(nextCut,t.pago);
+    const payLast = addDays(lastCut,PAY_DAYS), owed = payLast>=today;
+    const pay = owed ? payLast : addDays(nextCut,PAY_DAYS);
     const toPay = owed ? sum(t.id,iso(prevCut),iso(lastCut)) : sum(t.id,iso(lastCut),iso(nextCut));
     t._cycle = sum(t.id,iso(lastCut),iso(nextCut));
     const total = data.compras.filter(c=>c.tarjeta===t.id).reduce((a,c)=>a+c.monto,0);
@@ -238,7 +255,7 @@ function renderList(){
   $('list').innerHTML = rows.map(c=>{ const t=map[c.tarjeta];
     return `<div class="item${c.id===newId?' new':''}" data-row="${esc(c.id)}"><span class="dot" style="background:${t?colorOf(t):'#555'}"></span>
       <div class="d"><b>${esc(c.desc)}</b><span class="mut">${show(c.fecha)} · ${esc(t?t.nombre:'?')}</span></div>
-      <span class="amt">${money(c.monto)}</span><button class="x" data-buy="${esc(c.id)}">Quitar</button></div>`; }).join('')
+      <span class="amt">${money(c.monto)}</span><span class="b"><button class="x ed" data-ebuy="${esc(c.id)}">Editar</button><button class="x" data-buy="${esc(c.id)}">Quitar</button></span></div>`; }).join('')
     || '<div class="mut" style="padding:14px 4px">Aún no hay compras registradas.</div>';
   newId = null;
 }
@@ -251,7 +268,23 @@ $('f').addEventListener('submit', async e=>{
   const ok = await run('Registrando compra…', async()=>{ const r=await api(b); newId=r.id; data.compras.push({id:r.id,fecha:b.fecha,tarjeta:b.tarjeta,desc:b.desc,monto:b.monto}); });
   if(ok){ $('fDesc').value=''; $('fAmt').value=''; render(); toast('Compra registrada'); }
 });
+let editingBuy = null;
+$('eCancel').onclick = ()=>$('buyDlg').close();
+$('bf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const b = {tarjeta:$('eCard').value,fecha:$('eDate').value,desc:$('eDesc').value.trim(),monto:parseFloat($('eAmt').value)};
+  $('buyDlg').close();
+  const ok = await run('Guardando cambios…', async()=>{ await api({action:'edit',id:editingBuy,...b}); Object.assign(data.compras.find(c=>c.id===editingBuy),b); });
+  if(ok){ render(); toast('Compra actualizada'); }
+});
 $('list').addEventListener('click', async e=>{
+  const eb = e.target.dataset.ebuy;
+  if(eb){
+    const c = data.compras.find(c=>c.id===eb); editingBuy = eb;
+    $('eCard').innerHTML = data.tarjetas.map(t=>`<option value="${esc(t.id)}">${esc(t.nombre)}</option>`).join('');
+    $('eCard').value = c.tarjeta; $('eDate').value = c.fecha; $('eDesc').value = c.desc; $('eAmt').value = c.monto;
+    return $('buyDlg').showModal();
+  }
   const id = e.target.dataset.buy; if(!id) return;
   if(!await confirmDlg('¿Quitar esta compra?','Se eliminará también de tu hoja de Google.')) return;
   const row = document.querySelector(`[data-row="${id}"]`); row.classList.add('leaving');
@@ -266,7 +299,7 @@ $('sw').innerHTML = COLORS.map((c,i)=>`<label><input type="radio" name="col" val
 function openCard(t){
   editing = t ? t.id : null;
   $('cfTitle').textContent = t ? 'Editar tarjeta' : 'Nueva tarjeta';
-  $('cName').value = t ? t.nombre : ''; $('cCut').value = t ? t.corte : ''; $('cPay').value = t ? t.pago : '';
+  $('cName').value = t ? t.nombre : ''; $('cCut').value = t ? t.corte : '';
   const col = t ? colorOf(t) : COLORS[data.tarjetas.length % COLORS.length];
   document.querySelectorAll('#sw input').forEach(i=>i.checked = i.value===col);
   $('cardDlg').showModal();
@@ -275,12 +308,12 @@ $('newCard').onclick = ()=>openCard();
 $('cCancel').onclick = ()=>$('cardDlg').close();
 $('cf').addEventListener('submit', async e=>{
   e.preventDefault();
-  const b = {nombre:$('cName').value.trim(),corte:+$('cCut').value,pago:+$('cPay').value,color:document.querySelector('#sw input:checked').value};
-  if(!b.nombre||b.corte<1||b.corte>31||b.pago<1||b.pago>31) return toast('Revisa los datos (días del 1 al 31)', true);
+  const b = {nombre:$('cName').value.trim(),corte:+$('cCut').value,color:document.querySelector('#sw input:checked').value};
+  if(!b.nombre||b.corte<1||b.corte>31) return toast('Revisa los datos (días del 1 al 31)', true);
   $('cardDlg').close();
   const ok = await run(editing?'Guardando cambios…':'Guardando tarjeta…', async()=>{
-    if(editing){ await api({action:'cardEdit',id:editing,...b}); Object.assign(data.tarjetas.find(t=>t.id===editing),{nombre:b.nombre,corte:b.corte,pago:b.pago,color:b.color}); }
-    else { const r=await api({action:'cardAdd',...b}); data.tarjetas.push({id:r.id,nombre:b.nombre,corte:b.corte,pago:b.pago,color:b.color}); }
+    if(editing){ await api({action:'cardEdit',id:editing,...b}); Object.assign(data.tarjetas.find(t=>t.id===editing),{nombre:b.nombre,corte:b.corte,color:b.color}); }
+    else { const r=await api({action:'cardAdd',...b}); data.tarjetas.push({id:r.id,nombre:b.nombre,corte:b.corte,color:b.color}); }
   });
   if(ok){ render(); toast(editing?'Tarjeta actualizada':'Tarjeta agregada'); }
 });
