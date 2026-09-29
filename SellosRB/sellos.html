@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Repostería Belén - Sellos</title>
 <link rel="icon" type="image/png" href="assets/img/rol.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#fff3f6;
@@ -44,6 +47,31 @@
     display:block;margin:0 auto;
   }
   .subtitle{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+  /* Frase de la pantalla de inicio en cursiva con degradado */
+  .subtitle.tagline{
+    font-family:"Dancing Script","Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(1.3rem, 6vw, 1.6rem);font-weight:600;line-height:1.3;
+    margin:2px 0 20px;
+  }
+  .subtitle.tagline .tagline-texto{
+    display:inline-block;padding:0 3px 4px;
+    background:linear-gradient(120deg, var(--muted) 0%, var(--primary-dark) 55%, #f08fae 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 1px 2px rgba(216,103,138,.2));
+  }
+  .subtitle.tagline .tagline-sorpresa{font-weight:700;}
+  .subtitle.tagline .tagline-regalo{
+    display:inline-block;font-size:.85em;
+    animation:taglineBounce 2.2s ease-in-out infinite;
+  }
+  @keyframes taglineBounce{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-3px) rotate(8deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .subtitle.tagline .tagline-regalo{animation:none;}
+  }
   .tabs{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:18px;border:1px solid var(--border);}
   .tab{flex:1;text-align:center;padding:10px 4px;border-radius:10px;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s;}
   .tab.active{background:var(--primary);color:#fff;}
@@ -74,50 +102,139 @@
   .status{padding:12px 14px;border-radius:12px;font-size:.85rem;margin:12px 0;animation:popIn .3s ease;}
   .status.ok{background:rgba(63,145,66,.12);color:#3f9142;}
 
-  #scroll-hint-wrap{text-align:center;}
+  /* Botón flotante "Ver catálogo": fijo en la esquina inferior derecha.
+     Tamaño y posición se adaptan al ancho/alto de la pantalla. */
   #scroll-hint{
-    position:relative;
-    display:inline-flex;align-items:center;justify-content:center;
-    width:40px;height:40px;padding:0;border-radius:50%;
-    background:var(--primary);color:#fff;border:none;
-    box-shadow:0 4px 10px rgba(216,103,138,.3);cursor:pointer;
-    margin:14px auto 0;
+    --sh-size:clamp(58px, 15vmin, 78px);
+    position:fixed;
+    z-index:40;
+    right:max(16px, calc(50vw - 194px), env(safe-area-inset-right, 0px));
+    bottom:calc(18px + env(safe-area-inset-bottom, 0px));
+    width:var(--sh-size);height:var(--sh-size);
+    margin:0;padding:0;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 30% 25%, #ff9fbb 0%, var(--primary) 45%, var(--primary-dark) 100%);
+    color:#fff;border:3px solid rgba(255,255,255,.85);
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(216,103,138,.45);
     transition:opacity .35s ease, transform .35s ease;
     animation:scrollHintGlow 2.2s ease-in-out infinite;
   }
   #scroll-hint::after{
     content:"";
-    position:absolute;inset:0;border-radius:50%;
+    position:absolute;inset:-3px;border-radius:50%;
     box-shadow:0 0 0 0 rgba(216,103,138,.55);
     animation:scrollHintPing 2.2s ease-out infinite;
     pointer-events:none;
   }
   #scroll-hint.hidden{
     opacity:0;pointer-events:none;
-    transform:translateY(6px) scale(.95);
+    transform:translateY(10px) scale(.9);
     animation:none;
   }
   #scroll-hint.hidden::after{display:none;}
-  #scroll-hint .scroll-hint-label{display:none;}
-  #scroll-hint .scroll-hint-arrow{font-size:1.15rem;line-height:1;animation:bounceArrow 1.4s ease-in-out infinite;}
+  #scroll-hint.hidden .sh-sparkle{animation:none;}
+  #scroll-hint .scroll-hint-arrow{
+    font-size:calc(var(--sh-size) * .52);line-height:1;font-weight:800;
+    text-shadow:0 2px 4px rgba(92,51,70,.3);
+    animation:bounceArrow 1.4s ease-in-out infinite;
+  }
+  /* Destellos alrededor del botón */
+  .sh-sparkle{
+    position:absolute;pointer-events:none;line-height:1;
+    font-size:calc(var(--sh-size) * .28);
+    color:#ffc933;
+    text-shadow:0 0 6px rgba(255,255,255,.95), 0 0 10px rgba(216,103,138,.7);
+    opacity:0;
+    animation:sparkleTwinkle 2.4s ease-in-out infinite;
+  }
+  .sh-sparkle.s1{top:-14%;right:-8%;animation-delay:0s;}
+  .sh-sparkle.s2{top:12%;left:-16%;font-size:calc(var(--sh-size) * .2);animation-delay:.6s;}
+  .sh-sparkle.s3{bottom:-12%;left:8%;animation-delay:1.2s;}
+  .sh-sparkle.s4{top:-20%;left:38%;font-size:calc(var(--sh-size) * .18);animation-delay:1.8s;}
+  .sh-sparkle.s5{bottom:6%;right:-18%;font-size:calc(var(--sh-size) * .2);animation-delay:.3s;}
+  @keyframes sparkleTwinkle{
+    0%,100%{opacity:0;transform:scale(.3) rotate(0deg);}
+    50%{opacity:1;transform:scale(1.15) rotate(35deg);}
+  }
   @keyframes bounceArrow{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(3px);}
+    0%,100%{transform:translateY(-2px);}
+    50%{transform:translateY(4px);}
   }
   @keyframes scrollHintGlow{
-    0%,100%{box-shadow:0 4px 10px rgba(216,103,138,.3);}
-    50%{box-shadow:0 4px 22px rgba(216,103,138,.75), 0 0 14px rgba(255,194,209,.9);}
+    0%,100%{box-shadow:0 6px 18px rgba(216,103,138,.45);}
+    50%{box-shadow:0 6px 28px rgba(216,103,138,.85), 0 0 22px rgba(255,194,209,1);}
   }
   @keyframes scrollHintPing{
-    0%{box-shadow:0 0 0 0 rgba(216,103,138,.55);opacity:1;}
-    70%{box-shadow:0 0 0 14px rgba(216,103,138,0);opacity:0;}
-    100%{box-shadow:0 0 0 14px rgba(216,103,138,0);opacity:0;}
+    0%{box-shadow:0 0 0 0 rgba(216,103,138,.6);opacity:1;}
+    70%{box-shadow:0 0 0 18px rgba(216,103,138,0);opacity:0;}
+    100%{box-shadow:0 0 0 18px rgba(216,103,138,0);opacity:0;}
   }
+  @media (prefers-reduced-motion: reduce){
+    #scroll-hint, #scroll-hint::after, #scroll-hint .scroll-hint-arrow, .sh-sparkle{animation:none;}
+    .sh-sparkle{opacity:.9;}
+  }
+  /* Título "Nuestro catálogo" en cursiva con degradado y adornos */
+  #catalogo-heading{
+    font-family:"Dancing Script","Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(2.1rem, 9vw, 2.7rem);
+    font-weight:700;line-height:1.15;letter-spacing:.5px;
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    margin-bottom:14px;
+  }
+  #catalogo-heading .cat-title{
+    background:linear-gradient(120deg, var(--primary-dark) 0%, #f08fae 50%, var(--primary-dark) 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 2px 3px rgba(216,103,138,.25));
+    padding:0 2px 4px;
+  }
+  #catalogo-heading::before,
+  #catalogo-heading::after{
+    content:"✦";
+    flex:0 0 auto;font-family:inherit;font-size:.5em;
+    color:var(--primary);opacity:.85;
+  }
+  /* Contador de caracteres del nombre */
+  .char-counter{
+    display:flex;justify-content:space-between;gap:10px;
+    margin-top:6px;font-size:.75rem;color:var(--muted);
+    transition:color .2s ease;
+  }
+  .char-counter .cc-count{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .char-counter.ok{color:#3f9142;}
+  .char-counter.warn{color:#c0392b;}
   .qr-box{text-align:center;margin-top:18px;}
   .qr-box img{border-radius:12px;border:1px solid var(--border);padding:10px;background:#fff;animation:popIn .4s ease;}
   .qr-id{font-family:monospace;font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all;}
   .stamp-header{text-align:center;margin-bottom:18px;}
-  .stamp-header .name{font-size:1.1rem;font-weight:700;animation:fade .4s ease;}
+  /* Saludo "Hola, Nombre" en cursiva con degradado */
+  .stamp-header .name{
+    font-family:"Dancing Script","Brush Script MT","Segoe Script",cursive;
+    font-size:clamp(1.9rem, 8vw, 2.4rem);font-weight:700;line-height:1.2;
+    color:var(--text);animation:fade .4s ease;
+  }
+  .stamp-header .name .hola-saludo{color:var(--muted);font-weight:600;}
+  .stamp-header .name .hola-nombre{
+    display:inline-block;padding:0 3px 4px;
+    background:linear-gradient(120deg, var(--primary-dark) 0%, #f08fae 50%, var(--primary-dark) 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 2px 3px rgba(216,103,138,.25));
+  }
+  .stamp-header .name .hola-mano{
+    display:inline-block;font-size:.8em;transform-origin:70% 75%;
+    animation:holaWave 2.4s ease-in-out infinite;
+  }
+  @keyframes holaWave{
+    0%,60%,100%{transform:rotate(0deg);}
+    10%,30%{transform:rotate(16deg);}
+    20%,40%{transform:rotate(-10deg);}
+    50%{transform:rotate(8deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp-header .name .hola-mano{animation:none;}
+  }
   .stamp-count{font-size:2.4rem;font-weight:800;color:var(--primary);text-align:center;margin:6px 0 2px;animation:popIn .35s ease;}
   .stamp-label{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:16px;}
   .stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:10px 0 4px;}
@@ -320,7 +437,7 @@ function render(){
   attachHandlers();
 }
 
-// Botón inline debajo del QR que lleva al catálogo con scroll suave.
+// Botón flotante (esquina inferior derecha) que lleva al catálogo con scroll suave.
 // Se desvanece únicamente cuando el usuario lo presiona.
 function ocultarScrollHint(){
   const btn = document.getElementById("scroll-hint");
@@ -459,7 +576,7 @@ function actualizarSellosDom(cliente){
 function renderAuth(){
   return `
     <h1 class="brand-logo"><img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-img" onerror="this.style.display='none';"></h1>
-    <div class="subtitle">Junta sellos y canjea tus postres favoritos</div>
+    <div class="subtitle tagline"><span class="tagline-texto">Junta sellos y canjéalo por <br> una <span class="tagline-sorpresa">sorpresa</span></span> <span class="tagline-regalo">🎁</span></div>
     <div class="tabs">
       <div class="tab ${state.screen==='login'?'active':''}" data-tab="login">Iniciar sesión</div>
       <div class="tab ${state.screen==='registro'?'active':''}" data-tab="registro">Registrarme</div>
@@ -484,7 +601,11 @@ function renderAuth(){
     <div class="screen ${state.screen==='registro'?'active':''}" id="screen-registro">
       <div class="card">
         <label>Nombre</label>
-        <input type="text" id="reg-nombre" placeholder="Tu nombre">
+        <input type="text" id="reg-nombre" placeholder="Tu nombre" maxlength="25" autocomplete="name">
+        <div class="char-counter" id="reg-nombre-counter" aria-live="polite">
+          <span class="cc-hint">Mínimo 5 caracteres</span>
+          <span class="cc-count">0/25</span>
+        </div>
         <label>Número de teléfono</label>
         <input type="tel" id="reg-tel" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="off" placeholder="10 dígitos">
         <label>Pin (4 dígitos)</label>
@@ -501,6 +622,46 @@ function renderAuth(){
   `;
 }
 
+// Si el nombre viene todo en MAYÚSCULAS o todo en minúsculas, lo muestra como
+// "Eduardo" (solo la primera letra de cada palabra en mayúscula). Los nombres
+// ya capitalizados se respetan tal cual. No modifica lo guardado en la hoja.
+function formatNombre(nombre){
+  const n = String(nombre || "").trim();
+  if(n && (n === n.toUpperCase() || n === n.toLowerCase())){
+    return n.toLowerCase().replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase());
+  }
+  return n;
+}
+
+// ---- Nombre: mínimo 5 y máximo 25 caracteres, con contador en vivo ----
+const NOMBRE_MIN = 5;
+const NOMBRE_MAX = 25;
+
+function actualizarContadorNombre(){
+  const input = document.getElementById("reg-nombre");
+  const cont = document.getElementById("reg-nombre-counter");
+  if(!input || !cont) return;
+  const largo = input.value.length;
+  const utiles = input.value.trim().length; // lo que realmente se enviará
+  const hint = cont.querySelector(".cc-hint");
+  const count = cont.querySelector(".cc-count");
+  count.textContent = `${largo}/${NOMBRE_MAX}`;
+  cont.classList.remove("ok", "warn");
+  if(largo === 0){
+    hint.textContent = `Mínimo ${NOMBRE_MIN} caracteres`;
+  } else if(utiles < NOMBRE_MIN){
+    const faltan = NOMBRE_MIN - utiles;
+    hint.textContent = `Faltan ${faltan} ${faltan === 1 ? "caracter" : "caracteres"}`;
+    cont.classList.add("warn");
+  } else if(largo >= NOMBRE_MAX){
+    hint.textContent = "Límite máximo alcanzado";
+    cont.classList.add("warn");
+  } else {
+    hint.textContent = "✓ Nombre válido";
+    cont.classList.add("ok");
+  }
+}
+
 function renderLoggedIn(cliente){
   const total = 10;
   const sellos = Number(cliente.sellos) || 0;
@@ -512,7 +673,7 @@ function renderLoggedIn(cliente){
   return `
     <h1 class="brand-logo" style="margin-bottom:14px;"><img src="assets/img/RB-Logo.png" alt="Repostería Belén" class="logo-img" onerror="this.style.display='none';"></h1>
     <div class="stamp-header">
-      <div class="name">Hola, ${cliente.nombre} 👋</div>
+      <div class="name"><span class="hola-saludo">Hola,</span> <span class="hola-nombre">${formatNombre(cliente.nombre)}</span> <span class="hola-mano">👋</span></div>
     </div>
     <div class="card">
       <div class="stamp-count" data-sellos="${sellos}">${formatSellos(sellos)}/${total}</div>
@@ -524,17 +685,19 @@ function renderLoggedIn(cliente){
         <div class="qr-id">${cliente.id}</div>
       </div>
     </div>
-    <div id="scroll-hint-wrap">
-      <button id="scroll-hint" aria-label="Ver catálogo de productos">
-        <span class="scroll-hint-arrow">⌄</span>
-        <span class="scroll-hint-label">Ver catálogo</span>
-      </button>
-    </div>
+    <button id="scroll-hint" aria-label="Ver catálogo de productos" title="Ver catálogo">
+      <span class="sh-sparkle s1" aria-hidden="true">✦</span>
+      <span class="sh-sparkle s2" aria-hidden="true">✧</span>
+      <span class="sh-sparkle s3" aria-hidden="true">✦</span>
+      <span class="sh-sparkle s4" aria-hidden="true">✧</span>
+      <span class="sh-sparkle s5" aria-hidden="true">✦</span>
+      <span class="scroll-hint-arrow" aria-hidden="true">↓</span>
+    </button>
 
-    <h1 id="catalogo-heading" style="margin-top:24px;">Nuestro catálogo</h1>
+    <h1 id="catalogo-heading" style="margin-top:24px;"><span class="cat-title">Nuestro catálogo</span></h1>
     <div class="catalog-grid" id="catalog-list"></div>
 
-    <div class="logout"><a id="btn-logout">Cerrar sesión</a></div>
+    <div class="logout"><a id="btn-logout">Cerrar sesión</a></div><br>
   `;
 }
 
@@ -626,6 +789,12 @@ function attachHandlers(){
     };
   }
 
+  const inputNombre = document.getElementById("reg-nombre");
+  if(inputNombre){
+    inputNombre.oninput = actualizarContadorNombre;
+    actualizarContadorNombre();
+  }
+
   const btnReg = document.getElementById("btn-registro");
   if(btnReg){
     btnReg.onclick = async ()=>{
@@ -635,6 +804,14 @@ function attachHandlers(){
       const err = document.getElementById("reg-error");
       if(!nombre || !telefono || !password){
         err.textContent = "Completa todos los campos.";
+        return;
+      }
+      if(nombre.length < NOMBRE_MIN){
+        err.textContent = `El nombre debe tener al menos ${NOMBRE_MIN} caracteres.`;
+        return;
+      }
+      if(nombre.length > NOMBRE_MAX){
+        err.textContent = `El nombre no puede tener más de ${NOMBRE_MAX} caracteres.`;
         return;
       }
       if(telefono.length !== 10){
