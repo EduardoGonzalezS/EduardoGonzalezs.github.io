@@ -6,18 +6,19 @@
 <title>Mis tarjetas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235eead4'/%3E%3Cstop offset='1' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='12' width='56' height='40' rx='8' fill='url(%23g)'/%3E%3Crect x='4' y='22' width='56' height='8' fill='%230d1117' opacity='.55'/%3E%3Crect x='11' y='38' width='14' height='9' rx='2' fill='%23f5d98a'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#0d1117">
 <style>
 :root{--bg:#0d1117;--panel:#161c26;--panel2:#1d2531;--ink:#eef2f7;--mut:#8b98a9;--line:#263041;--acc:#5eead4;--acc-ink:#04211c;--warn:#ff7b7b}
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html{color-scheme:dark}
-body{margin:0;background:radial-gradient(1000px 500px at 85% -10%,#173a4a55,transparent),var(--bg);color:var(--ink);font:16px/1.45 "Avenir Next","Segoe UI",system-ui,sans-serif;min-height:100vh}
+body{margin:0;background:radial-gradient(1000px 500px at 85% -10%,#173a4a55,transparent),var(--bg);color:var(--ink);font:16px/1.5 "Inter","Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;min-height:100vh}
 main{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
-header{text-align:center;margin:8px 0 26px}
-h1{font-family:'Sora','Avenir Next','Segoe UI',system-ui,sans-serif;font-weight:800;font-size:clamp(2.1rem,7vw,2.8rem);line-height:1.1;margin:0 0 6px;letter-spacing:-.045em}
+header{text-align:center;margin:8px 0 26px;position:relative}
+#lockBtn{position:absolute;right:0;top:0}
+h1{font-weight:700;font-size:clamp(2.1rem,7vw,2.8rem);line-height:1.1;margin:0 0 6px;letter-spacing:-.03em}
 h2{font-size:1.1rem;margin:0}
 .mut{color:var(--mut);font-size:.85rem}
 button,input,select{font:inherit;color:var(--ink);min-width:0}
@@ -128,12 +129,40 @@ dialog form{display:grid;gap:14px}
 @keyframes fabIn{from{opacity:0;transform:translateX(-50%) translateY(24px) scale(.6)}to{opacity:1;transform:translateX(-50%)}}
 @keyframes halo{0%,100%{box-shadow:0 14px 30px -8px #5eead4b0,0 0 0 0 #5eead455,inset 0 1px 0 #ffffff66}50%{box-shadow:0 14px 30px -8px #5eead4b0,0 0 0 14px #5eead400,inset 0 1px 0 #ffffff66}}
 main{padding-bottom:100px}
+/* Pantalla de PIN */
+#lock{position:fixed;inset:0;z-index:45;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;
+  background:radial-gradient(900px 500px at 50% -10%,#173a4a77,transparent),var(--bg);transition:opacity .45s,transform .45s}
+#lock.off{opacity:0;transform:scale(1.04);pointer-events:none}
+.lk{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;background:#5eead41a;color:var(--acc);margin-bottom:6px;animation:pop .5s both}
+#lock h2{font-size:1.4rem;letter-spacing:-.02em;margin:0}
+.pin{display:flex;gap:12px;margin:14px 0 4px}
+.pin input{width:58px;height:66px;padding:0;text-align:center;font-size:1.7rem;font-weight:700;border-radius:16px}
+.pin input.f{border-color:var(--acc);background:#5eead410}
+.pin.bad{animation:shake .4s}
+#pinMsg{min-height:1.4em;font-size:.88rem;color:var(--warn)}
+@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+#okIc{display:none;width:56px;height:56px;border-radius:50%;background:var(--acc);color:var(--acc-ink);place-items:center;animation:pop .35s both}
+#ov.done .spin{display:none}#ov.done #okIc{display:grid}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<div id="lock" role="dialog" aria-modal="true" aria-labelledby="lkT">
+  <div class="lk"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+  <h2 id="lkT">Ingresa tu PIN</h2>
+  <div class="mut">Acceso personal · 4 dígitos</div>
+  <div class="pin" id="pin">
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="Dígito 1">
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="Dígito 2">
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="Dígito 3">
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="Dígito 4">
+  </div>
+  <div id="pinMsg" role="alert"></div>
+</div>
+
 <main id="app" class="enter">
   <header>
+    <button class="btn ghost sm" id="lockBtn">Bloquear</button>
     <h1>Mis tarjetas</h1>
     <div class="mut">Gastos, cortes y fechas de pago</div>
   </header>
@@ -161,7 +190,7 @@ main{padding-bottom:100px}
 
 <button class="btn fab" id="payPeriod" hidden>Marcar periodo como pagado</button>
 
-<div id="ov" role="alert" aria-live="assertive"><div class="spin"></div><div id="ovt">Cargando…</div></div>
+<div id="ov" role="alert" aria-live="assertive"><div class="spin"></div><div id="okIc"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div id="ovt">Cargando…</div></div>
 <div id="toast" role="status"></div>
 
 <dialog id="cardDlg">
@@ -211,7 +240,6 @@ main{padding-bottom:100px}
 <script>
 // ====== CONFIGURACIÓN ======
 const API_URL = 'https://script.google.com/macros/s/AKfycbyRPVY3zGPhE9k7v6ShhycC-wL948n9gcWgAALS1OLlWJ5NGKzyF5y9ApTeyQzysX7o/exec';
-const TOKEN   = '35e9c83d-c818-4a82-899f-f48435fc17d2'; // igual que en Code.gs
 // ===========================
 
 const PAY_DAYS = 20; // el pago vence 20 días después de la fecha de corte
@@ -222,7 +250,7 @@ const money = n => n.toLocaleString('es-MX',{style:'currency',currency:'MXN'});
 const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const show = s => { const [y,m,d]=s.split('-'); return `${+d} ${MESES[m-1]} ${y}`; };
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let data = {tarjetas:[], compras:[]}, prev = {}, newId = null, activeId = null, periodTouched = false;
+let data = {tarjetas:[], compras:[]}, prev = {}, newId = null, activeId = null, periodTouched = false, pin = '';
 const colorOf = t => t.color || COLORS[data.tarjetas.indexOf(t) % COLORS.length];
 
 /* ---- UI helpers ---- */
@@ -249,19 +277,66 @@ function countUp(el, to, from){
 
 /* ---- API ---- */
 async function api(body){
-  const r = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({token:TOKEN,...body})});
+  const r = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({pin,...body})});
   const j = await r.json(); if(j.error) throw new Error(j.error); return j;
 }
-async function load(){
-  const ok = await run('Cargando tus tarjetas…', async()=>{
-    const r = await fetch(`${API_URL}?token=${encodeURIComponent(TOKEN)}`);
-    const j = await r.json(); if(j.error) throw new Error(j.error); data = j;
-    data.compras.forEach(c=>{ // por si la hoja devuelve la fecha en otro formato
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(c.fecha)){ const d=new Date(c.fecha); if(!isNaN(d)) c.fecha=iso(d); }
-    });
+async function fetchData(p){
+  const r = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({pin:p,action:'load'})});
+  const j = await r.json(); if(j.error) throw new Error(j.error);
+  j.compras.forEach(c=>{ // por si la hoja devuelve la fecha en otro formato
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(c.fecha)){ const d=new Date(c.fecha); if(!isNaN(d)) c.fecha=iso(d); }
   });
-  render(); setTimeout(()=>$('app').classList.remove('enter'), 1200);
-  if(!ok) toast('No se pudo cargar. Revisa API_URL y TOKEN.', true);
+  return j;
+}
+
+/* ---- PIN ---- */
+const pins = [...document.querySelectorAll('#pin input')];
+const pinVal = () => pins.map(i=>i.value).join('');
+let checking = false;
+function badPin(msg){
+  $('pinMsg').textContent = msg;
+  const b = $('pin'); b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad');
+  pins.forEach(i=>{ i.value=''; i.classList.remove('f'); }); pins[0].focus();
+}
+async function unlock(p){
+  $('ovt').textContent = 'Validando PIN…'; $('ov').className = 'on';
+  let j;
+  try{ j = await fetchData(p); }
+  catch(e){ $('ov').className = ''; throw (e instanceof TypeError ? new Error('No se pudo conectar. Revisa tu conexión y API_URL.') : e); }
+  pin = p; try{ sessionStorage.setItem('pin', p); }catch(_){}
+  data = j;
+  $('ov').className = 'on done'; $('ovt').textContent = 'PIN correcto';
+  await new Promise(r=>setTimeout(r, 850));
+  $('lock').classList.add('off'); render(); $('ov').className = '';
+  setTimeout(()=>$('app').classList.remove('enter'), 1200);
+}
+async function submitPin(){
+  if(checking) return; checking = true; $('pinMsg').textContent = '';
+  pins.forEach(i=>i.blur());
+  try{ await unlock(pinVal()); }catch(e){ badPin(e.message); }
+  checking = false;
+}
+pins.forEach((inp,i)=>{
+  inp.addEventListener('input', ()=>{
+    inp.value = inp.value.replace(/\D/g,'').slice(-1); inp.classList.toggle('f', !!inp.value);
+    if(inp.value && i<3) pins[i+1].focus();
+    if(pinVal().length===4) submitPin();
+  });
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='Backspace' && !inp.value && i>0){ pins[i-1].value=''; pins[i-1].classList.remove('f'); pins[i-1].focus(); }
+  });
+  inp.addEventListener('paste', e=>{
+    const t = (e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,4); if(!t) return;
+    e.preventDefault(); [...t].forEach((ch,k)=>{ pins[k].value=ch; pins[k].classList.add('f'); });
+    pins[Math.min(t.length,3)].focus(); if(t.length===4) submitPin();
+  });
+  inp.addEventListener('focus', ()=>inp.select());
+});
+$('lockBtn').onclick = ()=>{ try{ sessionStorage.removeItem('pin'); }catch(_){} location.reload(); };
+function start(){
+  let saved = null; try{ saved = sessionStorage.getItem('pin'); }catch(_){}
+  if(saved) unlock(saved).catch(()=>{ try{ sessionStorage.removeItem('pin'); }catch(_){} pins[0].focus(); });
+  else pins[0].focus();
 }
 
 /* ---- Fechas de corte / pago ---- */
@@ -466,7 +541,7 @@ $('cards').addEventListener('click', async e=>{
 });
 
 $('fDate').value = iso(new Date());
-load();
+start();
 </script>
 </body>
 </html>
