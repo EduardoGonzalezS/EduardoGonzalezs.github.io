@@ -16,8 +16,8 @@
 html{color-scheme:dark}
 body{margin:0;background:radial-gradient(1000px 500px at 85% -10%,#173a4a55,transparent),var(--bg);color:var(--ink);font:16px/1.5 "Inter","Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;min-height:100vh}
 main{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
-header{text-align:center;margin:8px 0 26px;position:relative}
-#lockBtn{position:absolute;right:0;top:0}
+header{text-align:center;margin:8px 0 26px}
+.foot{display:flex;justify-content:center;margin-top:34px}
 h1{font-weight:700;font-size:clamp(2.1rem,7vw,2.8rem);line-height:1.1;margin:0 0 6px;letter-spacing:-.03em}
 h2{font-size:1.1rem;margin:0}
 .mut{color:var(--mut);font-size:.85rem}
@@ -78,10 +78,18 @@ label.chk{flex-direction:row;align-items:center;gap:8px;cursor:pointer}
 label.chk input{width:auto}
 .btn.sm{padding:8px 16px;font-size:.85rem}
 .tag{font-size:.7rem;background:#5eead426;color:var(--acc);border-radius:6px;padding:1px 7px;margin-left:6px;font-weight:600}
-.item.paid{opacity:.55}
+.item.paid .row{opacity:.55}
 .x.ok{color:var(--acc)}.x.ok:hover{background:#5eead41f}
-@media(max-width:520px){.item{flex-wrap:wrap}.item .b{width:100%;justify-content:flex-end}}
-.item{display:flex;align-items:center;gap:12px;padding:11px 4px;border-top:1px solid var(--line)}
+.item{border-top:1px solid var(--line)}
+.item .row{display:flex;align-items:center;gap:12px;padding:11px 8px;border-radius:12px;cursor:pointer;transition:background .15s}
+.item .row:hover{background:#ffffff08}
+.item .row:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.chev{flex:none;color:var(--mut);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.item.open .chev{transform:rotate(180deg)}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.2,.8,.2,1)}
+.item.open .more{grid-template-rows:1fr}
+.more>div{overflow:hidden;min-height:0;visibility:hidden;opacity:0;transition:visibility .32s,opacity .25s}
+.item.open .more>div{visibility:visible;opacity:1}
 .item:first-child{border-top:0}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
 .item .d{flex:1;min-width:0}
@@ -90,7 +98,8 @@ label.chk input{width:auto}
 .x{background:none;border:1px solid var(--line);color:var(--warn);border-radius:999px;padding:5px 9px;cursor:pointer;transition:background .15s}
 .x:hover{background:#ff7b7b1f}
 .x.ed{color:var(--ink)}.x.ed:hover{background:#ffffff14}
-.item .b{display:flex;gap:6px}
+.item .b{display:flex;gap:8px;justify-content:flex-end;padding:2px 8px 12px}
+.item .b .x{padding:7px 18px;font-size:.85rem}
 
 /* Animaciones */
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -162,7 +171,6 @@ main{padding-bottom:100px}
 
 <main id="app" class="enter">
   <header>
-    <button class="btn ghost sm" id="lockBtn">Bloquear</button>
     <h1>Mis tarjetas</h1>
     <div class="mut">Gastos, cortes y fechas de pago</div>
   </header>
@@ -186,6 +194,7 @@ main{padding-bottom:100px}
       <div id="list"></div>
     </section>
   </div>
+  <div class="foot"><button class="btn ghost sm" id="lockBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Bloquear</button></div>
 </main>
 
 <button class="btn fab" id="payPeriod" hidden>Marcar periodo como pagado</button>
@@ -250,7 +259,7 @@ const money = n => n.toLocaleString('es-MX',{style:'currency',currency:'MXN'});
 const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const show = s => { const [y,m,d]=s.split('-'); return `${+d} ${MESES[m-1]} ${y}`; };
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let data = {tarjetas:[], compras:[]}, prev = {}, newId = null, activeId = null, periodTouched = false, pin = '';
+let data = {tarjetas:[], compras:[]}, prev = {}, newId = null, activeId = null, periodTouched = false, pin = '', openItem = null;
 const colorOf = t => t.color || COLORS[data.tarjetas.indexOf(t) % COLORS.length];
 
 /* ---- UI helpers ---- */
@@ -411,13 +420,21 @@ function visible(){
   return data.compras.filter(c=>(!f||c.tarjeta===f)&&(!p||periodKey(c)===p)&&(sp||!c.pagada))
     .sort((a,b)=>b.fecha.localeCompare(a.fecha));
 }
+const CHEV = '<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+function toggleItem(id){ // acordeón: solo una compra abierta a la vez
+  openItem = openItem===id ? null : id;
+  document.querySelectorAll('#list .item').forEach(el=>{
+    const o = el.dataset.row===openItem; el.classList.toggle('open', o); el.querySelector('.row').setAttribute('aria-expanded', o);
+  });
+}
 function renderList(){
   const rows = visible();
-  $('list').innerHTML = rows.map(c=>{ const t=cardOf(c.tarjeta);
-    return `<div class="item${c.id===newId?' new':''}${c.pagada?' paid':''}" data-row="${esc(c.id)}"><span class="dot" style="background:${t?colorOf(t):'#555'}"></span>
-      <div class="d"><b>${esc(c.desc)}${c.pagada?'<span class="tag">Pagada</span>':''}</b><span class="mut">${show(c.fecha)} · ${esc(t?t.nombre:'?')}</span></div>
-      <span class="amt">${money(c.monto)}</span>
-      <span class="b"><button class="x ok" data-pay="${esc(c.id)}">${c.pagada?'Deshacer':'Pagada'}</button><button class="x ed" data-ebuy="${esc(c.id)}">Editar</button><button class="x" data-buy="${esc(c.id)}">Quitar</button></span></div>`; }).join('')
+  $('list').innerHTML = rows.map(c=>{ const t=cardOf(c.tarjeta), o=c.id===openItem;
+    return `<div class="item${c.id===newId?' new':''}${c.pagada?' paid':''}${o?' open':''}" data-row="${esc(c.id)}">
+      <div class="row" role="button" tabindex="0" aria-expanded="${o}"><span class="dot" style="background:${t?colorOf(t):'#555'}"></span>
+        <div class="d"><b>${esc(c.desc)}${c.pagada?'<span class="tag">Pagada</span>':''}</b><span class="mut">${show(c.fecha)} · ${esc(t?t.nombre:'?')}</span></div>
+        <span class="amt">${money(c.monto)}</span>${CHEV}</div>
+      <div class="more"><div><span class="b"><button class="x ok" data-pay="${esc(c.id)}">${c.pagada?'Deshacer':'Pagada'}</button><button class="x ed" data-ebuy="${esc(c.id)}">Editar</button><button class="x" data-buy="${esc(c.id)}">Quitar</button></span></div></div></div>`; }).join('')
     || '<div class="mut" style="padding:14px 4px">No hay compras para mostrar.</div>';
   $('sub').textContent = rows.length ? `${rows.length} compra(s) · ${money(rows.reduce((a,c)=>a+c.monto,0))}` : '';
   $('payPeriod').hidden = !($('filter').value && !$('period').hidden && $('period').value && rows.some(c=>!c.pagada));
@@ -465,9 +482,14 @@ $('bf').addEventListener('submit', async e=>{
   const b = {tarjeta:$('eCard').value,fecha:$('eDate').value,desc:$('eDesc').value.trim(),monto:parseFloat($('eAmt').value)};
   $('buyDlg').close();
   const ok = await run('Guardando cambios…', async()=>{ await api({action:'edit',id:editingBuy,...b}); Object.assign(data.compras.find(c=>c.id===editingBuy),b); });
-  if(ok){ render(); toast('Compra actualizada'); }
+  if(ok){ openItem=null; render(); toast('Compra actualizada'); }
+});
+$('list').addEventListener('keydown', e=>{
+  if((e.key==='Enter'||e.key===' ') && e.target.classList.contains('row')){ e.preventDefault(); toggleItem(e.target.parentElement.dataset.row); }
 });
 $('list').addEventListener('click', async e=>{
+  const hdr = e.target.closest('.row');
+  if(hdr){ toggleItem(hdr.parentElement.dataset.row); return; }
   const eb = e.target.dataset.ebuy;
   if(eb){
     const c = data.compras.find(c=>c.id===eb); editingBuy = eb;
@@ -479,14 +501,14 @@ $('list').addEventListener('click', async e=>{
   if(pid){
     const c = data.compras.find(c=>c.id===pid), v = !c.pagada;
     const ok = await run(v?'Marcando como pagada…':'Reactivando compra…', async()=>{ await api({action:'pay',ids:[pid],value:v}); c.pagada=v; });
-    if(ok){ render(); toast(v?'Compra marcada como pagada':'Compra reactivada'); }
+    if(ok){ openItem=null; render(); toast(v?'Compra marcada como pagada':'Compra reactivada'); }
     return;
   }
   const id = e.target.dataset.buy; if(!id) return;
   if(!await confirmDlg('¿Quitar esta compra?','Se eliminará también de tu hoja de Google.')) return;
   const row = document.querySelector(`[data-row="${id}"]`); row.classList.add('leaving');
   const ok = await run('Eliminando compra…', async()=>{ await api({action:'delete',id}); data.compras=data.compras.filter(c=>c.id!==id); });
-  if(ok){ render(); toast('Compra eliminada'); } else row.classList.remove('leaving');
+  if(ok){ openItem=null; render(); toast('Compra eliminada'); } else row.classList.remove('leaving');
 });
 $('filter').addEventListener('change', ()=>{ activeId = $('filter').value || null; layout(true); periodTouched = false; fillPeriods(); renderList(); });
 $('period').addEventListener('change', ()=>{ periodTouched = true; renderList(); });
