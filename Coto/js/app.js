@@ -12,7 +12,7 @@ const App = (() => {
   ];
   const enPaginas = () => document.body.dataset.base === "../";
   /** Ruta relativa a una sección desde la página actual. */
-  const url = (id) => (id === "dashboard" ? (enPaginas() ? "../index.html" : "index.html") : (enPaginas() ? "" : "pages/") + id + ".html");
+  const url = (id) => (id === "dashboard" ? (enPaginas() ? "../Coto.html" : "Coto.html") : (enPaginas() ? "" : "pages/") + id + ".html");
 
   function pintarShell(sec) {
     const nav = SECCIONES.map((s) => `<li><a class="nav-link ${s.id === sec.id ? "active" : ""}" href="${url(s.id)}" ${s.id === sec.id ? 'aria-current="page"' : ""}><i class="bi bi-${s.ico}"></i>${s.titulo}</a></li>`).join("");
